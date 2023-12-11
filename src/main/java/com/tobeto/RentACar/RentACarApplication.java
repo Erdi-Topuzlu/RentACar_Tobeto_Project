@@ -10,6 +10,7 @@ public class RentACarApplication {
 		SpringApplication.run(RentACarApplication.class, args);
 		System.out.println("Merhabaa Ben Halil");
 		System.out.println("Merhabaa Ben Melihhh");
+		System.out.println("Merhabaa Ben Nida");
 	}
 
 }
