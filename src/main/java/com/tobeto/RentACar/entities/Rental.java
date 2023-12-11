@@ -33,7 +33,7 @@ public class Rental {
     private int endKilometer;
 
     @Column(name = "total_price")
-    private BigDecimal totalPrice;
+    private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "car_id")

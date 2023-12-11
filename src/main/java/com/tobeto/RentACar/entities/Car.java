@@ -26,7 +26,7 @@ public class Car {
     private int year;
 
     @Column(name = "daily_price")
-    private BigDecimal dailyPrice;
+    private double dailyPrice;
 
     @ManyToOne
     @JoinColumn(name = "color_id")

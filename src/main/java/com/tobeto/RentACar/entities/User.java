@@ -20,6 +20,9 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
     @Column(name = "email")
     private String email;
 
