@@ -23,7 +23,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "user")
