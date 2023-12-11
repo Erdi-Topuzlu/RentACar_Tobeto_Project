@@ -9,7 +9,7 @@ public class RentACarApplication {
 	public static void main(String[] args){
 		SpringApplication.run(RentACarApplication.class, args);
 		System.out.println("Merhabaa Ben Halil");
-		System.out.println("Merhabaa Ben Melihh");
+		System.out.println("Merhabaa Ben Melihhh");
 	}
 
 }
