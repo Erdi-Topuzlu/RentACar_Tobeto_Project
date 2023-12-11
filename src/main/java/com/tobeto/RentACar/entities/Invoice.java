@@ -16,11 +16,11 @@ public class Invoice {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "createDate")
+    @Column(name = "create_date")
     private LocalDate createDate;
 
     @ManyToOne
-    @JoinColumn(name = "rentalId")
+    @JoinColumn(name = "rental_id")
     private Rental rental;
 
 

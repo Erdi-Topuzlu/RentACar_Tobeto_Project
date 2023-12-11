@@ -25,11 +25,11 @@ public class Car {
     @Column(name = "year")
     private int year;
 
-    @Column(name = "dailyPrice")
+    @Column(name = "daily_price")
     private BigDecimal dailyPrice;
 
     @ManyToOne
-    @JoinColumn(name = "colorId")
+    @JoinColumn(name = "color_id")
     private Color color;
 
     @OneToMany(mappedBy = "car")
@@ -37,7 +37,7 @@ public class Car {
     private List<Rental> rentals;
 
     @ManyToOne
-    @JoinColumn(name = "modelId")
+    @JoinColumn(name = "model_id")
     private Model model;
 
 }
