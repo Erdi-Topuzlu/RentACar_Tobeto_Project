@@ -1,17 +1,19 @@
 package com.tobeto.RentACar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
-@Getter
-@Setter
+@Data
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "car_id")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "kilometer")
@@ -23,7 +25,19 @@ public class Car {
     @Column(name = "year")
     private int year;
 
-    @Column(name = "daily_price")
-    private double dailyPrice;
+    @Column(name = "dailyPrice")
+    private BigDecimal dailyPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "colorId")
+    private Color color;
+
+    @OneToMany(mappedBy = "car")
+    @JsonIgnore
+    private List<Rental> rentals;
+
+    @ManyToOne
+    @JoinColumn(name = "modelId")
+    private Model model;
 
 }

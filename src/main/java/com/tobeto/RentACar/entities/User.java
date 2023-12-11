@@ -1,19 +1,21 @@
 package com.tobeto.RentACar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Table(name = "Users")
-@Data
+@Table(name = "users")
 @Entity
+@Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -21,7 +23,11 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "datetime")
-    private LocalDate BirthDate;
+    @Column(name = "birthDate")
+    private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Rental> rentals;
 
 }
