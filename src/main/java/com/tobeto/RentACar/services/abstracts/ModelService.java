@@ -17,4 +17,6 @@ public interface ModelService {
     List<GetAllModelResponse>getAll();
 
     GetByIdModelResponse getById(int id);
+
+    boolean existsById (int id);
 }

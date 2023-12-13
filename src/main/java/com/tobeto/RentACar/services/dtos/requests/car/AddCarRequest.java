@@ -14,6 +14,7 @@ public class AddCarRequest {
     @Positive(message = "Aracın kilometresi 0'dan büyük olmalıdır!")
     private int kilometer;
 
+
     private String plate;
 
     @Min(value = 2005,message = "Model yılı 2005 arasında olmalıdır!" )
@@ -21,12 +22,10 @@ public class AddCarRequest {
     private int year;
 
     @NotBlank
-    @NotNull
     @Positive(message = "Günlük ücret 0₺ den küçük olamaz!")
     private double dailyPrice;
 
     @NotBlank
-    @NotNull
     @Positive(message = "ColorId 0'dan farklı pozitif sayı olmalıdır!")
     private int colorId;
 

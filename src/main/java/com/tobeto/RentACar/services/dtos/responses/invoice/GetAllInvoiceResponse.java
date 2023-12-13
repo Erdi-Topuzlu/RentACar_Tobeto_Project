@@ -12,5 +12,5 @@ import java.time.LocalDate;
 @Data
 public class GetAllInvoiceResponse {
     private LocalDate createDate;
-    private String rentalName;
+    private int rentalId;
 }
