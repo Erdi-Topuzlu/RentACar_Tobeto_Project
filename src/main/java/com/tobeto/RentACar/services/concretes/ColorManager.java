@@ -59,4 +59,9 @@ public class ColorManager implements ColorService {
         GetByIdColorResponse response = modelMapperService.entityToDto().map(color, GetByIdColorResponse.class);
         return response;
     }
+
+    @Override
+    public boolean existsById(int id) {
+        return colorRepository.existsById(id);
+    }
 }

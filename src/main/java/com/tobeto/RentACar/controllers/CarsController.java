@@ -35,14 +35,13 @@ public class CarsController {
         return carService.delete(id);
     }
 
-    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
     public void add(@RequestBody @Valid AddCarRequest request) {
         carService.add(request);
     }
 
     @PutMapping
-    public void update(@RequestBody UpdateCarRequest request) {
+    public void update(@RequestBody @Valid UpdateCarRequest request) {
         carService.update(request);
     }
 

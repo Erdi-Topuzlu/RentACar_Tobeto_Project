@@ -19,4 +19,7 @@ public interface CarService {
     List<GetAllCarResponse> getAll();
 
     GetByIdCarResponse getById(int id);
+
+    boolean existsByPlate(String plate);
+
 }
