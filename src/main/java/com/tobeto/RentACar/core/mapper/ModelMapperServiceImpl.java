@@ -1,4 +1,4 @@
-package com.tobeto.RentACar.data.mapper;
+package com.tobeto.RentACar.core.mapper;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

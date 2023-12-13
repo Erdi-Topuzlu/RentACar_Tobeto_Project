@@ -1,6 +1,6 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Brand;
 import com.tobeto.RentACar.repositories.BrandRepository;
 import com.tobeto.RentACar.services.abstracts.BrandService;
@@ -49,7 +49,7 @@ public class BrandManager implements BrandService {
     public List<GetAllBrandResponse> getAll() {
         List<Brand> brands = brandRepository.findAll();
         List<GetAllBrandResponse> brandResponses = brands.stream()
-                .map(brand -> modelMapperService.entityToDto().map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
+                .map(brand -> modelMapperService.entityToDto().map(brand, GetAllBrandResponse.class)).toList();
         return brandResponses;
     }
 

@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.services.dtos.requests.invoice;
 
 import com.tobeto.RentACar.entities.Rental;
+import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class AddInvoiceRequest {
-    private Integer id;
     private LocalDate createDate;
-    private Integer rentalId;
+    private int rentalId;
 }

@@ -1,14 +1,12 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Rental;
 import com.tobeto.RentACar.repositories.RentalRepository;
-import com.tobeto.RentACar.services.abstracts.BrandService;
 import com.tobeto.RentACar.services.abstracts.RentalService;
 import com.tobeto.RentACar.services.dtos.requests.rental.AddRentalRequest;
 import com.tobeto.RentACar.services.dtos.requests.rental.DeleteRentalRequest;
 import com.tobeto.RentACar.services.dtos.requests.rental.UpdateRentalRequest;
-import com.tobeto.RentACar.services.dtos.responses.model.GetAllModelResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import lombok.AllArgsConstructor;
@@ -45,8 +43,7 @@ public class RentalManager implements RentalService {
     public List<GetAllRentalResponse> getAll() {
         List<Rental>rentals = rentalRepository.findAll();
         List<GetAllRentalResponse> rentalResponses = rentals.stream()
-                .map(rental -> modelMapperService.entityToDto().map(rental, GetAllRentalResponse.class))
-                .collect(Collectors.toList());
+                .map(rental -> modelMapperService.entityToDto().map(rental, GetAllRentalResponse.class)).toList();
         return rentalResponses;
     }
 

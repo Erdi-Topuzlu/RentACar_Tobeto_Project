@@ -1,6 +1,6 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Car;
 import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.services.abstracts.CarService;
@@ -9,7 +9,9 @@ import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
 import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class CarManager implements CarService {
 
     @Override
     public void add(AddCarRequest request) {
+
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
         carRepository.save(car);
     }
@@ -47,8 +50,7 @@ public class CarManager implements CarService {
         List<Car> cars = carRepository.findAll();
         List<GetAllCarResponse> carResponses = cars.stream()
                 .map(car -> modelMapperService.entityToDto()
-                        .map(car, GetAllCarResponse.class))
-                .collect(Collectors.toList());
+                        .map(car, GetAllCarResponse.class)).toList();
         return carResponses;
     }
 

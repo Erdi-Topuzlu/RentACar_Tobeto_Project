@@ -6,6 +6,7 @@ import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public void add(@RequestBody AddUserRequest request){
+    public void add(@RequestBody @Valid AddUserRequest request){
         userService.add(request);
     }
 

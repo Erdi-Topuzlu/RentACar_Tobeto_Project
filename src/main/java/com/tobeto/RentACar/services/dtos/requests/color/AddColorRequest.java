@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AddColorRequest {
-    private Integer id;
-    private String colorName;
+    private String name;
 }
