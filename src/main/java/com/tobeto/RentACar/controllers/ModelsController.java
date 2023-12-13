@@ -6,6 +6,7 @@ import com.tobeto.RentACar.services.dtos.requests.model.DeleteModelRequest;
 import com.tobeto.RentACar.services.dtos.requests.model.UpdateModelRequest;
 import com.tobeto.RentACar.services.dtos.responses.model.GetAllModelResponse;
 import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class ModelsController {
     }
 
     @PostMapping
-    public void add(@RequestBody AddModelRequest request){
+    public void add(@RequestBody @Valid AddModelRequest request){
         modelService.add(request);
     }
 

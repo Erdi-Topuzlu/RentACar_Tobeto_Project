@@ -6,6 +6,7 @@ import com.tobeto.RentACar.services.dtos.requests.rental.DeleteRentalRequest;
 import com.tobeto.RentACar.services.dtos.requests.rental.UpdateRentalRequest;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class RentalsController {
     }
 
     @PostMapping
-    public void add(@RequestBody AddRentalRequest request){
+    public void add(@RequestBody @Valid AddRentalRequest request){
         rentalService.add(request);
     }
 

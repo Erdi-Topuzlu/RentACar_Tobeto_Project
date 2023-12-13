@@ -1,6 +1,6 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Invoice;
 import com.tobeto.RentACar.repositories.InvoiceRepository;
 import com.tobeto.RentACar.services.abstracts.InvoiceService;
@@ -48,7 +48,7 @@ public class InvoiceManager implements InvoiceService {
     public List<GetAllInvoiceResponse> getAll() {
         List<Invoice> invoices = invoiceRepository.findAll();
         List<GetAllInvoiceResponse> invoiceResponses = invoices.stream()
-                .map(invoice -> modelMapperService.entityToDto().map(invoice, GetAllInvoiceResponse.class)).collect(Collectors.toList());
+                .map(invoice -> modelMapperService.entityToDto().map(invoice, GetAllInvoiceResponse.class)).toList();
         return invoiceResponses;
 
     }

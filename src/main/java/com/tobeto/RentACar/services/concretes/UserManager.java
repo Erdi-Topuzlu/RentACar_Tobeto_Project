@@ -1,10 +1,8 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.User;
-import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.repositories.UserRepository;
-import com.tobeto.RentACar.services.abstracts.BrandService;
 import com.tobeto.RentACar.services.abstracts.UserService;
 import com.tobeto.RentACar.services.dtos.requests.user.AddUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
@@ -49,7 +47,7 @@ public class UserManager implements UserService {
     public List<GetAllUserResponse> getAll() {
         List<User> users = userRepository.findAll();
         List<GetAllUserResponse> userResponses = users.stream()
-                .map(user -> modelMapperService.entityToDto().map(user, GetAllUserResponse.class)).collect(Collectors.toList());
+                .map(user -> modelMapperService.entityToDto().map(user, GetAllUserResponse.class)).toList();
         return userResponses;
     }
 

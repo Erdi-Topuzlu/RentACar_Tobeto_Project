@@ -5,6 +5,7 @@ import com.tobeto.RentACar.services.dtos.requests.invoice.AddInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.requests.invoice.UpdateInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetAllInvoiceResponse;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetByIdInvoiceResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class InvoicesController {
     }
 
     @PostMapping
-    public void add(@RequestBody AddInvoiceRequest request) {
+    public void add(@RequestBody @Valid AddInvoiceRequest request) {
         invoiceService.add(request);
     }
 

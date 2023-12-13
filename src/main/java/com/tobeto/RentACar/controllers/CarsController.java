@@ -6,6 +6,8 @@ import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
 import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +36,9 @@ public class CarsController {
         return carService.delete(id);
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
-    public void add(@RequestBody AddCarRequest request) {
+    public void add(@RequestBody @Valid AddCarRequest request) {
         carService.add(request);
     }
 

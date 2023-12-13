@@ -5,6 +5,7 @@ import com.tobeto.RentACar.services.dtos.requests.color.AddColorRequest;
 import com.tobeto.RentACar.services.dtos.requests.color.DeleteColorRequest;
 import com.tobeto.RentACar.services.dtos.responses.color.GetAllColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ColorsController {
     }
 
     @PostMapping
-    public void add(@RequestBody AddColorRequest request) {
+    public void add(@RequestBody @Valid AddColorRequest request) {
         colorService.add(request);
     }
 

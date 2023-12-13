@@ -1,6 +1,6 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Color;
 import com.tobeto.RentACar.repositories.ColorRepository;
 import com.tobeto.RentACar.services.abstracts.ColorService;
@@ -49,7 +49,7 @@ public class ColorManager implements ColorService {
     public List<GetAllColorResponse> getAll() {
         List<Color> colors = colorRepository.findAll();
         List<GetAllColorResponse> colorResponses = colors.stream()
-                .map(color -> modelMapperService.entityToDto().map(color, GetAllColorResponse.class)).collect(Collectors.toList());
+                .map(color -> modelMapperService.entityToDto().map(color, GetAllColorResponse.class)).toList();
         return colorResponses;
     }
 

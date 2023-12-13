@@ -1,9 +1,8 @@
 package com.tobeto.RentACar.services.concretes;
 
-import com.tobeto.RentACar.data.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Model;
 import com.tobeto.RentACar.repositories.ModelRepository;
-import com.tobeto.RentACar.services.abstracts.BrandService;
 import com.tobeto.RentACar.services.abstracts.ModelService;
 import com.tobeto.RentACar.services.dtos.requests.model.AddModelRequest;
 import com.tobeto.RentACar.services.dtos.requests.model.DeleteModelRequest;
@@ -11,7 +10,6 @@ import com.tobeto.RentACar.services.dtos.requests.model.UpdateModelRequest;
 import com.tobeto.RentACar.services.dtos.responses.model.GetAllModelResponse;
 import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,8 +44,7 @@ public class ModelManager implements ModelService {
     public List<GetAllModelResponse> getAll() {
         List<Model>models = modelRepository.findAll();
         List<GetAllModelResponse>modelResponses = models.stream()
-                .map(model -> modelMapperService.entityToDto().map(model, GetAllModelResponse.class))
-                .collect(Collectors.toList());
+                .map(model -> modelMapperService.entityToDto().map(model, GetAllModelResponse.class)).toList();
         return modelResponses;
     }
 

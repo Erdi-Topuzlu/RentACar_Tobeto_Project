@@ -1,5 +1,7 @@
 package com.tobeto.RentACar.services.dtos.responses.rental;
 
+import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +20,5 @@ public class GetByIdRentalResponse {
     private int endKilometer;
     private double totalPrice;
     private int carId;
-    private int userId;
+    private String userName;
 }

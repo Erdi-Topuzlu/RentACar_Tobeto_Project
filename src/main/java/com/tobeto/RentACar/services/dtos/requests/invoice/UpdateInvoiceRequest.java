@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.services.dtos.requests.invoice;
 
+import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class UpdateInvoiceRequest {
-    private Integer id;
+    private int id;
     private LocalDate createDate;
-    private Integer rentalId;
+    private int rentalId;
 }

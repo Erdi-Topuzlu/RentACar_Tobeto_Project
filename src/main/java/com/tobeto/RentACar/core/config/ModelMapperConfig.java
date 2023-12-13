@@ -1,4 +1,4 @@
-package com.tobeto.RentACar.config;
+package com.tobeto.RentACar.core.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
