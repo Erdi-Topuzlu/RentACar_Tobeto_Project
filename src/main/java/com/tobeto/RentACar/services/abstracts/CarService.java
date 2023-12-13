@@ -11,12 +11,12 @@ import java.util.List;
 public interface CarService {
 
     void add(AddCarRequest request);
+
     void update(UpdateCarRequest request);
+
     DeleteCarRequest delete(int id);
 
     List<GetAllCarResponse> getAll();
 
     GetByIdCarResponse getById(int id);
-
-
 }
