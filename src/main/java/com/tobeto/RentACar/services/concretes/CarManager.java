@@ -4,6 +4,7 @@ import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Car;
 import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.services.abstracts.CarService;
+import com.tobeto.RentACar.services.abstracts.ModelService;
 import com.tobeto.RentACar.services.dtos.requests.car.AddCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
@@ -11,30 +12,36 @@ import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
 import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CarManager implements CarService {
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
-    public CarManager(CarRepository carRepository, ModelMapperService modelMapperService) {
+    private final ModelService modelService;
+
+    public CarManager(CarRepository carRepository, ModelMapperService modelMapperService, ModelService modelService) {
         this.carRepository = carRepository;
         this.modelMapperService = modelMapperService;
+        this.modelService = modelService;
     }
 
     @Override
     public void add(AddCarRequest request) {
-
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        if(!modelService.existsById(request.getModelId())){
+            throw new RuntimeException("Model ID veritabanında bulunamadı!");
+        }
         carRepository.save(car);
     }
 
     @Override
     public void update(UpdateCarRequest request) {
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        if(!modelService.existsById(request.getModelId())){
+            throw new RuntimeException("Model ID veritabanında bulunamadı!");
+        }
         carRepository.save(car);
     }
 
