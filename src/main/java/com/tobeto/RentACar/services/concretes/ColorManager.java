@@ -3,6 +3,7 @@ package com.tobeto.RentACar.services.concretes;
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Color;
 import com.tobeto.RentACar.repositories.ColorRepository;
+import com.tobeto.RentACar.rules.color.ColorBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.ColorService;
 import com.tobeto.RentACar.services.dtos.requests.color.AddColorRequest;
 import com.tobeto.RentACar.services.dtos.requests.color.DeleteColorRequest;
@@ -12,21 +13,23 @@ import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ColorManager implements ColorService {
 
     private final ColorRepository colorRepository;
     private final ModelMapperService modelMapperService;
+    private final ColorBusinessRulesService colorBusinessRulesService;
 
-    public ColorManager(ColorRepository colorRepository, ModelMapperService modelMapperService) {
+    public ColorManager(ColorRepository colorRepository, ModelMapperService modelMapperService, ColorBusinessRulesService colorBusinessRulesService) {
         this.colorRepository = colorRepository;
         this.modelMapperService = modelMapperService;
+        this.colorBusinessRulesService = colorBusinessRulesService;
     }
 
     @Override
     public void add(AddColorRequest request) {
+        colorBusinessRulesService.checkIfColorNameExists(request.getName());
         Color color = modelMapperService.dtoToEntity().map(request, Color.class);
         colorRepository.save(color);
     }
