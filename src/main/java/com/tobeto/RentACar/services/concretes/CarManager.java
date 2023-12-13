@@ -46,14 +46,17 @@ public class CarManager implements CarService {
     public List<GetAllCarResponse> getAll() {
         List<Car> cars = carRepository.findAll();
         List<GetAllCarResponse> carResponses = cars.stream()
-                .map(car -> modelMapperService.entityToDto().map(car, GetAllCarResponse.class)).collect(Collectors.toList());
+                .map(car -> modelMapperService.entityToDto()
+                        .map(car, GetAllCarResponse.class))
+                .collect(Collectors.toList());
         return carResponses;
     }
 
     @Override
     public GetByIdCarResponse getById(int id) {
         Car car = carRepository.findById(id).orElseThrow();
-        GetByIdCarResponse response = modelMapperService.entityToDto().map(car, GetByIdCarResponse.class);
+        GetByIdCarResponse response = modelMapperService.entityToDto()
+                .map(car, GetByIdCarResponse.class);
         return response;
     }
 }
