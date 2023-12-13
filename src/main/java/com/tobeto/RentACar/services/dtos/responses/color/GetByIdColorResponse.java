@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class GetByIdColorResponse {
     private Integer id;
     private String colorName;
-    private Integer carId;
 }
