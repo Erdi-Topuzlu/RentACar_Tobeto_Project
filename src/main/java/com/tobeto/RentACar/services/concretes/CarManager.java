@@ -23,8 +23,6 @@ import java.util.List;
 public class CarManager implements CarService {
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
-    private final ModelService modelService;
-    private final ColorService colorService;
     private final CarBusinessRules carBusinessRules;
 
     @Override
@@ -67,7 +65,7 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public GetByIdCarResponse getById(int id) {
+    public GetByIdCarResponse getById(int id){
         Car car = carRepository.findById(id).orElseThrow();
         GetByIdCarResponse response = modelMapperService.entityToDto()
                 .map(car, GetByIdCarResponse.class);
