@@ -1,8 +1,10 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
 import com.tobeto.RentACar.entities.Car;
 import com.tobeto.RentACar.repositories.CarRepository;
+import com.tobeto.RentACar.rules.CarBusinessRules;
 import com.tobeto.RentACar.services.abstracts.CarService;
 import com.tobeto.RentACar.services.abstracts.ColorService;
 import com.tobeto.RentACar.services.abstracts.ModelService;
@@ -11,52 +13,40 @@ import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
 import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CarManager implements CarService {
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
     private final ModelService modelService;
     private final ColorService colorService;
-
-    public CarManager(CarRepository carRepository, ModelMapperService modelMapperService, ModelService modelService, ColorService colorService) {
-        this.carRepository = carRepository;
-        this.modelMapperService = modelMapperService;
-        this.modelService = modelService;
-        this.colorService = colorService;
-    }
+    private final CarBusinessRules carBusinessRules;
 
     @Override
     public void add(AddCarRequest request) {
+        //Business Rules
+        carBusinessRules.checkIfPlateNameExists(request.getPlate());
+        carBusinessRules.checkIfColorIdExists(request.getColorId());
+        carBusinessRules.checkIfModelIdExists(request.getModelId());
+
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
-
-
-        if(!modelService.existsById(request.getModelId())){
-            throw new RuntimeException("Model ID veritabanında bulunamadı!");
-        } else if (!colorService.existsById(request.getColorId())) {
-            throw new RuntimeException(("Color ID veritabanında bulunamadı!"));
-        } else if (carRepository.existsByPlate(request.getPlate())) {
-            throw new RuntimeException(("Aynı plakadam 2 tane bulunamaz!"));
-        }else
-            carRepository.save(car);
-
+        carRepository.save(car);
     }
 
     @Override
     public void update(UpdateCarRequest request) {
-        Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        //Business Rules
+        carBusinessRules.checkIfPlateNameExists(request.getPlate());
+        carBusinessRules.checkIfColorIdExists(request.getColorId());
+        carBusinessRules.checkIfModelIdExists(request.getModelId());
 
-        if(!modelService.existsById(request.getModelId())){
-            throw new RuntimeException("Model ID veritabanında bulunamadı!");
-        } else if (!colorService.existsById(request.getColorId())) {
-            throw new RuntimeException(("Color ID veritabanında bulunamadı!"));
-        } else if (carRepository.existsByPlate(request.getPlate())) {
-            throw new RuntimeException(("Aynı plakadam 2 tane bulunamaz!"));
-        }else
-            carRepository.save(car);
+        Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        carRepository.save(car);
 
     }
 

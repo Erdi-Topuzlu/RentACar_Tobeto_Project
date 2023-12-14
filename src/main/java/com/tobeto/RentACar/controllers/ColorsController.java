@@ -36,7 +36,7 @@ public class ColorsController {
     }
 
     @PutMapping
-    public void update(@RequestBody AddColorRequest request) {
+    public void update(@RequestBody @Valid AddColorRequest request) {
         colorService.add(request);
     }
 

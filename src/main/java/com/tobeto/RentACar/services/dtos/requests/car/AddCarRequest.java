@@ -1,36 +1,39 @@
 package com.tobeto.RentACar.services.dtos.requests.car;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCarRequest {
-    @NotNull(message = "Araç kilometresi boş geçilemez!")
-    @Positive(message = "Aracın kilometresi 0'dan büyük olmalıdır!")
+    @NotNull(message = "Kilometer cannot be empty!")
+    @Positive(message = "Kilometer of the vehicle must be greater than 0!")
     private int kilometer;
 
-    @NotBlank(message = "Plaka boş geçilemez!")
-    @Pattern(regexp = "^[1-8][0-9]{1}[A-Z]{1,3}[0-9]{1,4}$", message = "Geçersiz plaka formatı!")
+    @NotBlank(message = "Plate cannot be empty!")
+    @Pattern(regexp = "^[1-8][0-9]{1}[A-Z]{1,3}[0-9]{1,4}$", message = "Invalid plate format!")
     private String plate;
 
-    @NotNull(message = "Araç yılı boş geçilemez!")
-    @Min(value = 2005,message = "Model yılı 2005 arasında olmalıdır!" )
-    @Max(value = 2024, message = "Model yılı 2024 arasında olmalıdır!")
+    public void setPlate(String plate) {
+        this.plate = plate != null ? plate.replaceAll("\\s", "") : null;
+    }
+
+    @NotNull(message = "Vehicle year cannot be empty!")
+    @Min(value = 2005,message = "Model year must be at least 2005!!" )
+    @Max(value = 2024, message = "Model year must be smaller than 2024!")
     private int year;
 
-    @NotNull(message = "Günlük ücret boş geçilemez!")
-    @Positive(message = "Günlük ücret 0₺ den küçük olamaz!")
+    @NotNull(message = "Daily price cannot be empty!")
+    @Positive(message = "Daily price must be greater than 0₺!")
     private double dailyPrice;
 
-    @NotNull(message = "ColorId boş geçilemez!")
-    @Positive(message = "ColorId 0'dan farklı pozitif sayı olmalıdır!")
+    @NotNull(message = "ColorId cannot be empty!")
+    @Positive(message = "ColorId must be a positive number other than 0!")
     private int colorId;
 
-    @NotNull(message = "ModelId boş geçilemez!")
-    @Positive(message = "ModelId 0'dan farklı pozitif sayı olmalıdır!")
+    @NotNull(message = "ModelId cannot be empty!")
+    @Positive(message = "ModelId must be a positive number other than 0!")
     private int modelId;
 }

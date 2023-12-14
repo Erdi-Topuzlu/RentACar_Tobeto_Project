@@ -41,7 +41,7 @@ public class UsersController {
     }
 
     @PutMapping
-    public void update(@RequestBody UpdateUserRequest request){
+    public void update(@RequestBody @Valid UpdateUserRequest request){
         userService.update(request);
     }
 }
