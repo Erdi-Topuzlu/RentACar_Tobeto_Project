@@ -59,6 +59,14 @@ Sunucuyu çalıştırın
   npm run start
 ```
 
+
+## &#128189;ER Diagram
+
+![1ef18748e3467c03c83bcd6be8535785.png](https://imgtr.ee/images/2023/12/14/1ef18748e3467c03c83bcd6be8535785.png)
+
+
+<br clear="both">
+
 <h2 align="left">🧑‍💻👩‍💻Contributors</h2>
 
 ###
@@ -68,21 +76,17 @@ Sunucuyu çalıştırın
 
 ###
 
+###
+<table align="center">
+<thead>
+<tr>
+<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/146648077?v=4" width="200" style="max-width: 100%;"></a><br><b><a  style="color:#ffffff" href="https://www.github.com/Erdi-Topuzlu">Erdi Topuzlu</a></b></div></th>
+<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/145642334?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/nidosh">Nida Kasap</a></b></div></th>
+<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/125564176?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/Halismelih1">Halis Melih Abak</a></b></div></th>
+<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/42476890?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/halilkrkn">Halil İbrahim Karkın</a></b></div></th>
+</tr>
+</thead>
+</table>
 
-
-<img align="left" height="100" src="https://avatars.githubusercontent.com/u/146648077?v=4"  />[@Erdi Topuzlu](https://www.github.com/Erdi-Topuzlu)
-<br clear="both">
-<hr clear="both">
-
-<img  align="left" height="100" src="https://avatars.githubusercontent.com/u/145642334?v=4"  />[@Nida Kasap](https://www.github.com/nidosh)
-<br clear="both">
-<hr clear="both">
-
-<img align="left" height="100" src="https://avatars.githubusercontent.com/u/125564176?s=400&u=8ab1c5bdc5d1fe6c13da0e90969a0fdff5a8fc85&v=4"  />[@Halis Melih Abak](https://www.github.com/Halismelih1)
-<br clear="both">
-<hr clear="both">
-
-
-<img  align="left" height="100" src="https://avatars.githubusercontent.com/u/42476890?v=4"  /> <p align-items="center">[@halilkrkn](https://www.github.com/halilkrkn)</p>
 <br clear="both">
 <hr clear="both">
