@@ -42,7 +42,7 @@ public class BrandsController {
     }
 
     @PutMapping
-    public void update(@RequestBody UpdateBrandRequest request) {
+    public void update(@RequestBody @Valid UpdateBrandRequest request) {
         brandService.update(request);
     }
 }

@@ -39,7 +39,7 @@ public class RentalsController {
     }
 
     @PutMapping
-    public void update(@RequestBody UpdateRentalRequest request){
+    public void update(@RequestBody @Valid UpdateRentalRequest request){
         rentalService.update(request);
     }
 

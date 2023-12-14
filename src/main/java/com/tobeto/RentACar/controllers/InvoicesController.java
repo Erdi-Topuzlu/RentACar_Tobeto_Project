@@ -36,7 +36,7 @@ public class InvoicesController {
     }
 
     @PutMapping
-    public void update(@RequestBody UpdateInvoiceRequest request) {
+    public void update(@RequestBody @Valid UpdateInvoiceRequest request) {
         invoiceService.update(request);
     }
 
