@@ -18,8 +18,7 @@ public class UpdateInvoiceRequest {
 
     private int id;
 
-    @NotBlank(message = "createDate cannot be empty!")
-    @DateTimeFormat(pattern="yyyy/MM/dd")
+    @NotNull(message = "createDate Field Cannot be Empty !")
     private LocalDate createDate;
     @NotNull(message = "rentalId cannot be empty!")
     @Positive(message = "rentalId must be a positive number other than 0!")
