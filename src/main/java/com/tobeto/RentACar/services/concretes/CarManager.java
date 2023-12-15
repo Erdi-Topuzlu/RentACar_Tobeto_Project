@@ -1,13 +1,10 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
 import com.tobeto.RentACar.entities.Car;
 import com.tobeto.RentACar.repositories.CarRepository;
-import com.tobeto.RentACar.rules.CarBusinessRules;
+import com.tobeto.RentACar.rules.car.CarBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.CarService;
-import com.tobeto.RentACar.services.abstracts.ColorService;
-import com.tobeto.RentACar.services.abstracts.ModelService;
 import com.tobeto.RentACar.services.dtos.requests.car.AddCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
@@ -23,14 +20,14 @@ import java.util.List;
 public class CarManager implements CarService {
     private final CarRepository carRepository;
     private final ModelMapperService modelMapperService;
-    private final CarBusinessRules carBusinessRules;
+    private final CarBusinessRulesService carBusinessRulesService;
 
     @Override
     public void add(AddCarRequest request) {
         //Business Rules
-        carBusinessRules.checkIfPlateNameExists(request.getPlate());
-        carBusinessRules.checkIfColorIdExists(request.getColorId());
-        carBusinessRules.checkIfModelIdExists(request.getModelId());
+        carBusinessRulesService.checkIfPlateNameExists(request.getPlate());
+        carBusinessRulesService.checkIfColorIdExists(request.getColorId());
+        carBusinessRulesService.checkIfModelIdExists(request.getModelId());
 
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
         carRepository.save(car);
@@ -39,9 +36,9 @@ public class CarManager implements CarService {
     @Override
     public void update(UpdateCarRequest request) {
         //Business Rules
-        carBusinessRules.checkIfPlateNameExists(request.getPlate());
-        carBusinessRules.checkIfColorIdExists(request.getColorId());
-        carBusinessRules.checkIfModelIdExists(request.getModelId());
+        carBusinessRulesService.checkIfPlateNameExists(request.getPlate());
+        carBusinessRulesService.checkIfColorIdExists(request.getColorId());
+        carBusinessRulesService.checkIfModelIdExists(request.getModelId());
 
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
         carRepository.save(car);
