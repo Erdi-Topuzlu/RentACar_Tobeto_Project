@@ -16,4 +16,12 @@ public class ColorBusinessRulesManager implements ColorBusinessRulesService {
             throw new BusinessException("Color Already Exist ! ");
         }
     }
+
+    @Override
+    public void checkIfByIdExists(int id) {
+        if (!colorRepository.existsById(id)) {
+            throw new BusinessException("ColorId NotFound ! ");
+
+        }
+    }
 }

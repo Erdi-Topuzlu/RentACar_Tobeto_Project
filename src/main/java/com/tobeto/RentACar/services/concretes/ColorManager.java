@@ -36,6 +36,8 @@ public class ColorManager implements ColorService {
 
     @Override
     public void update(UpdateColorRequest request) {
+        colorBusinessRulesService.checkIfByIdExists(request.getId());
+        colorBusinessRulesService.checkIfColorNameExists(request.getName());
         Color color = modelMapperService.dtoToEntity().map(request, Color.class);
         colorRepository.save(color);
     }
@@ -63,8 +65,5 @@ public class ColorManager implements ColorService {
         return response;
     }
 
-    @Override
-    public boolean existsById(int id) {
-        return colorRepository.existsById(id);
-    }
+
 }

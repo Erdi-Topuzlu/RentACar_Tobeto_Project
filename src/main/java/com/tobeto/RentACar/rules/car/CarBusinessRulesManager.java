@@ -34,4 +34,12 @@ public class CarBusinessRulesManager implements CarBusinessRulesService {
             throw new BusinessException("ModelId is Not Found!");
         }
     }
+
+    @Override
+    public void checkIfByIdExists(int id) {
+        if(!carRepository.existsById(id)){
+            throw new BusinessException("carId is Not Found!");
+
+        }
+    }
 }

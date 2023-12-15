@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -51,6 +50,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public void update(UpdateRentalRequest request) {
+        rentalBusinessRulesService.checkIfByIdExists(request.getId());
         rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
         rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
         rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());

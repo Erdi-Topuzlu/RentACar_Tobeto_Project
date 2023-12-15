@@ -3,6 +3,7 @@ package com.tobeto.RentACar.controllers;
 import com.tobeto.RentACar.services.abstracts.ColorService;
 import com.tobeto.RentACar.services.dtos.requests.color.AddColorRequest;
 import com.tobeto.RentACar.services.dtos.requests.color.DeleteColorRequest;
+import com.tobeto.RentACar.services.dtos.requests.color.UpdateColorRequest;
 import com.tobeto.RentACar.services.dtos.responses.color.GetAllColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
 import jakarta.validation.Valid;
@@ -36,8 +37,8 @@ public class ColorsController {
     }
 
     @PutMapping
-    public void update(@RequestBody @Valid AddColorRequest request) {
-        colorService.add(request);
+    public void update(@RequestBody @Valid UpdateColorRequest request) {
+        colorService.update(request);
     }
 
     @DeleteMapping("/{id}")

@@ -20,5 +20,4 @@ public interface ColorService {
 
     GetByIdColorResponse getById(int id);
 
-    boolean existsById (int id);
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UpdateColorRequest {
+
     private int id;
     @NotBlank(message = "Color is not blank!")
     @Size(min = 2, message = "Color must consist of at least 2 letters!")

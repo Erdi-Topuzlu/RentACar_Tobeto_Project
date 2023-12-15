@@ -17,7 +17,7 @@ public class BrandBusinessRulesManager implements BrandBusinessRulesService{
     }
 
     @Override
-    public void checkIfById(int id) {
+    public void checkIfByIdExists(int id) {
         if(!brandRepository.existsById(id)){
             throw new BusinessException("BrandId not found!");
         }
