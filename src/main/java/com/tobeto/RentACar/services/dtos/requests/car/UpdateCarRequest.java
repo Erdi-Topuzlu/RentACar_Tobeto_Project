@@ -1,7 +1,5 @@
 package com.tobeto.RentACar.services.dtos.requests.car;
 
-import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
-import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
