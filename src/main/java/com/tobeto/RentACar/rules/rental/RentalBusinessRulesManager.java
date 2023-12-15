@@ -54,4 +54,11 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
 
         }
     }
+
+    @Override
+    public void checkIfReturnDateBeforeStartDate(LocalDate returnDate, LocalDate startDate) {
+        if (returnDate.isBefore(startDate)){
+            throw new BusinessException("Return date can't be any later than start date!");
+        }
+    }
 }
