@@ -3,6 +3,7 @@ package com.tobeto.RentACar.services.concretes;
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Model;
 import com.tobeto.RentACar.repositories.ModelRepository;
+import com.tobeto.RentACar.rules.model.ModelBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.ModelService;
 import com.tobeto.RentACar.services.dtos.requests.model.AddModelRequest;
 import com.tobeto.RentACar.services.dtos.requests.model.DeleteModelRequest;
@@ -20,15 +21,20 @@ import java.util.stream.Collectors;
 public class ModelManager implements ModelService {
     private final ModelRepository modelRepository;
     private final ModelMapperService modelMapperService;
+    private final ModelBusinessRulesService modelBusinessRulesService;
 
     @Override
     public void add(AddModelRequest request) {
+        modelBusinessRulesService.checkIfNameExists(request.getName());
+        modelBusinessRulesService.checkIfBrandIdExists(request.getBrandId());
         Model model = modelMapperService.dtoToEntity().map(request, Model.class);
         modelRepository.save(model);
     }
 
     @Override
     public void update(UpdateModelRequest request) {
+        modelBusinessRulesService.checkIfNameExists(request.getName());
+        modelBusinessRulesService.checkIfBrandIdExists(request.getBrandId());
         Model model =modelMapperService.dtoToEntity().map(request, Model.class);
         modelRepository.save(model);
     }
