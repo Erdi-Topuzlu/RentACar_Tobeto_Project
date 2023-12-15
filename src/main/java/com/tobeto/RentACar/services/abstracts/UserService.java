@@ -18,4 +18,7 @@ public interface UserService {
 
     GetByIdUserResponse getById(int id);
 
+    boolean existsByEmail(String email);
+
+
 }
