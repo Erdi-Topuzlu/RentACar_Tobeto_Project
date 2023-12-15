@@ -33,6 +33,8 @@ public class ModelManager implements ModelService {
 
     @Override
     public void update(UpdateModelRequest request) {
+        modelBusinessRulesService.checkIfNameExists(request.getName());
+        modelBusinessRulesService.checkIfBrandIdExists(request.getBrandId());
         Model model =modelMapperService.dtoToEntity().map(request, Model.class);
         modelRepository.save(model);
     }
