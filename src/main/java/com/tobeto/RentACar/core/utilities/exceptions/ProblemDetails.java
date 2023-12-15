@@ -11,5 +11,4 @@ import java.util.Map;
 @NoArgsConstructor
 public class ProblemDetails {
     String message;
-    private Map<String, String> validationErrors;
 }
