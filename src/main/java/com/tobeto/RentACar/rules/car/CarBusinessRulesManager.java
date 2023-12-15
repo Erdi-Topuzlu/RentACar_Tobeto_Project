@@ -16,42 +16,22 @@ public class CarBusinessRulesManager implements CarBusinessRulesService {
 
     @Override
     public void checkIfPlateNameExists(String plate) {
-        if (carRepository.existsByPlate(plate)){
+        if (carRepository.existsByPlate(plate)) {
             throw new BusinessException("Plate already exists!");
         }
     }
 
     @Override
     public void checkIfColorIdExists(int id) {
-        if(!colorRepository.existsById(id)){
+        if (!colorRepository.existsById(id)) {
             throw new BusinessException("ColorId is Not Found!");
         }
     }
 
     @Override
     public void checkIfModelIdExists(int id) {
-        if(!modelRepository.existsById(id)){
+        if (!modelRepository.existsById(id)) {
             throw new BusinessException("ModelId is Not Found!");
         }
     }
-
-    /*public void checkIfPlateNameExists(String plate){
-        if (carRepository.existsByPlate(plate)){
-            throw new BusinessException("Plate already exists!");
-        }
-    }
-
-    public void checkIfColorIdExists(int id){
-        if(!colorRepository.existsById(id)){
-            throw new BusinessException("ColorId is Not Found!");
-        }
-    }
-
-    public void checkIfModelIdExists(int id){
-        if(!modelRepository.existsById(id)){
-            throw new BusinessException("ModelId is Not Found!");
-        }
-    }*/
-
-
 }
