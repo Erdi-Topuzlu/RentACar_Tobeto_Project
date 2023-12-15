@@ -2,7 +2,6 @@ package com.tobeto.RentACar.services.dtos.requests.car;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Data
 @AllArgsConstructor
