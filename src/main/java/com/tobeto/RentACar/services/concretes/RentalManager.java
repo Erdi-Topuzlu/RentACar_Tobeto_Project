@@ -3,15 +3,19 @@ package com.tobeto.RentACar.services.concretes;
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Rental;
 import com.tobeto.RentACar.repositories.RentalRepository;
+import com.tobeto.RentACar.rules.rental.RentalBusinessRulesService;
+import com.tobeto.RentACar.services.abstracts.CarService;
 import com.tobeto.RentACar.services.abstracts.RentalService;
 import com.tobeto.RentACar.services.dtos.requests.rental.AddRentalRequest;
 import com.tobeto.RentACar.services.dtos.requests.rental.DeleteRentalRequest;
 import com.tobeto.RentACar.services.dtos.requests.rental.UpdateRentalRequest;
+import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,15 +24,51 @@ import java.util.stream.Collectors;
 public class RentalManager implements RentalService {
     private final RentalRepository rentalRepository;
     private final ModelMapperService modelMapperService;
+    private final RentalBusinessRulesService rentalBusinessRulesService;
+    private final CarService carService;
     @Override
     public void add(AddRentalRequest request) {
+        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
+        rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
+        rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
+        rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());
+
+
         Rental rental = modelMapperService.dtoToEntity().map(request, Rental.class);
+        GetByIdCarResponse carId = carService.getById(request.getCarId());
+        rental.setStartKilometer(carId.getKilometer());
+
+        if (rental.getReturnDate() == null){
+            Double totalPrice = ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice();
+            rental.setTotalPrice(totalPrice);
+        }else {
+            Double totalPrice = ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice();
+            rental.setTotalPrice(totalPrice);
+        }
+
         rentalRepository.save(rental);
     }
 
     @Override
     public void update(UpdateRentalRequest request) {
+        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
+        rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
+        rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
+        rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());
+
+
         Rental rental = modelMapperService.dtoToEntity().map(request, Rental.class);
+        GetByIdCarResponse carId = carService.getById(request.getCarId());
+        rental.setStartKilometer(carId.getKilometer());
+
+        if (rental.getReturnDate() == null){
+            Double totalPrice = ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice();
+            rental.setTotalPrice(totalPrice);
+        }else {
+            Double totalPrice = ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice();
+            rental.setTotalPrice(totalPrice);
+        }
+
         rentalRepository.save(rental);
     }
 

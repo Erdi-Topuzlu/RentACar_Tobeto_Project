@@ -1,13 +1,11 @@
 package com.tobeto.RentACar.services.dtos.requests.rental;
 
-import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
-import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -16,12 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AddRentalRequest {
 
+    @FutureOrPresent(message = "Start date can't be any later than today!") //Biz bunu iş kuralı olarak da yazardık ama yazmadık :)
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocalDate returnDate;
-    private int startKilometer;
-    private int endKilometer;
-    private double totalPrice;
     private int carId;
     private int userId;
 }
