@@ -25,4 +25,11 @@ public class ModelBusinessRulesManager implements ModelBusinessRulesService {
             throw new BusinessException("BrandId is Not Found!");
         }
     }
+
+    @Override
+    public void checkIfByIdExists(int id) {
+        if (!modelRepository.existsById(id)) {
+            throw new BusinessException("Model Id  Not Found!");
+        }
+    }
 }

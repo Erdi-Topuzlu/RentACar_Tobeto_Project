@@ -3,26 +3,27 @@ package com.tobeto.RentACar.services.concretes;
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Invoice;
 import com.tobeto.RentACar.repositories.InvoiceRepository;
+import com.tobeto.RentACar.rules.Invoice.InvoiceBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.InvoiceService;
 import com.tobeto.RentACar.services.dtos.requests.invoice.AddInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.requests.invoice.DeleteInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.requests.invoice.UpdateInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetAllInvoiceResponse;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetByIdInvoiceResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class InvoiceManager implements InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final ModelMapperService modelMapperService;
+    private final InvoiceBusinessRulesService invoiceBusinessRulesService;
 
-    public InvoiceManager(InvoiceRepository invoiceRepository, ModelMapperService modelMapperService) {
-        this.invoiceRepository = invoiceRepository;
-        this.modelMapperService = modelMapperService;
-    }
+
 
     @Override
     public void add(AddInvoiceRequest request) {
@@ -32,6 +33,7 @@ public class InvoiceManager implements InvoiceService {
 
     @Override
     public void update(UpdateInvoiceRequest request) {
+        invoiceBusinessRulesService.checkIfByIdExists(request.getId());
         Invoice invoice = modelMapperService.dtoToEntity().map(request, Invoice.class);
         invoiceRepository.save(invoice);
     }

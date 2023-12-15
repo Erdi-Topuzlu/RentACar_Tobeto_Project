@@ -46,4 +46,12 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
                 throw new BusinessException("Car rental is available for a maximum of 25 days!");
             }
     }
+
+    @Override
+    public void checkIfByIdExists(int id) {
+        if (!rentalRepository.existsById(id)) {
+            throw new BusinessException("Rentail Id Not Found !");
+
+        }
+    }
 }

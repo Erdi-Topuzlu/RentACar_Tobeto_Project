@@ -10,26 +10,22 @@ import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final ModelMapperService modelMapperService;
-
     private final UserBusinessRulesService userBusinessRulesService;
 
-    public UserManager(UserRepository userRepository, ModelMapperService modelMapperService, UserBusinessRulesService userBusinessRulesService) {
-        this.userRepository = userRepository;
-        this.modelMapperService = modelMapperService;
-        this.userBusinessRulesService = userBusinessRulesService;
-    }
 
     @Override
     public void add(AddUserRequest request) {
-        userBusinessRulesService.existsByEmail(request.getEmail());
+        userBusinessRulesService.checkIfByEmailExists(request.getEmail());
 
         User user = modelMapperService.dtoToEntity().map(request, User.class);
         userRepository.save(user);
@@ -37,8 +33,8 @@ public class UserManager implements UserService {
 
     @Override
     public void update(UpdateUserRequest request) {
-        userBusinessRulesService.existsByEmail(request.getEmail());
-
+        userBusinessRulesService.checkIfByIdExists(request.getId());
+        userBusinessRulesService.checkIfByEmailExists(request.getEmail());
         User user = modelMapperService.dtoToEntity().map(request, User.class);
         userRepository.save(user);
     }

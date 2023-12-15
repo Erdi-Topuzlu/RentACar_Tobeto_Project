@@ -8,5 +8,6 @@ import java.time.LocalDate;
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
     LocalDate startDate(LocalDate startDate);
     LocalDate endDate(LocalDate endDate);
+    boolean existsById(int id);
 
 }

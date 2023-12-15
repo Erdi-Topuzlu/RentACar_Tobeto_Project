@@ -12,9 +12,17 @@ public class UserBusinessRulesManager implements UserBusinessRulesService {
     private final UserRepository userRepository;
 
     @Override
-    public void existsByEmail(String email) {
+    public void checkIfByEmailExists(String email) {
         if (userRepository.existsByEmail(email)){
             throw new BusinessException("E-mail Already Exist ! ");
+        }
+    }
+
+    @Override
+    public void checkIfByIdExists(int id) {
+        if (!userRepository.existsById(id)) {
+            throw new BusinessException("User Id Not Found ! ");
+
         }
     }
 }

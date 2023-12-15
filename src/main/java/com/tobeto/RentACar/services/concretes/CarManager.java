@@ -36,9 +36,11 @@ public class CarManager implements CarService {
     @Override
     public void update(UpdateCarRequest request) {
         //Business Rules
+        carBusinessRulesService.checkIfByIdExists(request.getId());
         carBusinessRulesService.checkIfPlateNameExists(request.getPlate());
         carBusinessRulesService.checkIfColorIdExists(request.getColorId());
         carBusinessRulesService.checkIfModelIdExists(request.getModelId());
+
 
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
         carRepository.save(car);
