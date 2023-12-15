@@ -3,36 +3,39 @@ package com.tobeto.RentACar.services.concretes;
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.entities.Brand;
 import com.tobeto.RentACar.repositories.BrandRepository;
+import com.tobeto.RentACar.rules.brand.BrandBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.BrandService;
 import com.tobeto.RentACar.services.dtos.requests.brand.AddBrandRequest;
 import com.tobeto.RentACar.services.dtos.requests.brand.DeleteBrandRequest;
 import com.tobeto.RentACar.services.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetByIdBrandResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BrandManager implements BrandService {
 
     private final BrandRepository brandRepository;
     private final ModelMapperService modelMapperService;
+    private final BrandBusinessRulesService brandBusinessRulesService;
 
-    public BrandManager(BrandRepository brandRepository, ModelMapperService modelMapperService) {
-        this.brandRepository = brandRepository;
-        this.modelMapperService = modelMapperService;
-    }
 
     @Override
     public void add(AddBrandRequest request) {
+        brandBusinessRulesService.checkIfBrandNameExists(request.getName());
+
         Brand brand = modelMapperService.dtoToEntity().map(request, Brand.class);
         brandRepository.save(brand);
     }
 
     @Override
     public void update(UpdateBrandRequest request) {
+        brandBusinessRulesService.checkIfBrandNameExists(request.getName());
+
         Brand brand = modelMapperService.dtoToEntity().map(request, Brand.class);
         brandRepository.save(brand);
 

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddRentalRequest {
+
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
