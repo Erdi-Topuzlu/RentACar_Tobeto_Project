@@ -9,13 +9,14 @@ import java.time.LocalDate;
 @Service
 public class RentalBusinessRulesManager implements RentalBusinessRulesService {
 
+
     @Override
-    public void checkIfStartDate(LocalDate startDate) {
+    public void checkIfStartDateBeforeToday(LocalDate startDate) {
 
     }
 
     @Override
-    public void checkIfEndDate(LocalDate endDate) {
+    public void checkIfEndDateBeforeStartDate(LocalDate endDate) {
 
     }
 
@@ -30,7 +31,7 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
     }
 
     @Override
-    public void checkMaxRentDay(LocalDate startDate, LocalDate endDate) {
+    public void checkMaxRentTime(LocalDate startDate, LocalDate endDate) {
 
     }
 }
