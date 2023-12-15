@@ -52,6 +52,7 @@ public class RentalManager implements RentalService {
     public void update(UpdateRentalRequest request) {
         rentalBusinessRulesService.checkIfByIdExists(request.getId());
         rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
+        rentalBusinessRulesService.checkIfReturnDateBeforeStartDate(request.getReturnDate(), request.getStartDate());
         rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
         rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
         rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());

@@ -10,4 +10,6 @@ public interface RentalBusinessRulesService {
 
     void checkIfByIdExists(int id);
 
+    void checkIfReturnDateBeforeStartDate (LocalDate returnDate, LocalDate startDate);
+
 }
