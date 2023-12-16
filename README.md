@@ -49,7 +49,7 @@ Sunucuyu çalıştırın
 <table align="center">
 <thead>
 <tr>
-<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/0b69a6ab-3cd1-4e48-bda1-4c0f10915716" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/Erdi-Topuzlu">GitHub</a></b></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/0b69a6ab-3cd1-4e48-bda1-4c0f10915716" width="250" style="max-width: 100%;"><br><b><a target="_blank" href="https://www.github.com/Erdi-Topuzlu">GitHub</a></b></th>
 <th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/57d1b6e3-9f94-444b-93fc-fcde0a03936d" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/nidosh">GitHub</a></b></th>
 <th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/e8449dc1-0a55-4b03-87db-874f6a0b9389" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/Halismelih1">GitHub</a></b></th>
 <th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/d6cbe59e-3334-459c-b8c9-8fb8c06099b9" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/halilkrkn">GitHub</a></b></th>
