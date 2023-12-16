@@ -12,7 +12,7 @@ public class AddCarRequest {
     private int kilometer;
 
     @NotBlank(message = "Plate cannot be empty!")
-    @Pattern(regexp = "^[1-8][0-9]{1}[A-Z]{1,3}[0-9]{1,4}$", message = "Invalid plate format!")
+    @Pattern(regexp = "^[1-8][0-9]{1}[a-zA-Z]{1,3}[0-9]{1,4}$", message = "Invalid plate format!")
     private String plate;
 
     public void setPlate(String plate) {

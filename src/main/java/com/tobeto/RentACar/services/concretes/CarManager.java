@@ -30,6 +30,7 @@ public class CarManager implements CarService {
         carBusinessRulesService.checkIfModelIdExists(request.getModelId());
 
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        car.setPlate(request.getPlate().toUpperCase());
         carRepository.save(car);
     }
 
@@ -43,6 +44,7 @@ public class CarManager implements CarService {
 
 
         Car car = modelMapperService.dtoToEntity().map(request, Car.class);
+        car.setPlate(request.getPlate().toUpperCase());
         carRepository.save(car);
 
     }
@@ -71,10 +73,6 @@ public class CarManager implements CarService {
         return response;
     }
 
-    @Override
-    public boolean existsByPlate(String plate) {
-        return carRepository.existsByPlate(plate);
-    }
 
 
 }

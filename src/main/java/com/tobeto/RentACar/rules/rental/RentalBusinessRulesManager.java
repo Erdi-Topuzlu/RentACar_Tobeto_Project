@@ -4,7 +4,6 @@ import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
 import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.repositories.RentalRepository;
 import com.tobeto.RentACar.repositories.UserRepository;
-import com.tobeto.RentACar.services.abstracts.RentalService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +56,9 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
 
     @Override
     public void checkIfReturnDateBeforeStartDate(LocalDate returnDate, LocalDate startDate) {
+        if(returnDate == null){
+            return;
+        }
         if (returnDate.isBefore(startDate)){
             throw new BusinessException("Return date can't be any later than start date!");
         }

@@ -16,11 +16,10 @@ public class UpdateRentalRequest {
     @FutureOrPresent(message = "Start date can't be any later than today!") //Biz bunu iş kuralı olarak da yazardık ama yazmadık :)
     private LocalDate startDate;
     private LocalDate endDate;
-    @Nullable
+
     private LocalDate returnDate;
     @Nullable
     private Integer endKilometer;
-    @Positive(message = "Total price of the vehicle must be greater than 0!")
     private double totalPrice;
     private int carId;
     private int userId;

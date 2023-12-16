@@ -20,6 +20,5 @@ public interface CarService {
 
     GetByIdCarResponse getById(int id);
 
-    boolean existsByPlate(String plate);
 
 }

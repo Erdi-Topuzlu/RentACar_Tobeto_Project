@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 @Configuration
 @RestControllerAdvice
@@ -38,5 +39,13 @@ public class GlobalExceptionHandler {
         }
         
         return validationProblemDetails;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ProblemDetails handleNoSuchElementException(NoSuchElementException noSuchElementException){
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setMessage("Id Not Found !");
+        return problemDetails;
     }
 }
