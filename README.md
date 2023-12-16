@@ -70,7 +70,7 @@ Sunucuyu çalıştırın
 
 <th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/e8449dc1-0a55-4b03-87db-874f6a0b9389" width="250" style="max-width: 100%;"><br>
   <br><b><a href="https://www.github.com/Halismelih1"><img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge" height="30" alt="github logo"  /></a></b>
-  <br><b><a href="https://www.linkedin.com/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
+  <br><b><a href="https://www.linkedin.com/in/halismelihabak"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
   </a></b>
   <br><b><a href="https://www.instagram.com/halismelih1"><img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white&style=for-the-badge" height="30" alt="instagram logo"  />
   </a></b>
