@@ -1,45 +1,16 @@
-<h1 align="left"><p style="font-size:200px">🏎️Rent A Car Project - Pair 1</h1></p>
-
-###
-
-<h2 align="left">&#128203;About Project</h2>
-
-###
+![header](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/d290a6d7-4d2c-42a8-803c-4ad795827d31)
 
 <p align="left">Rent-A-Car Projesi, modern web teknolojileri kullanılarak geliştirilen bir araç kiralama platformudur. Bu proje, kullanıcı dostu bir arayüz, güçlü bir back-end altyapısı ve güvenilir bir veritabanı kullanarak kullanıcılara kapsamlı bir araç kiralama deneyimi sunmayı hedeflemektedir.<br><br>Projemiz, 4 kişilik bir ekip tarafından titizlikle geliştirilmiştir. Her bir geliştirici, kendi uzmanlık alanında katkıda bulunarak, proje sürecinde etkileşimli ve yenilikçi bir kullanıcı deneyimi oluşturmayı amaçlamıştır.</p>
 
 ###
+<br clear="both">
 
-<h2 align="left">&#128187;Code with</h2>
 
-###
+![code](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/ed4abeb5-0623-4be4-8063-1d8c97bd2d5b)
 
 <br clear="both">
 
-<div align="center">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" height="40" alt="java logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" height="40" alt="spring logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" height="40" alt="react logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" height="40" alt="html5 logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="40" alt="javascript logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" height="40" alt="css3 logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" height="40" alt="postgresql logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" height="40" alt="intellij logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" height="40" alt="docker logo"  />
-</div>
-
-###
-
-
-## &#128189;Installation
+![install](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/f3e17eaf-7479-46fa-a593-325400ccc73e)
 
 Projeyi klonlayın
 
@@ -64,32 +35,27 @@ Sunucuyu çalıştırın
 ```bash
   npm run start
 ```
+<br clear="both">
+<br clear="both">
 
-
-## &#128189;ER Diagram
-
-![1ef18748e3467c03c83bcd6be8535785.png](https://imgtr.ee/images/2023/12/14/1ef18748e3467c03c83bcd6be8535785.png)
-
+![erdiagram](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/9d81ec9a-5b6d-4187-b86f-d272591f82e5)
 
 <br clear="both">
 
-<h2 align="left">🧑‍💻👩‍💻Contributors</h2>
-
-###
+![contributors](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/f8ee73fc-3d56-42ae-a42e-e8835a94ef8c)
 
 <br clear="both">
 
-
-###
-
-###
 <table align="center">
 <thead>
 <tr>
-<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/146648077?v=4" width="200" style="max-width: 100%;"></a><br><b><a  style="color:#ffffff" href="https://www.github.com/Erdi-Topuzlu">Erdi Topuzlu</a></b></div></th>
-<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/145642334?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/nidosh">Nida Kasap</a></b></div></th>
-<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/125564176?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/Halismelih1">Halis Melih Abak</a></b></div></th>
-<th><div align="center" dir="auto"><a target="_blank" rel="noopener noreferrer" ><img src="https://avatars.githubusercontent.com/u/42476890?v=4" width="200" style="max-width: 100%;"></a><br><b><a href="https://www.github.com/halilkrkn">Halil İbrahim Karkın</a></b></div></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/0b69a6ab-3cd1-4e48-bda1-4c0f10915716" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/Erdi-Topuzlu">GitHub</a></b></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/57d1b6e3-9f94-444b-93fc-fcde0a03936d" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/nidosh">GitHub</a></b></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/e8449dc1-0a55-4b03-87db-874f6a0b9389" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/Halismelih1">GitHub</a></b></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/d6cbe59e-3334-459c-b8c9-8fb8c06099b9" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/halilkrkn">GitHub</a></b></th>
+
+
+https://www.linkedin.com/in/erditpzl/
 </tr>
 </thead>
 </table>
