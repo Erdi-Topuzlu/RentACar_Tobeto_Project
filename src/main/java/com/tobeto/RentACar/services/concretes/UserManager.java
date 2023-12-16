@@ -60,9 +60,6 @@ public class UserManager implements UserService {
         GetByIdUserResponse response = modelMapperService.entityToDto().map(user, GetByIdUserResponse.class);
         return response;
     }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
 }
+
+
