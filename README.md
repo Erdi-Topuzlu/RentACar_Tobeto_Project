@@ -49,13 +49,44 @@ Sunucuyu çalıştırın
 <table align="center">
 <thead>
 <tr>
-<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/0b69a6ab-3cd1-4e48-bda1-4c0f10915716" width="250" style="max-width: 100%;"><br><b><a target="_blank" href="https://www.github.com/Erdi-Topuzlu">GitHub</a></b></th>
-<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/57d1b6e3-9f94-444b-93fc-fcde0a03936d" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/nidosh">GitHub</a></b></th>
-<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/e8449dc1-0a55-4b03-87db-874f6a0b9389" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/Halismelih1">GitHub</a></b></th>
-<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/d6cbe59e-3334-459c-b8c9-8fb8c06099b9" width="250" style="max-width: 100%;"><br><b><a href="https://www.github.com/halilkrkn">GitHub</a></b></th>
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/0b69a6ab-3cd1-4e48-bda1-4c0f10915716" width="250" style="max-width: 100%;"><br>
+  <br><b><a href="https://www.github.com/Erdi-Topuzlu"><img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge" height="30" alt="github logo"  />
+  </a></b>
+  <br><b><a href="https://www.linkedin.com/in/erditpzl/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
+  </a></b>
+  <br><b><a href="https://www.instagram.com/erditpzl/"><img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white&style=for-the-badge" height="30" alt="instagram logo"  />
+  </a></b>
+</th>
+
+  
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/57d1b6e3-9f94-444b-93fc-fcde0a03936d" width="250" style="max-width: 100%;"><br>
+  <br><b><a href="https://www.github.com/nidosh"><img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge" height="30" alt="github logo"  /></a></b>
+  <br><b><a href="https://www.linkedin.com/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
+  </a></b>
+  <br><b><a href="https://www.instagram.com/nidosh/"><img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white&style=for-the-badge" height="30" alt="instagram logo"  />
+  </a></b>
+</th>
 
 
-https://www.linkedin.com/in/erditpzl/
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/e8449dc1-0a55-4b03-87db-874f6a0b9389" width="250" style="max-width: 100%;"><br>
+  <br><b><a href="https://www.github.com/Halismelih1"><img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge" height="30" alt="github logo"  /></a></b>
+  <br><b><a href="https://www.linkedin.com/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
+  </a></b>
+  <br><b><a href="https://www.instagram.com/halismelih1"><img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white&style=for-the-badge" height="30" alt="instagram logo"  />
+  </a></b>
+</th>
+
+
+
+<th><img src="https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/d6cbe59e-3334-459c-b8c9-8fb8c06099b9" width="250" style="max-width: 100%;"><br>
+  <br><b><a href="https://www.github.com/halilkrkn" rel="noopener"><img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=for-the-badge" height="30" alt="github logo"  /></a></b>
+  <br><b><a href="https://www.linkedin.com/in/halilkrkn"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?logo=linkedin&logoColor=white&style=for-the-badge" height="30" alt="linkedin logo"  />
+  </a></b>
+  <br><b><a href="https://www.instagram.com/halilgrkn"><img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white&style=for-the-badge" height="30" alt="instagram logo"  />
+  </a></b>
+</th>
+
+
 </tr>
 </thead>
 </table>
