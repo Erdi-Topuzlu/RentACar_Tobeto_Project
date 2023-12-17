@@ -42,11 +42,7 @@ Sunucuyu çalıştırın
 
 <br clear="both">
 
-###
 
-<img src="https://raw.githubusercontent.com/Erdi-Topuzlu/Erdi-Topuzlu/output/snake.svg" alt="Snake animation" />
-
-###
 
 <br clear="both">
 
