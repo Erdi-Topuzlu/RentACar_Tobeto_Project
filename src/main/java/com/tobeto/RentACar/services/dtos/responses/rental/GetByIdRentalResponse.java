@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.services.dtos.responses.rental;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetByIdRentalResponse {
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate returnDate;
     private int startKilometer;
     private int endKilometer;
