@@ -1,4 +1,4 @@
-package com.tobeto.RentACar.core.CorsConfig;
+package com.tobeto.RentACar.core.config;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
