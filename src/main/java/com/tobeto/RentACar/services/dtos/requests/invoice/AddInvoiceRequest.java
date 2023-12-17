@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.services.dtos.requests.invoice;
 
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.entities.Rental;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import jakarta.persistence.*;
@@ -18,10 +19,11 @@ import java.time.LocalDate;
 @Data
 public class AddInvoiceRequest {
 
-    @NotNull(message = "createDate Field Cannot be Empty !")
+    @NotNull(message = Messages.createDateNotEmpty)
     private LocalDate createDate;
-    @NotNull(message = "rentalId cannot be empty!")
-    @Positive(message = "rentalId must be a positive number other than 0!")
+
+    @NotNull(message = Messages.rentalIdNotEmpty)
+    @Positive(message = Messages.rentalIdPositive)
     private int rentalId;
 
 }

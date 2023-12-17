@@ -1,8 +1,10 @@
 package com.tobeto.RentACar.services.dtos.requests.user;
 
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jdk.jfr.MemoryAddress;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,15 +15,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddUserRequest {
-    @NotNull(message = "Name Field Cannot be Empty !")
-    @NotBlank(message = "Name Field Cannot be Empty !")
+
+    @NotBlank(message = Messages.userNameNotEmpty)
     private String name;
-    @NotBlank(message = "Surname Field Cannot be Empty !")
+
+    @NotBlank(message = Messages.userSurnameNotEmpty)
     private String surname;
-    @NotBlank(message = "E-mail Field Cannot be Empty !")
-    @Email(message = "Email is not valid")
+
+    @NotBlank(message = Messages.userEmailNotEmpty)
+    @Email(message = Messages.invalidEmail)
     private String email;
-    @NotNull(message = "BirthDate Field Cannot be Empty !")
+
+    @NotNull(message = Messages.userBirthDateNotEmpty)
     private LocalDate birthDate;
 
 }
