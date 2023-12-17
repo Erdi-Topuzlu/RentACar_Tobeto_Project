@@ -42,7 +42,7 @@ Sunucuyu çalıştırın
 
 <br clear="both">
 
-
+![snake gif](https://github.com/Erdi-Topuzlu/Erdi-Topuzlu/blob/output/github-contribution-grid-snake.gif)
 
 <br clear="both">
 
