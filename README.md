@@ -42,6 +42,14 @@ Sunucuyu çalıştırın
 
 <br clear="both">
 
+###
+
+<img src="https://raw.githubusercontent.com/Erdi-Topuzlu/Erdi-Topuzlu/output/snake.svg" alt="Snake animation" />
+
+###
+
+<br clear="both">
+
 ![contributors](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/f8ee73fc-3d56-42ae-a42e-e8835a94ef8c)
 
 <br clear="both">
