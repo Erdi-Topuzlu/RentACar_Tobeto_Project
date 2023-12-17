@@ -6,7 +6,6 @@ import com.tobeto.RentACar.repositories.RentalRepository;
 import com.tobeto.RentACar.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -50,7 +49,6 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
     public void checkIfByIdExists(int id) {
         if (!rentalRepository.existsById(id)) {
             throw new BusinessException("Rentail Id Not Found !");
-
         }
     }
 
