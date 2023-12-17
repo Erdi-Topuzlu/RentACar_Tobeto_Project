@@ -40,9 +40,6 @@ Sunucuyu çalıştırın
 
 ![erdiagram](https://github.com/Erdi-Topuzlu/RentACar_Tobeto_Project/assets/146648077/9d81ec9a-5b6d-4187-b86f-d272591f82e5)
 
-<br clear="both">
-
-![snake gif](https://github.com/Erdi-Topuzlu/Erdi-Topuzlu/blob/output/github-contribution-grid-snake.gif)
 
 <br clear="both">
 
