@@ -2,8 +2,8 @@ package com.tobeto.RentACar.rules.car;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
 import com.tobeto.RentACar.repositories.CarRepository;
-import com.tobeto.RentACar.repositories.ColorRepository;
-import com.tobeto.RentACar.repositories.ModelRepository;
+import com.tobeto.RentACar.services.abstracts.ColorService;
+import com.tobeto.RentACar.services.abstracts.ModelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CarBusinessRulesManager implements CarBusinessRulesService {
     private final CarRepository carRepository;
-    private final ColorRepository colorRepository;
-    private final ModelRepository modelRepository;
+    private final ColorService colorService;
+    private final ModelService modelService;
 
     @Override
     public void checkIfPlateNameExists(String plate) {
@@ -23,21 +23,21 @@ public class CarBusinessRulesManager implements CarBusinessRulesService {
 
     @Override
     public void checkIfColorIdExists(int id) {
-        if (!colorRepository.existsById(id)) {
+        if (!colorService.existsById(id)) {
             throw new BusinessException("ColorId is Not Found!");
         }
     }
 
     @Override
     public void checkIfModelIdExists(int id) {
-        if (!modelRepository.existsById(id)) {
+        if (!modelService.existsById(id)) {
             throw new BusinessException("ModelId is Not Found!");
         }
     }
 
     @Override
     public void checkIfByIdExists(int id) {
-        if(!carRepository.existsById(id)){
+        if (!carRepository.existsById(id)) {
             throw new BusinessException("carId is Not Found!");
 
         }

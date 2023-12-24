@@ -1,6 +1,6 @@
 package com.tobeto.RentACar.repositories;
 
-import com.tobeto.RentACar.entities.Brand;
+import com.tobeto.RentACar.entities.concretes.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BrandRepository extends JpaRepository<Brand, Integer> {

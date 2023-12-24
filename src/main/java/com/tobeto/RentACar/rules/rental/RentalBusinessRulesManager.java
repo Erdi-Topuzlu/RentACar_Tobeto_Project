@@ -1,9 +1,9 @@
 package com.tobeto.RentACar.rules.rental;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
-import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.repositories.RentalRepository;
-import com.tobeto.RentACar.repositories.UserRepository;
+import com.tobeto.RentACar.services.abstracts.CarService;
+import com.tobeto.RentACar.services.abstracts.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -13,8 +13,8 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class RentalBusinessRulesManager implements RentalBusinessRulesService {
     private final RentalRepository rentalRepository;
-    private final CarRepository carRepository;
-    private final UserRepository userRepository;
+    private final CarService carService;
+    private final UserService userService;
 
 
     @Override
@@ -26,14 +26,14 @@ public class RentalBusinessRulesManager implements RentalBusinessRulesService {
 
     @Override
     public void checkIfCarIdExists(int id) {
-        if (!carRepository.existsById(id)) {
+        if (!carService.existsById(id)) {
             throw new BusinessException("CarId is Not Found!");
         }
     }
 
     @Override
     public void checkIfUserIdExists(int id) {
-        if (!userRepository.existsById(id)) {
+        if (!userService.existsById(id)) {
             throw new BusinessException("UserId is Not Found!");
         }
     }

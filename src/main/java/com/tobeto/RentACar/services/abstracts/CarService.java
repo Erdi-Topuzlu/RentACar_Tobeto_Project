@@ -19,6 +19,8 @@ public interface CarService {
     List<GetAllCarResponse> getAll();
 
     GetByIdCarResponse getById(int id);
+    boolean existsById(int id);
+
 
 
 }

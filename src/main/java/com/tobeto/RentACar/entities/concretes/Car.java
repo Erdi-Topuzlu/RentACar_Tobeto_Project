@@ -1,21 +1,17 @@
-package com.tobeto.RentACar.entities;
+package com.tobeto.RentACar.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "cars")
 @Data
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+public class Car extends BaseEntity {
+
 
     @Column(name = "kilometer")
     private int kilometer;

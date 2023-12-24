@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.Brand;
+import com.tobeto.RentACar.entities.concretes.Brand;
 import com.tobeto.RentACar.repositories.BrandRepository;
 import com.tobeto.RentACar.rules.brand.BrandBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.BrandService;
@@ -61,5 +61,10 @@ public class BrandManager implements BrandService {
         Brand brand = brandRepository.findById(id).orElseThrow();
         GetByIdBrandResponse response = modelMapperService.entityToDto().map(brand, GetByIdBrandResponse.class);
         return response;
+    }
+
+    @Override
+    public boolean existsById(int id) {
+        return brandRepository.existsById(id);
     }
 }

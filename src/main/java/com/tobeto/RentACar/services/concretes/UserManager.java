@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.User;
+import com.tobeto.RentACar.entities.concretes.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.UserService;
