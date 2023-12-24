@@ -16,6 +16,7 @@ public abstract class BaseEntity {
     private int id;
 
     /*@Column(name = "created_date", updatable = false)
+    //@Temporal(TemporalType.DATE) //Zamanı Time ve Date şeklinde ayrı ayrı almak için ileride kullanılabilir.
     private Timestamp createdDate;
 
     @Column(name = "updated_date")
