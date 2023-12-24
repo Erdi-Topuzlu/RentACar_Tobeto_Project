@@ -15,10 +15,10 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "created_date",nullable = false)
+    /*@Column(name = "created_date", updatable = false)
     private Timestamp createdDate;
 
-    @Column(name = "updated_date",nullable = true)
+    @Column(name = "updated_date")
     private Timestamp updatedDate;
 
     @PrePersist
@@ -32,5 +32,5 @@ public abstract class BaseEntity {
         LocalDateTime now = LocalDateTime.now();
         updatedDate = Timestamp.valueOf(now);
 
-    }
+    }*/
 }
