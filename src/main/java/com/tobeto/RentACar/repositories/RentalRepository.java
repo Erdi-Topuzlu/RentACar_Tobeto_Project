@@ -1,9 +1,7 @@
 package com.tobeto.RentACar.repositories;
 
-import com.tobeto.RentACar.entities.Rental;
+import com.tobeto.RentACar.entities.concretes.Rental;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.time.LocalDate;
 
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
 

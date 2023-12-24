@@ -1,6 +1,7 @@
-package com.tobeto.RentACar.entities;
+package com.tobeto.RentACar.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,12 +10,9 @@ import java.util.List;
 @Table(name = "models")
 @Entity
 @Data
-public class Model {
+public class Model extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+
 
     @Column(name = "name")
     private String name;

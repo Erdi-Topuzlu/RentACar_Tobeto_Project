@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.Invoice;
+import com.tobeto.RentACar.entities.concretes.Invoice;
 import com.tobeto.RentACar.repositories.InvoiceRepository;
 import com.tobeto.RentACar.rules.Invoice.InvoiceBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.InvoiceService;
@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service

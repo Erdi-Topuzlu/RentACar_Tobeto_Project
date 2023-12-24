@@ -1,21 +1,18 @@
-package com.tobeto.RentACar.entities;
+package com.tobeto.RentACar.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Table(name = "rentals")
 @Entity
 @Data
-public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+public class Rental extends BaseEntity {
+
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -33,7 +30,7 @@ public class Rental {
     private Integer endKilometer;
 
     @Column(name = "total_price")
-    private double totalPrice;
+    private Double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
