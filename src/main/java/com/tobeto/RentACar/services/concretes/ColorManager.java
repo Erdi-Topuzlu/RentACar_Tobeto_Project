@@ -65,5 +65,10 @@ public class ColorManager implements ColorService {
         return response;
     }
 
+    @Override
+    public boolean existsById(int id) {
+        return colorRepository.existsById(id);
+    }
+
 
 }
