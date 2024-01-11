@@ -50,26 +50,23 @@ const Login = () => {
                   <FormGroup>
                     <Input placeholder="Password" type="password" />
                   </FormGroup>
-                  
-                    <div className="d-flex justify-content-between">
-                    <FormGroup>
+
+                  <FormGroup>
+                    <div className="d-flex flex-column-reverse flex-lg-row justify-content-between align-items-center">
                       <Link
                         to="/home"
-                        className=" d-flex align-items-center"
+                        className="d-flex align-items-center gap-2 mb-2 mb-lg-0"
                       >
                         Forgot Password?
                       </Link>
-                      </FormGroup>
-                      <FormGroup>
                       <Link
                         to="/sign-up"
-                        className="d-flex align-items-center"
+                        className="d-flex align-items-center gap-2"
                       >
-                        Don't have an Account?
+                        Already have an account? Sign in
                       </Link>
-                      </FormGroup>
                     </div>
-                  
+                  </FormGroup>
 
                   <button className=" contact__btn" type="submit">
                     Login

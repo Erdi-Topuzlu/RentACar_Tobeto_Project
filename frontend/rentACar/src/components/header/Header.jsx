@@ -56,7 +56,10 @@ function Header() {
                   <i className="ri-login-circle-line"></i> Login
                 </Link>
 
-                <Link to="/sign-up" className=" d-flex align-items-center gap-1">
+                <Link
+                  to="/sign-up"
+                  className=" d-flex align-items-center gap-1"
+                >
                   <i className="ri-user-line"></i> Sign Up
                 </Link>
               </div>
@@ -72,8 +75,8 @@ function Header() {
             <Col lg="4" md="3" sm="4">
               <div className="logo">
                 <h1>
-                  <Link to="/home" className=" d-flex align-items-center gap-2">
-                  <img width={125} src={logo} />
+                  <Link to="/home" className="d-flex align-items-center gap-2">
+                    <img width={125} src={logo} />
                   </Link>
                 </h1>
               </div>
@@ -124,8 +127,9 @@ function Header() {
       <div className="main__navbar">
         <Container>
           <div className="navigation__wrapper d-flex align-items-center justify-content-between">
-            <span className="mobile__menu">
-              <i className="ri-menu-line" onClick={toggleMenu}></i>
+            <span className="mobile__menu" >
+              <i className="ri-menu-line" onClick={toggleMenu}></i>         
+              asdasd
             </span>
 
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
