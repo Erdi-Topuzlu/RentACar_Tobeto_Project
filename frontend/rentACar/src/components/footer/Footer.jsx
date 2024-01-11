@@ -3,6 +3,8 @@ import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 
+import tobeto from "../../assets/all-images/tobeto.png";
+
 const quickLinks = [
   {
     path: "/about",
@@ -40,7 +42,7 @@ function Footer() {
             <div className="logo footer__logo">
               <h1>
                 <Link to="/home" className=" d-flex align-items-center gap-2">
-                  <i class="ri-car-line"></i>
+                  <i className="ri-car-line"></i>
                   <span>
                     Rent Car <br /> Service
                   </span>
@@ -83,11 +85,11 @@ function Footer() {
           <Col lg="3" md="4" sm="12">
             <div className="mb-4">
               <h5 className="footer__link-title">Newsletter</h5>
-              <p className="section__description">Subscribe our newsletter</p>
+              <p className="footer__logo-content" color="#ffffff">Subscribe our newsletter</p>
               <div className="newsletter">
                 <input type="email" placeholder="Email" />
                 <span>
-                  <i class="ri-send-plane-line"></i>
+                  <i className="ri-send-plane-line"></i>
                 </span>
               </div>
             </div>
@@ -95,10 +97,15 @@ function Footer() {
 
           <Col lg="12">
             <div className="footer__bottom">
-              <p className="section__description d-flex align-items-center justify-content-center gap-1 pt-4">
-                <i class="ri-copyright-line"></i>Copyright {year}, Developed by
-                Muhibur Rahman. All rights reserved.
-              </p>
+              <span className="section__description d-flex align-items-center justify-content-center gap-1">
+                <i className="ri-copyright-line"></i>Copyright {year}, Developed by
+                Tobeto @Pair-1
+              </span>
+              <span className="section__description d-flex align-items-center justify-content-center">All rights reserved.</span>
+              
+              <span className="d-flex align-items-center justify-content-center">
+              <img width={100} src={tobeto} />
+              </span>
             </div>
           </Col>
         </Row>

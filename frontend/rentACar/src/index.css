@@ -16,7 +16,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #000d6b;
+  color: #2b0868;
   font-weight: 600;
   margin-bottom: 0;
 }
@@ -46,7 +46,7 @@ ul {
 }
 
 .section__title {
-  color: #000d6b;
+  color: #2b0868;
   font-weight: 600;
   font-size: 2rem;
 }
@@ -58,7 +58,7 @@ ul {
 }
 
 .section__description {
-  color: #7c8a97;
+  color: #aab0b6;
   font-size: 0.9rem;
   line-height: 30px;
 }
@@ -69,7 +69,7 @@ section {
 
 .btn {
   padding: 7px 15px;
-  background: #000d6b;
+  background: #2b0868;
   color: #fff;
   border: none;
   outline: none;

@@ -81,7 +81,7 @@ const Contact = () => {
                       key={index}
                       className="social__link-icon"
                     >
-                      <i class={item.icon}></i>
+                      <i className={item.icon}></i>
                     </Link>
                   ))}
                 </div>

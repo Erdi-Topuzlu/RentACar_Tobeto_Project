@@ -16,7 +16,7 @@ const CarListing = () => {
             <Col lg="12">
               <div className=" d-flex align-items-center gap-3 mb-5">
                 <span className=" d-flex align-items-center gap-2">
-                  <i class="ri-sort-asc"></i> Sort By
+                  <i className="ri-sort-asc"></i> Sort By
                 </span>
 
                 <select>
