@@ -1,3 +1,4 @@
+/*
 package com.tobeto.RentACar.core.config;
 
 import org.springframework.context.annotation.Bean;
@@ -52,7 +53,8 @@ public class SecurityConfig {
 
     //TODO: GEREKLİ GÖRÜLDÜĞÜ TAKDİRDE İZİNLERİN AYARLANACAĞI KISIM
 
-   /* @Bean
+   */
+/* @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auths) -> auths
@@ -62,5 +64,6 @@ public class SecurityConfig {
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
-    }*/
-}
+    }*//*
+
+}*/
