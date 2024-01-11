@@ -30,7 +30,7 @@ const OUR__MEMBERS = [
   {
     name: "Hilton King",
     experience: "5 years of experience",
-    fbUrl: "#",
+    gitUrl: "http://www.github.com",
     instUrl: "#",
     twitUrl: "#",
     linkedinUrl: "#",
@@ -58,17 +58,16 @@ const OurMembers = () => {
               <img src={item.imgUrl} alt="" className="w-100" />
 
               <div className="single__member-social">
-                <Link to={item.fbUrl}>
-                  <i className="ri-facebook-line"></i>
+                <Link to={item.gitUrl}  target="_blank">
+                  <i class="ri-github-line"></i>
                 </Link>
-                <Link to={item.twitUrl}>
-                  <i className="ri-twitter-line"></i>
-                </Link>
-
                 <Link to={item.linkedinUrl}>
                   <i className="ri-linkedin-line"></i>
                 </Link>
-
+                
+                <Link to={item.twitUrl}>
+                  <i className="ri-twitter-line"></i>
+                </Link>
                 <Link to={item.instUrl}>
                   <i className="ri-instagram-line"></i>
                 </Link>
