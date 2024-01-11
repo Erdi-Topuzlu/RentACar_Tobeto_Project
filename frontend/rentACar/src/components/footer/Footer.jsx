@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 
 import tobeto from "../../assets/all-images/tobeto.png";
+import logo from "../../assets/all-images/logo-footer.png";
 
 const quickLinks = [
   {
@@ -42,10 +43,7 @@ function Footer() {
             <div className="logo footer__logo">
               <h1>
                 <Link to="/home" className=" d-flex align-items-center gap-2">
-                  <i className="ri-car-line"></i>
-                  <span>
-                    Rent Car <br /> Service
-                  </span>
+                <img width={125} src={logo} />
                 </Link>
               </h1>
             </div>

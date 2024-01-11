@@ -4,6 +4,8 @@ import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
 import "../../styles/header.css";
 
+import logo from "../../assets/all-images/logo.png";
+
 const navLinks = [
   {
     path: "/home",
@@ -50,12 +52,12 @@ function Header() {
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
-                <Link to="#" className=" d-flex align-items-center gap-1">
+                <Link to="/login" className=" d-flex align-items-center gap-1">
                   <i className="ri-login-circle-line"></i> Login
                 </Link>
 
-                <Link to="#" className=" d-flex align-items-center gap-1">
-                  <i className="ri-user-line"></i> Register
+                <Link to="/sign-up" className=" d-flex align-items-center gap-1">
+                  <i className="ri-user-line"></i> Sign Up
                 </Link>
               </div>
             </Col>
@@ -71,10 +73,7 @@ function Header() {
               <div className="logo">
                 <h1>
                   <Link to="/home" className=" d-flex align-items-center gap-2">
-                    <i className="ri-car-line"></i>
-                    <span>
-                      Rent Car <br /> Pair-1
-                    </span>
+                  <img width={125} src={logo} />
                   </Link>
                 </h1>
               </div>

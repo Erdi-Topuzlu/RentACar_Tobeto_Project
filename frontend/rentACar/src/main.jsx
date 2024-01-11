@@ -23,6 +23,8 @@ import Blog from "./pages/Blog.jsx";
 import BlogDetails from "./pages/BlogDetails.jsx";
 import Contact from "./pages/Contact.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +41,8 @@ const router = createBrowserRouter(
         <Route path=":id" element={<BlogDetails />} />
       </Route>
       <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/sign-up" element={<Signup />} />
     </Route>
   )
 );
