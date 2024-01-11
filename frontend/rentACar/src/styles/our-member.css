@@ -13,7 +13,7 @@
   left: 50%;
   width: 100%;
   height: 100%;
-  background: rgb(0, 13, 107, 0.6);
+  background: rgb(103, 58, 183, 0.6); 
   transform: translateX(-50%);
   border-radius: 4px;
   transition: 0.5s ease;
@@ -23,7 +23,7 @@
 .single__member-social a i {
   width: 28px;
   height: 28px;
-  color: #000d6b;
+  color: #673ab7;
   display: flex;
   align-items: center;
   justify-content: center;

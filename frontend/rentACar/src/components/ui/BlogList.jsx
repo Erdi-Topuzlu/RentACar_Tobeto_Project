@@ -37,16 +37,16 @@ const BlogItem = ({ item }) => {
 
           <div className="blog__time pt-3 mt-3 d-flex align-items-center justify-content-between">
             <span className="blog__author">
-              <i class="ri-user-line"></i> {author}
+              <i className="ri-user-line"></i> {author}
             </span>
 
             <div className=" d-flex align-items-center gap-3">
               <span className=" d-flex align-items-center gap-1 section__description">
-                <i class="ri-calendar-line"></i> {date}
+                <i className="ri-calendar-line"></i> {date}
               </span>
 
               <span className=" d-flex align-items-center gap-1 section__description">
-                <i class="ri-time-line"></i> {time}
+                <i className="ri-time-line"></i> {time}
               </span>
             </div>
           </div>

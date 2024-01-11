@@ -59,18 +59,18 @@ const OurMembers = () => {
 
               <div className="single__member-social">
                 <Link to={item.fbUrl}>
-                  <i class="ri-facebook-line"></i>
+                  <i className="ri-facebook-line"></i>
                 </Link>
                 <Link to={item.twitUrl}>
-                  <i class="ri-twitter-line"></i>
+                  <i className="ri-twitter-line"></i>
                 </Link>
 
                 <Link to={item.linkedinUrl}>
-                  <i class="ri-linkedin-line"></i>
+                  <i className="ri-linkedin-line"></i>
                 </Link>
 
                 <Link to={item.instUrl}>
-                  <i class="ri-instagram-line"></i>
+                  <i className="ri-instagram-line"></i>
                 </Link>
               </div>
             </div>

@@ -1,12 +1,12 @@
 .payment label {
   font-weight: 600;
-  color: #000d6b;
+  color: #673ab7;
 }
 
 .payment button {
   padding: 8px 15px;
   border-radius: 5px;
-  background: #000d6b;
+  background: #673ab7;
   color: #fff;
   border: none;
   outline: none;

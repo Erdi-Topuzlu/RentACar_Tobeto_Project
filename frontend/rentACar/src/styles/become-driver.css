@@ -1,5 +1,5 @@
 .become__driver {
-  background: linear-gradient(rgb(0, 13, 107, 0.9), rgb(0, 13, 107, 0.9)),
+  background: linear-gradient(rgb(103, 58, 183, 0.5), rgb(103, 58, 183, 0.5)),
     url("../assets/all-images/drive.jpg");
   background-position: center;
   background-repeat: no-repeat;
@@ -9,7 +9,7 @@
 
 .become__driver button {
   background: #fff;
-  color: #000d6b;
+  color: #673ab7;
   font-weight: 600;
 }
 

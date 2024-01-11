@@ -8,9 +8,6 @@ function App() {
 
   return (
     <>
-    <div>Pair-1</div>
-    
-    <div>Pair-1</div>
     </>
   );
 }
