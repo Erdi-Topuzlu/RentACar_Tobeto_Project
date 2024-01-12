@@ -71,13 +71,12 @@ const Home = () => {
       {/* =========== become a driver section ============ */}
       <BecomeDriverSection />
 
-      {/* =========== testimonial section =========== */}
+      {/* =========== Products section =========== */}
       <section>
         <Container>
           <Row>
             <Col lg="12" className="mb-4 text-center">
-              <h6 className="section__subtitle">Our clients says</h6>
-              <h2 className="section__title">Testimonials</h2>
+              <h2 className="section__title">Our Products</h2>
             </Col>
 
             <Testimonial />
