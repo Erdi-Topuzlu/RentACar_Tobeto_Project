@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import HeroSlider from "../components/ui/HeroSlider";
 import Helmet from "../components/Helmet";
@@ -11,11 +11,21 @@ import CarItem from "../components/ui/CarItem";
 import BecomeDriverSection from "../components/ui/BecomeDriverSection";
 import BlogList from "../components/ui/BlogList";
 import Testimonial from "../components/ui/Testimonial";
-import carData from "../assets/data/carData";
+import { useDispatch, useSelector } from "react-redux";
+import fetchData from "../redux/actions/fetchData";
 
 
 
 const Home = () => {
+
+  const dispatch = useDispatch();
+
+  const cars = useSelector((state) => state.data.items);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
+
   return (
     <Helmet title="Home">
       {/* ============= hero section =========== */}
@@ -62,7 +72,7 @@ const Home = () => {
               <h2 className="section__title">Hot Offers</h2>
             </Col>
 
-            {carData.slice(0, 6).map((item) => (
+            {cars.slice(0, 6).map((item) => (
               <CarItem item={item} key={item.id} />
             ))}
           </Row>
