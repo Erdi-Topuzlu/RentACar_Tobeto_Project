@@ -8,6 +8,7 @@ const fetchData = createAsyncThunk("data/fetchData", async () => {
   return response.data;
 });
 
+
 const dataSlice = createSlice({
   name: "data",
   initialState: {
