@@ -127,9 +127,8 @@ function Header() {
       <div className="main__navbar">
         <Container>
           <div className="navigation__wrapper d-flex align-items-center justify-content-between">
-            <span className="mobile__menu" >
-              <i className="ri-menu-line" onClick={toggleMenu}></i>         
-              asdasd
+            <span className="mobile__menu">
+              <i className="ri-menu-line" onClick={toggleMenu}></i>
             </span>
 
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
