@@ -1,25 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import CarItem from "../components/ui/CarItem";
 import carData from "../assets/data/carData";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../redux/slices/dataSlice";
 
 const CarListing = () => {
 
-  const dispatch = useDispatch();
   
-  useEffect(()=>{
-    dispatch(fetchData());
-  },[dispatch])
-
-
-  const cars = useSelector(state => state.items)
-
-  
-  console.log(cars);
 
   return (
     <Helmet title="Cars">

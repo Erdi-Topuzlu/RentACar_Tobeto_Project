@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../styles/car-item.css";
+import { fetchData } from "../../redux/slices/dataSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const CarItem = (props) => {
   const { imgUrl, model, carName, automatic, speed, price } = props.item;
+
+  const dispatch = useDispatch();
+  
+  const {cars} = useSelector(state => state.data.items)
+  
+  useEffect(()=>{
+    dispatch(fetchData());
+  },[dispatch])
+
+
+
+  
+  console.log(cars);
 
   return (
     <Col lg="4" md="4" sm="6" className="mb-5">
@@ -14,6 +29,14 @@ const CarItem = (props) => {
         </div>
 
         <div className="car__item-content mt-4">
+         
+        {cars.map((car) =>(
+          
+          <h4 className="section__title text-center">{car.modelName}</h4>
+        )
+
+        )}
+
           <h4 className="section__title text-center">{carName}</h4>
           <h6 className="rent__price text-center mt-">
             ${price}.00 <span>/ Day</span>
