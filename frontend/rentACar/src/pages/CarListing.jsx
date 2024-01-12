@@ -4,8 +4,16 @@ import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import CarItem from "../components/ui/CarItem";
 import carData from "../assets/data/carData";
+import { useSelector } from "react-redux";
+import { fetchData } from "../redux/slices/dataSlice";
 
 const CarListing = () => {
+
+  const cars = useSelector(state => state.items)
+ 
+  fetchData();
+  console.log(cars);
+
   return (
     <Helmet title="Cars">
       <CommonSection title="Car Listing" />
