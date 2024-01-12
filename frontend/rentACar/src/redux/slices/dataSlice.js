@@ -1,13 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-// axios.defaults.baseURL = "http://localhost:8080/";
-
-const fetchData = createAsyncThunk("data/fetchData", async () => {
-  const response = await axios.get("http://localhost:8080/api/v1/cars");
-  return response.data;
-});
-
+import fetchData from "../actions/fetchData";
 
 const dataSlice = createSlice({
   name: "data",
