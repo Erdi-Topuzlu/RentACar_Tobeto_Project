@@ -8,7 +8,7 @@ import img404 from "../assets/all-images/404.jpg";
 
 const NotFound = () => {
   return (
-    <Helmet title="Not Found">
+    <Helmet title="Page Not Found">
     <Header/>
     
     <section>

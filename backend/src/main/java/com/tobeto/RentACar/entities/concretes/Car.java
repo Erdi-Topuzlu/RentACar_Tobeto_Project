@@ -37,4 +37,7 @@ public class Car extends BaseEntity {
     @JoinColumn(name = "model_id")
     private Model model;
 
+    @OneToMany(mappedBy = "car")
+    @JsonIgnore
+    private List<CarImage> carImages;
 }
