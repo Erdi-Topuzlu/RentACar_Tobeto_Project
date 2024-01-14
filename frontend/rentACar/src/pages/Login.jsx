@@ -27,6 +27,7 @@ const socialLinks = [
 
 const Login = () => {
   return (
+    <Helmet title="Login">
     <section>
       <Container>
         <Row>
@@ -63,7 +64,7 @@ const Login = () => {
                         to="/sign-up"
                         className="d-flex align-items-center gap-2"
                       >
-                        Already have an account? Sign in
+                        Don't have an Account? Sign Up
                       </Link>
                     </div>
                   </FormGroup>
@@ -78,6 +79,7 @@ const Login = () => {
         </Row>
       </Container>
     </section>
+    </Helmet>
   );
 };
 

@@ -66,4 +66,10 @@ public record Messages() {
     public static final String userEmailNotEmpty = "User E-Mail cannot be empty!";
     public static final String invalidEmail = "Invalid E-Mail format!";
     public static final String userBirthDateNotEmpty = "User Birthdate cannot be empty!";
+
+
+    //Slider & Car Images Messages
+    public static final String imgPathNotEmpty = "Image field cannot be empty!";
+
+
 }

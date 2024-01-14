@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
-import Helmet from "../components/Helmet";
-import CommonSection from "../components/ui/CommonSection";
+
 
 import "../styles/contact.css";
+import Helmet from "../components/Helmet";
 
 const socialLinks = [
   {
@@ -27,6 +27,7 @@ const socialLinks = [
 
 const Login = () => {
   return (
+    <Helmet title="Sign-Up">
     <section>
       <Container>
         <Row>
@@ -68,7 +69,7 @@ const Login = () => {
                         to="/login"
                         className="d-flex align-items-center gap-2"
                       >
-                        Don't have an Account? Sign Up
+                        Already have an account? Sign in
                       </Link>
                     </div>
                   </FormGroup>
@@ -83,6 +84,7 @@ const Login = () => {
         </Row>
       </Container>
     </section>
+    </Helmet>
   );
 };
 
