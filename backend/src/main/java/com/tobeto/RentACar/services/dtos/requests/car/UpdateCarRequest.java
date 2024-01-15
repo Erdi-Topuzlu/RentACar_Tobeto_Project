@@ -33,6 +33,14 @@ public class UpdateCarRequest {
     @Positive(message = Messages.dailyPricePositive)
     private double dailyPrice;
 
+    private String fuelType;
+
+    private String gearType;
+
+    private String vehicleType;
+
+    private String seatType;
+
     @NotNull(message = Messages.colorIdNotEmpty)
     @Positive(message = Messages.colorIdPositive)
     private int colorId;

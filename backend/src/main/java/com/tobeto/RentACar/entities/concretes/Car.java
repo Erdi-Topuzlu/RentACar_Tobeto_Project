@@ -53,4 +53,8 @@ public class Car extends BaseEntity {
     @Column(name = "vehicle_type")
     private VehicleType vehicleType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "seat_type")
+    private SeatType seatType;
+
 }

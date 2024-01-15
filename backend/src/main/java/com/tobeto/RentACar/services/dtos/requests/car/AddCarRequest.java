@@ -1,6 +1,10 @@
 package com.tobeto.RentACar.services.dtos.requests.car;
 
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
+import com.tobeto.RentACar.entities.concretes.FuelType;
+import com.tobeto.RentACar.entities.concretes.GearType;
+import com.tobeto.RentACar.entities.concretes.SeatType;
+import com.tobeto.RentACar.entities.concretes.VehicleType;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -28,6 +32,14 @@ public class AddCarRequest {
     @NotNull(message = Messages.dailyPriceNotEmpty)
     @Positive(message = Messages.dailyPricePositive)
     private double dailyPrice;
+
+    private String fuelType;
+
+    private String gearType;
+
+    private String vehicleType;
+
+    private String seatType;
 
     @NotNull(message = Messages.colorIdNotEmpty)
     @Positive(message = Messages.colorIdPositive)
