@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import BookingForm from "../components/ui/BookingFrom";
 import PaymentMethod from "../components/ui/PaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
-import fetchData from "../redux/actions/fetchData";
+import fetchAllCarData from "../redux/actions/fetchAllCarData";
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const CarDetails = () => {
   const cars = useSelector((state) => state.data.items);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchAllCarData());
   }, [dispatch]);
 
   const singleCarItem = cars.find((item) => item.id === id);
