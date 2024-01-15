@@ -94,4 +94,9 @@ section {
   .section__subtitle {
     font-size: 1.1rem;
   }
+
+
+  .custom-spinner{
+    color: #673ab7;
+  }
 }
