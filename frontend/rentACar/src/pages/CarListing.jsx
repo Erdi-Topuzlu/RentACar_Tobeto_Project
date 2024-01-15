@@ -4,14 +4,14 @@ import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import CarItem from "../components/ui/CarItem";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../redux/slices/dataSlice";
+import { fetchAllCarData } from "../redux/slices/carDataSlice";
 const CarListing = () => {
   const dispatch = useDispatch();
 
   const cars = useSelector((state) => state.data.items);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchAllCarData());
   }, [dispatch]);
 
   return (
