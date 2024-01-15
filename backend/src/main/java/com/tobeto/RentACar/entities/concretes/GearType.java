@@ -9,8 +9,8 @@ public enum GearType {
     AUTOMATIC("Automatic");
 
     private final String gearType;
-
     GearType(String gearType) {
         this.gearType = gearType;
     }
+
 }
