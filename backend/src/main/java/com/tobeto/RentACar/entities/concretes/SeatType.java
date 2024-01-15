@@ -5,12 +5,13 @@ import lombok.Getter;
 @Getter
 public enum SeatType {
 
-    TWO("Two"),
-    FIVE("Five"),
-    SEVEN("Seven");
+    TWO("2"),
+    FIVE("5"),
+    SEVEN("7");
 
     private final String seatType;
     SeatType(String seatType) {
         this.seatType = seatType;
     }
+
 }

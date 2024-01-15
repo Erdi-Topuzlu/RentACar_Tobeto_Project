@@ -31,7 +31,7 @@ const CarDetails = () => {
         <Container>
           <Row>
             <Col lg="6">
-              <img alt="" src="https://source.unsplash.com/random?wallpapers/?car" className="w-100" />
+              <img alt="" src="https://source.unsplash.com/random?wallpapers/?car" className="w-100" width={600} height={400} />
             </Col>
 
             <Col lg="6">
