@@ -23,6 +23,6 @@ public class GetAllRentalResponse {
     private int startKilometer;
     private Integer endKilometer;
     private double totalPrice;
-    private int carId;
-    private String userName;
+    GetByIdCarResponse carId;
+    GetByIdUserResponse userId;
 }

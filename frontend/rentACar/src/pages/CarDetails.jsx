@@ -6,24 +6,23 @@ import { useParams } from "react-router-dom";
 import BookingForm from "../components/ui/BookingFrom";
 import PaymentMethod from "../components/ui/PaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
-import fetchData from "../redux/actions/fetchData";
+import fetchCarDetailData from "../redux/actions/fetchCarDetailData";
 
 const CarDetails = () => {
   const { id } = useParams();
 
   const dispatch = useDispatch();
 
-  const cars = useSelector((state) => state.data.items);
+  const car = useSelector((state) => state.carDetail);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchCarDetailData(id));
   }, [dispatch]);
 
-  const singleCarItem = cars.find((item) => item.id === id);
-  console.log(cars.map((item2) => (item2.id)));
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [singleCarItem]);
+
+ console.log(car)
+
+
 
   return (
     
@@ -32,7 +31,7 @@ const CarDetails = () => {
         <Container>
           <Row>
             <Col lg="6">
-              <img alt="" className="w-100" />
+              <img alt="" src="https://source.unsplash.com/random?wallpapers/?car" className="w-100" />
             </Col>
 
             <Col lg="6">
@@ -41,7 +40,7 @@ const CarDetails = () => {
 
                 <div className=" d-flex align-items-center gap-5 mb-4 mt-3">
                   <h6 className="rent__price fw-bold fs-4">
-                    ${}.00 / Day
+                    ${car.details.dailyPrice}.00 / Day
                   </h6>
 
                   <span className=" d-flex align-items-center gap-2">
@@ -68,7 +67,7 @@ const CarDetails = () => {
                       >
                         <path d="M3 19V5.70046C3 5.27995 3.26307 4.90437 3.65826 4.76067L13.3291 1.24398C13.5886 1.14961 13.8755 1.28349 13.9699 1.54301C13.9898 1.59778 14 1.65561 14 1.71388V6.6667L20.3162 8.77211C20.7246 8.90822 21 9.29036 21 9.72079V19H23V21H1V19H3ZM5 19H12V3.85543L5 6.40089V19ZM19 19V10.4416L14 8.77488V19H19Z"></path>
                       </svg>{" "}
-                      {}
+                      {car.details.modelId?.brandId?.name}
                     </span>
 
                     <span className=" d-flex align-items-center gap-1 pb-3 section__description">
@@ -81,7 +80,7 @@ const CarDetails = () => {
                       >
                         <path d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
                       </svg>{" "}
-                      {}
+                      {car.details.year}
                     </span>
 
                     <span className=" d-flex align-items-center gap-1 pb-3 pb-3 section__description">
@@ -107,7 +106,7 @@ const CarDetails = () => {
                       >
                         <path d="M12 2.99988C14.2091 2.99988 16 4.79074 16 6.99988C16 7.54431 15.8917 8.06177 15.6958 8.53327C14.0548 8.70904 12.5038 9.5584 11.4804 10.9666C10.2212 10.8033 9.14476 10.0545 8.53417 8.99859C8.19462 8.41137 7.99998 7.72986 7.99998 6.99988C7.99998 4.79074 9.79084 2.99988 12 2.99988ZM17.7635 8.67236C17.9175 8.14099 18 7.57964 18 6.99988C18 3.68617 15.3137 0.999879 12 0.999878C8.68627 0.999877 5.99998 3.68617 5.99998 6.99988C5.99998 7.57966 6.08247 8.14104 6.23647 8.67242C5.69935 8.80476 5.172 9.01399 4.66995 9.30385C1.80019 10.9607 0.81694 14.6302 2.47379 17.5C4.13065 20.3698 7.80019 21.353 10.6699 19.6962C11.172 19.4063 11.6169 19.0542 12 18.6552C12.3832 19.0542 12.828 19.4062 13.33 19.6961C16.1998 21.3529 19.8693 20.3697 21.5262 17.4999C23.183 14.6302 22.1998 10.9606 19.33 9.30377C18.828 9.01392 18.3006 8.80469 17.7635 8.67236ZM13.1543 16.9342C13.8227 15.4251 13.8627 13.6571 13.1549 12.0667C13.9259 11.0577 15.1125 10.4999 16.3322 10.4991C17.0104 10.4987 17.6979 10.6709 18.33 11.0358C20.2432 12.1404 20.8987 14.5868 19.7941 16.4999C18.6895 18.4131 16.2432 19.0686 14.33 17.964C13.8586 17.6919 13.4647 17.3395 13.1543 16.9342ZM11.3649 12.9668C11.8532 14.139 11.7429 15.4456 11.1337 16.5023C10.7949 17.0899 10.3021 17.5991 9.66995 17.9641C7.75678 19.0687 5.31042 18.4132 4.20585 16.5C3.10128 14.5868 3.75678 12.1405 5.66995 11.0359C6.14142 10.7637 6.64366 10.5987 7.1499 10.5326C8.12267 11.8659 9.63373 12.7845 11.3649 12.9668Z"></path>
                       </svg>{" "}
-                      {}
+                      {car.details.colorId?.colorName}
                     </span>
                   </div>
                   {/* Right */}
@@ -122,7 +121,7 @@ const CarDetails = () => {
                       >
                         <path d="M19 20H5V21C5 21.5523 4.55228 22 4 22H3C2.44772 22 2 21.5523 2 21V13.5L0.757464 13.1894C0.312297 13.0781 0 12.6781 0 12.2192V11.5C0 11.2239 0.223858 11 0.5 11H2L4.4805 5.21216C4.79566 4.47679 5.51874 4 6.31879 4H17.6812C18.4813 4 19.2043 4.47679 19.5195 5.21216L22 11H23.5C23.7761 11 24 11.2239 24 11.5V12.2192C24 12.6781 23.6877 13.0781 23.2425 13.1894L22 13.5V21C22 21.5523 21.5523 22 21 22H20C19.4477 22 19 21.5523 19 21V20ZM20 18V13H4V18H20ZM5.47703 11H18.523C18.6502 11 18.7762 10.9757 18.8944 10.9285C19.4071 10.7234 19.6566 10.1414 19.4514 9.62861L18 6H6L4.54856 9.62861C4.50131 9.74673 4.47703 9.87278 4.47703 10C4.47703 10.5523 4.92475 11 5.47703 11ZM5 14C7.31672 14 8.87868 14.7548 9.68588 16.2643L9.68582 16.2643C9.81602 16.5078 9.72418 16.8107 9.4807 16.9409C9.40818 16.9797 9.3272 17 9.24496 17H6C5.44772 17 5 16.5523 5 16V14ZM19 14V16C19 16.5523 18.5523 17 18 17H14.755C14.6728 17 14.5918 16.9797 14.5193 16.9409C14.2758 16.8107 14.184 16.5078 14.3142 16.2643L14.3141 16.2643C15.1213 14.7548 16.6833 14 19 14Z"></path>
                       </svg>{" "}
-                      {}
+                      {car.details.modelId?.name}
                     </span>
 
                     <span className=" d-flex align-items-center gap-1 pb-3 section__description">
@@ -148,7 +147,7 @@ const CarDetails = () => {
                       >
                         <path d="M20 13C20 15.2091 19.1046 17.2091 17.6569 18.6569L19.0711 20.0711C20.8807 18.2614 22 15.7614 22 13 22 7.47715 17.5228 3 12 3 6.47715 3 2 7.47715 2 13 2 15.7614 3.11929 18.2614 4.92893 20.0711L6.34315 18.6569C4.89543 17.2091 4 15.2091 4 13 4 8.58172 7.58172 5 12 5 16.4183 5 20 8.58172 20 13ZM15.293 8.29297 10.793 12.793 12.2072 14.2072 16.7072 9.70718 15.293 8.29297Z"></path>
                       </svg>{" "}
-                      {}
+                      {car.details.kilometer}
                     </span>
 
                     <span className=" d-flex align-items-center gap-1 pb-3 section__description">

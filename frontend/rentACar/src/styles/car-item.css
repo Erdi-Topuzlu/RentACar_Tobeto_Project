@@ -23,6 +23,7 @@
   font-weight: 500;
 }
 
+
 .car__item-btn a:hover {
   color: #fff;
 }
@@ -89,5 +90,7 @@
 
   .car__item-btn {
     font-size: 0.8rem;
+    
   }
+
 }

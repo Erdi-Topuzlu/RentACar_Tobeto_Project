@@ -14,6 +14,6 @@ public class GetByIdCarResponse {
     private String plate;
     private int year;
     private double dailyPrice;
-    private String colorName;
-    private String modelName;
+    GetByIdColorResponse colorId;
+    GetByIdModelResponse modelId;
 }
