@@ -1,5 +1,8 @@
 package com.tobeto.RentACar.services.dtos.responses.car;
 
+import com.tobeto.RentACar.entities.concretes.FuelType;
+import com.tobeto.RentACar.entities.concretes.GearType;
+import com.tobeto.RentACar.entities.concretes.VehicleType;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
 import lombok.AllArgsConstructor;
@@ -15,6 +18,9 @@ public class GetAllCarResponse {
     private String plate;
     private int year;
     private double dailyPrice;
-    private String colorName;
-    private String modelName;
+    GetByIdColorResponse colorId;
+    GetByIdModelResponse modelId;
+    FuelType fuelType;
+    GearType gearType;
+    VehicleType vehicleType;
 }

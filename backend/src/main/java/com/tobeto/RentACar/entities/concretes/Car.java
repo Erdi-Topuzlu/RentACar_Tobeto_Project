@@ -40,4 +40,17 @@ public class Car extends BaseEntity {
     @OneToMany(mappedBy = "car")
     @JsonIgnore
     private List<CarImage> carImages;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gear_type")
+    private GearType gearType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fuel_type")
+    private FuelType fuelType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_type")
+    private VehicleType vehicleType;
+
 }

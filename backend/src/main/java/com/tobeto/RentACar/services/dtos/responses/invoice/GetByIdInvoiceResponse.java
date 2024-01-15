@@ -14,5 +14,5 @@ import java.time.LocalDate;
 public class GetByIdInvoiceResponse {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate createDate;
-    private int rentalId;
+    GetByIdRentalResponse rentalId;
 }
