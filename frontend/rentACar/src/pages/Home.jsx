@@ -12,7 +12,7 @@ import BecomeDriverSection from "../components/ui/BecomeDriverSection";
 import BlogList from "../components/ui/BlogList";
 import Testimonial from "../components/ui/Testimonial";
 import { useDispatch, useSelector } from "react-redux";
-import fetchData from "../redux/actions/fetchData";
+import fetchAllCarData from "../redux/actions/fetchAllCarData";
 
 
 
@@ -23,7 +23,7 @@ const Home = () => {
   const cars = useSelector((state) => state.data.items);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchAllCarData());
   }, [dispatch]);
 
   return (
