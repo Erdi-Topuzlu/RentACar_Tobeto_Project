@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fetchData from "../actions/fetchData";
+import {createSlice } from "@reduxjs/toolkit";
+import fetchAllCarData from "../actions/fetchAllCarData";
 
-const dataSlice = createSlice({
-  name: "data",
+const carDataSlice = createSlice({
+  name: "carData",
   initialState: {
     items: [],
     status: "idle",
@@ -25,5 +25,5 @@ const dataSlice = createSlice({
   },
 });
 
-export {fetchData};
-export default dataSlice.reducer;
+export {fetchAllCarData};
+export default carDataSlice.reducer;
