@@ -11,14 +11,14 @@ const carDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchData.pending, (state) => {
+      .addCase(fetchAllCarData.pending, (state) => {
         state.status = "Loading";
       })
-      .addCase(fetchData.fulfilled, (state, action) => {
+      .addCase(fetchAllCarData.fulfilled, (state, action) => {
         state.status = "Success";
         state.items = action.payload;
       })
-      .addCase(fetchData.rejected, (state, action) => {
+      .addCase(fetchAllCarData.rejected, (state, action) => {
         state.status = "Failed";
         state.error = action.error.message;
       });
