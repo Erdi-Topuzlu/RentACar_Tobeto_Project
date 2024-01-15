@@ -8,7 +8,7 @@ import { fetchAllCarData } from "../redux/slices/carDataSlice";
 const CarListing = () => {
   const dispatch = useDispatch();
 
-  const cars = useSelector((state) => state.data.items);
+  const cars = useSelector((state) => state.carAllData.items);
 
   useEffect(() => {
     dispatch(fetchAllCarData());
