@@ -2,6 +2,7 @@ package com.tobeto.RentACar.services.dtos.responses.car;
 
 import com.tobeto.RentACar.entities.concretes.FuelType;
 import com.tobeto.RentACar.entities.concretes.GearType;
+import com.tobeto.RentACar.entities.concretes.SeatType;
 import com.tobeto.RentACar.entities.concretes.VehicleType;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
@@ -23,4 +24,5 @@ public class GetAllCarResponse {
     FuelType fuelType;
     GearType gearType;
     VehicleType vehicleType;
+    SeatType seatType;
 }

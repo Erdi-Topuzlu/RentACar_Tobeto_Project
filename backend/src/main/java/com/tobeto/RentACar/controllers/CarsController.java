@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.controllers;
 
+import com.tobeto.RentACar.entities.concretes.GearType;
 import com.tobeto.RentACar.services.abstracts.CarService;
 import com.tobeto.RentACar.services.dtos.requests.car.AddCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
@@ -44,5 +45,7 @@ public class CarsController {
     public void update(@RequestBody @Valid UpdateCarRequest request) {
         carService.update(request);
     }
+
+
 
 }
