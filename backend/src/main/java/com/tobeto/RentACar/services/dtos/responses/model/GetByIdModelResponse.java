@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class GetByIdModelResponse{
     private String name;
-    private String brandName;
+    GetByIdBrandResponse brandId;
 }
