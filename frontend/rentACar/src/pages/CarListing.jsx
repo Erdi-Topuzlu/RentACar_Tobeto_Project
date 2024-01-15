@@ -1,19 +1,40 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Spinner } from "reactstrap";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import CarItem from "../components/ui/CarItem";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCarData } from "../redux/slices/carDataSlice";
+import Loading from "../components/ui/Loading";
+
 const CarListing = () => {
   const dispatch = useDispatch();
 
   const cars = useSelector((state) => state.carAllData.items);
+  const status = useSelector((state) => state.carAllData.status);
+  const error = useSelector((state) => state.carAllData.error);
+
+  console.log(status,error)
 
   useEffect(() => {
-    dispatch(fetchAllCarData());
+        dispatch(fetchAllCarData());
   }, [dispatch]);
 
+ 
+
+  if(status === "Loading"){
+    return (
+
+     <Loading/>
+  //   <div className="text-center mt-5">
+  //   <Spinner animation="border" role="status">
+  //     <span className="sr-only">Loading...</span>
+  //   </Spinner>
+  // </div>
+  )
+  }
+ 
+  
   return (
     <Helmet title="Cars">
       <CommonSection title="Car Listing" />
