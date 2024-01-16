@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Form, FormGroup} from "reactstrap";
+import { Form, Link } from "react-router-dom";
+import { Container, Row, Col, Input, Button, FormGroup, FormFeedback } from "reactstrap";
 import * as Yup from "yup";
 import "../styles/contact.css";
 import Helmet from "../components/Helmet";
-import { Formik } from "formik";
-import FormikInput from "../components/FormikInput/FormikInput";
+import { signUpValidationSchema } from "../schemes/signUpScheme";
+import { useFormik } from "formik";
+
 
 const socialLinks = [
   {
@@ -29,36 +30,24 @@ const socialLinks = [
 const today = new Date();
 const formattedDate = today.toISOString().split("T")[0];
 
-const Login = () => {
-  const initialValues = {
-    fName: "",
-    lName: "",
-    bDate: formattedDate,
-    email: "",
-    password: "",
-  };
+const signUp = () => {
 
-  const validationSchema = Yup.object({
-		fName: Yup.string()
-      .nullable()
-			.required("First name required!")
-			.max(50, "Maximum of 50 characters"),
-      lName: Yup.string()
-			.required("Lastname required!")
-			.max(50, "Maximum of 50 characters"),
-      bDate: Yup.date()
-			.required("Birthdate required!")
-			.max(new Date(Date.now() - 567648000000), "You must be at least 18 years"),
-      email: Yup.string()
-      .required("E-Mail required!"),
-      password: Yup.string()
-      .required("Password required!")
 
-	});
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: ""
+    },
+    validationSchema: signUpValidationSchema,
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   return (
     <Helmet title="Sign-Up">
-      <section>
+      <section >
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
@@ -74,39 +63,74 @@ const Login = () => {
               <h2 className="section__title">Sign Up</h2>
               <div className="d-flex justify-content-center align-items-center">
                 <Col lg="4" className="mb-5 text-center">
-                  <Formik
-                    validationSchema={validationSchema}
-                    initialValues={initialValues}
-                    onSubmit={(values) => {}}
-                  >
-                    <Form>
-                      <FormikInput name="fName" place="First Name" />
-                      <FormikInput name="lName" place="Last Name" />
-                      <FormikInput name="bDate" type="date" />
-                      <FormikInput name="email" place="E-Mail" type="email" />
-                      <FormikInput
-                        name="password"
-                        place="Password"
-                        type="password"
-                      />
 
+
+
+                  <Form onSubmit={formik.handleSubmit}>
+
+                    <div>
                       <FormGroup>
-                        <div className="d-flex flex-column-reverse flex-lg-row justify-content-end align-items-center">
-                          <Link
-                            to="/login"
-                            className="d-flex align-items-center gap-2"
-                          >
-                            Already have an account? Sign in
-                          </Link>
-                        </div>
+                        <Input
+                          id="email"
+                          name="email"
+                          value={formik.values.email}
+                          className={formik.errors.email && formik.touched.email && "error"}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          type="text"
+                          placeholder="E-mail"
+                          invalid={formik.errors.email && formik.touched.email}
+                        />
+                        {formik.errors.email && formik.touched.email && (
+
+                          <FormFeedback>
+                            <p className="text-danger"> {formik.errors.email}</p>
+                          </FormFeedback>)}
+                      </FormGroup>
+                    </div>
+                    <div>
+                      <FormGroup>
+                        <Input
+                          id="pw"
+                          name="password"
+                          value={formik.values.password}
+                          className={formik.errors.password && formik.touched.password && "error"}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          type="password"
+                          placeholder="Password"
+                        />
+                        {formik.errors.password && formik.touched.password && (
+                          <p className="text-danger"> {formik.errors.password}</p>
+                        )}
                       </FormGroup>
 
-                      <button className=" contact__btn" type="submit">
-                        Sign Up
-                      </button>
-                    </Form>
-                  </Formik>
+                    </div>
+                    <div>
+                      <FormGroup>
+                        <Input
+                          id="cpw"
+                          name="confirmPassword"
+                          value={formik.values.confirmPassword}
+                          className={formik.errors.confirmPassword && formik.touched.confirmPassword && "error"}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          type="password"
+                          placeholder="Confirm Password"
+                        />
+                        {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+                          <p className="text-danger"> {formik.errors.confirmPassword}</p>
+                        )}
+                      </FormGroup>
+
+
+                    </div>
+                    <Button disabled={formik.isSubmitting} className=" contact__btn" type="submit">
+                      Sign Up
+                    </Button>
+                  </Form>
                 </Col>
+
               </div>
             </Col>
           </Row>
@@ -116,4 +140,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default signUp;
