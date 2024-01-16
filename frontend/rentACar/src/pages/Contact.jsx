@@ -1,10 +1,10 @@
 import React from "react";
 import { Link,Form } from "react-router-dom";
-import { Container, Row, Col, FormGroup, Input, FormFeedback } from "reactstrap";
+import { Container, Row, Col, FormGroup, FormFeedback, Button, Input } from "reactstrap";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import "../styles/contact.css";
-import { contactValidationSchema } from "../schemes/contactScheme";
+import { contactValidationScheme } from "../schemes/contactScheme";
 import { useFormik } from "formik";
 
 const socialLinks = [
@@ -34,7 +34,7 @@ const Contact = () => {
       email: "",
       message: ""
     },
-    validationSchema: contactValidationSchema,
+    validationSchema: contactValidationScheme,
     onSubmit: (values,actions) => {
       alert(JSON.stringify(values, null, 2));
       actions.resetForm();
@@ -52,35 +52,35 @@ const Contact = () => {
               <h6 className="fw-bold mb-4">Get In Touch</h6>
 
               <Form onSubmit={formik.handleSubmit}>
-              
-                <div>
-                <FormGroup className="contact__form">
-                 
-                 <Input
- 
-                           id="asd"
-                           name="name"
-                           value={formik.values.name}
-                           className={formik.errors.name && formik.touched.name && "error"}
-                           onChange={formik.handleChange}
-                           onBlur={formik.handleBlur}
-                           type="text"
-                           placeholder="Your Name"
-                           invalid={formik.touched.name && formik.errors.name}
-                           
-                         />
-                         {formik.errors.name && formik.touched.name && (
- 
-                           <FormFeedback >
-                             <p className="text-danger"> {formik.errors.name}</p>
-                           </FormFeedback>
-                         )}
-                 </FormGroup>
+
+                    <div>
+                      <FormGroup>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formik.values.name}
+                          className={formik.errors.name && formik.touched.name && "error"}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          type="text"
+                          placeholder="Your name"
+                          invalid={formik.errors.name && formik.touched.name}
+                          
+                        />
+                        {formik.errors.name && formik.touched.name && (
+
+                          <FormFeedback >
+                            <p className="text-danger"> {formik.errors.name}</p>
+                          </FormFeedback>
+                        )}
+
+
+                      </FormGroup>
                     </div>
                     <div>
-                    <FormGroup className="contact__form">
-                <Input
-                          id="dfg"
+                      <FormGroup>
+                        <Input
+                          id="email"
                           name="email"
                           value={formik.values.email}
                           className={formik.errors.email && formik.touched.email && "error"}
@@ -88,46 +88,44 @@ const Contact = () => {
                           onBlur={formik.handleBlur}
                           type="text"
                           placeholder="E-mail"
-                          invalid={formik.touched.email && formik.errors.email}
-                          
+                          invalid={formik.errors.email && formik.touched.email}
+
                         />
                         {formik.errors.email && formik.touched.email && (
-
                           <FormFeedback >
-                            <p className="text-danger"> {formik.errors.email}</p>
-                          </FormFeedback>
+                          <p className="text-danger"> {formik.errors.email}</p>
+                        </FormFeedback>
                         )}
-                </FormGroup>
+                      </FormGroup>
+
                     </div>
-                
-                <div>
-                <FormGroup className="contact__form">
-                <Input
-                          id="tyu"
+                    <div>
+                      <FormGroup>
+                        <Input
+                          id="message"
                           name="message"
                           value={formik.values.message}
                           className={formik.errors.message && formik.touched.message && "error"}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          type="text"
-                          placeholder="Type your message.."
-                          invalid={formik.touched.message && formik.errors.message}
-                          
+                          type="textarea"
+                          placeholder="Your message"
+                          invalid={formik.errors.message && formik.touched.message}
+
                         />
                         {formik.errors.message && formik.touched.message && (
-
                           <FormFeedback >
                             <p className="text-danger"> {formik.errors.message}</p>
                           </FormFeedback>
-                        )}
-                  
-                </FormGroup>
-                </div>
-              
-                <button disabled={formik.isSubmitting} className=" contact__btn" type="submit">
-                  Send Message
-                </button>
-              </Form>
+                           )}
+                      </FormGroup>
+
+
+                    </div>
+                    <Button  disabled={formik.isSubmitting} className="contact__btn" type="submit">
+                      Sign Up
+                    </Button>
+                  </Form>
             </Col>
 
             <Col lg="5" md="5">

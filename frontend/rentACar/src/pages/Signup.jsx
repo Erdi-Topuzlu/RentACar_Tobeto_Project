@@ -59,7 +59,7 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="text"
                           placeholder="E-mail"
-                          invalid={formik.touched.email && formik.errors.email}
+                          invalid={formik.errors.email && formik.touched.email}
                           
                         />
                         {formik.errors.email && formik.touched.email && (
@@ -83,7 +83,7 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="password"
                           placeholder="Password"
-                          invalid={formik.touched.password && formik.errors.password}
+                          invalid={formik.errors.password && formik.touched.password}
 
                         />
                         {formik.errors.password && formik.touched.password && (
@@ -105,7 +105,7 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="password"
                           placeholder="Confirm Password"
-                          invalid={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                          invalid={formik.errors.confirmPassword && formik.touched.confirmPassword}
 
                         />
                         {formik.errors.confirmPassword && formik.touched.confirmPassword && (
