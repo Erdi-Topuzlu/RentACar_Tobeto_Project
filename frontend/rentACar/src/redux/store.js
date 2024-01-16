@@ -6,6 +6,6 @@ import carDetailSlice from "./slices/carDetailSlice";
 export const store = configureStore({
     reducer: {
         carAllData: carDataSlice,
-        carDetail:carDetailSlice
+        carDetail: carDetailSlice
     }
 })
