@@ -1,34 +1,12 @@
 import React from "react";
 import { Form, Link } from "react-router-dom";
 import { Container, Row, Col, Input, Button, FormGroup, FormFeedback } from "reactstrap";
-import * as Yup from "yup";
-import "../styles/contact.css";
+import "../styles/form.css";
 import Helmet from "../components/Helmet";
 import { signUpValidationSchema } from "../schemes/signUpScheme";
 import { useFormik } from "formik";
 
 
-const socialLinks = [
-  {
-    url: "#",
-    icon: "ri-facebook-line",
-  },
-  {
-    url: "#",
-    icon: "ri-instagram-line",
-  },
-  {
-    url: "#",
-    icon: "ri-linkedin-line",
-  },
-  {
-    url: "#",
-    icon: "ri-twitter-line",
-  },
-];
-
-const today = new Date();
-const formattedDate = today.toISOString().split("T")[0];
 
 const signUp = () => {
 
@@ -40,8 +18,10 @@ const signUp = () => {
       confirmPassword: ""
     },
     validationSchema: signUpValidationSchema,
-    onSubmit: values => {
+    onSubmit: (values,actions) => {
       alert(JSON.stringify(values, null, 2));
+      actions.resetForm();
+      
     },
   });
 
@@ -79,13 +59,17 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="text"
                           placeholder="E-mail"
-                          invalid={formik.errors.email && formik.touched.email}
+                          invalid={formik.touched.email && formik.errors.email}
+                          
                         />
                         {formik.errors.email && formik.touched.email && (
 
-                          <FormFeedback>
+                          <FormFeedback >
                             <p className="text-danger"> {formik.errors.email}</p>
-                          </FormFeedback>)}
+                          </FormFeedback>
+                        )}
+
+
                       </FormGroup>
                     </div>
                     <div>
@@ -99,9 +83,13 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="password"
                           placeholder="Password"
+                          invalid={formik.touched.password && formik.errors.password}
+
                         />
                         {formik.errors.password && formik.touched.password && (
+                          <FormFeedback >
                           <p className="text-danger"> {formik.errors.password}</p>
+                        </FormFeedback>
                         )}
                       </FormGroup>
 
@@ -117,15 +105,29 @@ const signUp = () => {
                           onBlur={formik.handleBlur}
                           type="password"
                           placeholder="Confirm Password"
+                          invalid={formik.touched.confirmPassword && formik.errors.confirmPassword}
+
                         />
                         {formik.errors.confirmPassword && formik.touched.confirmPassword && (
-                          <p className="text-danger"> {formik.errors.confirmPassword}</p>
-                        )}
+                          <FormFeedback >
+                            <p className="text-danger"> {formik.errors.confirmPassword}</p>
+                          </FormFeedback>
+                           )}
                       </FormGroup>
 
 
                     </div>
-                    <Button disabled={formik.isSubmitting} className=" contact__btn" type="submit">
+                    <FormGroup>
+                        <div className="d-flex flex-column-reverse flex-lg-row justify-content-end align-items-center">
+                          <Link
+                            to="/login"
+                            className="d-flex align-items-center gap-2"
+                          >
+                            Already have an account? Sign in
+                          </Link>
+                        </div>
+                      </FormGroup>
+                    <Button  disabled={formik.isSubmitting} className=" form__btn" type="submit">
                       Sign Up
                     </Button>
                   </Form>
