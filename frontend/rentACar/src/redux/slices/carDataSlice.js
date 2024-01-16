@@ -1,25 +1,26 @@
 import {createSlice } from "@reduxjs/toolkit";
 import fetchAllCarData from "../actions/fetchAllCarData";
+import {STATUS} from "../utilities/status";
 
 const carDataSlice = createSlice({
   name: "carData",
   initialState: {
     items: [],
-    status: "idle",
+    status: STATUS.IDLE,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllCarData.pending, (state) => {
-        state.status = "Loading";
+        state.status = STATUS.LOADING;
       })
       .addCase(fetchAllCarData.fulfilled, (state, action) => {
-        state.status = "Success";
+        state.status= STATUS.SUCCESS;
         state.items = action.payload;
       })
       .addCase(fetchAllCarData.rejected, (state, action) => {
-        state.status = "Failed";
+        state.status = STATUS.FAIL;
         state.error = action.error.message;
       });
   },

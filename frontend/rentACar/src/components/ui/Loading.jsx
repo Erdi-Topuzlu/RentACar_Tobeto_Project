@@ -12,8 +12,8 @@ const Loading = () => {
     
     <section>
         <Container className="d-flex justify-content-center">
-        <div class="spinner-border custom-spinner" role="status">
-        <span class="sr-only"></span>
+        <div className="spinner-border custom-spinner" role="status">
+        <span className="sr-only"></span>
       </div>
         </Container>
       </section>
