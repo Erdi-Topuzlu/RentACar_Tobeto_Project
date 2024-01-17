@@ -2,8 +2,10 @@ import React from "react";
 import "../../styles/find-car-form.css";
 import "../../styles/find-car-form.css";
 import { Form, FormGroup } from "reactstrap";
+import { useTranslation } from "react-i18next";
 
 const FindCarForm = () => {
+  const { t } = useTranslation();
   return (
     <Form className="form">
       <div className=" d-flex align-items-center justify-content-between flex-wrap">
@@ -35,7 +37,7 @@ const FindCarForm = () => {
         </FormGroup>
 
         <FormGroup className="form__group">
-          <button className="btn find__car-btn">Find Car</button>
+          <button className="btn find__car-btn">{t('findBtn')}</button>
         </FormGroup>
       </div>
     </Form>

@@ -16,5 +16,38 @@
   "contact":"İletişim",
   "search":"Ara",
 
-  "_footer":"FOOTER-TR"
+  "_footer":"FOOTER-TR",
+  "privacy":"Gizlilik Politikası",
+  "quick":"Hızlı Bağlantılar",
+  "head":"Merkez Ofis",
+  "phone":"Telefon : ",
+  "office":"Çalışma Saatleri : 10:00 - 19:00",
+  "news":"Bülten",
+  "subscribe":"Bültenimize abone olun",
+  "allrights":"Tüm hakları saklıdır.",
+  "developed":"tarafından geliştirildi",
+
+  "_heroSlider":"HERO SLIDER-TR",
+  "details":"Detaylar",
+
+  "_findCar":"FIND CAR-TR",
+  "findTitle":"Kendinize en uygun aracı bulun",
+  "findBtn":"Araba Bul",
+
+  "_contact":"CONTACT-TR",
+  "getInTouch":"İrtibata Geçin",
+  "name":"İsminiz",
+  "message":"Mesajınız",
+  "send":"Gönder",
+  "contactInfo":"İletişim Bilgileri",
+  "follow":"Sosyal Medyada Bizi Takip Edin",
+
+  "_carListing":"CAR LISTING-TR",
+  "sort":"Sırala",
+  "select":"Seçiniz",
+  "day":"Gün",
+  "rent":"Kirala",
+  "ltoh":"Ucuzdan Pahalıya",
+  "htol":"Pahalıdan Ucuza"
+
 }

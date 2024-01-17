@@ -21,21 +21,21 @@ function Footer() {
   
     {
       path: "#",
-      display: "Privacy Policy",
+      display:  t("privacy"),
     },
   
     {
       path: "/cars",
-      display: "Car Listing",
+      display: t("cars"),
     },
     {
       path: "/blogs",
-      display: "Blog",
+      display: t("blog"),
     },
   
     {
       path: "/contact",
-      display: "Contact",
+      display: t("contact"),
     },
   ];
   return (
@@ -60,7 +60,7 @@ function Footer() {
 
           <Col lg="2" md="4" sm="6">
             <div className="mb-4">
-              <h5 className="footer__link-title">Quick Links</h5>
+              <h5 className="footer__link-title">{t("quick")}</h5>
               <ListGroup>
                 {quickLinks.map((item, index) => (
                   <ListGroupItem key={index} className="p-0 mt-3 quick__link">
@@ -73,20 +73,20 @@ function Footer() {
 
           <Col lg="3" md="4" sm="6">
             <div className="mb-4">
-              <h5 className="footer__link-title mb-4">Head Office</h5>
+              <h5 className="footer__link-title mb-4">{t("head")}</h5>
               <p className="office__info">123 Zindabazar, Sylhet, Bangladesh</p>
-              <p className="office__info">Phone: +0995345875365</p>
+              <p className="office__info">{t("phone")}+0995345875365</p>
 
-              <p className="office__info">Email: muhib5532@gmail.com</p>
+              <p className="office__info">Email : muhib5532@gmail.com</p>
 
-              <p className="office__info">Office Time: 10am - 7pm</p>
+              <p className="office__info">{t("office")}</p>
             </div>
           </Col>
 
           <Col lg="3" md="4" sm="12">
             <div className="mb-4">
-              <h5 className="footer__link-title">Newsletter</h5>
-              <p className="footer__logo-content" color="#ffffff">Subscribe our newsletter</p>
+              <h5 className="footer__link-title">{t("news")}</h5>
+              <p className="footer__logo-content" color="#ffffff">{t("subscribe")}</p>
               <div className="newsletter">
                 <input type="email" placeholder="Email" />
                 <span>
@@ -99,10 +99,10 @@ function Footer() {
           <Col lg="12">
             <div className="footer__bottom">
               <span className="section__description d-flex align-items-center justify-content-center gap-1">
-                <i className="ri-copyright-line"></i>Copyright {year}, Developed by
-                Tobeto @Pair-1
+                <i className="ri-copyright-line"></i>Copyright {year}, 
+                Tobeto {t("developed")} @Pair-1
               </span>
-              <span className="section__description d-flex align-items-center justify-content-center">All rights reserved.</span>
+              <span className="section__description d-flex align-items-center justify-content-center">{t("allrights")}</span>
               
               <span className="d-flex align-items-center justify-content-center">
               <img width={100} src={tobeto} />

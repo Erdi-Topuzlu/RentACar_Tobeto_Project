@@ -8,7 +8,7 @@ import Helmet from "../Helmet";
 const Loading = () => {
   return (
     <Helmet title="Loading">
-    <Header/>
+    
     
     <section>
         <Container className="d-flex justify-content-center">
@@ -17,7 +17,6 @@ const Loading = () => {
       </div>
         </Container>
       </section>
-    <Footer/>
   </Helmet> 
   )
 };

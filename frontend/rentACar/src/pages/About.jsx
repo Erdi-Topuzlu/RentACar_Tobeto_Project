@@ -9,10 +9,12 @@ import BecomeDriverSection from "../components/ui/BecomeDriverSection";
 import driveImg from "../assets/all-images/drive.jpg";
 import OurMembers from "../components/ui/OurMembers";
 import "../styles/about.css";
+import { useTranslation } from "react-i18next";
 
 const About = () => {
+  const { t } = useTranslation();
   return (
-    <Helmet title="About">
+    <Helmet title={t('about')}>
       <CommonSection title="About Us" />
       <AboutSection aboutClass="aboutPage" />
 
