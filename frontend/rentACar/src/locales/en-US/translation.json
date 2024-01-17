@@ -16,5 +16,37 @@
   "contact":"Contact",
   "search":"Search",
 
-  "_footer":"FOOTER-TR"
+  "_footer":"FOOTER-EN",
+  "privacy":"Privacy Policy",
+  "quick":"Quick Links",
+  "head":"Head Office",
+  "phone":"Phone : ",
+  "office":"Office Time : 10am - 7pm",
+  "news":"Newsletter",
+  "subscribe":"Subscribe our newsletter",
+  "allrights":"All rights reserved.",
+  "developed":"developed by",
+
+  "_heroSlider":"HERO SLIDER-EN",
+  "details":"Details",
+
+  "_findCar":"FIND CAR-EN",
+  "findTitle":"Find your best car here",
+  "findBtn":"Find Car",
+
+  "_contact":"CONTACT-EN",
+  "getInTouch":"Get In Touch",
+  "name":"Your Name",
+  "message":"Your message",
+  "send":"Send",
+  "contactInfo":"Contact Information",
+  "follow":"Follow us on Social Media",
+
+  "_carListing":"CAR LISTING-TR",
+  "sort":"Sort by",
+  "select":"Select",
+  "day":"Day",
+  "rent":"Rent",
+  "ltoh":"Low to High",
+  "htol":"High to Low"
 }

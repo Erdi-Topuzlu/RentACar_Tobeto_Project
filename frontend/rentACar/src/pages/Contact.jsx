@@ -6,6 +6,7 @@ import CommonSection from "../components/ui/CommonSection";
 import "../styles/contact.css";
 import { contactValidationScheme } from "../schemes/contactScheme";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 const socialLinks = [
   {
@@ -27,7 +28,7 @@ const socialLinks = [
 ];
 
 const Contact = () => {
-
+  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -43,13 +44,13 @@ const Contact = () => {
   });
 
   return (
-    <Helmet title="Contact">
-      <CommonSection title="Contact" />
+    <Helmet title={t('contact')}>
+      <CommonSection title={t('contact')} />
       <section>
         <Container>
           <Row>
             <Col lg="7" md="7">
-              <h6 className="fw-bold mb-4">Get In Touch</h6>
+              <h6 className="fw-bold mb-4">{t('getInTouch')}</h6>
 
               <Form onSubmit={formik.handleSubmit}>
 
@@ -63,7 +64,7 @@ const Contact = () => {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           type="text"
-                          placeholder="Your name"
+                          placeholder={t('name')}
                           invalid={formik.errors.name && formik.touched.name}
                           
                         />
@@ -109,7 +110,7 @@ const Contact = () => {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           type="textarea"
-                          placeholder="Your message"
+                          placeholder={t('message')}
                           invalid={formik.errors.message && formik.touched.message}
 
                         />
@@ -123,28 +124,28 @@ const Contact = () => {
 
                     </div>
                     <Button  disabled={formik.isSubmitting} className="contact__btn" type="submit">
-                      Sign Up
+                    {t('send')}
                     </Button>
                   </Form>
             </Col>
 
             <Col lg="5" md="5">
               <div className="contact__info">
-                <h6 className="fw-bold">Contact Information</h6>
+                <h6 className="fw-bold">{t('contactInfo')}</h6>
                 <p className="section__description mb-0">
                   123 ZindaBazar, Sylhet, Bangladesh
                 </p>
                 <div className=" d-flex align-items-center gap-2">
-                  <h6 className="fs-6 mb-0">Phone:</h6>
+                  <h6 className="fs-6 mb-0">{t('phone')}</h6>
                   <p className="section__description mb-0">+88683896366</p>
                 </div>
 
                 <div className=" d-flex align-items-center gap-2">
-                  <h6 className="mb-0 fs-6">Email:</h6>
+                  <h6 className="mb-0 fs-6">Email : </h6>
                   <p className="section__description mb-0">example@gmail.com</p>
                 </div>
 
-                <h6 className="fw-bold mt-4">Follow Us</h6>
+                <h6 className="fw-bold mt-4">{t('follow')}</h6>
 
                 <div className=" d-flex align-items-center gap-4 mt-3">
                   {socialLinks.map((item, index) => (

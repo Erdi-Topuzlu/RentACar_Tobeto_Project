@@ -25,8 +25,6 @@ import Contact from "./pages/Contact.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
-import { Provider } from "react-redux";
-import { store } from "./redux/store.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

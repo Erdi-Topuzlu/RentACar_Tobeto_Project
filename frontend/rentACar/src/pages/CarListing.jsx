@@ -6,9 +6,12 @@ import CarItem from "../components/ui/CarItem";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCarData } from "../redux/slices/carDataSlice";
 import Loading from "../components/ui/Loading";
+import { useTranslation } from "react-i18next";
 
 const CarListing = () => {
   const dispatch = useDispatch();
+  
+  const { t } = useTranslation();
 
   const { items, status, error } = useSelector((state) => state.carAllData);
 
@@ -20,9 +23,10 @@ const CarListing = () => {
     return <Loading />;
   }
 
+
   return (
-    <Helmet title="Cars">
-      <CommonSection title="Car Listing" />
+    <Helmet title={t('cars')}>
+      <CommonSection title={t('cars')} />
 
       <section>
         <Container>
@@ -30,13 +34,13 @@ const CarListing = () => {
             <Col lg="12">
               <div className=" d-flex align-items-center gap-3 mb-5">
                 <span className=" d-flex align-items-center gap-2">
-                  <i className="ri-sort-asc"></i> Sort By
+                  <i className="ri-sort-asc"></i> {t('sort')}
                 </span>
 
                 <select>
-                  <option>Select</option>
-                  <option value="low">Low to High</option>
-                  <option value="high">High to Low</option>
+                  <option>{t('select')}</option>
+                  <option value="low">{t('ltoh')}</option>
+                  <option value="high">{t('htol')}</option>
                 </select>
               </div>
             </Col>

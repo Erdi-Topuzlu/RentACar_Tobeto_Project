@@ -13,6 +13,7 @@ import BlogList from "../components/ui/BlogList";
 import Testimonial from "../components/ui/Testimonial";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllCarData from "../redux/actions/fetchAllCarData";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -26,8 +27,10 @@ const Home = () => {
     dispatch(fetchAllCarData());
   }, [dispatch]);
 
+  const { t } = useTranslation();
+
   return (
-    <Helmet title="Home">
+    <Helmet title={t('home')}>
       {/* ============= hero section =========== */}
       <section className="p-0 hero__slider-section">
         <HeroSlider />
@@ -37,7 +40,7 @@ const Home = () => {
             <Row className="form__row">
               <Col lg="4" md="4">
                 <div className="find__cars-left">
-                  <h2>Find your best car here</h2>
+                  <h2>{t('findTitle')}</h2>
                 </div>
               </Col>
 
