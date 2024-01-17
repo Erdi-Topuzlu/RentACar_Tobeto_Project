@@ -6,41 +6,45 @@ import "../../styles/header.css";
 
 import logo from "../../assets/all-images/logo.png";
 import { useTranslation } from "react-i18next";
-import i18next from "../../i18n";
+import i18n from "../../i18n";
 
-const navLinks = [
-  {
-    path: "/home",
-    display: "Home",
-  },
-  {
-    path: "/about",
-    display: "About",
-  },
-  {
-    path: "/cars",
-    display: "Cars",
-  },
 
-  {
-    path: "/blogs",
-    display: "Blog",
-  },
-  {
-    path: "/contact",
-    display: "Contact",
-  },
-];
+
+const langSelect = (e)=>{
+  const lang = e.target.value;
+  i18n.changeLanguage(lang)
+}
 
 function Header() {
-
-  const { t, i18n } = useTranslation();
-  console.log(t);
-  console.log(i18n.language)
-
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
+
+  const { t } = useTranslation();
+
+  const navLinks = [
+    {
+      path: "/home",
+      display: t("home"),
+    },
+    {
+      path: "/about",
+      display: t("about"),
+    },
+    {
+      path: "/cars",
+      display: t("cars"),
+    },
+  
+    {
+      path: "/blogs",
+      display: t("blog"),
+    },
+    {
+      path: "/contact",
+      display: t("contact"),
+    },
+  ];
 
   return (
     <header className="header">
@@ -50,7 +54,7 @@ function Header() {
           <Row>
             <Col lg="6" md="6" sm="6">
               <div className="header__top__left">
-                <span>Need Help?</span>
+                <span>{t("needhelp")}</span>
                 <span className="header__top__help">
                   <i className="ri-phone-fill"></i> +1-202-555-0149
                 </span>
@@ -59,17 +63,24 @@ function Header() {
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
+                
                 <Link to="/login" className=" d-flex align-items-center gap-1">
-                  <i className="ri-login-circle-line"></i>{t('login')}
+                  <i className="ri-login-circle-line"></i>
+                  {t("login")}
                 </Link>
 
                 <Link
                   to="/sign-up"
                   className=" d-flex align-items-center gap-1"
                 >
-                  <i className="ri-user-line"></i> Sign Up
+                  <i className="ri-user-line"></i> {t("signup")}
                 </Link>
+                <select style={{borderRadius:"5px", color:"white", border:"1px solid white", background:"#673ab7"}} value={i18n.language} onChange={langSelect}>
+                  <option value="en">EN</option>
+                  <option value="tr">TR</option>
+                </select>
               </div>
+              
             </Col>
           </Row>
         </Container>
@@ -95,8 +106,8 @@ function Header() {
                   <i className="ri-earth-line"></i>
                 </span>
                 <div className="header__location-content">
-                  <h4>Türkiye</h4>
-                  <h6>İstanbul, Türkiye</h6>
+                  <h4>{t("country")}</h4>
+                  <h6>{t("city")}, {t("country")}</h6>
                 </div>
               </div>
             </Col>
@@ -107,8 +118,8 @@ function Header() {
                   <i className="ri-time-line"></i>
                 </span>
                 <div className="header__location-content">
-                  <h4>Sunday to Friday</h4>
-                  <h6>10am - 7pm</h6>
+                  <h4>{t("workingdays")}</h4>
+                  <h6>{t("hours")}</h6>
                 </div>
               </div>
             </Col>
@@ -121,7 +132,7 @@ function Header() {
             >
               <button className="header__btn btn ">
                 <Link to="/contact">
-                  <i className="ri-phone-line"></i> Request a call
+                  <i className="ri-phone-line"></i> {t("requestacall")}
                 </Link>
               </button>
             </Col>
@@ -156,7 +167,7 @@ function Header() {
 
             <div className="nav__right">
               <div className="search__box">
-                <input type="text" placeholder="Search" />
+                <input type="text" placeholder={t("search")} />
                 <span>
                   <i className="ri-search-line"></i>
                 </span>

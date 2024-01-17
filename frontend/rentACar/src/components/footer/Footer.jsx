@@ -5,36 +5,39 @@ import "../../styles/footer.css";
 
 import tobeto from "../../assets/all-images/tobeto.png";
 import logo from "../../assets/all-images/logo-footer.png";
-
-const quickLinks = [
-  {
-    path: "/about",
-    display: "About",
-  },
-
-  {
-    path: "#",
-    display: "Privacy Policy",
-  },
-
-  {
-    path: "/cars",
-    display: "Car Listing",
-  },
-  {
-    path: "/blogs",
-    display: "Blog",
-  },
-
-  {
-    path: "/contact",
-    display: "Contact",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 function Footer() {
   const date = new Date();
   const year = date.getFullYear();
+
+  const { t } = useTranslation();
+
+  const quickLinks = [
+    {
+      path: "/about",
+      display: t("about"),
+    },
+  
+    {
+      path: "#",
+      display: "Privacy Policy",
+    },
+  
+    {
+      path: "/cars",
+      display: "Car Listing",
+    },
+    {
+      path: "/blogs",
+      display: "Blog",
+    },
+  
+    {
+      path: "/contact",
+      display: "Contact",
+    },
+  ];
   return (
     <footer className="footer">
       <Container>

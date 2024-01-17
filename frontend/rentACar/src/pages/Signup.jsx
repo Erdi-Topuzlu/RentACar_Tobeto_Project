@@ -132,13 +132,16 @@ const signUp = () => {
                     </Button>
                   </Form>
                 </Col>
+                
 
               </div>
             </Col>
           </Row>
         </Container>
       </section>
+      
     </Helmet>
+    
   );
 };
 

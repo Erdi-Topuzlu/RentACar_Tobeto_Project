@@ -1,0 +1,20 @@
+{
+  "_header":"HEADER-EN",
+
+  "login": "Login",
+  "signup": "Sign up",
+  "needhelp":"Need Help?",
+  "country": "Turkey",
+  "city":"Istanbul",
+  "workingdays": "Monday to Friday",
+  "hours":"10am - 7pm",
+  "requestacall":"Request a call",
+  "home":"Home",
+  "about":"About",
+  "cars":"Cars",
+  "blog":"Blog",
+  "contact":"Contact",
+  "search":"Search",
+
+  "_footer":"FOOTER-TR"
+}
