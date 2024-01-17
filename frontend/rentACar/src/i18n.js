@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import translationEN from '../public/locales/en-EN/translation.json';
-import translationTR from '../public/locales/tr-TR/translation.json';
+import translationEN from '/src/locales/en-US/translation.json';
+import translationTR from '/src/locales/tr-TR/translation.json';
 
 const resources = {
   en: {
@@ -17,8 +17,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'tr', // Default dil
-    fallbackLng: 'tr',
+    lng: 'en', // Default dil
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react için gerekli
     }

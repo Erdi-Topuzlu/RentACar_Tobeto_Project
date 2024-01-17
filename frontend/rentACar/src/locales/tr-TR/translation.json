@@ -1,0 +1,20 @@
+{
+  "_header":"HEADER-TR",
+
+  "login": "Giriş Yap",
+  "signup": "Üye Ol",
+  "needhelp":"Yardıma mı ihtiyacınız var?",
+  "country": "Türkiye",
+  "city":"İstanbul",
+  "workingdays": "Pazartesi - Cuma",
+  "hours":"10:00 - 19:00",
+  "requestacall":"Bizi Arayın",
+  "home":"Anasayfa",
+  "about":"Hakkında",
+  "cars":"Arabalar",
+  "blog":"Blog",
+  "contact":"İletişim",
+  "search":"Ara",
+
+  "_footer":"FOOTER-TR"
+}
