@@ -5,6 +5,8 @@ import { Link, NavLink } from "react-router-dom";
 import "../../styles/header.css";
 
 import logo from "../../assets/all-images/logo.png";
+import { useTranslation } from "react-i18next";
+import i18next from "../../i18n";
 
 const navLinks = [
   {
@@ -31,6 +33,11 @@ const navLinks = [
 ];
 
 function Header() {
+
+  const { t, i18n } = useTranslation();
+  console.log(t);
+  console.log(i18n.language)
+
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
@@ -53,7 +60,7 @@ function Header() {
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
                 <Link to="/login" className=" d-flex align-items-center gap-1">
-                  <i className="ri-login-circle-line"></i> Login
+                  <i className="ri-login-circle-line"></i>{t('login')}
                 </Link>
 
                 <Link
