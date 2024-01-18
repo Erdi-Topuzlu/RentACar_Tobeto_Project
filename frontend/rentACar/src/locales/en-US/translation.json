@@ -1,4 +1,6 @@
 {
+  "notfound":"Page Not Found",
+
   "_header":"HEADER-EN",
 
   "login": "Login",
@@ -48,5 +50,16 @@
   "day":"Day",
   "rent":"Rent",
   "ltoh":"Low to High",
-  "htol":"High to Low"
+  "htol":"High to Low",
+
+  "_Login":"LOGIN PAGE-EN",
+  "password":"Password",
+  "remember":"Remember me",
+  "forgot":"Forgot Password?",
+  "dontAccount":"Don't have an Account? Sign up",
+
+  "_signup":"SIGN-UP PAGE-EN",
+  "confirm":"Confirm Password",
+  "account":"Already have an account? Sign in"
+
 }

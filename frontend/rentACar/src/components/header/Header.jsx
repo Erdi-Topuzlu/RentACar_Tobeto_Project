@@ -7,13 +7,14 @@ import "../../styles/header.css";
 import logo from "../../assets/all-images/logo.png";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
+import turkey from "../../assets/all-images/tr.png";
+import england from "../../assets/all-images/en.png";
+import { Dropdown } from "react-bootstrap";
 
-
-
-const langSelect = (e)=>{
+const langSelect = (e) => {
   const lang = e.target.value;
-  i18n.changeLanguage(lang)
-}
+  i18n.changeLanguage(lang);
+};
 
 function Header() {
   const menuRef = useRef(null);
@@ -35,7 +36,7 @@ function Header() {
       path: "/cars",
       display: t("cars"),
     },
-  
+
     {
       path: "/blogs",
       display: t("blog"),
@@ -63,7 +64,6 @@ function Header() {
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
-                
                 <Link to="/login" className=" d-flex align-items-center gap-1">
                   <i className="ri-login-circle-line"></i>
                   {t("login")}
@@ -75,12 +75,34 @@ function Header() {
                 >
                   <i className="ri-user-line"></i> {t("signup")}
                 </Link>
-                <select style={{borderRadius:"5px", color:"white", border:"1px solid white", background:"#673ab7"}} value={i18n.language} onChange={langSelect}>
+                <select
+                  style={{
+                    borderRadius: "5px",
+                    color: "white",
+                    border: "1px solid white",
+                    background: "#673ab7",
+                  }}
+                  value={i18n.language}
+                  onChange={langSelect}
+                >
                   <option value="en">EN</option>
                   <option value="tr">TR</option>
                 </select>
+                <Dropdown value={i18n.language} onChange={langSelect}>
+                  <Dropdown.Toggle variant="" id="dropdown-basic">
+                    Lang
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item value="en">
+                      <img width={16} src={england} />
+                    </Dropdown.Item>
+                    <Dropdown.Item value="tr">
+                      <img width={16} src={turkey} />
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
-              
             </Col>
           </Row>
         </Container>
@@ -107,7 +129,9 @@ function Header() {
                 </span>
                 <div className="header__location-content">
                   <h4>{t("country")}</h4>
-                  <h6>{t("city")}, {t("country")}</h6>
+                  <h6>
+                    {t("city")}, {t("country")}
+                  </h6>
                 </div>
               </div>
             </Col>

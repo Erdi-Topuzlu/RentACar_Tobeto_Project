@@ -1,4 +1,6 @@
 {
+  "notfound":"Sayfa Bulunamadı",
+
   "_header":"HEADER-TR",
 
   "login": "Giriş Yap",
@@ -48,6 +50,16 @@
   "day":"Gün",
   "rent":"Kirala",
   "ltoh":"Ucuzdan Pahalıya",
-  "htol":"Pahalıdan Ucuza"
+  "htol":"Pahalıdan Ucuza",
+
+  "_Login":"LOGIN PAGE-EN",
+  "password":"Şifre",
+  "remember":"Beni Hatırla",
+  "forgot":"Şifremi unuttum",
+  "dontAccount":"Hesabınız yok mu? Üye Ol",
+
+  "_signup":"SIGN-UP PAGE-EN",
+  "confirm":"Şifre Tekrarı",
+  "account":"Zaten bir hesabınız var mı? Giriş Yap"
 
 }

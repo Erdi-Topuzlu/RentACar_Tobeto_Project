@@ -5,10 +5,12 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 
 import img404 from "../assets/all-images/404.jpg";
+import { useTranslation } from "react-i18next";
 
 const NotFound = () => {
+  const { t } = useTranslation();
   return (
-    <Helmet title="Page Not Found">
+    <Helmet title={t("notfound")}>
     <Header/>
     
     <section>
