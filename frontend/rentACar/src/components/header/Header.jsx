@@ -74,7 +74,7 @@ function Header() {
                 >
                   <i className="ri-user-line"></i> {t("signup")}
                 </Link>
-
+                <div className="vr" />
                 <NavDropdown
                   menuVariant="dark"
                   title={t("lang")}

@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 
 export const seatType = (seat) => {
   switch (seat) {
@@ -13,40 +12,41 @@ export const seatType = (seat) => {
   }
 };
 
-export const gearType = (gear) => {
+export const gearType = (gear, t) => {
+  
   switch (gear) {
     case "MANUAL":
-      return "Manual";
+      return t("manual");
     case "AUTOMATIC":
-      return "Automatic";
+      return t("automatic");
     default:
       return gear;
   }
 };
 
-export const fuelType = (fuel) => {
-  switch (fuel) {
+export const fuelType = (fuel, t) => {
+   switch (fuel) {
     case "DIESEL":
-      return "Diesel";
+      return t("diesel");
     case "GASOLINE":
-      return "Gasoline";
+      return t("gasoline");
     case "HYBRID":
-      return "Hybrid";
+      return t("hybrid");
     case "ELECTRIC":
-      return "Electric";
+      return t("electric");
     default:
       return fuel;
   }
 };
 
-export const vehicleType = (vehicle) => {
+export const vehicleType = (vehicle, t) => {
   switch (vehicle) {
     case "SUV":
-      return "SUV";
+      return t("suv");
     case "SEDAN":
-      return "Sedan";
+      return t("sedan");
     case "HB":
-      return "Hatchback";
+      return t("hatchback");
     default:
       return vehicle;
   }

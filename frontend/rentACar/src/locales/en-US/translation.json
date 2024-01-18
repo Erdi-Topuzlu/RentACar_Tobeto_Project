@@ -115,5 +115,12 @@
 
   "_conversionType":"CONVERSION TYPES-EN",
   "manual":"Manual",
-  "automatic":"Automatic"
+  "automatic":"Automatic",
+  "diesel":"Diesel",
+  "gasoline":"Gasoline",
+  "hybrid":"Hybrid",
+  "electric":"Elektric",
+  "suv":"SUV",
+  "sedan":"Sedan",
+  "hatchback":"Hatchback"
 }
