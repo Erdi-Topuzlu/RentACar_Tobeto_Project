@@ -1,45 +1,51 @@
+import { useTranslation } from "react-i18next";
+const ServiceData = () => {
+const { t } = useTranslation();
 const serviceData = [
   {
     id: 1,
-    title: "City Transfer",
+    title: t('cityTransfer'),
     icon: "ri-map-pin-2-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc: t('cityDesc'),
   },
 
   {
     id: 2,
-    title: "Whole  City Tour",
+    title: t('cityTour'),
     icon: "ri-community-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc: t('cityTourDesc'),
   },
 
   {
     id: 3,
-    title: "Unlimited Miles Car Rental",
+    title: t('unlimited'),
     icon: "ri-roadster-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc: t('unlimitedDesc'),
   },
 
   {
     id: 4,
-    title: "Fast & Easy Booking",
+    title:  t('fastAndEasy'),
     icon: "ri-timer-flash-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc:  t('fastAndEasyDesc'),
   },
 
   {
     id: 5,
-    title: "Many Pickup Locations",
+    title: t('pickup'),
     icon: "ri-map-pin-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc: t('pickupDesc'),
   },
 
   {
     id: 6,
-    title: "Airport Transfer",
+    title:  t('airport'),
     icon: "ri-flight-takeoff-line",
-    desc: "Tempor tempor sadipscing vero lorem sea, invidunt sed et eos ipsum et erat. Dolor ut duo sadipscing lorem. Gubergren gub",
+    desc:  t('airportDesc'),
   },
 ];
 
-export default serviceData;
+return serviceData;
+}
+
+export default ServiceData;

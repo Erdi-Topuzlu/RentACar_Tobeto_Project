@@ -12,7 +12,6 @@ import england from "../../assets/all-images/en.png";
 import { Dropdown, NavDropdown } from "react-bootstrap";
 
 const langSelect = (eventKey) => {
- 
   i18n.changeLanguage(eventKey);
 };
 
@@ -75,17 +74,21 @@ function Header() {
                 >
                   <i className="ri-user-line"></i> {t("signup")}
                 </Link>
-                
-                
-                <NavDropdown menuVariant="dark" title={t('lang')} id="nav-dropdown" onSelect={langSelect}>
-                  <NavDropdown.Item eventKey="en"><img width={16} src={england} /> {t('en-US')}</NavDropdown.Item>
-                  <NavDropdown.Divider />
+
+                <NavDropdown
+                  menuVariant="dark"
+                  title={t("lang")}
+                  id="nav-dropdown"
+                  onSelect={langSelect}
+                >
                   <NavDropdown.Item eventKey="tr">
-                  <img width={16} src={turkey} /> {t('tr-TR')}
+                    <img width={16} src={turkey} /> {t("tr-TR")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item eventKey="en">
+                    <img width={16} src={england} /> {t("en-US")}
                   </NavDropdown.Item>
                 </NavDropdown>
-
-            
               </div>
             </Col>
           </Row>

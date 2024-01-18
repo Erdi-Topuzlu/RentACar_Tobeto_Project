@@ -8,9 +8,24 @@ import PaymentMethod from "../components/ui/PaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
 import fetchCarDetailData from "../redux/actions/fetchCarDetailData";
 import Loading from "../components/ui/Loading";
-import { fuelType, gearType, seatType, vehicleType } from "../components/helper/conversionType";
+import {
+  fuelType,
+  gearType,
+  seatType,
+  vehicleType,
+} from "../components/helper/conversionType";
+import { useTranslation } from "react-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
 
 const CarDetails = () => {
+  const { t } = useTranslation();
+
   const { id } = useParams();
 
   const dispatch = useDispatch();
@@ -33,13 +48,42 @@ const CarDetails = () => {
         <Container>
           <Row>
             <Col lg="6">
-              <img
+              {/* <img
                 alt=""
                 src="https://source.unsplash.com/random?wallpapers/?car"
                 className="w-100"
                 width={600}
                 height={400}
-              />
+              /> */}
+              <Swiper
+                effect={"coverflow"}
+                grabCursor={true}
+                centeredSlides={true}
+                slidesPerView={"auto"}
+                coverflowEffect={{
+                  rotate: 50,
+                  stretch: 0,
+                  depth: 100,
+                  modifier: 1,
+                  slideShadows: true,
+                }}
+                pagination={true}
+                modules={[EffectCoverflow, Pagination]}
+                className="mySwiper"
+              >
+                <SwiperSlide>
+                  <img src="https://placehold.co/600x400" />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <img src="https://placehold.co/600x400" />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <img src="https://placehold.co/600x400" />
+                </SwiperSlide>
+              </Swiper>
+
+              
+
             </Col>
 
             <Col lg="6">
@@ -48,7 +92,7 @@ const CarDetails = () => {
 
                 <div className=" d-flex align-items-center gap-5 mb-4 mt-3">
                   <h6 className="rent__price fw-bold fs-4">
-                    {details.dailyPrice}.00 ₺/ Day
+                    {details.dailyPrice}.00 ₺/ {t("day")}
                   </h6>
 
                   <span className=" d-flex align-items-center gap-2">
@@ -117,6 +161,7 @@ const CarDetails = () => {
                       {details.colorId?.colorName}
                     </span>
                   </div>
+                  
                   {/* Right */}
                   <div className="col-6" style={{ columnGap: "4rem" }}>
                     <span className=" d-flex align-items-center gap-1 pb-3 section__description">
