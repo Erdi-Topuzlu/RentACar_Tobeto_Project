@@ -3,6 +3,7 @@ import { Col } from "reactstrap";
 import "../../styles/blog-item.css";
 import { Link } from "react-router-dom";
 import blogData from "../../assets/data/blogData";
+import { useTranslation } from "react-i18next";
 
 const BlogList = () => {
   return (
@@ -16,7 +17,7 @@ const BlogList = () => {
 
 const BlogItem = ({ item }) => {
   const { imgUrl, title, author, date, description, time } = item;
-
+  const { t } = useTranslation();
   return (
     <Col lg="4" md="6" sm="6" className="mb-5">
       <div className="blog__item">
@@ -32,7 +33,7 @@ const BlogItem = ({ item }) => {
           </p>
 
           <Link to={`/blogs/${title}`} className="read__more">
-            Read More
+          {t('readMore')}
           </Link>
 
           <div className="blog__time pt-3 mt-3 d-flex align-items-center justify-content-between">

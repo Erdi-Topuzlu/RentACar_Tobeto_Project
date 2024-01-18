@@ -30,30 +30,19 @@ const About = () => {
             <Col lg="6" md="6" sm="12">
               <div className="about__page-content">
                 <h2 className="section__title">
-                  We Are Committed To Provide Safe Ride Solutions
+                {t('weAre')}
                 </h2>
 
                 <p className="section__description">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Eveniet veniam assumenda aperiam accusantium ex autem
-                  perferendis repellendus nostrum delectus. Nemo et dolore est
-                  tempore rem minima adipisci magni dolorum ipsam.
+                {t('weAreDesc')}
                 </p>
-
-                <p className="section__description">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Eveniet veniam assumenda aperiam accusantium ex autem
-                  perferendis repellendus nostrum delectus. Nemo et dolore est
-                  tempore rem minima adipisci magni dolorum ipsam.
-                </p>
-
                 <div className=" d-flex align-items-center gap-3 mt-4">
                   <span className="fs-4">
                     <i className="ri-phone-line"></i>
                   </span>
 
                   <div>
-                    <h6 className="section__subtitle">Need Any Help?</h6>
+                    <h6 className="section__subtitle">{t('needAnyHelp')}</h6>
                     <h4>+00123456789</h4>
                   </div>
                 </div>
@@ -69,8 +58,7 @@ const About = () => {
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
-              <h6 className="section__subtitle">Experts</h6>
-              <h2 className="section__title">Our Members</h2>
+              <h2 className="section__title">{t('staff')}</h2>
             </Col>
             <OurMembers />
           </Row>

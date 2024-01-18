@@ -6,7 +6,6 @@ import blogData from "../assets/data/blogData.js";
 import Helmet from "../components/Helmet";
 import { Link } from "react-router-dom";
 
-import commentImg from "../assets/all-images/ava-1.jpg";
 
 import "../styles/blog-details.css";
 
@@ -53,7 +52,7 @@ const BlogDetails = () => {
                 <h4 className="mb-5">3 Comments</h4>
 
                 <div className="single__comment d-flex gap-3">
-                  <img src={commentImg} alt="" />
+                  <img src="https://avatars.githubusercontent.com/u/146648077?v=4" alt="" />
                   <div className="comment__content">
                     <h6 className=" fw-bold">David Visa</h6>
                     <p className="section__description mb-0">14 July, 2022</p>
