@@ -112,7 +112,14 @@
   "needAnyHelp":"Yardıma mı ihtiyacınız var?",
   "staff":"Ekibimiz",
 
-  "_conversionType":"CONVERSION TYPES-EN",
+  "_conversionType":"CONVERSION TYPES-TR",
   "manual":"Manuel",
-  "automatic":"Otomatik"
+  "automatic":"Otomatik",
+  "diesel":"Dizel",
+  "gasoline":"Benzin",
+  "hybrid":"Hybrid",
+  "electric":"Elektrikli",
+  "suv":"Arazi",
+  "sedan":"Binek",
+  "hatchback":"Hatchback"
 }

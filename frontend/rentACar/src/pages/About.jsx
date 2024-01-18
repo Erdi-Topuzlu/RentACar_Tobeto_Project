@@ -15,7 +15,7 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <Helmet title={t('about')}>
-      <CommonSection title="About Us" />
+      <CommonSection title={t('aboutUs')} />
       <AboutSection aboutClass="aboutPage" />
 
       <section className="about__page-section">
