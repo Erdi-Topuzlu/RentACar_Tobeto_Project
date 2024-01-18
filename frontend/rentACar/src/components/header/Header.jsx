@@ -9,11 +9,11 @@ import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import turkey from "../../assets/all-images/tr.png";
 import england from "../../assets/all-images/en.png";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, NavDropdown } from "react-bootstrap";
 
-const langSelect = (e) => {
-  const lang = e.target.value;
-  i18n.changeLanguage(lang);
+const langSelect = (eventKey) => {
+ 
+  i18n.changeLanguage(eventKey);
 };
 
 function Header() {
@@ -75,33 +75,17 @@ function Header() {
                 >
                   <i className="ri-user-line"></i> {t("signup")}
                 </Link>
-                <select
-                  style={{
-                    borderRadius: "5px",
-                    color: "white",
-                    border: "1px solid white",
-                    background: "#673ab7",
-                  }}
-                  value={i18n.language}
-                  onChange={langSelect}
-                >
-                  <option value="en">EN</option>
-                  <option value="tr">TR</option>
-                </select>
-                <Dropdown value={i18n.language} onChange={langSelect}>
-                  <Dropdown.Toggle variant="" id="dropdown-basic">
-                    Lang
-                  </Dropdown.Toggle>
+                
+                
+                <NavDropdown menuVariant="dark" title={t('lang')} id="nav-dropdown" onSelect={langSelect}>
+                  <NavDropdown.Item eventKey="en"><img width={16} src={england} /> {t('en-US')}</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item eventKey="tr">
+                  <img width={16} src={turkey} /> {t('tr-TR')}
+                  </NavDropdown.Item>
+                </NavDropdown>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item value="en">
-                      <img width={16} src={england} />
-                    </Dropdown.Item>
-                    <Dropdown.Item value="tr">
-                      <img width={16} src={turkey} />
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+            
               </div>
             </Col>
           </Row>
