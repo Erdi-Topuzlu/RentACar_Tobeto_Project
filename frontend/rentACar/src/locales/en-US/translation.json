@@ -119,8 +119,14 @@
   "diesel":"Diesel",
   "gasoline":"Gasoline",
   "hybrid":"Hybrid",
-  "electric":"Elektric",
+  "electric":"Electric",
   "suv":"SUV",
   "sedan":"Sedan",
-  "hatchback":"Hatchback"
+  "hatchback":"Hatchback",
+  "all":"All",
+  "gearType":"Gear Type : ",
+  "fuelType":"Fuel Type : ",
+  "seatType":"Capacity  : ",
+  "vehicleType":"Vehicle Type : ",
+  "filter":"Filter"
 }

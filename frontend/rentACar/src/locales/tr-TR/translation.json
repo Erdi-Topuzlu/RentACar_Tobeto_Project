@@ -121,5 +121,12 @@
   "electric":"Elektrikli",
   "suv":"Arazi",
   "sedan":"Binek",
-  "hatchback":"Hatchback"
+  "hatchback":"Hatchback",
+  "all":"Tümü",
+  "gearType":"Vites Türü : ",
+  "fuelType":"Yakıt Türü : ",
+  "seatType":"Koltuk : ",
+  "vehicleType":"Araç Tipi : ",
+  "filter":"Filtre"
+  
 }
