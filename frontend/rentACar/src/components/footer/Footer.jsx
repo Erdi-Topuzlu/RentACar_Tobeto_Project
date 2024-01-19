@@ -51,10 +51,7 @@ function Footer() {
               </h1>
             </div>
             <p className="footer__logo-content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequuntur, distinctio, itaque reiciendis ab cupiditate harum ex
-              quam veniam, omnis expedita animi quibusdam obcaecati mollitia?
-              Delectus et ad illo recusandae temporibus?
+            "Every Journey with Pair-1, a Safe and Joyful Adventure!"
             </p>
           </Col>
 
@@ -74,10 +71,10 @@ function Footer() {
           <Col lg="3" md="4" sm="6">
             <div className="mb-4">
               <h5 className="footer__link-title mb-4">{t("head")}</h5>
-              <p className="office__info">123 Zindabazar, Sylhet, Bangladesh</p>
-              <p className="office__info">{t("phone")}+0995345875365</p>
+              <p className="office__info">Istanbul,Turkey</p>
+              <p className="office__info">{t("phone")}+90 0535 9898 9898</p>
 
-              <p className="office__info">Email : muhib5532@gmail.com</p>
+              <p className="office__info">Email : Pair1@gmail.com</p>
 
               <p className="office__info">{t("office")}</p>
             </div>
