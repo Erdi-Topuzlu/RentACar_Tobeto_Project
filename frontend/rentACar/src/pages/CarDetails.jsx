@@ -217,7 +217,7 @@ const CarDetails = () => {
 
             <Col lg="12" className="mt-5">
               <div className="booking-info mt-5">
-                <h5 className="mb-4 fw-bold ">Booking Information</h5>
+                <h5 className="mb-4 fw-bold text-center ">Booking Information</h5>
                 <BookingForm />
               </div>
             </Col>
