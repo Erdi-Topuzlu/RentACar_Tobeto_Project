@@ -133,16 +133,16 @@ const Contact = () => {
               <div className="contact__info">
                 <h6 className="fw-bold">{t('contactInfo')}</h6>
                 <p className="section__description mb-0">
-                  123 ZindaBazar, Sylhet, Bangladesh
+                  Istanbul,Turkey
                 </p>
                 <div className=" d-flex align-items-center gap-2">
                   <h6 className="fs-6 mb-0">{t('phone')}</h6>
-                  <p className="section__description mb-0">+88683896366</p>
+                  <p className="section__description mb-0">+90 0535 9898 9898</p>
                 </div>
 
                 <div className=" d-flex align-items-center gap-2">
                   <h6 className="mb-0 fs-6">Email : </h6>
-                  <p className="section__description mb-0">example@gmail.com</p>
+                  <p className="section__description mb-0">Pair1@gmail.com</p>
                 </div>
 
                 <h6 className="fw-bold mt-4">{t('follow')}</h6>
