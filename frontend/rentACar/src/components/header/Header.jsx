@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import turkey from "../../assets/all-images/tr.png";
 import england from "../../assets/all-images/en.png";
-import { Dropdown, NavDropdown } from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
@@ -77,17 +77,31 @@ function Header() {
                 <div className="vr" />
                 <NavDropdown
                   menuVariant="dark"
-                  title={t("lang")}
+                  //title={t("lang")}
+                  title={
+                    i18n.language === "en" ? (
+                      <img width={24} src={england} />
+                    ) : i18n.language === "tr" ? (
+                      <img width={24} src={turkey} />
+                    ) : // Handle other languages if needed
+                    null
+                  }
                   id="nav-dropdown"
                   onSelect={langSelect}
                 >
-                  <NavDropdown.Item eventKey="tr">
+                  {
+                    i18n.language === "en" ? (
+                      <NavDropdown.Item eventKey="tr">
                     <img width={16} src={turkey} /> {t("tr-TR")}
                   </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item eventKey="en">
+                    ) : i18n.language === "tr" ? (
+                      <NavDropdown.Item eventKey="en">
                     <img width={16} src={england} /> {t("en-US")}
                   </NavDropdown.Item>
+                    ) : // Handle other languages if needed
+                    null
+                  }
+                 
                 </NavDropdown>
               </div>
             </Col>
