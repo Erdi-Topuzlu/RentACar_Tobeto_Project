@@ -18,11 +18,13 @@ const CarItem = ({ item }) => {
           />
         </div>
 
-        <div className="car__item-content mt-4">
-          <h4 className="section__title text-center">{item.modelName}</h4>
-          <h6 className="rent__price text-center mt-">
-            {item.dailyPrice}.00 ₺ <span>/ {t("day")}</span>
-          </h6>
+        <div className="car__item-content mt-4 text-center">
+  <h4  className="section__title">{item.modelName}</h4>
+  <h6 className="rent__price mt-2">
+    <span style={{ fontSize: '24px' }} className="text-dark">{item.dailyPrice}.00 ₺</span>{" "}
+    <span className="text-muted">/ {t("day")}</span>
+  </h6>
+
 
           {/* <div className="car__item-info d-flex flex-column-reverse flex-lg-row align-items-center justify-content-between mt-3 mb-4">
           
@@ -63,10 +65,15 @@ const CarItem = ({ item }) => {
               {item.year}
             </span>
           </div> */}
-          <div className="row">
+
+          
+
+
+
+          <div className="row d-flex align-center p-2 justify-content-evenly ">
             {/* Left */}
-            <div className="col-6">
-              <span className=" d-flex align-items-center gap-1 pb-3 pb-3 section__description">
+            <div className="col-4 p-2">
+              <span className="d-flex  align-center gap-1 pb-3 pb-3 section__description">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -79,7 +86,7 @@ const CarItem = ({ item }) => {
                 {item.modelId?.brandId?.name}
               </span>
 
-              <span className=" d-flex align-items-center gap-1 pb-3 section__description">
+              <span className=" d-flex  align-center gap-1 pb-3 section__description">
               <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -94,8 +101,8 @@ const CarItem = ({ item }) => {
             </div>
 
             {/* Right */}
-            <div className="col-6" style={{ columnGap: "4rem" }}>
-              <span className=" d-flex align-items-center gap-1 pb-3 section__description">
+            <div className="col-4 text-center align-center d-flex flex-column justify-content-center" style={{ columnGap: "4rem" }}>
+              <span className=" d-flex  align-center gap-1 pb-3  section__description">
               <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -108,7 +115,7 @@ const CarItem = ({ item }) => {
                 {item.modelId?.name}
               </span>
 
-              <span className=" d-flex align-items-center gap-1 pb-3 section__description">
+              <span className=" d-flex  align-center gap-1 pb-3 section__description">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
