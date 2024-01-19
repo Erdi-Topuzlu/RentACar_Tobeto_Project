@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 const Blog = () => {
   const { t } = useTranslation();
   return (
-    <Helmet title={t('blog')}>
-      <CommonSection title="Blogs" />
+    <Helmet title={t('campaigns')}>
+      <CommonSection title={t("campaigns")} />
       <section>
         <Container>
           <Row>

@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
-
 import { useParams } from "react-router-dom";
 import blogData from "../assets/data/blogData.js";
 import Helmet from "../components/Helmet";
-import { Link } from "react-router-dom";
 
 
 import "../styles/blog-details.css";
@@ -22,6 +20,7 @@ const BlogDetails = () => {
       <section>
         <Container>
           <Row>
+            <Col lg="2" md="2"></Col>
             <Col lg="8" md="8">
               <div className="blog__details">
                 <img src={blog.imgUrl} alt="" className="w-100" />
@@ -48,7 +47,7 @@ const BlogDetails = () => {
                 <p className="section__description">{blog.description}</p>
               </div>
 
-              <div className="comment__list mt-5">
+              {/* <div className="comment__list mt-5">
                 <h4 className="mb-5">3 Comments</h4>
 
                 <div className="single__comment d-flex gap-3">
@@ -66,10 +65,10 @@ const BlogDetails = () => {
                       <i className="ri-reply-line"></i> Replay
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 {/* =============== comment form ============ */}
-                <div className="leave__comment-form mt-5">
+                {/* <div className="leave__comment-form mt-5">
                   <h4>Leave a Comment</h4>
                   <p className="section__description">
                     You must sign-in to make or comment a post
@@ -94,10 +93,12 @@ const BlogDetails = () => {
                     </button>
                   </Form>
                 </div>
-              </div>
+              </div> */}
             </Col>
+            <Col lg="2" md="2"></Col>
 
-            <Col lg="4" md="4">
+
+            {/* <Col lg="4" md="4">
               <div className="recent__post mb-4">
                 <h5 className=" fw-bold">Recent Posts</h5>
               </div>
@@ -111,7 +112,7 @@ const BlogDetails = () => {
                   </div>
                 </div>
               ))}
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </section>

@@ -36,7 +36,7 @@ const BlogItem = ({ item }) => {
           {t('readMore')}
           </Link>
 
-          <div className="blog__time pt-3 mt-3 d-flex align-items-center justify-content-between">
+          {/* <div className="blog__time pt-3 mt-3 d-flex align-items-center justify-content-between">
             <span className="blog__author">
               <i className="ri-user-line"></i> {author}
             </span>
@@ -50,7 +50,7 @@ const BlogItem = ({ item }) => {
                 <i className="ri-time-line"></i> {time}
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Col>
