@@ -17,9 +17,10 @@
   "home": "Home",
   "about": "About",
   "cars": "Cars",
-  "blog": "Blog",
+  "campaigns": "Campaigns",
   "contact": "Contact",
   "search": "Search",
+  "reset":"Reset Password",
 
   "_footer": "FOOTER-EN",
   "privacy": "Privacy Policy",
@@ -89,8 +90,8 @@
   "software": "Made With",
 
   "_Blogs": "BLOGS-EN",
-  "explore": "Explore Our Blogs",
-  "latest": "Latest Blogs",
+  "explore": "Explore Our Campaigns",
+  "latest": "Offers",
   "readMore": "Read More",
 
   "_BecomeDriver": "BECOME DRIVER-EN",

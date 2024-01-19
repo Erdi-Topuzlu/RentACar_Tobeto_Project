@@ -16,9 +16,10 @@
   "home": "Anasayfa",
   "about": "Hakkında",
   "cars": "Arabalar",
-  "blog": "Blog",
+  "campaigns": "Kampanyalar",
   "contact": "İletişim",
   "search": "Ara",
+  "reset": "Şifreyi Sıfırla",
 
   "_footer": "FOOTER-TR",
   "privacy": "Gizlilik Politikası",
@@ -57,7 +58,7 @@
   "_Login": "LOGIN PAGE-TR",
   "password": "Şifre",
   "remember": "Beni Hatırla",
-  "forgot": "Şifremi unuttum",
+  "forgot": "Şifremi Unuttum",
   "dontAccount": "Hesabınız yok mu? Üye Ol",
 
   "_signup": "SIGN-UP PAGE-TR",
@@ -88,8 +89,8 @@
   "software": "Kullanılan Yazılımlar",
 
   "_Blogs": "BLOGS-TR",
-  "explore": "Bloglarımızı Keşfedin",
-  "latest": "Son Yazılar",
+  "explore": "Kampanyalarımızı Keşfedin",
+  "latest": "Tekliflerimiz",
   "readMore": "Daha Fazla Oku",
 
   "_BecomeDriver": "BECOME DRIVER-TR",

@@ -38,7 +38,7 @@ function Header() {
 
     {
       path: "/blogs",
-      display: t("blog"),
+      display: t("campaigns"),
     },
     {
       path: "/contact",
