@@ -27,7 +27,7 @@ public class SecurityConfig {
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
-            "/api/**"
+            "/**"
     };
 
     @Bean
@@ -40,6 +40,7 @@ public class SecurityConfig {
                         //.requestMatchers(HttpMethod.POST,"/api/v1/users/**").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
+
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

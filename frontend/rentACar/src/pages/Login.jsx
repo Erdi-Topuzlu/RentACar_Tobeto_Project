@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input, FormFeedback, Button, Label } from "reactstrap";
 import Helmet from "../components/Helmet";
@@ -6,10 +6,12 @@ import "../styles/form.css";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
+import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors"
 
 
 const Login = () => {
   const { t } = useTranslation();
+
 
   const formik = useFormik({
     initialValues: {
@@ -17,10 +19,23 @@ const Login = () => {
       password: "",
     },
     validationSchema: loginValidationSchema,
-    onSubmit: (values,actions) => {
-      alert(JSON.stringify(values, null, 2));
-      actions.resetForm();
+    onSubmit: async (values, actions) => {
+      try {
+        // Axios isteğini burada yap
+        const response = await axiosInstance.post('api/v1/users/login', values);
 
+        // Başarılı giriş durumunda yapılacak işlemler
+        console.log('Başarılı giriş:', response.data);
+
+        // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
+        // history.push('/dashboard');
+      } catch (error) {
+        // Giriş başarısız, hata mesajını kontrol et
+        console.error('Giriş hatası:', error.response.data);
+        actions.setFieldError('general', 'Kullanıcı adı veya şifre hatalı');
+      } finally {
+        actions.setSubmitting(false);
+      }
     },
   });
 
