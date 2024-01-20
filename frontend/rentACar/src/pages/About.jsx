@@ -17,7 +17,7 @@ const About = () => {
     <Helmet title={t('about')}>
       <CommonSection title={t('aboutUs')} />
       <AboutSection aboutClass="aboutPage" />
-
+    
       <section className="about__page-section">
         <Container>
           <Row>

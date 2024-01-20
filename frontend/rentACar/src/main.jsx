@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import FoprgotPassword from "./pages/ForgotPassword.jsx";
+import Profile from "./pages/Profile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<Signup />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/forgot-password" element={<FoprgotPassword />} />
     </Route>
   )
