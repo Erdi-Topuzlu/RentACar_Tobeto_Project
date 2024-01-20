@@ -60,10 +60,10 @@ public class UsersController {
     public String login(@RequestBody LoginUserRequest loginRequest) {
         // TODO: Auth Service'e taşınmalı
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         if(authentication.isAuthenticated())
         {
-            return jwtService.generateToken(loginRequest.getUsername());
+            return jwtService.generateToken(loginRequest.getEmail());
         }
 
         throw new RuntimeException("Kullanıcı adı ya da şifre yanlış");

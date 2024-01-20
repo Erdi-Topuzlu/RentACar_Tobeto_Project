@@ -3,6 +3,7 @@ package com.tobeto.RentACar.core.utilities.exceptions;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,6 +56,14 @@ public class GlobalExceptionHandler {
     public ProblemDetails handleHttpMessageNotReadableException(HttpMessageNotReadableException httpMessageNotReadableException){
         ProblemDetails problemDetails = new ProblemDetails();
         problemDetails.setMessage(httpMessageNotReadableException.getMessage());
+        return problemDetails;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public ProblemDetails handleBadCredentialsException(BadCredentialsException badCredentialsException){
+        ProblemDetails problemDetails = new ProblemDetails();
+        problemDetails.setMessage("E-Mail and password do not match!");
         return problemDetails;
     }
 }
