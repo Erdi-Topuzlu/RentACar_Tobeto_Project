@@ -5,12 +5,13 @@ import com.tobeto.RentACar.entities.concretes.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.UserService;
-import com.tobeto.RentACar.services.dtos.requests.user.AddUserRequest;
-import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
-import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.*;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final ModelMapperService modelMapperService;
     private final UserBusinessRulesService userBusinessRulesService;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -64,6 +67,27 @@ public class UserManager implements UserService {
     @Override
     public boolean existsById(int id) {
         return userRepository.existsById(id);
+    }
+
+    @Override
+    public void register(RegisterUserRequest registerUserRequest) {
+        User user = User.builder()
+                .username(registerUserRequest.getUsername())
+                .email(registerUserRequest.getEmail())
+                .authorities(registerUserRequest.getRoles())
+                .password(passwordEncoder.encode(registerUserRequest.getPassword()))
+                .build();
+        userRepository.save(user);
+    }
+
+    @Override
+    public String login(LoginUserRequest loginUserRequest) {
+        return "";
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
     }
 }
 
