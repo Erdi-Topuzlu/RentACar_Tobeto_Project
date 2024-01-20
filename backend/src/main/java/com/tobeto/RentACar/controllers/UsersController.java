@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 @AllArgsConstructor
+@CrossOrigin
 public class UsersController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
@@ -49,13 +50,13 @@ public class UsersController {
         userService.update(request);
     }
 
-    @PostMapping("/{register}")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody RegisterUserRequest request) {
         userService.register(request);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody LoginUserRequest loginRequest) {
         // TODO: Auth Service'e taşınmalı
