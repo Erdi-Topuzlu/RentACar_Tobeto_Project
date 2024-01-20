@@ -72,7 +72,6 @@ public class UserManager implements UserService {
     @Override
     public void register(RegisterUserRequest registerUserRequest) {
         User user = User.builder()
-                .username(registerUserRequest.getUsername())
                 .email(registerUserRequest.getEmail())
                 .authorities(registerUserRequest.getRoles())
                 .password(passwordEncoder.encode(registerUserRequest.getPassword()))
@@ -86,8 +85,8 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No user found!"));
     }
 }
 
