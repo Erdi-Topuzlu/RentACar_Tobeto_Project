@@ -105,8 +105,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(x -> x
                         .requestMatchers(WHITE_LIST_URLS).permitAll()
-                        .requestMatchers("/api/v1/users/**").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()                        //.requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
                         //.requestMatchers(HttpMethod.POST,"/api/v1/users/**").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
