@@ -1,48 +1,64 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Form, FormGroup, Input, FormFeedback, Button, Label } from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  FormFeedback,
+  Button,
+  Label,
+} from "reactstrap";
 import Helmet from "../components/Helmet";
 import "../styles/form.css";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
-import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors"
-
+import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 
 const Login = () => {
   const { t } = useTranslation();
 
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values, actions) => {
       try {
         // Axios isteğini burada yap
-        const response = await axiosInstance.post('api/v1/users/login', values);
+        const response = await axiosInstance.post("api/v1/users/login", values);
 
         // Başarılı giriş durumunda yapılacak işlemler
-        console.log('Başarılı giriş:', response.data);
-
+        console.log("Başarılı giriş:", response.data);
         // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
-        // history.push('/dashboard');
+        navigate("/profile");
+        console.log(actions);
+        
+        // Hatırla beni işaretliyse, uzun ömürlü bir oturum aç
+        if (values.rememberMe) {
+          // Uzun ömürlü oturum açma işlemleri
+          console.log('Uzun ömürlü oturum açma...');
+        }
       } catch (error) {
         // Giriş başarısız, hata mesajını kontrol et
-        console.error('Giriş hatası:', error.response.data);
-        actions.setFieldError('general', 'Kullanıcı adı veya şifre hatalı');
+        console.error("Giriş hatası:", error.response.data);
+        actions.setFieldError("general", "Kullanıcı adı veya şifre hatalı");
       } finally {
         actions.setSubmitting(false);
       }
     },
   });
 
-
   return (
     <Helmet title={t("login")}>
-      <section >
+      <section>
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
@@ -58,18 +74,18 @@ const Login = () => {
               <h2 className="section__title">{t("login")}</h2>
               <div className="d-flex justify-content-center align-items-center mt-4">
                 <Col lg="4" className="mb-5 text-center">
-
-
-
                   <Form onSubmit={formik.handleSubmit}>
-
                     <div>
                       <FormGroup className="">
                         <Input
                           id="email"
                           name="email"
                           value={formik.values.email}
-                          className={formik.errors.email && formik.touched.email && "error"}
+                          className={
+                            formik.errors.email &&
+                            formik.touched.email &&
+                            "error"
+                          }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           type="text"
@@ -77,13 +93,13 @@ const Login = () => {
                           invalid={formik.errors.email && formik.touched.email}
                         />
                         {formik.errors.email && formik.touched.email && (
-
-                          <FormFeedback >
-                            <p className="text-danger"> {formik.errors.email}</p>
+                          <FormFeedback>
+                            <p className="text-danger">
+                              {" "}
+                              {formik.errors.email}
+                            </p>
                           </FormFeedback>
                         )}
-
-
                       </FormGroup>
                     </div>
                     <div>
@@ -92,37 +108,46 @@ const Login = () => {
                           id="pw"
                           name="password"
                           value={formik.values.password}
-                          className={formik.errors.password && formik.touched.password && "error"}
+                          className={
+                            formik.errors.password &&
+                            formik.touched.password &&
+                            "error"
+                          }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           type="password"
                           placeholder={t("password")}
-                          invalid={formik.errors.password && formik.touched.password}
-
+                          invalid={
+                            formik.errors.password && formik.touched.password
+                          }
                         />
                         {formik.errors.password && formik.touched.password && (
-                          <FormFeedback >
-                            <p className="text-danger"> {formik.errors.password}</p>
+                          <FormFeedback>
+                            <p className="text-danger">
+                              {" "}
+                              {formik.errors.password}
+                            </p>
                           </FormFeedback>
                         )}
                       </FormGroup>
-
                     </div>
-                    <FormGroup className="d-flex justify-content-end"
+                    <FormGroup
+                      className="d-flex justify-content-end"
                       check
                       inline
                     >
-                      <Input type="checkbox" />
-                      <Label style={{marginLeft:4}}  check>
-                      {t("remember")}
+                      <Input
+                        type="checkbox"
+                        id="rememberMe"
+                        name="rememberMe"
+                        checked={formik.values.rememberMe}
+                        onChange={formik.handleChange}
+                      />
+                      <Label style={{ marginLeft: 4 }} check>
+                        {t("remember")}
                       </Label>
                     </FormGroup>
-                    <FormGroup
-                      check
-                      inline
-                    >
-    
-                    </FormGroup>
+                    <FormGroup check inline></FormGroup>
                     <FormGroup>
                       <div className="d-flex flex-column-reverse flex-lg-row justify-content-between align-items-center">
                         <Link
@@ -140,13 +165,15 @@ const Login = () => {
                       </div>
                     </FormGroup>
 
-
-                    <Button disabled={formik.isSubmitting} className=" form__btn" type="submit">
-                    {t("login")}
+                    <Button
+                      disabled={formik.isSubmitting}
+                      className=" form__btn"
+                      type="submit"
+                    >
+                      {t("login")}
                     </Button>
                   </Form>
                 </Col>
-
               </div>
             </Col>
           </Row>
