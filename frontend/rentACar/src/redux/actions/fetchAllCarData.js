@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "../utilities/interceptors/axiosInterceptors";
 
 
-axios.defaults.baseURL = "http://localhost:8080/";
 
 const fetchAllCarData = createAsyncThunk("data/fetchAllCarData", async () => {
-    const response = await axios.get("api/v1/cars");
+    console.log("İstek Car listingden atıldı.")
+    const response = await axiosInstance.get("api/v1/cars");
+    console.log("cevap listing e ulaştı.")
     return response.data;
   });
 
