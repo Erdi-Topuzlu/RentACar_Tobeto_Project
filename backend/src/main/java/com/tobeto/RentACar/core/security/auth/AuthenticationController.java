@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.core.security.auth;
 
+import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody RegisterUserRequest request
+            @RequestBody LoginUserRequest request
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(service.login(request));
     }
 }

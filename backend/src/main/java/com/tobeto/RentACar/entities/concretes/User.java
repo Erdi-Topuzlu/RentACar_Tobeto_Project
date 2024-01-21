@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tobeto.RentACar.core.security.token.Token;
 import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -49,6 +50,12 @@ public class User extends BaseEntity implements UserDetails{
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Rental> rentals;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Token> tokens;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
