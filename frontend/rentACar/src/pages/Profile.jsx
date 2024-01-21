@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
 
 const Profile = () => {
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     // Eğer giriş yapılmamışsa, /login sayfasına yönlendir
-    //     if (!setStatus) {
-    //       navigate('/login');
-    //     }
-    //   }, []);
-    
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
   return (
     <div>
-      profile
+
+    <h1>Hoşgeldiniz</h1>      
+    <button onClick={handleLogout}>Çıkış Yap</button>
+
     </div>
   )
 }

@@ -9,12 +9,16 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -58,15 +62,24 @@ public class UsersController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public String login(@RequestBody LoginUserRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginUserRequest loginRequest) {
         // TODO: Auth Service'e taşınmalı
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        if(authentication.isAuthenticated())
-        {
-            return jwtService.generateToken(loginRequest.getEmail());
+
+        if (authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            // Create a map to hold both the token and user information
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("token", jwtService.generateToken(loginRequest.getEmail()));
+            responseMap.put("user", userDetails); // You may want to customize this based on your UserDetails implementation
+
+            return ResponseEntity.ok(responseMap);
         }
 
         throw new RuntimeException("Kullanıcı adı ya da şifre yanlış");
     }
+
+
 }
