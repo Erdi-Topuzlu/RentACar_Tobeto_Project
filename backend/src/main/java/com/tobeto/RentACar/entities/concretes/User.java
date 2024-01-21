@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -19,21 +22,20 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
-public class User extends BaseEntity implements UserDetails {
-
+public class User extends BaseEntity implements UserDetails{
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name="password")
     private String password;
 
-    @JoinTable(name="roles", joinColumns = @JoinColumn(name="user_id"))
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private List<Role> authorities;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name="role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "surname")
     private String surname;
@@ -47,7 +49,19 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Rental> rentals;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -33,18 +33,18 @@ const Login = () => {
     onSubmit: async (values, actions) => {
       try {
         // Axios isteğini burada yap
-        const response = await axiosInstance.post("api/v1/users/login", values);
+        const response = await axiosInstance.post("api/v1/auth/login", values);
 
         // Başarılı giriş durumunda yapılacak işlemler
         console.log("Başarılı giriş:", response.data);
         // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
         navigate("/profile");
         console.log(actions);
-
+        
         // Hatırla beni işaretliyse, uzun ömürlü bir oturum aç
         if (values.rememberMe) {
           // Uzun ömürlü oturum açma işlemleri
-          console.log("Uzun ömürlü oturum açma...");
+          console.log('Uzun ömürlü oturum açma...');
         }
       } catch (error) {
         // Giriş başarısız, hata mesajını kontrol et
@@ -67,9 +67,9 @@ const Login = () => {
                 viewBox="0 0 24 24"
                 width="36"
                 height="36"
-                fill="currentColor"
+                fill="rgba(43,8,104,1)"
               >
-                <path d="M10 11V8L15 12L10 16V13H1V11H10ZM2.4578 15H4.58152C5.76829 17.9318 8.64262 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9H2.4578C3.73207 4.94289 7.52236 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C7.52236 22 3.73207 19.0571 2.4578 15Z"></path>
+                <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z"></path>
               </svg>
               <h2 className="section__title">{t("login")}</h2>
               <div className="d-flex justify-content-center align-items-center mt-4">
