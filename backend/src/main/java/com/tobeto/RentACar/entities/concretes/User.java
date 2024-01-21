@@ -24,6 +24,7 @@ import java.util.List;
 @Builder
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails{
+
     @Column(name = "username")
     private String username;
 

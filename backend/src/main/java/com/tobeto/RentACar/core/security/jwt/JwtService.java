@@ -22,7 +22,10 @@ public class JwtService {
     private String SECRET;
 
     @Value("${jwt.expiration}")
-    private long EXPIRATION;
+    private Long EXPIRATION;
+
+    @Value("${jwt.refresh-token.expiration}")
+    private Long REFRESH_EXPIRATION;
 
 
     private Key getSignInKey(){
@@ -59,25 +62,43 @@ public class JwtService {
         return extractClaim(token,Claims::getSubject);
     }
 
+
+    //TODO: Generate Token
     public String generateToken (UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);
     }
-    public String generateToken(
+    private String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ){
-        return buildToken(extraClaims, userDetails);
+        return buildToken(extraClaims, userDetails, EXPIRATION);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    //TODO: Generate Refresh Token
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateRefreshToken(Map.of(), userDetails);
+    }
+
+    private String generateRefreshToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails
+    ) {
+        return buildToken(extraClaims, userDetails, REFRESH_EXPIRATION);
+    }
+
+    private String buildToken(Map<String, Object> extraClaims,
+                              UserDetails userDetails,
+                              Long expiration) {
         return Jwts.builder()
                 .claims(extraClaims)
                 //.claim("Email",userDetails.getUsername())
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
 }
