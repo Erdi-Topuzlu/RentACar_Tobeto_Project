@@ -33,7 +33,7 @@ const Login = () => {
     onSubmit: async (values, actions) => {
       try {
         // Axios isteğini burada yap
-        const response = await axiosInstance.post("api/v1/users/login", values);
+        const response = await axiosInstance.post("api/v1/auth/login", values);
 
         // Başarılı giriş durumunda yapılacak işlemler
         console.log("Başarılı giriş:", response.data);
