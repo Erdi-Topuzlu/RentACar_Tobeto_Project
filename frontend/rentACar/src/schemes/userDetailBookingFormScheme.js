@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const bookingValidationScheme = yup.object().shape({
+export const userDetailBookingFormScheme = yup.object().shape({
   firstname: yup.string().required("Name required!"),
   lastname: yup.string().required("lastname required!"),
   email: yup
