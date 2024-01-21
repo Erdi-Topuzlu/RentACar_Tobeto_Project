@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet";
 import { useParams } from "react-router-dom";
-import BookingForm from "../components/ui/BookingFrom";
 import PaymentMethod from "../components/ui/PaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
 import fetchCarDetailData from "../redux/actions/fetchCarDetailData";
@@ -21,6 +20,7 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import BookingForm from "../components/ui/BookingForm/BookingForm";
 
 const CarDetails = () => {
   const { id } = useParams();
