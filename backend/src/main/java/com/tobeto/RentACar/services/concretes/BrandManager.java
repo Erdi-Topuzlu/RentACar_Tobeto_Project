@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.Brand;
+import com.tobeto.RentACar.entities.concretes.brand.Brand;
 import com.tobeto.RentACar.repositories.BrandRepository;
 import com.tobeto.RentACar.rules.brand.BrandBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.BrandService;

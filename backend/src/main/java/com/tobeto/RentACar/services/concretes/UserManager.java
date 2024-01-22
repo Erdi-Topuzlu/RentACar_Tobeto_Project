@@ -1,22 +1,18 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.User;
+import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.UserService;
 import com.tobeto.RentACar.services.dtos.requests.user.*;
-import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
-import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -70,7 +66,10 @@ public class UserManager implements UserService {
         return userRepository.existsById(id);
     }
 
-
+    @Override
+    public Optional<User> findByEmail(String username) {
+        return userRepository.findByEmail(username);
+    }
 }
 
 

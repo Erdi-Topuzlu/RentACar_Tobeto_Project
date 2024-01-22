@@ -7,6 +7,7 @@ import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.UpdateCarRequest;
 import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/cars")
+@Tag(name = "Cars Controller", description = "Cars Endpoints")
 public class CarsController {
     private final CarService carService;
 
@@ -28,7 +30,8 @@ public class CarsController {
     }
 
     @GetMapping("/{id}")
-    public GetByIdCarResponse getById(@PathVariable int id) {return carService.getById(id);
+    public GetByIdCarResponse getById(@PathVariable int id) {
+        return carService.getById(id);
     }
 
     @DeleteMapping("/{id}")
@@ -45,7 +48,6 @@ public class CarsController {
     public void update(@RequestBody @Valid UpdateCarRequest request) {
         carService.update(request);
     }
-
 
 
 }

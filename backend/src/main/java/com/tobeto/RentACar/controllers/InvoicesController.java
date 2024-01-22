@@ -5,6 +5,7 @@ import com.tobeto.RentACar.services.dtos.requests.invoice.AddInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.requests.invoice.UpdateInvoiceRequest;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetAllInvoiceResponse;
 import com.tobeto.RentACar.services.dtos.responses.invoice.GetByIdInvoiceResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/invoices")
+@Tag(name = "Invoice Controller", description = "Invoices Endpoints")
 public class InvoicesController {
 
     private final InvoiceService invoiceService;

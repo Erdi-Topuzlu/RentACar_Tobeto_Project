@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.Slider;
+import com.tobeto.RentACar.entities.concretes.slider.Slider;
 import com.tobeto.RentACar.repositories.SliderRepository;
 import com.tobeto.RentACar.rules.slider.SliderBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.SliderService;
