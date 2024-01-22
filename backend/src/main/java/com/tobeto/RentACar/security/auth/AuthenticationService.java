@@ -36,13 +36,15 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterUserRequest request) {
         var user = User.builder()
+                .id(request.getId())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var jwtToken = jwtService.generateToken(user, user);
+        var refreshToken = jwtService.generateRefreshToken(user, user);
+
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
@@ -59,8 +61,8 @@ public class AuthenticationService {
         );
 
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var jwtToken = jwtService.generateToken(user, user);
+        var refreshToken = jwtService.generateRefreshToken(user,user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
@@ -119,7 +121,7 @@ public class AuthenticationService {
             var user = userRepository.findByEmail(userEmail).orElseThrow();
 
             if (jwtService.isTokenValidate(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+                var accessToken = jwtService.generateToken(user, user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()

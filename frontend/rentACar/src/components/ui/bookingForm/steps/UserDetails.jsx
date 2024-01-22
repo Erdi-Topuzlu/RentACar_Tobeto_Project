@@ -1,24 +1,28 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
-import { Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
-export function UserDetails() {
+export function UserDetails({steps, activeStep, setActiveStep}) {
 
     const formik = useFormik({
       initialValues: {
-        firstname: "",
-        lastname: "",
-        email: "",
-        phoneNumber: "",
-        pickupAdress: "",
-        dropoffAdress: "",
-        pickupDate: "",
-        dropoffDate: "",
+          firstname: "",
+          lastname: "",
+          email: "",
+          phoneNumber: "",
+          pickupAdress: "",
+          dropoffAdress: "",
+          pickupDate: "",
+          dropoffDate: "",
+       
       },
       validationSchema: userDetailBookingFormScheme,
       onSubmit: (values,actions) => {
-        alert(JSON.stringify(values, null, 2));
-        actions.resetForm();
+        //alert(JSON.stringify(values, null, 2));
+        //actions.resetForm();
+        const data = JSON.stringify(values)
+        localStorage.setItem("userData",data)
+        setActiveStep(activeStep + 1)
         
       },
     });
@@ -26,6 +30,8 @@ export function UserDetails() {
   
     return(
       <div className="d-flex align-items-center justify-content-center">
+        
+      
       <Form onSubmit={formik.handleSubmit}>
         
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
@@ -38,7 +44,8 @@ export function UserDetails() {
           onBlur={formik.handleBlur}
           invalid={formik.errors.firstname && formik.touched.firstname}
           type="text" 
-          placeholder="First Name" />
+          placeholder="First Name"
+          />
         </FormGroup>
   
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
@@ -132,26 +139,33 @@ export function UserDetails() {
             invalid={formik.errors.dropoffDate && formik.touched.dropoffDate} />
         </FormGroup>
   
-        {/* <FormGroup className="booking__form d-inline-block me-4 mb-4">
-          <select name="" id="">
-            <option value="1 person">1 Person</option>
-            <option value="2 person">2 Person</option>
-            <option value="3 person">3 Person</option>
-            <option value="4 person">4 Person</option>
-            <option value="5+ person">5+ Person</option>
-          </select>
-        </FormGroup> */}
-        {/* <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-          <select name="" id="">
-            <option value="1 luggage">1 luggage</option>
-            <option value="2 luggage">2 luggage</option>
-            <option value="3 luggage">3 luggage</option>
-            <option value="4 luggage">4 luggage</option>
-            <option value="5+ luggage">5+ luggage</option>
-          </select>
-        </FormGroup> */}
-  
-        {/* <button type="submit">ok!</button> */}
+       <FormGroup>
+       <div className="d-flex align-items-center justify-content-between">
+            {activeStep !== steps.length - 1 && (
+              <Button
+                disabled={activeStep === 0}
+                color="secondary"
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Previous
+              </Button>
+            )}
+            {
+              <div className="d-flex justify-content-end">
+                {activeStep !== steps.length - 1 && (
+                  <Button
+                    type="submit"
+                    className="form__btn"
+                    onSubmit={() => setActiveStep(activeStep + 1)}
+                    
+                  >
+                    Next
+                  </Button>
+                )}
+              </div>
+            }
+          </div>
+       </FormGroup>
         
       </Form>
       </div>

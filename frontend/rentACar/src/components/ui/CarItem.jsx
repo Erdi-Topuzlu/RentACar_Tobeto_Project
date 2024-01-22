@@ -13,7 +13,7 @@ const CarItem = ({ item }) => {
       <div className="car__item">
         <div className="car__img">
           <img
-            src={"https://source.unsplash.com/random?wallpapers/?car"}
+            src={"https://placehold.co/600x400"}
             alt=""
             className="w-100 h-100 "
           />
