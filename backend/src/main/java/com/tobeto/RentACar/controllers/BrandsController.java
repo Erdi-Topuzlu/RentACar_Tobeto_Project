@@ -6,20 +6,20 @@ import com.tobeto.RentACar.services.dtos.requests.brand.DeleteBrandRequest;
 import com.tobeto.RentACar.services.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetByIdBrandResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/brands")
+@RequiredArgsConstructor
+@Tag(name = "Brand Controller", description = "Brands Endpoints")
 public class BrandsController {
 
     private final BrandService brandService;
-
-    public BrandsController(BrandService brandService) {
-        this.brandService = brandService;
-    }
 
     @GetMapping
     public List<GetAllBrandResponse> getAll() {
@@ -33,7 +33,7 @@ public class BrandsController {
 
     @DeleteMapping("/{id}")
     public DeleteBrandRequest delete(@PathVariable int id) {
-       return brandService.delete(id);
+        return brandService.delete(id);
     }
 
     @PostMapping

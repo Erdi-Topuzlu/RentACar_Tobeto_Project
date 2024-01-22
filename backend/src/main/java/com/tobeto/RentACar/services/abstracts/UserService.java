@@ -1,13 +1,14 @@
 package com.tobeto.RentACar.services.abstracts;
 
+import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.services.dtos.requests.user.*;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserService extends UserDetailsService {
+public interface UserService{
 
     void add(AddUserRequest request);
     void update(UpdateUserRequest request);
@@ -18,11 +19,6 @@ public interface UserService extends UserDetailsService {
     GetByIdUserResponse getById(int id);
     boolean existsById(int id);
 
-    void register(RegisterUserRequest registerUserRequest);
-    String login (LoginUserRequest loginUserRequest);
-
-
-
-
+    Optional<User> findByEmail(String username);
 
 }

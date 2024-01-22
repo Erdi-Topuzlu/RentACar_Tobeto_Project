@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.CarImage;
+import com.tobeto.RentACar.entities.concretes.carImage.CarImage;
 import com.tobeto.RentACar.repositories.CarImageRepository;
 import com.tobeto.RentACar.rules.carImage.CarImageBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.CarImageService;

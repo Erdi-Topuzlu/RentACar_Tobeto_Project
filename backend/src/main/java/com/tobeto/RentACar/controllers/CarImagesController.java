@@ -11,6 +11,7 @@ import com.tobeto.RentACar.services.dtos.responses.carImage.GetAllCarImageRespon
 import com.tobeto.RentACar.services.dtos.responses.carImage.GetByIdCarImageResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,31 +21,32 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/car-images")
 @AllArgsConstructor
+@Tag(name = "CarImages Controller", description = "CarImages Endpoints")
 public class CarImagesController {
     private final CarImageService carImageService;
 
     @GetMapping
-    public List<GetAllCarImageResponse> getAll(){
+    public List<GetAllCarImageResponse> getAll() {
         return carImageService.getAll();
     }
 
     @GetMapping("/{id}")
-    public GetByIdCarImageResponse getById(@PathVariable int id){
+    public GetByIdCarImageResponse getById(@PathVariable int id) {
         return carImageService.getById(id);
     }
 
     @DeleteMapping("/{id}")
-    public DeleteCarImageRequest delete(@PathVariable int id){
+    public DeleteCarImageRequest delete(@PathVariable int id) {
         return carImageService.delete(id);
     }
 
     @PostMapping
-    public void add(@RequestBody @Valid AddCarImageRequest request){
+    public void add(@RequestBody @Valid AddCarImageRequest request) {
         carImageService.add(request);
     }
 
     @PutMapping
-    public void update(@RequestBody @Valid UpdateCarImageRequest request){
+    public void update(@RequestBody @Valid UpdateCarImageRequest request) {
         carImageService.update(request);
     }
 

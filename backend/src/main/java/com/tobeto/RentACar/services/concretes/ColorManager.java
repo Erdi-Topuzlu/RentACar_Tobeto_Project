@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.Color;
+import com.tobeto.RentACar.entities.concretes.color.Color;
 import com.tobeto.RentACar.repositories.ColorRepository;
 import com.tobeto.RentACar.rules.color.ColorBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.ColorService;

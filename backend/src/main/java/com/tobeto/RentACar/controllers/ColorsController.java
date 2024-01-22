@@ -6,6 +6,7 @@ import com.tobeto.RentACar.services.dtos.requests.color.DeleteColorRequest;
 import com.tobeto.RentACar.services.dtos.requests.color.UpdateColorRequest;
 import com.tobeto.RentACar.services.dtos.responses.color.GetAllColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/colors")
+@Tag(name = "Color Controller", description = "Colors Endpoints")
 public class ColorsController {
 
     private final ColorService colorService;

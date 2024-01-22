@@ -6,6 +6,7 @@ import com.tobeto.RentACar.services.dtos.requests.slider.DeleteSliderRequest;
 import com.tobeto.RentACar.services.dtos.requests.slider.UpdateSliderRequest;
 import com.tobeto.RentACar.services.dtos.responses.slider.GetAllSliderResponse;
 import com.tobeto.RentACar.services.dtos.responses.slider.GetByIdSliderResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/slider")
+@Tag(name = "Slider Controller", description = "Slider Endpoints")
 public class SliderController {
 
     private final SliderService sliderService;
