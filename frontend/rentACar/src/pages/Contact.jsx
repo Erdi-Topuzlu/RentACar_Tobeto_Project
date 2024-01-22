@@ -7,6 +7,7 @@ import "../styles/contact.css";
 import { contactValidationScheme } from "../schemes/contactScheme";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
+import { AnimatedLTR, AnimatedUTD } from "../components/ui/animation/animateDiv";
 
 const socialLinks = [
   {
@@ -49,7 +50,9 @@ const Contact = () => {
       <section>
         <Container>
           <Row>
+          
             <Col lg="7" md="7">
+            <AnimatedLTR direction="left">
               <h6 className="fw-bold mb-4">{t('getInTouch')}</h6>
 
               <Form onSubmit={formik.handleSubmit}>
@@ -127,9 +130,12 @@ const Contact = () => {
                     {t('send')}
                     </Button>
                   </Form>
+                  </AnimatedLTR>
             </Col>
-
+            
+                       
             <Col lg="5" md="5">
+              <AnimatedUTD direction="up">
               <div className="contact__info">
                 <h6 className="fw-bold">{t('contactInfo')}</h6>
                 <p className="section__description mb-0">
@@ -159,7 +165,8 @@ const Contact = () => {
                   ))}
                 </div>
               </div>
-            </Col>
+              </AnimatedUTD>
+            </Col> 
           </Row>
         </Container>
       </section>

@@ -4,6 +4,7 @@ import "../../styles/blog-item.css";
 import { Link } from "react-router-dom";
 import blogData from "../../assets/data/blogData";
 import { useTranslation } from "react-i18next";
+import { AnimatedUTD } from "./animation/animateDiv";
 
 const BlogList = () => {
   return (
@@ -19,9 +20,14 @@ const BlogItem = ({ item }) => {
   const { imgUrl, title, author, date, description, time } = item;
   const { t } = useTranslation();
   return (
+   
     <Col lg="4" md="6" sm="6" className="mb-5">
+      <AnimatedUTD direction="up">
       <div className="blog__item">
+
+      
         <img src={imgUrl} alt="" className="w-100" />
+        
         <div className="blog__info p-3">
           <Link to={`/blogs/${title}`} className="blog__title">
             {title}
@@ -52,7 +58,9 @@ const BlogItem = ({ item }) => {
             </div>
           </div> */}
         </div>
+        
       </div>
+      </AnimatedUTD>
     </Col>
   );
 };

@@ -17,6 +17,7 @@ import { useFormik } from "formik";
 import { loginValidationSchema } from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
+import { AnimatedLTR } from "../components/ui/animation/animateDiv";
 
 const Login = () => {
   const { t } = useTranslation();
@@ -61,6 +62,8 @@ const Login = () => {
       <section>
         <Container>
           <Row>
+            
+    <AnimatedLTR direction="left">
             <Col lg="12" className="mb-5 text-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -74,6 +77,7 @@ const Login = () => {
               <h2 className="section__title">{t("login")}</h2>
               <div className="d-flex justify-content-center align-items-center mt-4">
                 <Col lg="4" className="mb-5 text-center">
+                  
                   <Form onSubmit={formik.handleSubmit}>
                     <div>
                       <FormGroup className="">
@@ -176,6 +180,7 @@ const Login = () => {
                 </Col>
               </div>
             </Col>
+            </AnimatedLTR>
           </Row>
         </Container>
       </section>
