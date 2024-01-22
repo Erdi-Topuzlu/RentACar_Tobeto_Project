@@ -6,6 +6,7 @@ import com.tobeto.RentACar.security.entities.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,6 +50,7 @@ public class SecurityConfiguration {
                                                 "/swagger-ui.html"
                                         )
                                         .permitAll()
+                                        .requestMatchers(GET, "/api/v1/cars/**").permitAll()
                                         // Burada management endpoint'i için ADMIN ve MANAGER'e rol ve yetkilendirme verdik.
                                         .requestMatchers("/api/v1/management/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                                         .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_READ.name(), Permission.MANAGER_READ.name())
@@ -68,6 +70,7 @@ public class SecurityConfiguration {
                                         .requestMatchers(GET, "/api/v1/**").hasAnyAuthority(Permission.ADMIN_READ.name(), Permission.MANAGER_READ.name(), Role.USER.name())
                                         .anyRequest()
                                         .authenticated()
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
