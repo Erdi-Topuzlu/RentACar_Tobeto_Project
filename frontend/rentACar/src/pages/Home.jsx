@@ -14,11 +14,9 @@ import Testimonial from "../components/ui/Testimonial";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllCarData from "../redux/actions/fetchAllCarData";
 import { useTranslation } from "react-i18next";
-
-
+import { AnimatedUTD } from "../components/ui/animation/animateDiv";
 
 const Home = () => {
-
   const dispatch = useDispatch();
 
   const cars = useSelector((state) => state.carAllData.items);
@@ -30,7 +28,7 @@ const Home = () => {
   const { t } = useTranslation();
 
   return (
-    <Helmet title={t('home')}>
+    <Helmet title={t("home")}>
       {/* ============= hero section =========== */}
       <section className="p-0 hero__slider-section">
         <HeroSlider />
@@ -40,7 +38,7 @@ const Home = () => {
             <Row className="form__row">
               <Col lg="4" md="4">
                 <div className="find__cars-left">
-                  <h2>{t('findTitle')}</h2>
+                  <h2>{t("findTitle")}</h2>
                 </div>
               </Col>
 
@@ -57,11 +55,11 @@ const Home = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="12" className="mb-5 text-center">
-              <h6 className="section__subtitle">{t('seeOur')}</h6>
-              <h2 className="section__title">{t('popular')}</h2>
-            </Col>
-
+           
+              <Col lg="12" className="mb-5 text-center">
+                <h6 className="section__subtitle">{t("seeOur")}</h6>
+                <h2 className="section__title">{t("popular")}</h2>
+              </Col>
             <ServicesList />
           </Row>
         </Container>
@@ -70,10 +68,10 @@ const Home = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="12" className="text-center mb-5">
-              <h6 className="section__subtitle">{t('comeWith')}</h6>
-              <h2 className="section__title">{t('hotOffers')}</h2>
-            </Col>
+              <Col lg="12" className="text-center mb-5">
+                <h6 className="section__subtitle">{t("comeWith")}</h6>
+                <h2 className="section__title">{t("hotOffers")}</h2>
+              </Col>
 
             {cars.slice(0, 6).map((item) => (
               <CarItem item={item} key={item.id} />
@@ -88,10 +86,9 @@ const Home = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="12" className="mb-4 text-center">
-              <h2 className="section__title">{t('software')}</h2>
-            </Col>
-
+              <Col lg="12" className="mb-4 text-center">
+                <h2 className="section__title">{t("software")}</h2>
+              </Col>
             <Testimonial />
           </Row>
         </Container>
@@ -102,8 +99,8 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
-              <h6 className="section__subtitle">{t('explore')}</h6>
-              <h2 className="section__title">{t('latest')}</h2>
+              <h6 className="section__subtitle">{t("explore")}</h6>
+              <h2 className="section__title">{t("latest")}</h2>
             </Col>
 
             <BlogList />
