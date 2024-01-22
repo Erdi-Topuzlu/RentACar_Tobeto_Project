@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import fetchUserData from '../redux/actions/fetchUserData';
+import axiosInstance from '../redux/utilities/interceptors/axiosInterceptors';
 
 
 
@@ -21,9 +22,22 @@ const Profile = () => {
       return null;
     }
   };
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+    // Çıkış endpoint'i
+    const response = await fetch('http://localhost:8080/api/v1/logout');
+      console.log(response)
+    // Başarılı bir çıkış durumunda, local storage'daki token'ı sil
+    if (response.ok) {
+      localStorage.removeItem('access_token');
+      // Kullanıcıyı login sayfasına yönlendir
+      navigate('/login');
+    } else {
+      console.error('Çıkış işlemi başarısız.');
+    }
+  } catch (error) {
+    console.error('Çıkış işlemi sırasında bir hata oluştu:', error);
+  }
   };
 
 console.log("Roles: ", userRoles)
