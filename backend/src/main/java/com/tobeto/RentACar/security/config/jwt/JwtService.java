@@ -1,9 +1,11 @@
 package com.tobeto.RentACar.security.config.jwt;
 
+import com.tobeto.RentACar.entities.concretes.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -53,35 +55,41 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(Map.of(), userDetails);
+    public String generateToken(UserDetails userDetails, User user) {
+        return generateToken(Map.of(), userDetails, user);
     }
 
     private String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
+            UserDetails userDetails,
+            User user
     ) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return buildToken(extraClaims, userDetails, jwtExpiration, user);
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return generateRefreshToken(Map.of(), userDetails);
+    public String generateRefreshToken(UserDetails userDetails, User user) {
+        return generateRefreshToken(Map.of(), userDetails, user);
     }
 
     private String generateRefreshToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
+            UserDetails userDetails,
+            User user
     ) {
-        return buildToken(extraClaims, userDetails, refreshExpiration);
+        return buildToken(extraClaims, userDetails, refreshExpiration, user);
     }
 
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
-            Long expiration
+            Long expiration,
+            User user
     ) {
         return Jwts.builder()
                 .claims(extraClaims)
+                .claim("id", user.getId())
+                .claim("role", user.getRole())
+                //.claim("roles", userDetails.getAuthorities())
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))

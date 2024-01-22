@@ -24,7 +24,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
-public class User extends BaseEntity implements UserDetails {
+public class User implements UserDetails {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "username")
     private String username;

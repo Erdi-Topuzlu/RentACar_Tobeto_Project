@@ -45,9 +45,9 @@ const BookingForm = () => {
   function getSectionComponent() {
     switch (activeStep) {
       case 0:
-        return <UserDetails />;
+        return <UserDetails steps={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>;
       case 1:
-        return <Extras />;
+        return <Extras steps={steps} activeStep={activeStep} setActiveStep={setActiveStep} />;
       case 2:
         return <PaymentDetails />;
       default:
@@ -65,30 +65,7 @@ const BookingForm = () => {
         />
         <div style={{ padding: "20px" }}>
           {getSectionComponent()}
-          <div className="d-flex align-items-center justify-content-between">
-            {activeStep !== steps.length - 1 && (
-              <Button
-                disabled={activeStep === 0}
-                color="secondary"
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                Previous
-              </Button>
-            )}
-            {
-              <div className="d-flex justify-content-end">
-                {activeStep !== steps.length - 1 && (
-                  <Button
-                    type="submit"
-                    className="form__btn"
-                    onClick={() => setActiveStep(activeStep + 1)}
-                  >
-                    Next
-                  </Button>
-                )}
-              </div>
-            }
-          </div>
+          
         </div>
       </div>
     </>

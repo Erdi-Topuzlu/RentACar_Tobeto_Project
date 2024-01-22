@@ -1,3 +1,5 @@
+import { Button, FormGroup } from "reactstrap";
+
 const extrasContents = [
     {
       header: "Free",
@@ -72,7 +74,7 @@ const extrasContents = [
     );
   };
 
-  export const Extras = () => {
+  export const Extras = ({steps, activeStep, setActiveStep}) => {
     const extras = extrasContents.map((obj, i) => {
       return (
         <div key={obj.header} className="col-md-4">
@@ -90,6 +92,30 @@ const extrasContents = [
     return (
       <div className="row card-deck mb-3 text-center">
         {extras}
+       <div className="d-flex align-items-center justify-content-between">
+            {activeStep !== steps.length - 1 && (
+              <Button
+                disabled={activeStep === 0}
+                color="secondary"
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Previous
+              </Button>
+            )}
+            {
+              <div className="d-flex justify-content-end">
+                {activeStep !== steps.length - 1 && (
+                  <Button
+                    className="form__btn"
+                    onClick={() => setActiveStep(activeStep + 1)}
+                    
+                  >
+                    Next
+                  </Button>
+                )}
+              </div>
+            }
+          </div>
       </div>
     );
   };

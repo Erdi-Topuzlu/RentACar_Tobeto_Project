@@ -51,6 +51,7 @@ public class SecurityConfiguration {
                                         )
                                         .permitAll()
                                         .requestMatchers(GET, "/api/v1/cars/**").permitAll()
+                                        .requestMatchers(GET,"/api/v1/users/**").permitAll()
                                         // Burada management endpoint'i için ADMIN ve MANAGER'e rol ve yetkilendirme verdik.
                                         .requestMatchers("/api/v1/management/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                                         .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_READ.name(), Permission.MANAGER_READ.name())
