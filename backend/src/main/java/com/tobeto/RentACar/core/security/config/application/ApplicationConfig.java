@@ -1,7 +1,5 @@
-package com.tobeto.RentACar.core.security.config;
-
-import com.tobeto.RentACar.repositories.UserRepository;
-import com.tobeto.RentACar.services.abstracts.UserService;
+package com.tobeto.RentACar.core.security.config.application;
+import com.tobeto.RentACar.core.security.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,31 +11,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Configuration
 @RequiredArgsConstructor
-public class AppConfig {
-    private final UserRepository userRepository;
+public class ApplicationConfig {
 
+    private final AuthRepository authRepository;
     @Bean
-    public UserDetailsService userDetailsService(){
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(()->new UsernameNotFoundException("User not found!"));
-    }
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
+    public UserDetailsService userDetailsService() {
+        return username -> authRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
-        return config.getAuthenticationManager();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

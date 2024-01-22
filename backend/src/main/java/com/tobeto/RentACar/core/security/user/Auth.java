@@ -1,8 +1,6 @@
-package com.tobeto.RentACar.entities.concretes;
-
+package com.tobeto.RentACar.core.security.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tobeto.RentACar.core.security.token.Token;
-import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,58 +10,39 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-
-@Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "users")
-public class User extends BaseEntity implements UserDetails{
+@Entity
+public class Auth implements UserDetails {
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name="password")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String password;
-
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name="role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "surname")
-    private String surname;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "auth")
     @JsonIgnore
-    private List<Rental> rentals;
+    private List<Token> tokens;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @Override
     public String getUsername() {
         return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.tobeto.RentACar.core.security.token;
 
-import com.tobeto.RentACar.entities.abstracts.BaseEntity;
-import com.tobeto.RentACar.entities.concretes.User;
+import com.tobeto.RentACar.core.security.user.Auth;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Token extends BaseEntity {
+public class Token {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     private String token;
 
@@ -25,6 +28,6 @@ public class Token extends BaseEntity {
     private Boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "auth_id")
+    private Auth auth;
 }

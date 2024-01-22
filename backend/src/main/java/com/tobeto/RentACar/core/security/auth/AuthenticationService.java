@@ -1,15 +1,13 @@
 package com.tobeto.RentACar.core.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tobeto.RentACar.core.security.jwt.JwtService;
+import com.tobeto.RentACar.core.security.config.jwt.JwtService;
+import com.tobeto.RentACar.core.security.repository.TokenRepository;
+import com.tobeto.RentACar.core.security.repository.AuthRepository;
 import com.tobeto.RentACar.core.security.token.Token;
-import com.tobeto.RentACar.core.security.token.TokenRepository;
 import com.tobeto.RentACar.core.security.token.TokenType;
-import com.tobeto.RentACar.entities.concretes.Role;
-import com.tobeto.RentACar.entities.concretes.User;
-import com.tobeto.RentACar.repositories.UserRepository;
-import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
-import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
+import com.tobeto.RentACar.core.security.user.Auth;
+import com.tobeto.RentACar.core.security.user.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,32 +23,35 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository userRepository;
+
+    private final AuthRepository authRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final TokenRepository tokenRepository;
 
     @Value("${jwt.bearer}")
-    private String BEARER;
+    private String bearer;
 
-    public AuthenticationResponse register(RegisterUserRequest request) {
-        var user = User.builder()
+    public AuthenticationResponse register(RegisterRequest request) {
+        var user = Auth.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        var savedUser = userRepository.save(user);
+        var savedUser = authRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser,jwtToken);
+        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public AuthenticationResponse login(LoginUserRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -58,21 +59,20 @@ public class AuthenticationService {
                 )
         );
 
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = authRepository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user,jwtToken);
+        saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    private void saveUserToken(Auth auth, String jwtToken) {
         var token = Token.builder()
-                .user(user)
+                .auth(auth)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .revoked(false)
@@ -81,9 +81,8 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    private void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
-
+    private void revokeAllUserTokens(Auth auth) {
+        var validUserTokens = tokenRepository.findAllValidTokenByAuthId(auth.getId());
 
         if (validUserTokens.isEmpty()) {
             return;
@@ -97,6 +96,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
@@ -109,7 +109,7 @@ public class AuthenticationService {
         final String refreshToken;
         final String userEmail;
 
-        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+        if (authHeader == null || !authHeader.startsWith(bearer)) {
             return;
         }
 
@@ -117,9 +117,9 @@ public class AuthenticationService {
         userEmail = jwtService.extractUsername(refreshToken);
 
         if (userEmail != null) {
-            var user = userRepository.findByEmail(userEmail).orElseThrow();
+            var user = authRepository.findByEmail(userEmail).orElseThrow();
 
-            if (jwtService.isTokenValid(refreshToken, user)) {
+            if (jwtService.isTokenValidate(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);

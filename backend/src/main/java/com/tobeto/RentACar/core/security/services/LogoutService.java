@@ -1,6 +1,6 @@
-package com.tobeto.RentACar.core.security.service;
+package com.tobeto.RentACar.core.security.services;
 
-import com.tobeto.RentACar.core.security.token.TokenRepository;
+import com.tobeto.RentACar.core.security.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
