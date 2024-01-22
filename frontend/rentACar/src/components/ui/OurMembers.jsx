@@ -2,6 +2,7 @@ import React from "react";
 import "../../styles/our-member.css";
 import { Col } from "reactstrap";
 import { Link } from "react-router-dom";
+import { AnimatedLTR } from "./animation/animateDiv";
 
 const OUR__MEMBERS = [
   {
@@ -42,13 +43,14 @@ const OurMembers = () => {
     <>
       {OUR__MEMBERS.map((item, index) => (
         <Col lg="3" md="3" sm="4" xs="6" key={index} className="mb-4">
+          <AnimatedLTR direction="left">
           <div className="single__member">
             <div className="single__member-img">
               <img src={item.imgUrl} alt="" className="w-100" />
 
               <div className="single__member-social">
                 <Link to={item.gitUrl}  target="_blank">
-                  <i class="ri-github-line"></i>
+                  <i className="ri-github-line"></i>
                 </Link>
                 <Link to={item.linkedinUrl} target="_blank">
                   <i className="ri-linkedin-line"></i>
@@ -61,6 +63,7 @@ const OurMembers = () => {
               {item.experience}
             </p>
           </div>
+          </AnimatedLTR>
         </Col>
       ))}
     </>

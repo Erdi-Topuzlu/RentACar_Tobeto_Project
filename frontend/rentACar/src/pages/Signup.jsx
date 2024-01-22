@@ -6,6 +6,7 @@ import Helmet from "../components/Helmet";
 import { signUpValidationSchema } from "../schemes/signUpScheme";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
+import { AnimatedLTR } from "../components/ui/animation/animateDiv";
 
 
 
@@ -31,6 +32,7 @@ const signUp = () => {
       <section >
         <Container>
           <Row>
+          <AnimatedLTR direction="left">
             <Col lg="12" className="mb-5 text-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +45,8 @@ const signUp = () => {
               </svg>
               <h2 className="section__title">{t("signup")}</h2>
               <div className="d-flex mt-4 justify-content-center align-items-center">
+
+                
                 <Col lg="4" className="mb-5 text-center">
 
 
@@ -137,6 +141,8 @@ const signUp = () => {
 
               </div>
             </Col>
+            
+            </AnimatedLTR>
           </Row>
         </Container>
       </section>

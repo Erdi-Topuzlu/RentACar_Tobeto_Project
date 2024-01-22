@@ -10,6 +10,7 @@ import driveImg from "../assets/all-images/drive.jpg";
 import OurMembers from "../components/ui/OurMembers";
 import "../styles/about.css";
 import { useTranslation } from "react-i18next";
+import { AnimatedLTR, AnimatedUTD } from "../components/ui/animation/animateDiv";
 
 const About = () => {
   const { t } = useTranslation();
@@ -22,12 +23,15 @@ const About = () => {
         <Container>
           <Row>
             <Col lg="6" md="6" sm="12">
+              <AnimatedLTR direction="left">
               <div className="about__page-img">
                 <img src={driveImg} alt="" className="w-100 rounded-3" />
               </div>
+              </AnimatedLTR>
             </Col>
 
             <Col lg="6" md="6" sm="12">
+            <AnimatedUTD direction="up">
               <div className="about__page-content">
                 <h2 className="section__title">
                 {t('weAre')}
@@ -47,6 +51,7 @@ const About = () => {
                   </div>
                 </div>
               </div>
+              </AnimatedUTD>
             </Col>
           </Row>
         </Container>

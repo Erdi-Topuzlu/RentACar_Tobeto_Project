@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 
 import "../../styles/testimonial.css";
+import { AnimatedLTR, AnimatedUTD } from "./animation/animateDiv";
 
 const Testimonial = () => {
   const settings = {
@@ -34,6 +35,7 @@ const Testimonial = () => {
   };
 
   return (
+    <AnimatedUTD direction="up">
     <Slider {...settings}>
       <div className="testimonial py-4 px-3">
         <p className="d-flex justify-content-center">
@@ -89,6 +91,7 @@ const Testimonial = () => {
 
       
     </Slider>
+    </AnimatedUTD>
   );
 };
 
