@@ -55,6 +55,7 @@
   "rent": "Rent",
   "ltoh": "Low to High",
   "htol": "High to Low",
+  "rating":"Ratings",
 
   "_Login": "LOGIN PAGE-EN",
   "password": "Password",
@@ -129,5 +130,22 @@
   "fuelType":"Fuel Type : ",
   "seatType":"Capacity  : ",
   "vehicleType":"Vehicle Type : ",
-  "filter":"Filter"
+  "filter":"Filter",
+
+
+  "_formInputs":"Booking FORM INPUTS-EN",
+  "bookingInfo": "Booking Information",
+  "userDetails":"User Details",
+  "extras":"Extras",
+  "paymentInfo":"Payment Details",
+  "next":"Next",
+  "previous":"Previous",
+  "fName":"First Name",
+  "lName":"Last Name",
+  "phoneNumber":"Phone Number",
+  "pickupAddress":"Pick-up Address",
+  "dropoffAddress":"Drop-off Address",
+  "startDate":"Start Date",
+  "endDate":"End Date"
+
 }

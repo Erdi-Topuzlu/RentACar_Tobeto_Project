@@ -5,6 +5,7 @@ import { Stepper } from "react-form-stepper";
 import { UserDetails } from "./steps/UserDetails/";
 import { Extras } from "./steps/Extras/";
 import { PaymentDetails } from "./steps/PaymentDetails/";
+import { useTranslation } from "react-i18next";
 
 function CustomStepper(props) {
   return (
@@ -15,13 +16,14 @@ function CustomStepper(props) {
         completedColor: "#673ab7",
         activeColor: "#f9a826",
         disabledColor: "#eee",
+        
       }}
       styleConfig={{
         activeBgColor: "#f9a826",
         completedBgColor: "#673ab7",
         inactiveBgColor: "#eee",
-        activeTextColor: "#fff",
-        completedTextColor: "#fff",
+        activeTextColor: "#000",
+        completedTextColor: "#eee",
         inactiveTextColor: "#444",
       }}
     />
@@ -30,11 +32,12 @@ function CustomStepper(props) {
 
 const BookingForm = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { t } = useTranslation();
 
   const steps = [
-    { title: "User Details", onClick: () => setActiveStep(0) },
-    { title: "Payment", onClick: () => setActiveStep(1) },
-    { title: "Payment Information", onClick: () => setActiveStep(2) },
+    { label: t('userDetails'), onClick: () => setActiveStep(0) },
+    { label: t('extras'), onClick: () => setActiveStep(1) },
+    { label: t('paymentInfo'), onClick: () => setActiveStep(2) },
   ];
 
   const styleConf = [

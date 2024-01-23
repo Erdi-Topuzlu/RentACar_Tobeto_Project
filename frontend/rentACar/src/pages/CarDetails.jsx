@@ -98,7 +98,7 @@ const CarDetails = () => {
                       <i className="ri-star-s-fill"></i>
                       <i className="ri-star-s-fill"></i>
                     </span>
-                    ({} ratings)
+                    ({} {t('rating')})
                   </span>
                 </div>
                 <div className="row">
@@ -217,7 +217,7 @@ const CarDetails = () => {
 
             <Col lg="12" className="mt-5">
               <div className="booking-info mt-5">
-                <h5 className="mb-4 fw-bold text-center ">Booking Information</h5>
+                <h5 className="mb-4 fw-bold text-center ">{t('bookingInfo')}</h5>
                 <BookingForm />
               </div>
             </Col>

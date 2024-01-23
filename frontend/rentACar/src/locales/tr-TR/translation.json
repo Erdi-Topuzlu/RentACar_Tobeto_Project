@@ -54,6 +54,7 @@
   "rent": "Kirala",
   "ltoh": "Ucuzdan Pahalıya",
   "htol": "Pahalıdan Ucuza",
+  "rating":"Derecelendirme",
 
   "_Login": "LOGIN PAGE-TR",
   "password": "Şifre",
@@ -118,7 +119,7 @@
   "automatic":"Otomatik",
   "diesel":"Dizel",
   "gasoline":"Benzin",
-  "hybrid":"Hybrid",
+  "hybrid":"Hibrit",
   "electric":"Elektrikli",
   "suv":"Arazi",
   "sedan":"Binek",
@@ -128,6 +129,21 @@
   "fuelType":"Yakıt Türü : ",
   "seatType":"Koltuk : ",
   "vehicleType":"Araç Tipi : ",
-  "filter":"Filtre"
-  
+  "filter":"Filtre",
+
+  "_formInputs":"Booking FORM INPUTS-TR",
+  "bookingInfo": "Kiralama Bilgileri",
+  "userDetails":"Kullanıcı Bilgileri",
+  "extras":"Ekstralar",
+  "paymentInfo":"Ödeme Bilgileri",
+  "next":"İleri",
+  "previous":"Geri",
+  "fName":"İsim",
+  "lName":"Soyisim",
+  "phoneNumber":"Telefon Numarası",
+  "pickupAddress":"Teslim Alma Adresi",
+  "dropoffAddress":"Teslimat Adresi",
+  "startDate":"Başlangıç Tarihi",
+  "endDate":"Bitiş Tarihi"
+
 }
