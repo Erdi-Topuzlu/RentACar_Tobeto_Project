@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import fetchUserData from "../redux/actions/fetchUserData";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
+import Cookies from 'js-cookie';
+
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ const Profile = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         // Kullanıcıyı login sayfasına yönlendir
+        Cookies.remove("remember-me")
         navigate("/login");
       } else {
         console.error("Çıkış işlemi başarısız.");

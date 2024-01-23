@@ -22,6 +22,7 @@
     "formik": "^2.4.5",
     "framer-motion": "^10.18.0",
     "i18next": "^23.7.16",
+    "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
