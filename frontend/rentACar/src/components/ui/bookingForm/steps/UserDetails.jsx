@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function UserDetails({ steps, activeStep, setActiveStep }) {
@@ -15,6 +15,20 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
   const deactivateDateInput = () => {
     setDateInputType("text");
   };
+
+    useEffect(() => {
+    // Sayfa yenilendiğinde localStorage'ı temizle
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("userData");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // useEffect'in temizlik fonksiyonu
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
  
   const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
