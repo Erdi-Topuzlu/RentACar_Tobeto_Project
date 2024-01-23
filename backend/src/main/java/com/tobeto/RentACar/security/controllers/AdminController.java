@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin")
-@PreAuthorize("hasRole('ADMIN')")
-//@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Admin Controller", description = "Admin Controller")
 public class AdminController {
 
@@ -30,26 +28,22 @@ public class AdminController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
     public String get() {
         return "GET:: Admin Controller";
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin:write')")
     @Hidden
     public String post() {
         return "POST:: Admin Controller";
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('admin:update')")
     public String put() {
         return "PUT:: Admin Controller";
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAuthority('admin:delete')")
     public String delete() {
         return "DELETE:: Admin Controller";
     }

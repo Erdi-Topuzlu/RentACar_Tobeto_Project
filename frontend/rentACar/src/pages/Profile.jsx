@@ -12,7 +12,9 @@ const Profile = () => {
   const [userRoles, setUserRoles] = useState([]);
   const navigate = useNavigate();
   const canAccessPage =  userRoles.includes('USER') || userRoles.includes('ADMIN');
+  const [token, setToken] = useState("");
 
+  
   const decodeJWT = (token) => {
     try {
       const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -23,9 +25,18 @@ const Profile = () => {
     }
   };
   const handleLogout = async () => {
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+  };
+
     try {
     // Çıkış endpoint'i
-    const response = await fetch('http://localhost:8080/api/v1/logout');
+    const response = await fetch('http://localhost:8080/api/v1/logout', {
+      method: 'POST',
+      headers: headers
+    });
       console.log(response)
     // Başarılı bir çıkış durumunda, local storage'daki token'ı sil
     if (response.ok) {
@@ -47,6 +58,7 @@ console.log("Roles: ", userRoles)
     if (storedJWT) {
       const decodedToken = decodeJWT(storedJWT);
       const id = decodedToken.id;
+      setToken(storedJWT)
       console.log("TOken: ",decodedToken)
       if (decodedToken && decodedToken.role) {
 

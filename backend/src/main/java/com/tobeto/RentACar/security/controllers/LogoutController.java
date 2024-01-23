@@ -1,4 +1,3 @@
-/*
 package com.tobeto.RentACar.security.controllers;
 
 import com.tobeto.RentACar.security.services.LogoutService;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/logout")
 @Tag(name = "Logout Controller", description = "Logout Endpoints")
 @RequiredArgsConstructor
@@ -21,12 +21,8 @@ public class LogoutController {
     private final LogoutService logoutService;
 
     @PostMapping
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        // Kullanıcı oturumunu sonlandırma işlemleri
-        // Örneğin, JWT'yi karaliste (blacklist) eklemek gibi
-        logoutService.logout(request);
-        // Oturumu sonlandırıldıktan sonra başarılı bir yanıt döndür
+    public ResponseEntity<String> logout() {
+        logoutService.logout();
         return ResponseEntity.ok("Çıkış başarılı!");
     }
 }
-*/
