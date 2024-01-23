@@ -5,6 +5,7 @@ import "../../styles/car-item.css";
 import { useTranslation } from "react-i18next";
 import { vehicleType } from "../helper/conversionType";
 import { Row } from "react-bootstrap";
+import { motion } from 'framer-motion'
 
 const CarItem = ({ item }) => {
   const { t } = useTranslation();
@@ -12,11 +13,14 @@ const CarItem = ({ item }) => {
     <Col lg="4" md="4" sm="6" className="mb-5">
       <div className="car__item">
         <div className="car__img">
+        <motion.div whileHover={{ scale: 1.05 }}>
           <img
             src={"https://placehold.co/600x400"}
             alt=""
             className="w-100 h-100 "
           />
+
+          </motion.div>
         </div>
 
         <div className="car__item-content mt-4 text-center">

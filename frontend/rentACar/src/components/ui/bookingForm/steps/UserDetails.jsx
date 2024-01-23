@@ -1,68 +1,80 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-export function UserDetails({steps, activeStep, setActiveStep}) {
+export function UserDetails({ steps, activeStep, setActiveStep }) {
+  const [dateInputType, setDateInputType] = useState("text");
+  const { t } = useTranslation();
 
-    const formik = useFormik({
-      initialValues: {
-          firstname: "",
-          lastname: "",
-          email: "",
-          phoneNumber: "",
-          pickupAdress: "",
-          dropoffAdress: "",
-          pickupDate: "",
-          dropoffDate: "",
-       
-      },
-      validationSchema: userDetailBookingFormScheme,
-      onSubmit: (values,actions) => {
-        //alert(JSON.stringify(values, null, 2));
-        //actions.resetForm();
-        const data = JSON.stringify(values)
-        localStorage.setItem("userData",data)
-        setActiveStep(activeStep + 1)
-        
-      },
-    });
-  
-  
-    return(
-      <div className="d-flex align-items-center justify-content-center">
-        
-      
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
+
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phoneNumber: "",
+      pickupAdress: "",
+      dropoffAdress: "",
+      pickupDate: "",
+      dropoffDate: "",
+    },
+    validationSchema: userDetailBookingFormScheme,
+    onSubmit: (values, actions) => {
+      //alert(JSON.stringify(values, null, 2));
+      //actions.resetForm();
+      console.log(pickupDate.value);
+      const data = JSON.stringify(values);
+      localStorage.setItem("userData", data);
+      setActiveStep(activeStep + 1);
+    },
+  });
+
+  return (
+    <div className="d-flex align-items-center justify-content-center">
       <Form onSubmit={formik.handleSubmit}>
-        
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
           <Input
-          id="firstname"
-          name="firstname"
-          value={formik.values.firstname}
-          className={formik.errors.firstname && formik.touched.firstname && "error"}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          invalid={formik.errors.firstname && formik.touched.firstname}
-          type="text" 
-          placeholder="First Name"
+            id="firstname"
+            name="firstname"
+            value={formik.values.firstname}
+            className={
+              formik.errors.firstname && formik.touched.firstname && "error"
+            }
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            invalid={formik.errors.firstname && formik.touched.firstname}
+            type="text"
+            placeholder={t('fName')}
           />
         </FormGroup>
-  
+
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <Input
-          id="lastname"
-          name="lastname"
-          value={formik.values.lastname}
-          className={formik.errors.lastname && formik.touched.lastname && "error"}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          invalid={formik.errors.lastname && formik.touched.lastname}
-          type="text" 
-          placeholder="Last Name" />
-          </FormGroup>
-  
+          <Input
+            id="lastname"
+            name="lastname"
+            value={formik.values.lastname}
+            className={
+              formik.errors.lastname && formik.touched.lastname && "error"
+            }
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            invalid={formik.errors.lastname && formik.touched.lastname}
+            type="text"
+            placeholder={t('lName')}
+          />
+        </FormGroup>
+
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
-           <Input
+          <Input
             id="email"
             name="email"
             value={formik.values.email}
@@ -71,83 +83,115 @@ export function UserDetails({steps, activeStep, setActiveStep}) {
             onBlur={formik.handleBlur}
             type="text"
             placeholder="E-mail"
-            invalid={formik.errors.email && formik.touched.email} />
-         </FormGroup>
-  
+            invalid={formik.errors.email && formik.touched.email}
+          />
+        </FormGroup>
+
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-           <Input
+          <Input
             id="phoneNumber"
             name="phoneNumber"
             value={formik.values.phoneNumber}
-            className={formik.errors.phoneNumber && formik.touched.phoneNumber && "error"}
+            className={
+              formik.errors.phoneNumber && formik.touched.phoneNumber && "error"
+            }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder="Phone Number"
-            invalid={formik.errors.phoneNumber && formik.touched.phoneNumber} />
+            placeholder={t('phoneNumber')}
+            invalid={formik.errors.phoneNumber && formik.touched.phoneNumber}
+          />
         </FormGroup>
-  
+
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
-        <Input
+          <Input
             id="pickupAdress"
             name="pickupAdress"
             value={formik.values.pickupAdress}
-            className={formik.errors.pickupAdress && formik.touched.pickupAdress && "error"}
+            className={
+              formik.errors.pickupAdress &&
+              formik.touched.pickupAdress &&
+              "error"
+            }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder="Pick-up Adress"
-            invalid={formik.errors.pickupAdress && formik.touched.pickupAdress} />
+            placeholder={t('pickupAddress')}
+            invalid={formik.errors.pickupAdress && formik.touched.pickupAdress}
+          />
         </FormGroup>
-  
+
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <Input
+          <Input
             id="dropoffAdress"
             name="dropoffAdress"
             value={formik.values.dropoffAdress}
-            className={formik.errors.dropoffAdress && formik.touched.dropoffAdress && "error"}
+            className={
+              formik.errors.dropoffAdress &&
+              formik.touched.dropoffAdress &&
+              "error"
+            }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder="Drop-off Adress"
-            invalid={formik.errors.dropoffAdress && formik.touched.dropoffAdress} />
+            placeholder={t('dropoffAddress')}
+            invalid={
+              formik.errors.dropoffAdress && formik.touched.dropoffAdress
+            }
+          />
         </FormGroup>
-  
+
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
-        <Input
+          <Input
             id="pickupDate"
             name="pickupDate"
+            placeholder={t('startDate')}
             value={formik.values.pickupDate}
-            className={formik.errors.pickupDate && formik.touched.pickupDate && "error"}
+            className={
+              formik.errors.pickupDate &&
+              formik.touched.pickupDate &&
+              "error form-control"
+            }
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="date"
-            placeholder="Pick-up Date"
-            invalid={formik.errors.pickupDate && formik.touched.pickupDate} />
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              deactivateDateInput();
+            }}
+            onFocus={activateDateInput}
+            type={dateInputType}
+            invalid={formik.errors.pickupDate && formik.touched.pickupDate}
+          />
         </FormGroup>
-  
+
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <Input
+          <Input
             id="dropoffDate"
             name="dropoffDate"
+            placeholder={t('endDate')}
             value={formik.values.dropoffDate}
-            className={formik.errors.dropoffDate && formik.touched.dropoffDate && "error"}
+            className={
+              formik.errors.dropoffDate && formik.touched.dropoffDate && "error"
+            }
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="date"
-            placeholder="Drop-off Date"
-            invalid={formik.errors.dropoffDate && formik.touched.dropoffDate} />
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              deactivateDateInput();
+            }}
+            onFocus={activateDateInput}
+            type={dateInputType}
+            invalid={formik.errors.dropoffDate && formik.touched.dropoffDate}
+          />
         </FormGroup>
-  
-       <FormGroup>
-       <div className="d-flex align-items-center justify-content-between">
+
+        <FormGroup>
+          <div className="d-flex align-items-center justify-content-between">
             {activeStep !== steps.length - 1 && (
               <Button
                 disabled={activeStep === 0}
                 color="secondary"
                 onClick={() => setActiveStep(activeStep - 1)}
               >
-                Previous
+                {t('previous')}
               </Button>
             )}
             {
@@ -157,17 +201,15 @@ export function UserDetails({steps, activeStep, setActiveStep}) {
                     type="submit"
                     className="form__btn"
                     onSubmit={() => setActiveStep(activeStep + 1)}
-                    
                   >
-                    Next
+                    {t('next')}
                   </Button>
                 )}
               </div>
             }
           </div>
-       </FormGroup>
-        
+        </FormGroup>
       </Form>
-      </div>
-    )
-  }
+    </div>
+  );
+}
