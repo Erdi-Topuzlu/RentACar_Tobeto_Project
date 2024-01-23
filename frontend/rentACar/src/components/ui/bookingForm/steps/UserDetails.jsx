@@ -16,30 +16,38 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     setDateInputType("text");
   };
 
-  const formik = useFormik({
-    initialValues: {
-      firstname: "",
-      lastname: "",
-      email: "",
-      phoneNumber: "",
-      pickupAdress: "",
-      dropoffAdress: "",
-      pickupDate: "",
-      dropoffDate: "",
-    },
-    validationSchema: userDetailBookingFormScheme,
-    onSubmit: (values, actions) => {
-      //alert(JSON.stringify(values, null, 2));
-      //actions.resetForm();
-      console.log(pickupDate.value);
-      const data = JSON.stringify(values);
-      localStorage.setItem("userData", data);
-      setActiveStep(activeStep + 1);
-    },
-  });
+ 
+  const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
 
-  return (
-    <div className="d-flex align-items-center justify-content-center">
+
+    const formik = useFormik({
+      initialValues: {
+        firstname: storedUserData.firstname || "",
+        lastname: storedUserData.lastname || "",
+        email: storedUserData.email || "",
+        phoneNumber: storedUserData.phoneNumber || "",
+        pickupAdress: storedUserData.pickupAdress || "",
+        dropoffAdress: storedUserData.dropoffAdress || "",
+        pickupDate: storedUserData.pickupDate || "",
+        dropoffDate: storedUserData.dropoffDate || "",
+      },
+
+      validationSchema: userDetailBookingFormScheme,
+      onSubmit: (values,actions) => {
+        
+          //alert(JSON.stringify(values, null, 2));
+        //actions.resetForm();
+          const data = JSON.stringify(values);
+          localStorage.setItem("userData", data);
+          setActiveStep(activeStep + 1);
+        },
+        
+    });
+  
+  
+    return(
+      <div className="d-flex align-items-center justify-content-center">
+        
       <Form onSubmit={formik.handleSubmit}>
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
           <Input
