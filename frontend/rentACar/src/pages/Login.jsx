@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -24,6 +24,13 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    if((localStorage.getItem("access_token") && (localStorage.getItem("refresh_token")))){
+      navigate("/profile")
+    }
+
+  },[])
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -38,8 +45,8 @@ const Login = () => {
 
         // Başarılı giriş durumunda yapılacak işlemler
         console.log("Başarılı giriş:", response.data);
-        console.log(response.data.access_token)
         localStorage.setItem('access_token',response.data.access_token);
+        localStorage.setItem('refresh_token',response.data.refresh_token);
         // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
         navigate("/profile");
         console.log(actions);
