@@ -27,33 +27,34 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import FoprgotPassword from "./pages/ForgotPassword.jsx";
 import Profile from "./pages/Profile.jsx";
+import Admin from "./pages/admin/admin.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<NotFound />}>
-      <Route index pat element={<Home />} />
-      <Route path="home" element={<Home />} />
-      <Route path="about" element={<About />} />
-      <Route path="cars">
-        <Route index element={<CarListing />} />
-        <Route path=":id" element={<CarDetails />} />
+    <>
+      <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+        <Route index pat element={<Home />} />
+        <Route path="home" element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="cars">
+          <Route index element={<CarListing />} />
+          <Route path=":id" element={<CarDetails />} />
+        </Route>
+        <Route path="blogs">
+          <Route index element={<Blog />} />
+          <Route path=":id" element={<BlogDetails />} />
+        </Route>
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/forgot-password" element={<FoprgotPassword />} />
       </Route>
-      <Route path="blogs">
-        <Route index element={<Blog />} />
-        <Route path=":id" element={<BlogDetails />} />
-      </Route>
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/sign-up" element={<Signup />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/forgot-password" element={<FoprgotPassword />} />
-    </Route>
+      <Route path="/admin" element={<Admin />} />
+    </>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
- 
-    
-    <RouterProvider router={router} />
-   
+  <RouterProvider router={router} />
 );

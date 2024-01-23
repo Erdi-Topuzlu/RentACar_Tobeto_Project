@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
@@ -17,6 +17,17 @@ const langSelect = (eventKey) => {
 
 function Header() {
   const menuRef = useRef(null);
+  const [showUi, setShowUi] = useState(true);
+
+  //burası düzeltilecek
+  useEffect(() => {
+    if (
+      localStorage.getItem("access_token") ||
+      localStorage.getItem("refresh_token")
+    ) {
+      setShowUi(false);
+    }
+  }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
 
@@ -63,17 +74,26 @@ function Header() {
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
-                <Link to="/login" className=" d-flex align-items-center gap-1">
-                  <i className="ri-login-circle-line"></i>
-                  {t("login")}
-                </Link>
+                {showUi ? (
+                  <>
+                    <Link
+                      to="/login"
+                      className="d-flex align-items-center gap-1"
+                    >
+                      <i className="ri-login-circle-line"></i>
+                      {t("login")}
+                    </Link>
 
-                <Link
-                  to="/sign-up"
-                  className=" d-flex align-items-center gap-1"
-                >
-                  <i className="ri-user-line"></i> {t("signup")}
-                </Link>
+                    <Link
+                      to="/sign-up"
+                      className="d-flex align-items-center gap-1"
+                    >
+                      <i className="ri-user-line"></i> {t("signup")}
+                    </Link>
+                  </>
+                ) : (
+                  <p>deneme</p>
+                )}
                 <div className="vr" />
                 <NavDropdown
                   menuVariant="dark"
@@ -89,19 +109,16 @@ function Header() {
                   id="nav-dropdown"
                   onSelect={langSelect}
                 >
-                  {
-                    i18n.language === "en" ? (
-                      <NavDropdown.Item eventKey="tr">
-                    <img width={16} src={turkey} /> {t("tr-TR")}
-                  </NavDropdown.Item>
-                    ) : i18n.language === "tr" ? (
-                      <NavDropdown.Item eventKey="en">
-                    <img width={16} src={england} /> {t("en-US")}
-                  </NavDropdown.Item>
-                    ) : // Handle other languages if needed
-                    null
-                  }
-                 
+                  {i18n.language === "en" ? (
+                    <NavDropdown.Item eventKey="tr">
+                      <img width={16} src={turkey} /> {t("tr-TR")}
+                    </NavDropdown.Item>
+                  ) : i18n.language === "tr" ? (
+                    <NavDropdown.Item eventKey="en">
+                      <img width={16} src={england} /> {t("en-US")}
+                    </NavDropdown.Item>
+                  ) : // Handle other languages if needed
+                  null}
                 </NavDropdown>
               </div>
             </Col>
