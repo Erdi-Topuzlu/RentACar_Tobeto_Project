@@ -23,7 +23,7 @@ import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import FoprgotPassword from "./pages/ForgotPassword.jsx";
-import Profile from "./pages/Profile.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 import Admin from "./pages/admin/admin.jsx";
 import Campaign from "./pages/Campaign.jsx";
 import CampaignDetails from "./pages/CampaignDetails.jsx";
