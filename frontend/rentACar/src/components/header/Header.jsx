@@ -252,41 +252,53 @@ function Header() {
             <div className="mobile__logo text-center d-lg-none d-md-none d-sm-block">
               <h1>
                 <Link to="/home" className="d-flex align-items-center gap-2">
-                  <img width={75} src={mobilLogo} alt="Mobile Logo" />
+                  <img width={75} src={logo} alt="Mobile Logo" />
                 </Link>
               </h1>
             </div>
 
-            {/* Login (Right Side) */}
-            <div className="ml-auto  d-lg-none d-md-none d-sm-block">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="32"
-                height="32"
-                fill="rgba(255,255,255,1)"
-              >
-                <path d="M10 11V8L15 12L10 16V13H1V11H10ZM2.4578 15H4.58152C5.76829 17.9318 8.64262 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9H2.4578C3.73207 4.94289 7.52236 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C7.52236 22 3.73207 19.0571 2.4578 15Z"></path>
-              </svg>
-            </div>
+            
 
-            <div className="navigation" ref={menuRef} onClick={toggleMenu}>
-              <div className="menu">
-                {navLinks.map((item, index) => (
-                  <NavLink
-                    to={item.path}
-                    className={(navClass) =>
-                      navClass.isActive ? "nav__active nav__item" : "nav__item"
-                    }
-                    key={index}
-                  >
-                    {item.display}
-                  </NavLink>
-                ))}
-              </div>
-            </div>
+            {/* Navigation links for mobile */}
+<div className="navigation" ref={menuRef} onClick={toggleMenu}>
+  <div className="menu">
+    <div className="nav__right d-flex align-items-center">
 
-            <div className="nav__right">
+      <div className="menu ">
+        {navLinks.map((item, index) => (
+          <NavLink
+            to={item.path}
+            className={(navClass) =>
+              navClass.isActive ? "nav__active nav__item" : "nav__item"
+            }
+            key={index}
+          >
+            {item.display}
+          </NavLink>
+        ))}
+        <div>
+          {/* Login and Signup buttons for mobile */}
+          {showUi && (
+            <div className="ml-auto d-lg-none d-md-none d-sm-block d-flex gap-2 mt-4">
+              <Link to="/login" className="d-flex align-items-center gap-1">
+                <i className="ri-login-circle-line"></i>
+                {t("login")}
+              </Link>
+
+              <Link to="/sign-up" className="d-flex align-items-center gap-1">
+                <i className="ri-user-line"></i> {t("signup")}
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            {/* Search box for mobile */}
+            <div className="ml-3 d-lg-none d-md-none d-sm-block">
               <div className="search__box">
                 <input type="text" placeholder={t("search")} />
                 <span>
@@ -294,7 +306,32 @@ function Header() {
                 </span>
               </div>
             </div>
+            <div className="ml-auto d-lg-none d-md-none d-sm-block mb-3 ">
+        <NavDropdown
+          menuVariant="dark"
+          title={
+            i18n.language === "en" ? (
+              <img width={24} src={england} alt="EN" />
+            ) : i18n.language === "tr" ? (
+              <img width={24} src={turkey} alt="TR" />
+            ) : null
+          }
+          id="nav-dropdown"
+          onSelect={langSelect}
+        >
+          {i18n.language === "en" ? (
+            <NavDropdown.Item eventKey="tr">
+              <img width={16} src={turkey} alt="TR" /> {t("tr-TR")}
+            </NavDropdown.Item>
+          ) : i18n.language === "tr" ? (
+            <NavDropdown.Item eventKey="en">
+              <img width={16} src={england} alt="EN" /> {t("en-US")}
+            </NavDropdown.Item>
+          ) : null}
+        </NavDropdown>
+      </div>
           </div>
+          
         </Container>
       </div>
     </header>
@@ -302,3 +339,5 @@ function Header() {
 }
 
 export default Header;
+
+     
