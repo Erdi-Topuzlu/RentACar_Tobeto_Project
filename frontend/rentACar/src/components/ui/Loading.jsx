@@ -1,24 +1,19 @@
 import React from "react";
-import { Col, Container, Row } from "reactstrap";
-import Header from "../../components/header/Header"
-import Footer from "../../components/footer/Footer";
+import { Container } from "reactstrap";
 import Helmet from "../Helmet";
-
 
 const Loading = () => {
   return (
     <Helmet title="Loading">
-    
-    
-    <section>
+      <section>
         <Container className="d-flex justify-content-center">
-        <div className="spinner-border custom-spinner" role="status">
-        <span className="sr-only"></span>
-      </div>
+          <div className="spinner-border custom-spinner" role="status">
+            <span className="sr-only"></span>
+          </div>
         </Container>
       </section>
-  </Helmet> 
-  )
+    </Helmet>
+  );
 };
 
 export default Loading;

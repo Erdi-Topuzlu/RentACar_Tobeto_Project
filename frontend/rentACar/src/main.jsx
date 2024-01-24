@@ -19,20 +19,20 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import CarListing from "./pages/CarListing.jsx";
 import CarDetails from "./pages/CarDetails.jsx";
-import Blog from "./pages/Blog.jsx";
-import BlogDetails from "./pages/BlogDetails.jsx";
 import Contact from "./pages/Contact.jsx";
-import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import FoprgotPassword from "./pages/ForgotPassword.jsx";
 import Profile from "./pages/Profile.jsx";
 import Admin from "./pages/admin/admin.jsx";
+import Campaign from "./pages/Campaign.jsx";
+import CampaignDetails from "./pages/CampaignDetails.jsx";
+import NotFound from "./pages/NotFound.jsx"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+      <Route path="/" element={<Layout />}>
         <Route index pat element={<Home />} />
         <Route path="home" element={<Home />} />
         <Route path="about" element={<About />} />
@@ -40,15 +40,16 @@ const router = createBrowserRouter(
           <Route index element={<CarListing />} />
           <Route path=":id" element={<CarDetails />} />
         </Route>
-        <Route path="blogs">
-          <Route index element={<Blog />} />
-          <Route path=":id" element={<BlogDetails />} />
+        <Route path="campaigns">
+          <Route index element={<Campaign />} />
+          <Route path=":id" element={<CampaignDetails />} />
         </Route>
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/forgot-password" element={<FoprgotPassword />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/admin" element={<Admin />} />
     </>

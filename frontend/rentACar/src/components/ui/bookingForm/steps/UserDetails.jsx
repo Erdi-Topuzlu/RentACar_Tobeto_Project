@@ -1,12 +1,13 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function UserDetails({ steps, activeStep, setActiveStep }) {
   const [dateInputType, setDateInputType] = useState("text");
   const { t } = useTranslation();
+  const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
 
   const activateDateInput = () => {
     setDateInputType("date");
@@ -16,7 +17,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     setDateInputType("text");
   };
 
-    useEffect(() => {
+  useEffect(() => {
     // Sayfa yenilendiğinde localStorage'ı temizle
     const handleBeforeUnload = () => {
       localStorage.removeItem("userData");
@@ -30,38 +31,28 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     };
   }, []);
 
- 
-  const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
+  const formik = useFormik({
+    initialValues: {
+      firstname: storedUserData.firstname || "",
+      lastname: storedUserData.lastname || "",
+      email: storedUserData.email || "",
+      phoneNumber: storedUserData.phoneNumber || "",
+      pickupAdress: storedUserData.pickupAdress || "",
+      dropoffAdress: storedUserData.dropoffAdress || "",
+      pickupDate: storedUserData.pickupDate || "",
+      dropoffDate: storedUserData.dropoffDate || "",
+    },
 
+    validationSchema: userDetailBookingFormScheme,
+    onSubmit: (values, actions) => {
+      const data = JSON.stringify(values);
+      localStorage.setItem("userData", data);
+      setActiveStep(activeStep + 1);
+    },
+  });
 
-    const formik = useFormik({
-      initialValues: {
-        firstname: storedUserData.firstname || "",
-        lastname: storedUserData.lastname || "",
-        email: storedUserData.email || "",
-        phoneNumber: storedUserData.phoneNumber || "",
-        pickupAdress: storedUserData.pickupAdress || "",
-        dropoffAdress: storedUserData.dropoffAdress || "",
-        pickupDate: storedUserData.pickupDate || "",
-        dropoffDate: storedUserData.dropoffDate || "",
-      },
-
-      validationSchema: userDetailBookingFormScheme,
-      onSubmit: (values,actions) => {
-        
-          //alert(JSON.stringify(values, null, 2));
-        //actions.resetForm();
-          const data = JSON.stringify(values);
-          localStorage.setItem("userData", data);
-          setActiveStep(activeStep + 1);
-        },
-        
-    });
-  
-  
-    return(
-      <div className="d-flex align-items-center justify-content-center">
-        
+  return (
+    <div className="d-flex align-items-center justify-content-center">
       <Form onSubmit={formik.handleSubmit}>
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
           <Input
@@ -75,7 +66,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onBlur={formik.handleBlur}
             invalid={formik.errors.firstname && formik.touched.firstname}
             type="text"
-            placeholder={t('fName')}
+            placeholder={t("fName")}
           />
         </FormGroup>
 
@@ -91,7 +82,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onBlur={formik.handleBlur}
             invalid={formik.errors.lastname && formik.touched.lastname}
             type="text"
-            placeholder={t('lName')}
+            placeholder={t("lName")}
           />
         </FormGroup>
 
@@ -120,7 +111,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder={t('phoneNumber')}
+            placeholder={t("phoneNumber")}
             invalid={formik.errors.phoneNumber && formik.touched.phoneNumber}
           />
         </FormGroup>
@@ -138,7 +129,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder={t('pickupAddress')}
+            placeholder={t("pickupAddress")}
             invalid={formik.errors.pickupAdress && formik.touched.pickupAdress}
           />
         </FormGroup>
@@ -156,7 +147,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder={t('dropoffAddress')}
+            placeholder={t("dropoffAddress")}
             invalid={
               formik.errors.dropoffAdress && formik.touched.dropoffAdress
             }
@@ -167,7 +158,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
           <Input
             id="pickupDate"
             name="pickupDate"
-            placeholder={t('startDate')}
+            placeholder={t("startDate")}
             value={formik.values.pickupDate}
             className={
               formik.errors.pickupDate &&
@@ -189,7 +180,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
           <Input
             id="dropoffDate"
             name="dropoffDate"
-            placeholder={t('endDate')}
+            placeholder={t("endDate")}
             value={formik.values.dropoffDate}
             className={
               formik.errors.dropoffDate && formik.touched.dropoffDate && "error"
@@ -213,7 +204,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
                 color="secondary"
                 onClick={() => setActiveStep(activeStep - 1)}
               >
-                {t('previous')}
+                {t("previous")}
               </Button>
             )}
             {
@@ -224,7 +215,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
                     className="form__btn"
                     onSubmit={() => setActiveStep(activeStep + 1)}
                   >
-                    {t('next')}
+                    {t("next")}
                   </Button>
                 )}
               </div>

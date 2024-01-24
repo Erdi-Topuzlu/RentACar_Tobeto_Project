@@ -1,4 +1,4 @@
-.blog__publisher span i {
+.campaign__publisher span i {
   color: #f9a826;
 }
 
@@ -38,7 +38,7 @@ blockquote {
   color: #fff !important;
 }
 
-.recent__blog-item h6 a {
+.recent__campaign-item h6 a {
   text-decoration: none;
   color: #673ab7;
   font-weight: 600;
@@ -74,7 +74,7 @@ blockquote {
     line-height: 1.4rem;
   }
 
-  .blog__details p {
+  .campaign__details p {
     font-size: 0.8rem;
     line-height: 1.4rem;
   }

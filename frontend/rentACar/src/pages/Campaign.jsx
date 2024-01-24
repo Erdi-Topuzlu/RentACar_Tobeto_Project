@@ -2,10 +2,10 @@ import React from "react";
 import { Container, Row } from "reactstrap";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
-import BlogList from "../components/ui/BlogList";
 import { useTranslation } from "react-i18next";
+import CampaingList from "../components/ui/CampaignList";
 
-const Blog = () => {
+const Campaign = () => {
   const { t } = useTranslation();
   return (
     <Helmet title={t('campaigns')}>
@@ -13,8 +13,7 @@ const Blog = () => {
       <section>
         <Container>
           <Row>
-            <BlogList />
-            <BlogList />
+            <CampaingList />
           </Row>
         </Container>
       </section>
@@ -22,4 +21,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default Campaign;

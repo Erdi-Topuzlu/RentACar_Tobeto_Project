@@ -9,23 +9,30 @@ import AboutSection from "../components/ui/AboutSection";
 import ServicesList from "../components/ui/SevicesList";
 import CarItem from "../components/ui/CarItem";
 import BecomeDriverSection from "../components/ui/BecomeDriverSection";
-import BlogList from "../components/ui/BlogList";
-import Testimonial from "../components/ui/Testimonial";
+import BlogList from "../components/ui/CampaignList";
+import Software from "../components/ui/Software";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllCarData from "../redux/actions/fetchAllCarData";
 import { useTranslation } from "react-i18next";
 import { AnimatedUTD } from "../components/ui/animation/animateDiv";
+import Loading from "../components/ui/Loading";
+import ErrorPage from "../components/ui/ErrorPage";
 
 const Home = () => {
   const dispatch = useDispatch();
-
-  const cars = useSelector((state) => state.carAllData.items);
-
+  const { t } = useTranslation();
+  const {items, status, error} = useSelector((state) => state.carAllData);
+  
   useEffect(() => {
     dispatch(fetchAllCarData());
   }, [dispatch]);
 
-  const { t } = useTranslation();
+  if (status === "LOADING") {
+    return <Loading />;
+  }else if (status === "FAIL"){
+    return <ErrorPage errorMessage={error} />
+  }
+
 
   return (
     <Helmet title={t("home")}>
@@ -73,7 +80,7 @@ const Home = () => {
                 <h2 className="section__title">{t("hotOffers")}</h2>
               </Col>
 
-            {cars.slice(0, 6).map((item) => (
+            {items.slice(0, 6).map((item) => (
               <CarItem item={item} key={item.id} />
             ))}
           </Row>
@@ -89,12 +96,12 @@ const Home = () => {
               <Col lg="12" className="mb-4 text-center">
                 <h2 className="section__title">{t("software")}</h2>
               </Col>
-            <Testimonial />
+            <Software />
           </Row>
         </Container>
       </section>
 
-      {/* =============== blog section =========== */}
+      {/* =============== campaign section =========== */}
       <section>
         <Container>
           <Row>

@@ -11,18 +11,13 @@ const NotFound = () => {
   const { t } = useTranslation();
   return (
     <Helmet title={t("notfound")}>
-    <Header/>
-    
-    <section>
+      <section>
         <Container className="d-flex justify-content-center">
-        <img width={350} src={img404} />
+          <img width={350} src={img404} />
         </Container>
       </section>
-
-   
-    <Footer/>
-  </Helmet> 
-  )
+    </Helmet>
+  );
 };
 
 export default NotFound;
