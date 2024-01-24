@@ -7,23 +7,43 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // localStorage'da token'ı sakladığınızı varsayalım
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        //Token uygun yapıda mı ?
+        if (token && /^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+$/.test(token)) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }}
+      return config;
+      //Hata durumu
+    } catch (error) {
+      console.error("Request interceptor error:", error);
+      return Promise.reject(error);
     }
-    return config;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
 
-  axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    try {
+      console.error("Response interceptor error:", error);
+      return Promise.reject(error);
+    } catch (error) {
+      console.error("Response interceptor error (unexpected):", error);
       return Promise.reject(error);
     }
-  );
+  }
+);
+
+
+
+export default axiosInstance;
+
+
 
 // axiosInstance.interceptors.response.use((value)=>{
 //     console.log("Başarılı bir cevap alındı.");
@@ -38,5 +58,3 @@ axiosInstance.interceptors.request.use(
 //     }
 // },
 // )
-
-export default axiosInstance;
