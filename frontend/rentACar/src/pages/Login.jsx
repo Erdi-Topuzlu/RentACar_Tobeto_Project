@@ -18,7 +18,6 @@ import { loginValidationSchema } from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 import { AnimatedLTR } from "../components/ui/animation/animateDiv";
-import Cookies from "js-cookie";
 import { ReactSVG } from "react-svg";
 
 const Login = () => {
@@ -39,15 +38,12 @@ const Login = () => {
           values
         );
 
-        console.log("Başarılı giriş:", response.data);
-
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
         navigate("/home");
         window.location.reload();
       } catch (error) {
         console.error("Giriş hatası:", error.response.data);
-        actions.setFieldError("general", "Kullanıcı adı veya şifre hatalı");
       } finally {
         actions.setSubmitting(false);
       }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -16,9 +16,11 @@ import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { AnimatedLTR } from "../components/ui/animation/animateDiv";
 import { ReactSVG } from "react-svg";
+import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 
 const signUp = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -36,11 +38,6 @@ const signUp = () => {
           values
         );
 
-        const token = response.data.access_token;
-
-        console.log("Başarılı giriş:", response.data);
-        console.log("Token: ", token)
-
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
 
@@ -49,8 +46,7 @@ const signUp = () => {
 
       } catch (error) {
         
-        console.error("Giriş hatası:", error.response.data);
-        actions.setFieldError("general", "Kullanıcı adı veya şifre hatalı");
+        console.error("Kayıt hatası:", response.error.data);
 
       } finally {
         actions.setSubmitting(false);

@@ -15,4 +15,8 @@ public class RegisterUserRequest {
     private String email;
     private String password;
     private Role role;
+
+    public Role getRole() {
+        return (role == null) ? Role.USER : role;
+    }
 }
