@@ -149,23 +149,7 @@ const Login = () => {
                             )}
                         </FormGroup>
                       </div>
-                      <FormGroup
-                        className="d-flex justify-content-end"
-                        check
-                        inline
-                      >
-                        <Input
-                          type="checkbox"
-                          id="rememberMe"
-                          name="rememberMe"
-                          checked={formik.values.rememberMe}
-                          onChange={formik.handleChange}
-                        />
-                        <Label style={{ marginLeft: 4 }} check>
-                          {t("remember")}
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check inline></FormGroup>
+                      
                       <FormGroup>
                         <div className="d-flex flex-column-reverse flex-lg-row justify-content-between align-items-center">
                           <Link

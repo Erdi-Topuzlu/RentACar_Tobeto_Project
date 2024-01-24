@@ -14,6 +14,7 @@ import { NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/joy";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
@@ -249,89 +250,89 @@ function Header() {
               </svg>
             </span>
 
-            <div className="mobile__logo text-center d-lg-none d-md-none d-sm-block">
-              <h1>
-                <Link to="/home" className="d-flex align-items-center gap-2">
-                  <img width={75} src={logo} alt="Mobile Logo" />
-                </Link>
-              </h1>
-            </div>
-
-            
-
             {/* Navigation links for mobile */}
-<div className="navigation" ref={menuRef} onClick={toggleMenu}>
-  <div className="menu">
-    <div className="nav__right d-flex align-items-center">
+            <div className="navigation" ref={menuRef} onClick={toggleMenu}>
+              <div className="menu">
+                <div className="nav__right d-flex align-items-center">
+                  <div className="menu">
+                    <div className="text-center d-lg-none d-md-none d-sm-block">
+                      <h1>
+                        <Link to="/home" className="d-flex align-items-center">
+                          <img width={100} src={logo} alt="Mobile Logo" />
+                        </Link>
+                      </h1>
+                    </div>
 
-      <div className="menu ">
-        {navLinks.map((item, index) => (
-          <NavLink
-            to={item.path}
-            className={(navClass) =>
-              navClass.isActive ? "nav__active nav__item" : "nav__item"
-            }
-            key={index}
-          >
-            {item.display}
-          </NavLink>
-        ))}
-        <div>
-          {/* Login and Signup buttons for mobile */}
-          {showUi && (
-            <div className="ml-auto d-lg-none d-md-none d-sm-block d-flex gap-2 mt-4">
-              <Link to="/login" className="d-flex align-items-center gap-1">
-                <i className="ri-login-circle-line"></i>
-                {t("login")}
-              </Link>
-
-              <Link to="/sign-up" className="d-flex align-items-center gap-1">
-                <i className="ri-user-line"></i> {t("signup")}
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                    {navLinks.map((item, index) => (
+                      <NavLink
+                        to={item.path}
+                        className={(navClass) =>
+                          navClass.isActive
+                            ? "nav__active nav__item"
+                            : "nav__item"
+                        }
+                        key={index}
+                      >
+                        {item.display}
+                      </NavLink>
+                    ))}
 
 
-            {/* Search box for mobile */}
-            <div className="ml-3 d-lg-none d-md-none d-sm-block">
-              <div className="search__box">
-                <input type="text" placeholder={t("search")} />
-                <span>
-                  <i className="ri-search-line"></i>
-                </span>
+                    <Divider style={{border:"2px solid #673ab7"}} />
+
+
+                    <div>
+                      {/* Login and Signup buttons for mobile */}
+                      {showUi && (
+                        <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex gap-2">
+                          <Link
+                            to="/login"
+                            className="d-flex-inline align-items-center gap-2"
+                          >
+                            <i className="ri-login-circle-line"></i>
+                            {t("login")}
+                          </Link>
+
+                          <Link
+                            to="/sign-up"
+                            className="d-flex-inline align-items-center gap-2"
+                          >
+                            <i className="ri-user-line"></i> {t("signup")}
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="ml-auto d-lg-none d-md-none d-sm-block mb-3 ">
-        <NavDropdown
-          menuVariant="dark"
-          title={
-            i18n.language === "en" ? (
-              <img width={24} src={england} alt="EN" />
-            ) : i18n.language === "tr" ? (
-              <img width={24} src={turkey} alt="TR" />
-            ) : null
-          }
-          id="nav-dropdown"
-          onSelect={langSelect}
-        >
-          {i18n.language === "en" ? (
-            <NavDropdown.Item eventKey="tr">
-              <img width={16} src={turkey} alt="TR" /> {t("tr-TR")}
-            </NavDropdown.Item>
-          ) : i18n.language === "tr" ? (
-            <NavDropdown.Item eventKey="en">
-              <img width={16} src={england} alt="EN" /> {t("en-US")}
-            </NavDropdown.Item>
-          ) : null}
-        </NavDropdown>
-      </div>
+
+            <div className="ml-auto d-lg-none d-md-none d-sm-block ">
+              <NavDropdown
+                style={{ color: "#fff" }}
+                menuVariant="dark"
+                title={
+                  i18n.language === "en" ? (
+                    <img width={32} src={england} alt="EN" />
+                  ) : i18n.language === "tr" ? (
+                    <img width={32} src={turkey} alt="TR" />
+                  ) : null
+                }
+                id="nav-dropdown"
+                onSelect={langSelect}
+              >
+                {i18n.language === "en" ? (
+                  <NavDropdown.Item eventKey="tr">
+                    <img width={16} src={turkey} alt="TR" /> {t("tr-TR")}
+                  </NavDropdown.Item>
+                ) : i18n.language === "tr" ? (
+                  <NavDropdown.Item eventKey="en">
+                    <img width={16} src={england} alt="EN" /> {t("en-US")}
+                  </NavDropdown.Item>
+                ) : null}
+              </NavDropdown>
+            </div>
           </div>
-          
         </Container>
       </div>
     </header>
@@ -339,5 +340,3 @@ function Header() {
 }
 
 export default Header;
-
-     
