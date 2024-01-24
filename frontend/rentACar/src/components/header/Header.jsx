@@ -78,14 +78,9 @@ function Header() {
         headers: headers,
       });
 
-
-
       if (response.ok) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-
-      console.log("Name: ", details)
-
 
         setShowUi(true);
         navigate("/login");
