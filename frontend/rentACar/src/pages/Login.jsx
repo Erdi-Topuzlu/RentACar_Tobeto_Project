@@ -64,7 +64,12 @@ const Login = () => {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
         // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
-        navigate("/profile");
+        navigate("/home");
+        
+        // TODO: BURADA SAYFA YENİLENİYOR VE UFAK BİR ÜÇKAĞITÇILIK VAR. 
+        // DÜZELTİLMESİ GEREK?
+        window.location.reload();
+
       } catch (error) {
         // Giriş başarısız, hata mesajını kontrol et
         console.error("Giriş hatası:", error.response.data);

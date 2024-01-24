@@ -1,4 +1,29 @@
+.header__user-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
+.header__username {
+  font-family: Arial, sans-serif; /* Use a legible font */
+  font-size: 16px; /* Adjust font size for readability */
+  font-weight: bold; /* Emphasize the username */
+  color: #333; /* Set a dark color for contrast */
+  margin-left: 10px; /* Create space between image and username */
+}
+
+.header__logout-btn {
+  font-family: Arial, sans-serif; /* Use a legible font */
+  font-size: 14px; /* Adjust font size for readability */
+  font-weight: bold; /* Emphasize the text */
+  color: #fff; /* Set a light color for contrast */
+  background-color: #333; /* Set a dark color for contrast */
+  border: none; /* Remove the default border */
+  padding: 10px 15px; /* Add some padding for visual appeal */
+  border-radius: 3px; /* Add some rounded corners for a more polished look */
+  cursor: pointer; /* Set the cursor to a pointer for interactivity */
+}
 
 .header__top {
   padding: 10px 0px;
