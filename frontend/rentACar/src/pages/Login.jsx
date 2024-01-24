@@ -26,20 +26,10 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Tarayıcı çerezlerini kontrol et ve token varsa otomatik olarak giriş yap
-    const token = Cookies.get("remember-me");
-    if (token) {
-      // Token'ı kullanarak kullanıcıyı oturum aç
-      // setUser(decodedUser); gibi bir fonksiyon çağrısı yapılabilir
-    }
-  }, []);
-
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values, actions) => {
@@ -49,27 +39,13 @@ const Login = () => {
           values
         );
 
-        const token = response.data.access_token;
-
-        // Başarılı giriş durumunda yapılacak işlemler
         console.log("Başarılı giriş:", response.data);
-
-        // Hatırla beni işaretliyse, uzun ömürlü bir oturum aç
-        if (values.rememberMe) {
-          Cookies.set("remember-me", token, { expires: 7 });
-          console.log("Uzun ömürlü oturum açma...");
-        }
 
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
-        // Örneğin, kullanıcıyı başka bir sayfaya yönlendir:
         navigate("/home");
-
-        // TODO: BURADA SAYFA YENİLENİYOR VE UFAK BİR ÜÇKAĞITÇILIK VAR.
-        // DÜZELTİLMESİ GEREK?
         window.location.reload();
       } catch (error) {
-        // Giriş başarısız, hata mesajını kontrol et
         console.error("Giriş hatası:", error.response.data);
         actions.setFieldError("general", "Kullanıcı adı veya şifre hatalı");
       } finally {
@@ -149,7 +125,7 @@ const Login = () => {
                             )}
                         </FormGroup>
                       </div>
-                      
+
                       <FormGroup>
                         <div className="d-flex flex-column-reverse flex-lg-row justify-content-between align-items-center">
                           <Link

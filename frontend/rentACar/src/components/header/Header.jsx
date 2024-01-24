@@ -73,18 +73,21 @@ function Header() {
     };
 
     try {
-      // Çıkış endpoint'i
       const response = await fetch("http://localhost:8080/api/v1/logout", {
         method: "POST",
         headers: headers,
       });
-      // Başarılı bir çıkış durumunda, local storage'daki token'ı sil
+
+
+
       if (response.ok) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        // Kullanıcıyı login sayfasına yönlendir
-        Cookies.remove("remember-me");
-        setShowUi(true); // Kullanıcı çıkış yaptığında showUi'yi true yap
+
+      console.log("Name: ", details)
+
+
+        setShowUi(true);
         navigate("/login");
       } else {
         console.error("Çıkış işlemi başarısız.");
@@ -277,9 +280,7 @@ function Header() {
                       </NavLink>
                     ))}
 
-
-                    <Divider style={{border:"2px solid #673ab7"}} />
-
+                    <Divider style={{ border: "2px solid #673ab7" }} />
 
                     <div>
                       {/* Login and Signup buttons for mobile */}

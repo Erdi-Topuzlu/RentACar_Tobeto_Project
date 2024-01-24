@@ -27,9 +27,34 @@ const signUp = () => {
       confirmPassword: "",
     },
     validationSchema: signUpValidationSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       // alert(JSON.stringify(values, null, 2));
       // actions.resetForm();
+      try {
+        const response = await axiosInstance.post(
+          "api/v1/auth/register",
+          values
+        );
+
+        const token = response.data.access_token;
+
+        console.log("Başarılı giriş:", response.data);
+        console.log("Token: ", token)
+
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+
+        navigate("/home");
+        window.location.reload();
+
+      } catch (error) {
+        
+        console.error("Giriş hatası:", error.response.data);
+        actions.setFieldError("general", "Kullanıcı adı veya şifre hatalı");
+
+      } finally {
+        actions.setSubmitting(false);
+      }
     },
   });
 
