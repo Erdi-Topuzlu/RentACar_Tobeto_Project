@@ -35,6 +35,7 @@
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5.0.1",
     "react-slick": "^0.29.0",
+    "react-svg": "^16.1.32",
     "reactstrap": "^9.2.1",
     "redux": "^5.0.1",
     "remixicon": "^4.0.1",

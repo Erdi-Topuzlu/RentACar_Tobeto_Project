@@ -8,13 +8,13 @@ const FindCarForm = () => {
   const { t } = useTranslation();
   const [dateInputType, setDateInputType] = useState("text");
 
-    const activateDateInput = () => {
-        setDateInputType("date");
-    };
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
 
-    const deactivateDateInput = () => {
-        setDateInputType("text");
-    };
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
   return (
     <Form className="form">
       <div className=" d-flex align-items-center justify-content-between flex-wrap">
@@ -29,14 +29,14 @@ const FindCarForm = () => {
         <FormGroup className="form__group">
           {/* <input type="date" placeholder="Journey date" required /> */}
           <input
-                                            className="form-control"
-                                            type={dateInputType}
-                                            placeholder="Nursel was here"
-                                            id="date"
-                                            onFocus={activateDateInput}
-                                            onBlur={deactivateDateInput}
-                                            pattern="\d{2}\d{2}\d{4}"
-                                        />
+            className="form-control"
+            type={dateInputType}
+            placeholder="Nursel was here"
+            id="date"
+            onFocus={activateDateInput}
+            onBlur={deactivateDateInput}
+            pattern="\d{2}\d{2}\d{4}"
+          />
         </FormGroup>
 
         <FormGroup className="form__group">
@@ -55,7 +55,7 @@ const FindCarForm = () => {
         </FormGroup>
 
         <FormGroup className="form__group">
-          <button className="btn find__car-btn">{t('findBtn')}</button>
+          <button className="btn find__car-btn">{t("findBtn")}</button>
         </FormGroup>
       </div>
     </Form>

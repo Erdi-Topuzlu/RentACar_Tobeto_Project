@@ -2,6 +2,7 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
+//Soldan-Sağa ve Sağdan-Sola Animasyon
 const AnimatedLTR = ({ direction, children }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView();
@@ -36,6 +37,8 @@ const AnimatedLTR = ({ direction, children }) => {
   );
 };
 
+
+//Aşağıdan-Yukları ve Yukarıdan Aşağı Animasyon
 const AnimatedUTD = ({ direction, children }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView();

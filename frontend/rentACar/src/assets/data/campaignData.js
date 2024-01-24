@@ -3,7 +3,7 @@ import img01 from "../all-images/blog-img/blog-1.jpg";
 import img02 from "../all-images/blog-img/blog-2.jpg";
 import img03 from "../all-images/blog-img/blog-3.jpg";
 
-const blogData = [
+const campaignData = [
   {
     id: 1,
     title: "The best way to drive cars",
@@ -44,4 +44,4 @@ const blogData = [
   },
 ];
 
-export default blogData;
+export default campaignData;

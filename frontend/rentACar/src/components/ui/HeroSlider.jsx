@@ -16,7 +16,7 @@ const HeroSlider = () => {
     autoplay: true,
     slidesToShow: 1,
     slidesToScroll: 1,
-    pauseOnHover: false,
+    pauseOnHover: true,
   };
 
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const HeroSlider = () => {
             <h1 className="text-light mb-4">Reserve Now and Get 50% Off</h1>
 
             <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t('details')}</Link>
+              <Link to="/cars">{t("details")}</Link>
             </button>
           </div>
         </Container>
@@ -42,7 +42,7 @@ const HeroSlider = () => {
             <h1 className="text-light mb-4">Reserve Now and Get 50% Off</h1>
 
             <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t('details')}</Link>
+              <Link to="/cars">{t("details")}</Link>
             </button>
           </div>
         </Container>
@@ -55,7 +55,7 @@ const HeroSlider = () => {
             <h1 className="text-light mb-4">Reserve Now and Get 50% Off</h1>
 
             <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t('details')}</Link>
+              <Link to="/cars">{t("details")}</Link>
             </button>
           </div>
         </Container>

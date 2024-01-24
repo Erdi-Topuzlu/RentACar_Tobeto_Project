@@ -12,21 +12,20 @@ const BecomeDriverSection = () => {
     <section className="become__driver">
       <Container>
         <Row>
-          
           <Col lg="6" md="6" sm="12" className="become__driver-img">
-          <AnimatedLTR direction="left">
-            <img src={driverImg} alt="" className="w-100" />
+            <AnimatedLTR direction="left">
+              <img src={driverImg} alt="" className="w-100" />
             </AnimatedLTR>
           </Col>
 
           <Col lg="6" md="6" sm="12">
-          <AnimatedUTD direction="up">
-            <h2 className="section__title become__driver-title">
-              {t('earnMoney')}
-            </h2>
-            <button className="btn become__driver-btn mt-4">
-            {t('becomeDriver')}
-            </button>
+            <AnimatedUTD direction="up">
+              <h2 className="section__title become__driver-title">
+                {t("earnMoney")}
+              </h2>
+              <button className="btn become__driver-btn mt-4">
+                {t("becomeDriver")}
+              </button>
             </AnimatedUTD>
           </Col>
         </Row>

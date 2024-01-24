@@ -1,50 +1,50 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
-import blogData from "../assets/data/blogData.js";
-import Helmet from "../components/Helmet";
+import campaignData from "../assets/data/campaignData.js";
+import Helmet from "../components/Helmet.jsx";
 
 
-import "../styles/blog-details.css";
+import "../styles/campaign-details.css";
 
-const BlogDetails = () => {
+const CampaignDetails = () => {
   const { id } = useParams();
-  const blog = blogData.find((blog) => blog.title === id);
+  const campaign = campaignData.find((campaign) => campaign.title === id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [blog]);
+  }, [campaign]);
 
   return (
-    <Helmet title={blog.title}>
+    <Helmet title={campaign.title}>
       <section>
         <Container>
           <Row>
             <Col lg="2" md="2"></Col>
             <Col lg="8" md="8">
-              <div className="blog__details">
-                <img src={blog.imgUrl} alt="" className="w-100" />
-                <h2 className="section__title mt-4">{blog.title}</h2>
+              <div className="campaign__details">
+                <img src={campaign.imgUrl} alt="" className="w-100" />
+                <h2 className="section__title mt-4">{campaign.title}</h2>
 
-                <div className="blog__publisher d-flex align-items-center gap-4 mb-4">
-                  <span className="blog__author">
-                    <i className="ri-user-line"></i> {blog.author}
+                <div className="campaign__publisher d-flex align-items-center gap-4 mb-4">
+                  <span className="campaign__author">
+                    <i className="ri-user-line"></i> {campaign.author}
                   </span>
 
                   <span className=" d-flex align-items-center gap-1 section__description">
-                    <i className="ri-calendar-line"></i> {blog.date}
+                    <i className="ri-calendar-line"></i> {campaign.date}
                   </span>
 
                   <span className=" d-flex align-items-center gap-1 section__description">
-                    <i className="ri-time-line"></i> {blog.time}
+                    <i className="ri-time-line"></i> {campaign.time}
                   </span>
                 </div>
 
-                <p className="section__description">{blog.description}</p>
+                <p className="section__description">{campaign.description}</p>
                 <h6 className="ps-5 fw-normal">
-                  <blockquote className="fs-4">{blog.quote}</blockquote>
+                  <blockquote className="fs-4">{campaign.quote}</blockquote>
                 </h6>
-                <p className="section__description">{blog.description}</p>
+                <p className="section__description">{campaign.description}</p>
               </div>
 
               {/* <div className="comment__list mt-5">
@@ -102,12 +102,12 @@ const BlogDetails = () => {
               <div className="recent__post mb-4">
                 <h5 className=" fw-bold">Recent Posts</h5>
               </div>
-              {blogData.map((item) => (
-                <div className="recent__blog-post mb-4" key={item.id}>
-                  <div className="recent__blog-item d-flex gap-3">
+              {campaignData.map((item) => (
+                <div className="recent__campaign-post mb-4" key={item.id}>
+                  <div className="recent__campaign-item d-flex gap-3">
                     <img src={item.imgUrl} alt="" className="w-25 rounded-2" />
                     <h6>
-                      <Link to={`/blogs/${item.title}`}>{blog.title}</Link>
+                      <Link to={`/campaigns/${item.title}`}>{campaign.title}</Link>
                     </h6>
                   </div>
                 </div>
@@ -120,4 +120,4 @@ const BlogDetails = () => {
   );
 };
 
-export default BlogDetails;
+export default CampaignDetails;

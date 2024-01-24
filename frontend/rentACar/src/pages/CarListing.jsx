@@ -8,7 +8,7 @@ import { fetchAllCarData } from "../redux/slices/carDataSlice";
 import Loading from "../components/ui/Loading";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-bootstrap";
-import { vehicleType } from "../components/helper/conversionType";
+import ErrorPage from "../components/ui/ErrorPage";
 
 const CarListing = () => {
   const dispatch = useDispatch();
@@ -39,19 +39,12 @@ const CarListing = () => {
 
   if (status === "LOADING") {
     return <Loading />;
+  }else if (status === "FAIL"){
+    return <ErrorPage errorMessage={error} />
   }
 
   let filteredItems = [...items];
 
-  // if (gearType !== "all"){
-  //   filteredItems = filteredItems.filter((item) => item.gearType === gearType)
-  // }
-  // if (seatType !== "all"){
-  //   filteredItems = filteredItems.filter((item) => item.seatType === seatType)
-  // }
-  // if (fuelType !== "all"){
-  //   filteredItems = filteredItems.filter((item) => item.vehicleType === fuelType)
-  // }
   if (gearType === "MANUAL") {
     filteredItems = filteredItems.filter((item) => item.gearType === gearType);
   } else if (gearType === "AUTOMATIC") {

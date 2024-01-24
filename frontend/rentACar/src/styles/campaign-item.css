@@ -1,8 +1,8 @@
-.blog__item {
+.campaign__item {
   border: 1px solid #7c8a972e;
 }
 
-.blog__time {
+.campaign__time {
   border-top: 1px solid #7c8a972e;
 }
 
@@ -17,20 +17,20 @@
   color: #f9a826;
 }
 
-.blog__time span i {
+.campaign__time span i {
   color: #f9a826;
 }
 
-.blog__author {
+.campaign__author {
   color: #673ab7;
   font-weight: 600;
 }
 
-.blog__author i {
+.campaign__author i {
   font-weight: 500;
 }
 
-.blog__title {
+.campaign__title {
   text-decoration: none;
   color: #673ab7;
   font-size: 1.2rem;
@@ -38,26 +38,26 @@
   transition: 0.3s;
 }
 
-.blog__title:hover {
+.campaign__title:hover {
   color: #f9a826;
 }
 
 @media only screen and (max-width: 768px) {
-  .blog__time {
+  .campaign__time {
     padding-top: 5px !important;
   }
 
-  .blog__time span {
+  .campaign__time span {
     font-size: 0.7rem;
   }
 
-  .blog__info p {
+  .campaign__info p {
     font-size: 0.7rem;
     line-height: 1.5rem;
     margin-top: 10px;
   }
 
-  .blog__title {
+  .campaign__title {
     font-size: 1.1rem;
   }
 
