@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserService{
 
     void add(AddUserRequest request);
-    void update(UpdateUserRequest request);
+    void update(UpdateUserRequest request , int id);
     DeleteUserRequest delete(int id);
 
     List<GetAllUserResponse> getAll();

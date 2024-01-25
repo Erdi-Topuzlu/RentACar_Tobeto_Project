@@ -41,9 +41,9 @@ public class UsersController {
         userService.add(request);
     }
 
-    @PutMapping
-    public void update(@RequestBody @Valid UpdateUserRequest request) {
-        userService.update(request);
+    @PutMapping("/{id}")
+    public void update(@RequestBody @Valid UpdateUserRequest request, @PathVariable int id) {
+        userService.update(request,id);
     }
 
 }
