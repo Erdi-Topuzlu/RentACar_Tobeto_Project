@@ -33,8 +33,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchUserData from "../../redux/actions/fetchUserData";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Form } from "reactstrap";
 import { userProfileScheme } from "../../schemes/userProfileScheme";
+
+// Validation schema using Yup
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+});
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -44,16 +54,6 @@ export default function Profile() {
   const canAccessPage =
     userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
-
-  //Formik kaldırdım usestate ekledim 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-
-    // Diğer alanları ekleyeceğiz buraya !!
-  });
-
 
   const decodeJWT = (token) => {
     try {
@@ -80,39 +80,39 @@ export default function Profile() {
     }
   }, [dispatch]);
 
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  // Initial form values
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    // Add other form fields here
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-   
-  };
+  // Formik hook
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      // Handle form submission logic here
+      console.log(values);
+    },
+  });
 
-
-
+  const { handleChange, handleSubmit, values, errors, touched } = formik;
 
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       {canAccessPage ? (
-        <Box sx={{ flex: 1, width: '100%' }}>
+        <Box sx={{ flex: 1, width: "100%" }}>
           <Box
             sx={{
-              position: 'sticky',
+              position: "sticky",
               top: { sm: -100, md: -110 },
-              bgcolor: 'background.body',
+              bgcolor: "background.body",
               zIndex: 9995,
             }}
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
-
               <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
                 My profile
               </Typography>
@@ -120,7 +120,7 @@ export default function Profile() {
             <Tabs
               defaultValue={0}
               sx={{
-                bgcolor: 'transparent',
+                bgcolor: "transparent",
               }}
             >
               <TabList
@@ -128,32 +128,48 @@ export default function Profile() {
                 size="sm"
                 sx={{
                   pl: { xs: 0, md: 4 },
-                  justifyContent: 'left',
+                  justifyContent: "left",
                   [`&& .${tabClasses.root}`]: {
-                    fontWeight: '600',
-                    flex: 'initial',
-                    color: 'text.tertiary',
+                    fontWeight: "600",
+                    flex: "initial",
+                    color: "text.tertiary",
                     [`&.${tabClasses.selected}`]: {
-                      bgcolor: 'transparent',
-                      color: 'text.primary',
-                      '&::after': {
-                        height: '2px',
-                        bgcolor: 'primary.500',
+                      bgcolor: "transparent",
+                      color: "text.primary",
+                      "&::after": {
+                        height: "2px",
+                        bgcolor: "primary.500",
                       },
                     },
                   },
                 }}
               >
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
+                <Tab
+                  sx={{ borderRadius: "6px 6px 0 0" }}
+                  indicatorInset
+                  value={0}
+                >
                   Settings
                 </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
+                <Tab
+                  sx={{ borderRadius: "6px 6px 0 0" }}
+                  indicatorInset
+                  value={1}
+                >
                   Team
                 </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
+                <Tab
+                  sx={{ borderRadius: "6px 6px 0 0" }}
+                  indicatorInset
+                  value={2}
+                >
                   Plan
                 </Tab>
-                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
+                <Tab
+                  sx={{ borderRadius: "6px 6px 0 0" }}
+                  indicatorInset
+                  value={3}
+                >
                   Billing
                 </Tab>
               </TabList>
@@ -162,33 +178,33 @@ export default function Profile() {
           <Stack
             spacing={4}
             sx={{
-              display: 'flex',
-              maxWidth: '800px',
-              mx: 'auto',
+              display: "flex",
+              maxWidth: "800px",
+              mx: "auto",
               px: { xs: 2, md: 6 },
               py: { xs: 2, md: 3 },
             }}
           >
-            {/* MOBILE FORM */}
+            {/* WEB FORM */}
             <Card>
-
               <Box sx={{ mb: 1 }}>
                 <Typography level="title-md">Personal info</Typography>
                 <Typography level="body-sm">
-                  Customize how your profile information will apper to the networks.
+                  Customize how your profile information will apper to the
+                  networks.
                 </Typography>
               </Box>
               <Divider />
               <Stack
                 direction="row"
                 spacing={3}
-                sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
+                sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
               >
                 <Stack direction="column" spacing={1}>
                   <AspectRatio
                     ratio="1"
                     maxHeight={200}
-                    sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
+                    sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                   >
                     <img
                       src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -203,13 +219,13 @@ export default function Profile() {
                     variant="outlined"
                     color="neutral"
                     sx={{
-                      bgcolor: 'background.body',
-                      position: 'absolute',
+                      bgcolor: "background.body",
+                      position: "absolute",
                       zIndex: 2,
-                      borderRadius: '50%',
+                      borderRadius: "50%",
                       left: 100,
                       top: 170,
-                      boxShadow: 'sm',
+                      boxShadow: "sm",
                     }}
                   >
                     <EditRoundedIcon />
@@ -219,42 +235,68 @@ export default function Profile() {
                   <Stack spacing={1}>
                     <FormLabel>Name</FormLabel>
                     <FormControl
-                      sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
+                      sx={{
+                        display: { sm: "flex-column", md: "flex-row" },
+                        gap: 2,
+                      }}
                     >
-                      <Input
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange} size="sm" placeholder="First name" />
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="firstName"
+                          value={values.firstName}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="First name"
+                        />
+                      </FormControl>
 
-                      <Input
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange} size="sm" placeholder="Last name" />
+                      {touched.firstName && errors.firstName && (
+                        <div style={{ color: "red" }}>{errors.firstName}</div>
+                      )}
 
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="lastName"
+                          value={values.lastName}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="Last name"
+                        />
+                      </FormControl>
+
+                      {touched.lastName && errors.lastName && (
+                        <div style={{ color: "red" }}>{errors.lastName}</div>
+                      )}
                     </FormControl>
                   </Stack>
                   <Stack direction="row" spacing={2}>
-
-                   <FormControl>
+                    <FormControl>
                       <FormLabel>Role</FormLabel>
                       <Input size="sm" defaultValue="UI Developer" />
-                    </FormControl> 
+                    </FormControl>
 
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>E-mail</FormLabel>
-                      <Input
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange} size="sm" placeholder="E-mail"
-                        sx={{ flexGrow: 1 }}
-                      />
+
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="email"
+                          value={values.email}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="E-mail"
+                        />
+                      </FormControl>
+                      {touched.email && errors.email && (
+                        <div style={{ color: "red" }}>{errors.email}</div>
+                      )}
                     </FormControl>
                   </Stack>
-                   <div>
-                    <CountrySelector />
-                  </div> 
                   <div>
-                  <FormControl sx={{ display: { sm: 'contents' } }}>
+                    <CountrySelector />
+                  </div>
+                  <div>
+                    <FormControl sx={{ display: { sm: "contents" } }}>
                       <FormLabel>Timezone</FormLabel>
                       <Select
                         size="sm"
@@ -262,19 +304,19 @@ export default function Profile() {
                         defaultValue="1"
                       >
                         <Option value="1">
-                          Indochina Time (Bangkok){' '}
+                          Indochina Time (Bangkok){" "}
                           <Typography textColor="text.tertiary" ml={0.5}>
                             — GMT+07:00
                           </Typography>
                         </Option>
                         <Option value="2">
-                          Indochina Time (Ho Chi Minh City){' '}
+                          Indochina Time (Ho Chi Minh City){" "}
                           <Typography textColor="text.tertiary" ml={0.5}>
                             — GMT+07:00
                           </Typography>
                         </Option>
                       </Select>
-                    </FormControl> 
+                    </FormControl>
                   </div>
                 </Stack>
               </Stack>
@@ -283,14 +325,14 @@ export default function Profile() {
               <Stack
                 direction="column"
                 spacing={2}
-                sx={{ display: { xs: 'flex', md: 'none' }, my: 1 }}
+                sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
               >
                 <Stack direction="row" spacing={2}>
                   <Stack direction="column" spacing={1}>
                     <AspectRatio
                       ratio="1"
                       maxHeight={108}
-                      sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
+                      sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                     >
                       <img
                         src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
@@ -305,13 +347,13 @@ export default function Profile() {
                       variant="outlined"
                       color="neutral"
                       sx={{
-                        bgcolor: 'background.body',
-                        position: 'absolute',
+                        bgcolor: "background.body",
+                        position: "absolute",
                         zIndex: 2,
-                        borderRadius: '50%',
+                        borderRadius: "50%",
                         left: 85,
                         top: 180,
-                        boxShadow: 'sm',
+                        boxShadow: "sm",
                       }}
                     >
                       <EditRoundedIcon />
@@ -322,44 +364,67 @@ export default function Profile() {
                     <FormControl
                       sx={{
                         display: {
-                          sm: 'flex-column',
-                          md: 'flex-row',
+                          sm: "flex-column",
+                          md: "flex-row",
                         },
                         gap: 2,
                       }}
                     >
-                      <Input
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange} size="sm" placeholder="First name" />
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="firstName"
+                          value={values.firstName}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="First name"
+                        />
+                      </FormControl>
+                      {touched.firstName && errors.firstName && (
+                        <div style={{ color: "red" }}>{errors.firstName}</div>
+                      )}
 
-                      <Input
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange} size="sm" placeholder="Last name" />
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="lastName"
+                          value={values.lastName}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="Last name"
+                        />
+                      </FormControl>
 
+                      {touched.lastName && errors.lastName && (
+                        <div style={{ color: "red" }}>{errors.lastName}</div>
+                      )}
                     </FormControl>
                   </Stack>
                 </Stack>
-                 <FormControl>
+                <FormControl>
                   <FormLabel>Role</FormLabel>
                   <Input size="sm" defaultValue="UI Developer" />
-                </FormControl> 
+                </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>E-mail</FormLabel>
 
-                  <Input
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange} size="sm" placeholder="E-mail"
-                    sx={{ flexGrow: 1 }}
-                  />
+                  <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                    <Input
+                      name="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      size="sm"
+                      placeholder="E-mail"
+                    />
+                  </FormControl>
+
+                  {touched.email && errors.email && (
+                    <div style={{ color: "red" }}>{errors.email}</div>
+                  )}
                 </FormControl>
-                 <div>
-                  <CountrySelector />
-                </div> 
                 <div>
-                  <FormControl sx={{ display: { sm: 'contents' } }}>
+                  <CountrySelector />
+                </div>
+                <div>
+                  <FormControl sx={{ display: { sm: "contents" } }}>
                     <FormLabel>Timezone</FormLabel>
                     <Select
                       size="sm"
@@ -367,43 +432,41 @@ export default function Profile() {
                       defaultValue="1"
                     >
                       <Option value="1">
-                        Indochina Time (Bangkok){' '}
+                        Indochina Time (Bangkok){" "}
                         <Typography textColor="text.tertiary" ml={0.5}>
                           — GMT+07:00
                         </Typography>
                       </Option>
                       <Option value="2">
-                        Indochina Time (Ho Chi Minh City){' '}
+                        Indochina Time (Ho Chi Minh City){" "}
                         <Typography textColor="text.tertiary" ml={0.5}>
                           — GMT+07:00
                         </Typography>
                       </Option>
                     </Select>
-                  </FormControl> 
+                  </FormControl>
                 </div>
               </Stack>
 
               {/* BUTTONS */}
-              <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+              <CardOverflow
+                sx={{ borderTop: "1px solid", borderColor: "divider" }}
+              >
+                <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
                   <Button size="sm" variant="outlined" color="neutral">
                     Cancel
                   </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    size="sm" variant="solid">
+                  <Button onClick={handleSubmit} size="sm" variant="solid">
                     Save
                   </Button>
                 </CardActions>
               </CardOverflow>
             </Card>
-
-
           </Stack>
         </Box>
       ) : (
         <h1>Üzgünüz, bu sayfaya erişim izniniz yok.</h1>
       )}
-    </>
+    </form>
   );
 }
