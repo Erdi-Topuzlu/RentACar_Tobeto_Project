@@ -29,8 +29,8 @@ function Footer() {
       display: t("cars"),
     },
     {
-      path: "/blogs",
-      display: t("blog"),
+      path: "/campaigns",
+      display: t("campaigns"),
     },
   
     {

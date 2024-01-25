@@ -11,18 +11,20 @@ import i18n from "../../i18n";
 import turkey from "../../assets/all-images/tr.png";
 import england from "../../assets/all-images/en.png";
 import { NavDropdown } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/joy";
 import axios from "axios";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
+import fetchUserData from "../../redux/actions/fetchUserData";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
 };
 
 function Header() {
+  const dispatch = useDispatch();
   const menuRef = useRef(null);
   const navigate = useNavigate();
   const [showUi, setShowUi] = useState(true);
@@ -30,8 +32,8 @@ function Header() {
   const [token, setToken] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-
-  const toggleProfileDropdown = () => setShowProfileDropdown(!showProfileDropdown);
+  const toggleProfileDropdown = () =>
+    setShowProfileDropdown(!showProfileDropdown);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
 
@@ -72,6 +74,30 @@ function Header() {
     }
   }, []);
 
+  const decodeJWT = (token) => {
+    try {
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      return decoded;
+    } catch (error) {
+      console.error("JWT çözümlenirken bir hata oluştu:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    // JWT'den yetkilendirme bilgilerini okuma işlemi
+    const storedJWT = localStorage.getItem("access_token");
+    if (storedJWT) {
+      const decodedToken = decodeJWT(storedJWT);
+      const id = decodedToken.id;
+
+      setToken(storedJWT);
+      if (decodedToken && decodedToken.role) {
+        dispatch(fetchUserData(id));
+      }
+    }
+  }, [dispatch]);
+
   const handleLogout = async () => {
     const headers = {
       "Content-Type": "application/json",
@@ -109,7 +135,7 @@ function Header() {
         <Container>
           <Row>
             <Col lg="6" md="6" sm="6">
-              <div className="">
+              <div className="header__top__left">
                 <span>{t("needhelp")}</span>
                 <span className="header__top__help">
                   <i className="ri-phone-fill"></i> +1-202-555-0149
@@ -137,33 +163,40 @@ function Header() {
                     </Link>
                   </>
                 ) : (
-                  
-                    <NavDropdown
-                      menuVariant="dark"
-                      title={
+                  <NavDropdown
+                    menuVariant="dark"
+                    title={
+                      <span onClick={toggleProfileDropdown}>
                         <img
-                          onClick={toggleProfileDropdown}
-                          width={24}
-                          src={details.image || "https://randomuser.me/api/portraits/men/1.jpg"}
+                          width={28}
+                          src={
+                            details.image ||
+                            "https://t3.ftcdn.net/jpg/05/16/27/58/240_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                          }
                           alt="Profile"
                           className="header__user-image"
                         />
-                      }
-                      id="profile-dropdown"
-                      show={showProfileDropdown}
+                        {"  "}
+                        {details.name ? details.name : 'User'}
+                      </span>
+                    }
+                    id="nav-dropdown"
+                    show={showProfileDropdown}
+                  >
+                    <NavDropdown.Item
+                      eventKey="profile"
+                      onClick={() => {
+                        navigate("/profile");
+                        setShowProfileDropdown(false);
+                      }}
                     >
-                     
-                      <NavDropdown.Item eventKey="profile" onClick={() => navigate("/profile")}>
-                        Profil Sayfasına Git
-                      </NavDropdown.Item>
-                      <NavDropdown.Item eventKey="logout" onClick={handleLogout}>
-                        Çıkış Yap
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                    
-
+                      Profil Sayfasına Git
+                    </NavDropdown.Item>
+                    <NavDropdown.Item eventKey="logout" onClick={handleLogout}>
+                      Çıkış Yap
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 )}
-
 
                 <div className="vr" />
                 <NavDropdown
@@ -175,7 +208,7 @@ function Header() {
                     ) : i18n.language === "tr" ? (
                       <img width={24} src={turkey} />
                     ) : // Handle other languages if needed
-                      null
+                    null
                   }
                   id="nav-dropdown"
                   onSelect={langSelect}
@@ -189,7 +222,7 @@ function Header() {
                       <img width={16} src={england} /> {t("en-US")}
                     </NavDropdown.Item>
                   ) : // Handle other languages if needed
-                    null}
+                  null}
                 </NavDropdown>
               </div>
             </Col>
@@ -252,10 +285,6 @@ function Header() {
           </Row>
         </Container>
       </div>
-
-
-
-
 
       {/* ========== main navigation =========== */}
 

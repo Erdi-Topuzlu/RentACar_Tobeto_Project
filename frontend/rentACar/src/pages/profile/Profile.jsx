@@ -37,6 +37,7 @@ import * as Yup from "yup";
 import { Form } from "reactstrap";
 import { userProfileScheme } from "../../schemes/userProfileScheme";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
+import ErrorPage from "../../components/ui/ErrorPage";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -86,8 +87,6 @@ export default function Profile() {
     }
   }, [dispatch]);
 
-  const pass1 = details.password;
-  console.log(pass1);
   // Initial form values
   const initialValues = {
     firstName: "",
@@ -158,7 +157,7 @@ export default function Profile() {
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
               <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                Welcome, {details.name}.
+                Welcome, {details.name ? details.name : 'User'}
               </Typography>
             </Box>
             <Tabs
@@ -516,7 +515,7 @@ export default function Profile() {
           </Stack>
         </Box>
       ) : (
-        <h1>Üzgünüz, bu sayfaya erişim izniniz yok.</h1>
+        <ErrorPage errorMessage="403 Forbidden"/>
       )}
     </Form>
   );

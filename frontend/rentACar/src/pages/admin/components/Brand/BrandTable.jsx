@@ -149,6 +149,12 @@ export default function BrandTable() {
         <Typography level="h2" component="h1">
         BRANDS 
         </Typography>
+        <Button
+              color="success"
+              size="md"
+            >
+              Add New
+            </Button>
         
       </Box>
       <Sheet

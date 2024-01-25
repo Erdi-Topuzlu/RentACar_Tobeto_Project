@@ -41,7 +41,7 @@ const signUp = () => {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
 
-        navigate("/home");
+        navigate("/profile");
         window.location.reload();
 
       } catch (error) {
