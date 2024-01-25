@@ -37,6 +37,9 @@ public class UpdateUserRequest {
 
     private String password;
 
+    private String userImage;
+
+
     public Role getRole() {
         return (role == null) ? Role.USER : role;
     }

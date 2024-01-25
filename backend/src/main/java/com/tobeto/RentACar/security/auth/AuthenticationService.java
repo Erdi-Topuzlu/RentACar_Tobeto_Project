@@ -60,6 +60,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .surname(request.getSurname())
                 .birthDate(request.getBirthDate())
+                .userImage(request.getUserImage())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
