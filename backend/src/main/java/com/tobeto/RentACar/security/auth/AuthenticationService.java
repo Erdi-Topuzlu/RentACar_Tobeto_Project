@@ -7,6 +7,7 @@ import com.tobeto.RentACar.security.services.token.Token;
 import com.tobeto.RentACar.security.services.token.TokenType;
 import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
+import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,27 @@ public class AuthenticationService {
         var user = User.builder()
                 .id(request.getId())
                 .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .build();
+        var savedUser = userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user, user);
+        var refreshToken = jwtService.generateRefreshToken(user, user);
+
+        saveUserToken(savedUser, jwtToken);
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public AuthenticationResponse update(int id,UpdateUserRequest request) {
+        var user = User.builder()
+                .id(id)
+                .email(request.getEmail())
+                .name(request.getName())
+                .surname(request.getSurname())
+                .birthDate(request.getBirthDate())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
