@@ -8,10 +8,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import {
+  BrowserRouter,
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Routes,
 } from "react-router-dom";
 
 import Layout from "./components/layout/Layout.jsx";
@@ -24,10 +26,12 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import FoprgotPassword from "./pages/ForgotPassword.jsx";
 import Profile from "./pages/profile/Profile.jsx";
-import Admin from "./pages/admin/admin.jsx";
+import Admin from "./pages/admin/Admin.jsx";
 import Campaign from "./pages/Campaign.jsx";
 import CampaignDetails from "./pages/CampaignDetails.jsx";
 import NotFound from "./pages/NotFound.jsx"
+import Dashboard from "./pages/admin/components/Dashboard.jsx";
+import BrandTable from "./pages/admin/components/Brand/BrandTable.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -51,7 +55,13 @@ const router = createBrowserRouter(
         <Route path="/forgot-password" element={<FoprgotPassword />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="/admin" element={<Admin />} />
+      
+      <Route path="/admin" element={<Admin />}>
+        <Route index pat element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="brands" element={<BrandTable />} />
+        <Route path="brands" element={<BrandTable />} />
+      </Route>
     </>
   )
 );
