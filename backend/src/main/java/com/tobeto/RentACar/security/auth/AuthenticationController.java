@@ -1,11 +1,13 @@
 package com.tobeto.RentACar.security.auth;
 
 import com.tobeto.RentACar.security.services.LogoutService;
+import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterUserRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthenticationResponse> update(@PathVariable int id,@RequestBody UpdateUserRequest request) {
+        return ResponseEntity.ok(authenticationService.update(id,request));
     }
 
     @PostMapping("/authenticate")

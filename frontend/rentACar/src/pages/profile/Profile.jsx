@@ -84,11 +84,14 @@ export default function Profile() {
     }
   }, [dispatch]);
 
+  const pass1 = details.password;
+  console.log(pass1);
   // Initial form values
   const initialValues = {
     firstName: "",
     lastName: "",
     email: "",
+    password:""
     // Add other form fields here
   };
 
@@ -102,6 +105,7 @@ export default function Profile() {
         name: values.firstName,  
         surname: values.lastName,
         email: values.email,
+        password:values.password,
         birthDate: null,
       };
       console.log("Values : ", values);
@@ -109,7 +113,7 @@ export default function Profile() {
 
       try {
         const response = await axiosInstance.put(
-          `api/v1/users/${id}`,
+          `api/v1/auth/${id}`,
           updatedData
         );
 
@@ -314,6 +318,22 @@ export default function Profile() {
                       </FormControl>
                       {touched.email && errors.email && (
                         <div style={{ color: "red" }}>{errors.email}</div>
+                      )}
+                    </FormControl>
+                    <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Password</FormLabel>
+
+                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                        <Input
+                          name="password"
+                          value={values.password}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="Password"
+                        />
+                      </FormControl>
+                      {touched.password && errors.password && (
+                        <div style={{ color: "red" }}>{errors.password}</div>
                       )}
                     </FormControl>
                   </Stack>
