@@ -56,6 +56,26 @@ export default function Profile() {
     userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
   const [id, setId] = useState(null);
+  const [dosya, setDosya] = useState(null);
+
+  const dosyaSecildi = (event) => {
+    const secilenDosya = event.target.files[0];
+    setDosya(secilenDosya);
+  };
+
+  const dosyaYukle = () => {
+    // Dosyayı burada yükleyebilir veya başka bir işlem gerçekleştirebilirsiniz.
+    // Örneğin, bir API'ye dosyayı gönderebilirsiniz.
+    if (dosya) {
+      console.log('Dosya yüklendi:', dosya);
+      // Yükleme işlemleri buraya eklenir.
+    } else {
+      console.log('Lütfen bir dosya seçin.');
+    }
+  };
+
+    
+
 
 
   const decodeJWT = (token) => {
@@ -91,7 +111,8 @@ export default function Profile() {
     firstName: "",
     lastName: "",
     email: "",
-    password:""
+    password:"",
+    fileInput: "",
     // Add other form fields here
   };
 
@@ -102,11 +123,12 @@ export default function Profile() {
     onSubmit: async (values, actions) => {
       const updatedData = {
         id:id,
-        name: values.firstName,  
-        surname: values.lastName,
-        email: values.email,
+        name: values.firstName || details.name,  
+        surname: values.lastName || details.surname,
+        email: values.email || details.email,
         password:values.password,
         birthDate: null,
+        userImageUrl: values.fileInput
       };
       console.log("Values : ", values);
       console.log("updated : ",updatedData);
@@ -143,7 +165,7 @@ export default function Profile() {
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
               <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                My profile
+                Welcome, {details.name}.
               </Typography>
             </Box>
             <Tabs
@@ -178,29 +200,29 @@ export default function Profile() {
                   indicatorInset
                   value={0}
                 >
-                  Settings
+                  Profile Settings
                 </Tab>
-                <Tab
+                {/* <Tab
                   sx={{ borderRadius: "6px 6px 0 0" }}
                   indicatorInset
                   value={1}
                 >
-                  Team
+                  Saved Credit Cards
                 </Tab>
                 <Tab
                   sx={{ borderRadius: "6px 6px 0 0" }}
                   indicatorInset
                   value={2}
                 >
-                  Plan
+                  My Reservations
                 </Tab>
                 <Tab
                   sx={{ borderRadius: "6px 6px 0 0" }}
                   indicatorInset
                   value={3}
                 >
-                  Billing
-                </Tab>
+                  My Bills
+                </Tab> */}
               </TabList>
             </Tabs>
           </Box>
@@ -230,49 +252,59 @@ export default function Profile() {
                 sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
               >
                 <Stack direction="column" spacing={1}>
-                  <AspectRatio
-                    ratio="1"
-                    maxHeight={200}
-                    sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
-                  >
-                    <img
-                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                      srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </AspectRatio>
-                  <IconButton
-                    aria-label="upload new picture"
-                    size="sm"
-                    variant="outlined"
-                    color="neutral"
-                    sx={{
-                      bgcolor: "background.body",
-                      position: "absolute",
-                      zIndex: 2,
-                      borderRadius: "50%",
-                      left: 100,
-                      top: 170,
-                      boxShadow: "sm",
-                    }}
-                  >
+        <AspectRatio
+          ratio="1"
+          maxHeight={200}
+          sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
+        >
+          <img
+            src={dosya}
+            loading="lazy"
+            alt=""
+            style={{ objectFit: "cover", borderRadius: "100%" }}
+          />
+        </AspectRatio>
+        <input
+          type="file"
+          id="fileInput"
+          name="fileInput"
+          accept="image/*"
+          value={values.fileInput}
+          onChange={dosyaYukle}
+          style={{ display: "none" }}
+        />
+        <IconButton
+          aria-label="upload new picture"
+          size="sm"
+          variant="outlined"
+          color="neutral"
+          sx={{
+            bgcolor: "background.body",
+            position: "absolute",
+            zIndex: 2,
+            borderRadius: "50%",
+            left: 100,
+            top: 170,
+            boxShadow: "sm",
+          }}
+          onClick={() => document.getElementById("fileInput").click()}
+        >
                     <EditRoundedIcon />
                   </IconButton>
                 </Stack>
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
                   <Stack spacing={1}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Firstname</FormLabel>
                     <FormControl
                       sx={{
                         display: { sm: "flex-column", md: "flex-row" },
                         gap: 2,
                       }}
                     >
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
                         <Input
                           name="firstName"
-                          value={values.firstName}
+                          value={values.firstName || details.name}
                           onChange={handleChange}
                           size="sm"
                           placeholder="First name"
@@ -283,10 +315,11 @@ export default function Profile() {
                         <div style={{ color: "red" }}>{errors.firstName}</div>
                       )}
 
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                      <FormLabel>Lastname</FormLabel>
                         <Input
                           name="lastName"
-                          value={values.lastName}
+                          value={values.lastName || details.surname}
                           onChange={handleChange}
                           size="sm"
                           placeholder="Last name"
@@ -299,18 +332,15 @@ export default function Profile() {
                     </FormControl>
                   </Stack>
                   <Stack direction="row" spacing={2}>
-                    <FormControl>
-                      <FormLabel>Role</FormLabel>
-                      <Input size="sm" defaultValue="UI Developer" />
-                    </FormControl>
+                   
 
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>E-mail</FormLabel>
 
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
                         <Input
                           name="email"
-                          value={values.email}
+                          value={values.email || details.email}
                           onChange={handleChange}
                           size="sm"
                           placeholder="E-mail"
@@ -323,13 +353,14 @@ export default function Profile() {
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>Password</FormLabel>
 
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
                         <Input
                           name="password"
                           value={values.password}
                           onChange={handleChange}
                           size="sm"
                           placeholder="Password"
+                          type="password"
                         />
                       </FormControl>
                       {touched.password && errors.password && (
@@ -337,32 +368,8 @@ export default function Profile() {
                       )}
                     </FormControl>
                   </Stack>
-                  <div>
-                    <CountrySelector />
-                  </div>
-                  <div>
-                    <FormControl sx={{ display: { sm: "contents" } }}>
-                      <FormLabel>Timezone</FormLabel>
-                      <Select
-                        size="sm"
-                        startDecorator={<AccessTimeFilledRoundedIcon />}
-                        defaultValue="1"
-                      >
-                        <Option value="1">
-                          Indochina Time (Bangkok){" "}
-                          <Typography textColor="text.tertiary" ml={0.5}>
-                            — GMT+07:00
-                          </Typography>
-                        </Option>
-                        <Option value="2">
-                          Indochina Time (Ho Chi Minh City){" "}
-                          <Typography textColor="text.tertiary" ml={0.5}>
-                            — GMT+07:00
-                          </Typography>
-                        </Option>
-                      </Select>
-                    </FormControl>
-                  </div>
+                  
+                  
                 </Stack>
               </Stack>
 

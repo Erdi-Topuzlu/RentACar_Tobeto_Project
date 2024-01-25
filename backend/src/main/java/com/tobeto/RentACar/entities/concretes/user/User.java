@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "user_image")
+    private String userImageUrl;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Rental> rentals;
