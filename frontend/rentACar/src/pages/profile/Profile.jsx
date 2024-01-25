@@ -92,16 +92,36 @@ export default function Profile() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      // Handle form submission logic here
-      console.log(values);
+    onSubmit: async (values, actions) => {
+      const updatedData = {
+        id:1,
+        name: values.firstName,  
+        surname: values.lastName,
+        email: values.email,
+        birthDate: null,
+      };
+      console.log("Values : ", values);
+      console.log("updated : ",updatedData);
+
+      try {
+        const response = await axiosInstance.put(
+          "api/v1/users/update", 
+          updatedData
+        );
+
+        console.log("Başarılı güncelleme")
+      } catch (error) {
+        console.error("Güncelleme hatası hatası:", error.response.data);
+      } finally {
+        actions.setSubmitting(false);
+      }
     },
   });
 
   const { handleChange, handleSubmit, values, errors, touched } = formik;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       {canAccessPage ? (
         <Box sx={{ flex: 1, width: "100%" }}>
           <Box
@@ -467,6 +487,6 @@ export default function Profile() {
       ) : (
         <h1>Üzgünüz, bu sayfaya erişim izniniz yok.</h1>
       )}
-    </form>
+    </Form>
   );
 }

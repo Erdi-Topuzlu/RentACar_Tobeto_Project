@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/joy";
+import axios from "axios";
+import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
@@ -71,7 +73,7 @@ function Header() {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
-
+    
     try {
       const response = await fetch("http://localhost:8080/api/v1/logout", {
         method: "POST",
@@ -86,6 +88,10 @@ function Header() {
         navigate("/login");
       } else {
         console.error("Çıkış işlemi başarısız.");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setShowUi(true);
+        navigate("/login");
       }
     } catch (error) {
       console.error("Çıkış işlemi sırasında bir hata oluştu:", error);

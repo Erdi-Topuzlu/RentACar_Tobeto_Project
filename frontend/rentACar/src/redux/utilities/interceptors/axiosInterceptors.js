@@ -1,20 +1,25 @@
 import axios from "axios";
 
+
+
 const axiosInstance = axios.create({
     baseURL:"http://localhost:8080/",
+    
 });
 
 
 axiosInstance.interceptors.request.use(
   (config) => {
     try {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        //Token uygun yapıda mı ?
-        if (token && /^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+$/.test(token)) {
+      
+      // if (token) {
+      //   //Token uygun yapıda mı ?
+      //   if (token && /^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+$/.test(token)) {
         
-        config.headers.Authorization = `Bearer ${token}`;
-      }}
+      //   config.headers.Authorization = `Bearer ${token}`;
+      // }}else{
+      //   console.log("Bearer Token Alınama (Kontrol et)")
+      // }
       return config;
       //Hata durumu
     } catch (error) {
