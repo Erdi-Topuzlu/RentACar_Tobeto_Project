@@ -26,7 +26,7 @@ public class UpdateUserRequest {
     @Email(message = Messages.invalidEmail)
     private String email;
 
-    @NotNull(message = Messages.userBirthDateNotEmpty)
+    //@NotNull(message = Messages.userBirthDateNotEmpty)
     private LocalDate birthDate;
 
 }

@@ -32,7 +32,7 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public void update(UpdateUserRequest request) {
+    public void update(UpdateUserRequest request ,int id) {
         userBusinessRulesService.checkIfByIdExists(request.getId());
         userBusinessRulesService.checkIfByEmailExists(request.getEmail());
         User user = modelMapperService.dtoToEntity().map(request, User.class);

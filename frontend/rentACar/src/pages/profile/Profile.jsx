@@ -36,6 +36,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Form } from "reactstrap";
 import { userProfileScheme } from "../../schemes/userProfileScheme";
+import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -54,6 +55,8 @@ export default function Profile() {
   const canAccessPage =
     userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
+  const [id, setId] = useState(null);
+
 
   const decodeJWT = (token) => {
     try {
@@ -73,6 +76,7 @@ export default function Profile() {
       const id = decodedToken.id;
 
       setToken(storedJWT);
+      setId(id); 
       if (decodedToken && decodedToken.role) {
         setUserRoles(decodedToken.role);
         dispatch(fetchUserData(id));
@@ -94,7 +98,7 @@ export default function Profile() {
     validationSchema,
     onSubmit: async (values, actions) => {
       const updatedData = {
-        id:1,
+        id:id,
         name: values.firstName,  
         surname: values.lastName,
         email: values.email,
@@ -105,11 +109,12 @@ export default function Profile() {
 
       try {
         const response = await axiosInstance.put(
-          "api/v1/users/update", 
+          `api/v1/users/${id}`,
           updatedData
         );
 
         console.log("Başarılı güncelleme")
+        console.log(response)
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
       } finally {
