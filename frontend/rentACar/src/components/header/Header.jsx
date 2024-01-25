@@ -28,6 +28,10 @@ function Header() {
   const [showUi, setShowUi] = useState(true);
   const { details, status, error } = useSelector((state) => state.userDetail);
   const [token, setToken] = useState("");
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
+
+  const toggleProfileDropdown = () => setShowProfileDropdown(!showProfileDropdown);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
 
@@ -73,7 +77,7 @@ function Header() {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
-    
+
     try {
       const response = await fetch("http://localhost:8080/api/v1/logout", {
         method: "POST",
@@ -105,7 +109,7 @@ function Header() {
         <Container>
           <Row>
             <Col lg="6" md="6" sm="6">
-              <div className="header__top__left">
+              <div className="">
                 <span>{t("needhelp")}</span>
                 <span className="header__top__help">
                   <i className="ri-phone-fill"></i> +1-202-555-0149
@@ -133,21 +137,34 @@ function Header() {
                     </Link>
                   </>
                 ) : (
-                  <div>
-                    <img
-                      src="https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.webp"
-                      alt={details.username}
-                      className="header__user-image"
-                    />
-                    <span className="header__username">{details.username}</span>
-                    <button
-                      className="header__logout-btn btn"
-                      onClick={handleLogout}
+                  
+                    <NavDropdown
+                      menuVariant="dark"
+                      title={
+                        <img
+                          onClick={toggleProfileDropdown}
+                          width={24}
+                          src={details.image || "https://randomuser.me/api/portraits/men/1.jpg"}
+                          alt="Profile"
+                          className="header__user-image"
+                        />
+                      }
+                      id="profile-dropdown"
+                      show={showProfileDropdown}
                     >
-                      Logout
-                    </button>
-                  </div>
+                     
+                      <NavDropdown.Item eventKey="profile" onClick={() => navigate("/profile")}>
+                        Profil Sayfasına Git
+                      </NavDropdown.Item>
+                      <NavDropdown.Item eventKey="logout" onClick={handleLogout}>
+                        Çıkış Yap
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                    
+
                 )}
+
+
                 <div className="vr" />
                 <NavDropdown
                   menuVariant="dark"
@@ -158,7 +175,7 @@ function Header() {
                     ) : i18n.language === "tr" ? (
                       <img width={24} src={turkey} />
                     ) : // Handle other languages if needed
-                    null
+                      null
                   }
                   id="nav-dropdown"
                   onSelect={langSelect}
@@ -172,7 +189,7 @@ function Header() {
                       <img width={16} src={england} /> {t("en-US")}
                     </NavDropdown.Item>
                   ) : // Handle other languages if needed
-                  null}
+                    null}
                 </NavDropdown>
               </div>
             </Col>
@@ -235,6 +252,10 @@ function Header() {
           </Row>
         </Container>
       </div>
+
+
+
+
 
       {/* ========== main navigation =========== */}
 

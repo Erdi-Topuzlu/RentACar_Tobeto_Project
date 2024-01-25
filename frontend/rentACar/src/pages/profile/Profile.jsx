@@ -23,13 +23,13 @@ import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
+import { useDropzone } from 'react-dropzone';
 import DropZone from "../../components/helper/profile/DropZone";
 import FileUpload from "../../components/helper/profile/FileUpload";
 import CountrySelector from "../../components/helper/profile/CountrySelector";
 import EditorToolbar from "../../components/helper/profile/EditorToolbar";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchUserData from "../../redux/actions/fetchUserData";
 import { useFormik } from "formik";
@@ -56,25 +56,7 @@ export default function Profile() {
     userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
   const [id, setId] = useState(null);
-  const [dosya, setDosya] = useState(null);
-
-  const dosyaSecildi = (event) => {
-    const secilenDosya = event.target.files[0];
-    setDosya(secilenDosya);
-  };
-
-  const dosyaYukle = () => {
-    // Dosyayı burada yükleyebilir veya başka bir işlem gerçekleştirebilirsiniz.
-    // Örneğin, bir API'ye dosyayı gönderebilirsiniz.
-    if (dosya) {
-      console.log('Dosya yüklendi:', dosya);
-      // Yükleme işlemleri buraya eklenir.
-    } else {
-      console.log('Lütfen bir dosya seçin.');
-    }
-  };
-
-    
+  const [selectedFile, setSelectedFile] = useState(null);
 
 
 
@@ -96,7 +78,7 @@ export default function Profile() {
       const id = decodedToken.id;
 
       setToken(storedJWT);
-      setId(id); 
+      setId(id);
       if (decodedToken && decodedToken.role) {
         setUserRoles(decodedToken.role);
         dispatch(fetchUserData(id));
@@ -111,8 +93,8 @@ export default function Profile() {
     firstName: "",
     lastName: "",
     email: "",
-    password:"",
-    fileInput: "",
+    password: "",
+    image: "",
     // Add other form fields here
   };
 
@@ -122,16 +104,17 @@ export default function Profile() {
     validationSchema,
     onSubmit: async (values, actions) => {
       const updatedData = {
-        id:id,
-        name: values.firstName || details.name,  
+        id: id,
+        name: values.firstName || details.name,
         surname: values.lastName || details.surname,
         email: values.email || details.email,
-        password:values.password,
+        password: values.password,
         birthDate: null,
-        userImageUrl: values.fileInput
+        userImage: selectedFile ? URL.createObjectURL(selectedFile) : details.userImage,
       };
+
       console.log("Values : ", values);
-      console.log("updated : ",updatedData);
+      console.log("updated : ", updatedData);
 
       try {
         const response = await axiosInstance.put(
@@ -150,6 +133,16 @@ export default function Profile() {
   });
 
   const { handleChange, handleSubmit, values, errors, touched } = formik;
+
+  const onDrop = useCallback((acceptedFiles) => {
+    // Seçilen dosyayı sakla
+    setSelectedFile(acceptedFiles[0]);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: 'image/*',
+  });
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -252,43 +245,49 @@ export default function Profile() {
                 sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
               >
                 <Stack direction="column" spacing={1}>
-        <AspectRatio
-          ratio="1"
-          maxHeight={200}
-          sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
-        >
-          <img
-            src={dosya}
-            loading="lazy"
-            alt=""
-            style={{ objectFit: "cover", borderRadius: "100%" }}
-          />
-        </AspectRatio>
-        <input
-          type="file"
-          id="fileInput"
-          name="fileInput"
-          accept="image/*"
-          value={values.fileInput}
-          onChange={dosyaYukle}
-          style={{ display: "none" }}
-        />
-        <IconButton
-          aria-label="upload new picture"
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          sx={{
-            bgcolor: "background.body",
-            position: "absolute",
-            zIndex: 2,
-            borderRadius: "50%",
-            left: 100,
-            top: 170,
-            boxShadow: "sm",
-          }}
-          onClick={() => document.getElementById("fileInput").click()}
-        >
+                  <AspectRatio
+                    ratio="1"
+                    maxHeight={200}
+                    sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
+                  >
+                    {selectedFile ? (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        loading="lazy"
+                        alt=""
+                        style={{ objectFit: "cover", borderRadius: "100%" }}
+                      />
+                    ) : values.image ? (
+                      <img
+                        src={details.userImage}
+                        loading="lazy"
+                        alt=""
+                        style={{ objectFit: "cover", borderRadius: "100%" }}
+                      />
+                    ) : (
+                      <div>Add an image</div>
+                    )}
+                  </AspectRatio>
+                  <div {...getRootProps()} style={{ display: "none" }}>
+                    <input
+                    id="fileInput" {...getInputProps()} />
+                  </div>
+                  <IconButton
+                    aria-label="upload new picture"
+                    size="sm"
+                    variant="outlined"
+                    color="neutral"
+                    sx={{
+                      bgcolor: "background.body",
+                      position: "absolute",
+                      zIndex: 2,
+                      borderRadius: "50%",
+                      left: 100,
+                      top: 170,
+                      boxShadow: "sm",
+                    }}
+                    onClick={() => document.getElementById("fileInput").click()}
+                  >
                     <EditRoundedIcon />
                   </IconButton>
                 </Stack>
@@ -316,7 +315,7 @@ export default function Profile() {
                       )}
 
                       <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                      <FormLabel>Lastname</FormLabel>
+                        <FormLabel>Lastname</FormLabel>
                         <Input
                           name="lastName"
                           value={values.lastName || details.surname}
@@ -332,7 +331,7 @@ export default function Profile() {
                     </FormControl>
                   </Stack>
                   <Stack direction="row" spacing={2}>
-                   
+
 
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>E-mail</FormLabel>
@@ -368,8 +367,8 @@ export default function Profile() {
                       )}
                     </FormControl>
                   </Stack>
-                  
-                  
+
+
                 </Stack>
               </Stack>
 

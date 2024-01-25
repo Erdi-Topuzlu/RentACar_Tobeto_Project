@@ -53,7 +53,7 @@ public class User implements UserDetails {
     private LocalDate birthDate;
 
     @Column(name = "user_image")
-    private String userImageUrl;
+    private String userImage;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
