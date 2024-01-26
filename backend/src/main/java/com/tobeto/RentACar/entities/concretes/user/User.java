@@ -51,7 +51,7 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "user_image")
+    @Column(name = "user_photo_url")
     private String userPhotoUrl;
 
     @OneToMany(mappedBy = "user")

@@ -87,14 +87,17 @@ public class UserManager implements UserService {
     // User Photo Upload Url
     @Override
     public String uploadUserPhotoUrl(String id, MultipartFile file) {
-        log.info("Saving picture for user with id: {} ", id);
-//        GetByIdUserResponse user = getById(Integer.parseInt(id));
-        var user = userRepository.findById(Integer.parseInt(id)).orElseThrow();
+
+        GetByIdUserResponse userById = getById(Integer.parseInt(id));
+
+        var user = modelMapperService.dtoToEntity().map(userById, User.class);
         String userPhotoUrl = photoFunction.apply(id, file);
-        user.setUserPhotoUrl(userPhotoUrl);
+
+        userById.setUserPhotoUrl(userPhotoUrl);
         userRepository.save(user);
-//        userRepository.save(modelMapperService.dtoToEntity().map(user, User.class));
+
         return userPhotoUrl;
+
     }
 
     private Function<String, String> fileExtension() {
@@ -115,7 +118,6 @@ public class UserManager implements UserService {
             return  ServletUriComponentsBuilder
                     .fromCurrentContextPath()
                     .path("/api/v1/users/userImage/" + fileName)
-//                    .path(fileName)
                     .toUriString();
         } catch (Exception e) {
             throw new RuntimeException("Unable to save Image");

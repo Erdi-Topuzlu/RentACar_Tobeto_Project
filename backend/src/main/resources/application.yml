@@ -20,10 +20,6 @@ spring:
     multipart:
       max-file-size: 1000MB
       max-request-size: 1000MB
-  mvc:
-    throw-exception-if-no-handler-found: true
-    async:
-        request-timeout: 3600000
 #Jwt Connection
 jwt:
   secret-key: A9pPomvZ5vkCC8OWRCkqrBn4k8EftWAxRG2enCUi0Xfzze7xEwrqmayQUF2btuo3mhOlMJR+Bo4OqMoZUOPuYg==
