@@ -37,6 +37,7 @@
     "react-scripts": "^5.0.1",
     "react-slick": "^0.29.0",
     "react-svg": "^16.1.32",
+    "react-toastify": "^10.0.4",
     "reactstrap": "^9.2.1",
     "redux": "^5.0.1",
     "remixicon": "^4.0.1",

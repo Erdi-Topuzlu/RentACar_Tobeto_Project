@@ -127,6 +127,8 @@ function Header() {
       console.error("Çıkış işlemi sırasında bir hata oluştu:", error);
     }
   };
+  console.log(details);
+
 
   return (
     <header className="header">
@@ -170,7 +172,7 @@ function Header() {
                         <img
                           width={28}
                           src={
-                            details.image ||
+                            details.userPhotoUrl ||
                             "https://t3.ftcdn.net/jpg/05/16/27/58/240_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
                           }
                           alt="Profile"

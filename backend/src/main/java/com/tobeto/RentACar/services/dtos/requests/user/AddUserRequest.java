@@ -29,4 +29,6 @@ public class AddUserRequest {
     @NotNull(message = Messages.userBirthDateNotEmpty)
     private LocalDate birthDate;
 
+    private String userPhotoUrl;
+
 }

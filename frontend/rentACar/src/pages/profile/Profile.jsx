@@ -23,13 +23,11 @@ import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { useDropzone } from 'react-dropzone';
-import DropZone from "../../components/helper/profile/DropZone";
 import FileUpload from "../../components/helper/profile/FileUpload";
 import CountrySelector from "../../components/helper/profile/CountrySelector";
 import EditorToolbar from "../../components/helper/profile/EditorToolbar";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchUserData from "../../redux/actions/fetchUserData";
 import { useFormik } from "formik";
@@ -38,6 +36,8 @@ import { Form } from "reactstrap";
 import { userProfileScheme } from "../../schemes/userProfileScheme";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
 import ErrorPage from "../../components/ui/ErrorPage";
+import fetchUserPhotoUpdateData from "../../redux/actions/fetchUserPhotoUpdateData";
+import { toastSuccess } from "../../service/ToastifyService";
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -46,6 +46,9 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
+  password: Yup.string()
+    .required("Password required!")
+    .min(5, "Minimum of 5 characters"),
 });
 
 export default function Profile() {
@@ -57,9 +60,7 @@ export default function Profile() {
     userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
   const [id, setId] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-
-
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const decodeJWT = (token) => {
     try {
@@ -78,6 +79,8 @@ export default function Profile() {
       const decodedToken = decodeJWT(storedJWT);
       const id = decodedToken.id;
 
+      console.log(decodedToken);
+
       setToken(storedJWT);
       setId(id);
       if (decodedToken && decodedToken.role) {
@@ -87,14 +90,52 @@ export default function Profile() {
     }
   }, [dispatch]);
 
-  // Initial form values
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("file", file, file.name);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        setSelectedImage(e.target.result);
+
+        try {
+          const response = await axiosInstance.put(
+            "/api/v1/users/userImage",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const updatedImageUrl = response.data;
+            setSelectedImage(updatedImageUrl);
+            console.log(updatedImageUrl); // "https://example.com/profile_photo.jpg"
+          } else {
+            // Hata oluştuğunda yapılacak işlemleri burada belirtebilirsiniz
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      reader.readAsDataURL(file);
+      toastSuccess("Uploaded Photo")
+    }
+  };
+
   const initialValues = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     image: "",
-    // Add other form fields here
   };
 
   // Formik hook
@@ -109,11 +150,8 @@ export default function Profile() {
         email: values.email || details.email,
         password: values.password,
         birthDate: null,
-        userImage: selectedFile ? URL.createObjectURL(selectedFile) : details.userImage,
+        userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
-
-      console.log("Values : ", values);
-      console.log("updated : ", updatedData);
 
       try {
         const response = await axiosInstance.put(
@@ -121,27 +159,16 @@ export default function Profile() {
           updatedData
         );
 
-        console.log("Başarılı güncelleme")
-        console.log(response)
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
       } finally {
         actions.setSubmitting(false);
       }
+      toastSuccess("Editted Profile Information")
     },
   });
 
   const { handleChange, handleSubmit, values, errors, touched } = formik;
-
-  const onDrop = useCallback((acceptedFiles) => {
-    // Seçilen dosyayı sakla
-    setSelectedFile(acceptedFiles[0]);
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: 'image/*',
-  });
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -157,7 +184,7 @@ export default function Profile() {
           >
             <Box sx={{ px: { xs: 2, md: 6 } }}>
               <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                Welcome, {details.name ? details.name : 'User'}
+                Welcome, {details.name ? details.name : "User"}
               </Typography>
             </Box>
             <Tabs
@@ -246,31 +273,23 @@ export default function Profile() {
                 <Stack direction="column" spacing={1}>
                   <AspectRatio
                     ratio="1"
-                    maxHeight={200}
-                    sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
+                    maxHeight={108}
+                    sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                   >
-                    {selectedFile ? (
-                      <img
-                        src={URL.createObjectURL(selectedFile)}
-                        loading="lazy"
-                        alt=""
-                        style={{ objectFit: "cover", borderRadius: "100%" }}
-                      />
-                    ) : values.image ? (
-                      <img
-                        src={details.userImage}
-                        loading="lazy"
-                        alt=""
-                        style={{ objectFit: "cover", borderRadius: "100%" }}
-                      />
-                    ) : (
-                      <div>Add an image</div>
-                    )}
+                    <img
+                      src={selectedImage || details.userPhotoUrl}
+                      srcSet = {details.userPhotoUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"}
+                      loading="lazy"
+                      alt=""
+                    />
                   </AspectRatio>
-                  <div {...getRootProps()} style={{ display: "none" }}>
-                    <input
-                    id="fileInput" {...getInputProps()} />
-                  </div>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                  />
                   <IconButton
                     aria-label="upload new picture"
                     size="sm"
@@ -281,13 +300,14 @@ export default function Profile() {
                       position: "absolute",
                       zIndex: 2,
                       borderRadius: "50%",
-                      left: 100,
-                      top: 170,
+                      left: 85,
+                      top: 180,
                       boxShadow: "sm",
                     }}
-                    onClick={() => document.getElementById("fileInput").click()}
                   >
-                    <EditRoundedIcon />
+                    <label htmlFor="image-upload">
+                      <EditRoundedIcon />
+                    </label>
                   </IconButton>
                 </Stack>
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -302,7 +322,7 @@ export default function Profile() {
                       <FormControl sx={{ display: "flex-column", gap: 1 }}>
                         <Input
                           name="firstName"
-                          value={values.firstName || details.name}
+                          value={values.firstName}
                           onChange={handleChange}
                           size="sm"
                           placeholder="First name"
@@ -317,7 +337,7 @@ export default function Profile() {
                         <FormLabel>Lastname</FormLabel>
                         <Input
                           name="lastName"
-                          value={values.lastName || details.surname}
+                          value={values.lastName}
                           onChange={handleChange}
                           size="sm"
                           placeholder="Last name"
@@ -330,15 +350,13 @@ export default function Profile() {
                     </FormControl>
                   </Stack>
                   <Stack direction="row" spacing={2}>
-
-
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>E-mail</FormLabel>
 
                       <FormControl sx={{ display: "flex-column", gap: 1 }}>
                         <Input
                           name="email"
-                          value={values.email || details.email}
+                          value={values.email}
                           onChange={handleChange}
                           size="sm"
                           placeholder="E-mail"
@@ -366,8 +384,6 @@ export default function Profile() {
                       )}
                     </FormControl>
                   </Stack>
-
-
                 </Stack>
               </Stack>
 
@@ -385,12 +401,18 @@ export default function Profile() {
                       sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                     >
                       <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                        src={selectedImage || details.userPhotoUrl}
                         loading="lazy"
                         alt=""
                       />
                     </AspectRatio>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
                     <IconButton
                       aria-label="upload new picture"
                       size="sm"
@@ -406,7 +428,9 @@ export default function Profile() {
                         boxShadow: "sm",
                       }}
                     >
-                      <EditRoundedIcon />
+                      <label htmlFor="image-upload">
+                        <EditRoundedIcon />
+                      </label>
                     </IconButton>
                   </Stack>
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
@@ -515,7 +539,7 @@ export default function Profile() {
           </Stack>
         </Box>
       ) : (
-        <ErrorPage errorMessage="403 Forbidden"/>
+        <ErrorPage errorMessage="403 Forbidden" />
       )}
     </Form>
   );
