@@ -4,6 +4,7 @@ import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.services.dtos.requests.user.*;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +21,7 @@ public interface UserService{
     boolean existsById(int id);
 
     Optional<User> findByEmail(String username);
+
+    String uploadUserPhotoUrl(String id , MultipartFile file);
 
 }

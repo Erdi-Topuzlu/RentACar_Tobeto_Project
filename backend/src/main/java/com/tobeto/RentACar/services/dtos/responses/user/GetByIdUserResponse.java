@@ -17,6 +17,5 @@ public class GetByIdUserResponse {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private String password;
-    private String userImage;
-
+    private String userPhotoUrl;
 }

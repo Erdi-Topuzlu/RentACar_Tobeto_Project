@@ -1,7 +1,6 @@
 package com.tobeto.RentACar.entities.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tobeto.RentACar.entities.abstracts.BaseEntity;
 import com.tobeto.RentACar.security.entities.Role;
 import com.tobeto.RentACar.entities.concretes.rental.Rental;
 import com.tobeto.RentACar.security.services.token.Token;
@@ -53,7 +52,7 @@ public class User implements UserDetails {
     private LocalDate birthDate;
 
     @Column(name = "user_image")
-    private String userImage;
+    private String userPhotoUrl;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
