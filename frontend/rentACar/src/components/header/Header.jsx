@@ -31,6 +31,11 @@ function Header() {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const [token, setToken] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [userLocation, setUserLocation] = useState({
+    country: "",
+    province: "",
+    town: "",
+  });
 
   const toggleProfileDropdown = () =>
     setShowProfileDropdown(!showProfileDropdown);
@@ -128,6 +133,62 @@ function Header() {
     }
   };
   console.log(details);
+
+
+  const fetchLocationDetails = async (latitude, longitude) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await response.json();
+  
+      const country = data.address.country;
+      const province = data.address.province;
+      const town = data.address.town;
+  
+      //console.log("Full Address Data:", data.address);
+  
+      setUserLocation({
+        country,
+        province,
+        town
+      });
+    } catch (error) {
+      console.error("Error fetching location details:", error);
+    }
+  };
+  
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+  
+          fetchLocationDetails(latitude, longitude);
+        },
+        (error) => {
+          if (error.code === 1) {
+            console.error("User denied Geolocation");
+            // Kullanıcı konum izni vermediğnde default konum göster
+            setUserLocation({
+              country: "Tobeto",
+              province: "Pair-1",
+              town: "Istanbul Kodluyor"
+            });
+          } else {
+            console.error("Error getting geolocation:", error);
+          }
+        }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  };
+  
+  useEffect(() => {
+    getLocation();
+  }, []);
 
 
   return (
@@ -247,18 +308,18 @@ function Header() {
             </Col>
 
             <Col lg="3" md="3" sm="4">
-              <div className="header__location d-flex align-items-center gap-2">
-                <span>
-                  <i className="ri-earth-line"></i>
-                </span>
-                <div className="header__location-content">
-                  <h4>{t("country")}</h4>
-                  <h6>
-                    {t("city")}, {t("country")}
-                  </h6>
-                </div>
-              </div>
-            </Col>
+          <div className="header__location d-flex align-items-center gap-2">
+            <span>
+              <i className="ri-earth-line"></i>
+            </span>
+            <div className="header__location-content">
+              <h2>{userLocation.country}</h2>
+              <h6>
+                {userLocation.town}, {userLocation.province}
+              </h6>
+            </div>
+          </div>
+        </Col>
 
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
