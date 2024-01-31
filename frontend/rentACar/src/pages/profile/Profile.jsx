@@ -43,12 +43,12 @@ import { toastSuccess } from "../../service/ToastifyService";
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .required("Password required!")
-    .min(5, "Minimum of 5 characters"),
+  // email: Yup.string()
+  //   .email("Invalid email address")
+  //   .required("Email is required"),
+  // password: Yup.string()
+  //   .required("Password required!")
+  //   .min(5, "Minimum of 5 characters"),
 });
 
 export default function Profile() {
@@ -56,8 +56,6 @@ export default function Profile() {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const [userRoles, setUserRoles] = useState([]);
   const navigate = useNavigate();
-  const canAccessPage =
-    userRoles.includes("USER") || userRoles.includes("ADMIN");
   const [token, setToken] = useState("");
   const [id, setId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -133,8 +131,6 @@ export default function Profile() {
   const initialValues = {
     firstName: "",
     lastName: "",
-    email: "",
-    password: "",
     image: "",
   };
 
@@ -147,15 +143,13 @@ export default function Profile() {
         id: id,
         name: values.firstName || details.name,
         surname: values.lastName || details.surname,
-        email: values.email || details.email,
-        password: values.password,
         birthDate: null,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
 
       try {
         const response = await axiosInstance.put(
-          `api/v1/auth/${id}`,
+          `api/v1/users/${id}`,
           updatedData
         );
 
@@ -172,7 +166,6 @@ export default function Profile() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      {canAccessPage ? (
         <Box sx={{ flex: 1, width: "100%" }}>
           <Box
             sx={{
@@ -349,7 +342,7 @@ export default function Profile() {
                       )}
                     </FormControl>
                   </Stack>
-                  <Stack direction="row" spacing={2}>
+                  {/* <Stack direction="row" spacing={2}>
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>E-mail</FormLabel>
 
@@ -383,7 +376,7 @@ export default function Profile() {
                         <div style={{ color: "red" }}>{errors.password}</div>
                       )}
                     </FormControl>
-                  </Stack>
+                  </Stack> */}
                 </Stack>
               </Stack>
 
@@ -538,9 +531,6 @@ export default function Profile() {
             </Card>
           </Stack>
         </Box>
-      ) : (
-        <ErrorPage errorMessage="403 Forbidden" />
-      )}
     </Form>
   );
 }

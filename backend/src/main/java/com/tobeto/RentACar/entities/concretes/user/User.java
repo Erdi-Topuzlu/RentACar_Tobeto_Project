@@ -33,7 +33,10 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "email", updatable = false)
+    private String email;
+
+    @Column(name = "password", updatable = false)
     private String password;
 
     @Column(name = "name")
@@ -44,9 +47,6 @@ public class User implements UserDetails {
 
     @Column(name = "surname")
     private String surname;
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;

@@ -53,28 +53,6 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse update(int id,UpdateUserRequest request) {
-        var user = User.builder()
-                .id(id)
-                .email(request.getEmail())
-                .name(request.getName())
-                .surname(request.getSurname())
-                .birthDate(request.getBirthDate())
-                .userPhotoUrl(request.getUserPhotoUrl())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
-        var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user, user);
-        var refreshToken = jwtService.generateRefreshToken(user, user);
-
-        saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
     public AuthenticationResponse login(LoginUserRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

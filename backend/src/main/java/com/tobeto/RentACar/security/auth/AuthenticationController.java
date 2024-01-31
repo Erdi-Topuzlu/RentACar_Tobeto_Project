@@ -27,11 +27,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AuthenticationResponse> update(@PathVariable int id,@RequestBody UpdateUserRequest request) {
-        return ResponseEntity.ok(authenticationService.update(id,request));
-    }
-
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginUserRequest request) {
         return ResponseEntity.ok(authenticationService.login(request));
