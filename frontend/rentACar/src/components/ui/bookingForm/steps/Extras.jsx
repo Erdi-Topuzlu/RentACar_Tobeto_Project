@@ -10,7 +10,7 @@ const extrasContents = [
       "Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
       "Super Mini Coverage",
     ],
-    buttonLabel: "Sign up for free",
+    buttonLabel: "Add Package",
     outline: false,
   },
   {
@@ -22,21 +22,31 @@ const extrasContents = [
       "Supplementary Liability Coverage",
       "Personal Accident Assurance",
     ],
-    buttonLabel: "Get started",
+    buttonLabel: "Add Package",
     outline: false,
   },
   
 ];
 
-const Extra = (props) => {
-  const [isOutline, setIsOutline] = useState(true);
 
-  const handleButtonClick = () => {
-    setIsOutline(!isOutline);
-    // Add any other logic you may need on button click
+
+const Extra = (props) => {
+
+  const buttonStyle = {
+    backgroundColor: props.isSelected ? '#6f42c1' : 'transparent',
+    color: props.isSelected ? '#fff' : '#6f42c1',
+    border: `1px solid ${props.isSelected ? '#6f42c1' : '#6f42c1'}`,
   };
   return (
-    <div style={{ height: '300px' }} className="card mb-4 shadow-sm">
+    <button
+    className={`btn-md btn-block ${
+      props.isSelected ? 'form__btn' : 'form__btn'
+    }`}
+    type="button"
+    onClick={props.onButtonClick}
+    style={buttonStyle}
+  >
+    <div style={{ height: '300px' }} className="card mb-2 mt-2 shadow-sm">
       <div className="card-header">
         <h4 className="my-0 font-weight-normal">{props.header}</h4>
       </div>
@@ -51,16 +61,8 @@ const Extra = (props) => {
           ))}
         </ul>
       </div>
-      <button
-        className={`btn btn-md btn-block ${
-          props.isSelected ? 'btn-primary' : 'btn-outline-primary'
-        }`}
-        type="button"
-        onClick={props.onButtonClick}
-      >
-        {props.buttonLabel}
-      </button>
     </div>
+  </button>
   );
 };
 
@@ -68,7 +70,7 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
   const [selectedPackageIndex, setSelectedPackageIndex] = useState(null);
 
   const handlePackageClick = (index) => {
-    setSelectedPackageIndex(index);
+    setSelectedPackageIndex((prevIndex) => (prevIndex === index ? null : index));
     // Add any other logic you may need on package click
   };
 
@@ -91,7 +93,7 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
   return (
     <div className="row card-deck mb-3 text-center">
       {extras}
-      <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center justify-content-between mt-4">
         {activeStep !== steps.length - 1 && (
           <Button
             disabled={activeStep === 0}

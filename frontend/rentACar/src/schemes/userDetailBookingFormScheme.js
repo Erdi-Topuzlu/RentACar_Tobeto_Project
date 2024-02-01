@@ -12,7 +12,7 @@ export const userDetailBookingFormScheme = yup.object().shape({
     .required("Phone number required!"),
     birthDate: yup
     .string().required("Birthdate required!"),
-    driverLicence: yup
+    driverLicense: yup
     .string().required("Driver Licence required!")
     .max(new Date(Date.now() - 567648000000), "You must be at least 18 years"),
     pickupDate: yup
