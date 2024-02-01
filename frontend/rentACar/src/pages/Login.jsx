@@ -21,9 +21,18 @@ import { AnimatedLTR } from "../components/ui/animation/animateDiv";
 import { ReactSVG } from "react-svg";
 
 const Login = () => {
+  const token = localStorage.getItem("access_token");
+
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(token){
+      navigate("/profile")
+    }
+  }, [])
+  
 
   const formik = useFormik({
     initialValues: {

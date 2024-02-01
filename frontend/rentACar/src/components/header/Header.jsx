@@ -3,20 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
 import "../../styles/header.css";
-
 import logo from "../../assets/all-images/logo.png";
-import mobilLogo from "../../assets/all-images/mobil_logo.png";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import turkey from "../../assets/all-images/tr.png";
 import england from "../../assets/all-images/en.png";
 import { NavDropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/joy";
-import axios from "axios";
-import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
 import fetchUserData from "../../redux/actions/fetchUserData";
 
 const langSelect = (eventKey) => {
@@ -26,11 +21,16 @@ const langSelect = (eventKey) => {
 function Header() {
   const dispatch = useDispatch();
   const menuRef = useRef(null);
+
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const [showUi, setShowUi] = useState(true);
   const { details, status, error } = useSelector((state) => state.userDetail);
   const [token, setToken] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [userRoles, setUserRoles] = useState([]);
+  const canAccessPage = userRoles.includes("ADMIN");
+
   const [userLocation, setUserLocation] = useState({
     country: "",
     province: "",
@@ -39,6 +39,20 @@ function Header() {
 
   const toggleProfileDropdown = () =>
     setShowProfileDropdown(!showProfileDropdown);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowProfileDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
 
@@ -68,17 +82,6 @@ function Header() {
     },
   ];
 
-  useEffect(() => {
-    // JWT'den yetkilendirme bilgilerini okuma işlemi
-    const storedJWT = localStorage.getItem("access_token");
-    if (storedJWT) {
-      setToken(storedJWT);
-      setShowUi(false);
-    } else {
-      setShowUi(true);
-    }
-  }, []);
-
   const decodeJWT = (token) => {
     try {
       const decoded = JSON.parse(atob(token.split(".")[1]));
@@ -97,9 +100,13 @@ function Header() {
       const id = decodedToken.id;
 
       setToken(storedJWT);
+      setShowUi(false);
       if (decodedToken && decodedToken.role) {
+        setUserRoles(decodedToken.role);
         dispatch(fetchUserData(id));
       }
+    } else {
+      setShowUi(true);
     }
   }, [dispatch]);
 
@@ -134,37 +141,36 @@ function Header() {
   };
   console.log(details);
 
-
   const fetchLocationDetails = async (latitude, longitude) => {
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
       );
       const data = await response.json();
-  
+
       const country = data.address.country;
       const province = data.address.province;
       const town = data.address.town;
-  
+
       //console.log("Full Address Data:", data.address);
-  
+
       setUserLocation({
         country,
         province,
-        town
+        town,
       });
     } catch (error) {
       console.error("Error fetching location details:", error);
     }
   };
-  
+
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-  
+
           fetchLocationDetails(latitude, longitude);
         },
         (error) => {
@@ -174,7 +180,7 @@ function Header() {
             setUserLocation({
               country: "Tobeto",
               province: "Pair-1",
-              town: "Istanbul Kodluyor"
+              town: "Istanbul Kodluyor",
             });
           } else {
             console.error("Error getting geolocation:", error);
@@ -185,11 +191,10 @@ function Header() {
       console.log("Geolocation is not supported by this browser.");
     }
   };
-  
+
   useEffect(() => {
     getLocation();
   }, []);
-
 
   return (
     <header className="header">
@@ -240,24 +245,39 @@ function Header() {
                           className="header__user-image"
                         />
                         {"  "}
-                        {details.name ? details.name : 'User'}
+                        {details.name ? details.name : "User"}
                       </span>
                     }
                     id="nav-dropdown"
                     show={showProfileDropdown}
                   >
-                    <NavDropdown.Item
-                      eventKey="profile"
-                      onClick={() => {
-                        navigate("/profile");
-                        setShowProfileDropdown(false);
-                      }}
-                    >
-                      Profil Sayfasına Git
-                    </NavDropdown.Item>
-                    <NavDropdown.Item eventKey="logout" onClick={handleLogout}>
-                      Çıkış Yap
-                    </NavDropdown.Item>
+                    <div ref={dropdownRef}>
+                      <NavDropdown.Item
+                        onClick={() => {
+                          navigate("/profile");
+                          setShowProfileDropdown(false);
+                        }}
+                      >
+                        User Profile
+                      </NavDropdown.Item>
+                      {canAccessPage ? (
+                      <NavDropdown.Item
+                        onClick={() => {
+                          navigate("/admin");
+                          setShowProfileDropdown(false);
+                        }}
+                      >
+                        Admin Panel
+                      </NavDropdown.Item>
+                      ) : (
+                        null
+                      )}
+                      <NavDropdown.Item
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </NavDropdown.Item>
+                    </div>
                   </NavDropdown>
                 )}
 
@@ -308,18 +328,18 @@ function Header() {
             </Col>
 
             <Col lg="3" md="3" sm="4">
-          <div className="header__location d-flex align-items-center gap-2">
-            <span>
-              <i className="ri-earth-line"></i>
-            </span>
-            <div className="header__location-content">
-              <h2>{userLocation.country}</h2>
-              <h6>
-                {userLocation.town}, {userLocation.province}
-              </h6>
-            </div>
-          </div>
-        </Col>
+              <div className="header__location d-flex align-items-center gap-2">
+                <span>
+                  <i className="ri-earth-line"></i>
+                </span>
+                <div className="header__location-content">
+                  <h4>{userLocation.country}</h4>
+                  <h6>
+                    {userLocation.town}, {userLocation.province}
+                  </h6>
+                </div>
+              </div>
+            </Col>
 
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">

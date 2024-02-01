@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
-import { Button, Form, FormGroup, Input } from "reactstrap";
+import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -37,8 +37,8 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
       lastname: storedUserData.lastname || "",
       email: storedUserData.email || "",
       phoneNumber: storedUserData.phoneNumber || "",
-      pickupAdress: storedUserData.pickupAdress || "",
-      dropoffAdress: storedUserData.dropoffAdress || "",
+      birthDate: storedUserData.birthDate || "",
+      driverLicence: storedUserData.driverLicence || "",
       pickupDate: storedUserData.pickupDate || "",
       dropoffDate: storedUserData.dropoffDate || "",
     },
@@ -66,7 +66,11 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onBlur={formik.handleBlur}
             invalid={formik.errors.firstname && formik.touched.firstname}
             type="text"
-            placeholder={t("fName")}
+            placeholder={
+              formik.errors.firstname && formik.touched.firstname
+                ? formik.errors.firstname
+                : t("fName")
+            }
           />
         </FormGroup>
 
@@ -82,7 +86,11 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onBlur={formik.handleBlur}
             invalid={formik.errors.lastname && formik.touched.lastname}
             type="text"
-            placeholder={t("lName")}
+            placeholder={
+              formik.errors.lastname && formik.touched.lastname
+                ? formik.errors.lastname
+                : t("lName")
+            }
           />
         </FormGroup>
 
@@ -95,8 +103,12 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder="E-mail"
             invalid={formik.errors.email && formik.touched.email}
+            placeholder={
+              formik.errors.email && formik.touched.email
+                ? formik.errors.email
+                : t("Email")
+            }
           />
         </FormGroup>
 
@@ -110,46 +122,59 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            type="text"
-            placeholder={t("phoneNumber")}
             invalid={formik.errors.phoneNumber && formik.touched.phoneNumber}
+            placeholder={
+              formik.errors.phoneNumber && formik.touched.phoneNumber
+                ? formik.errors.phoneNumber
+                : t("phoneNumber")
+            }
           />
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
           <Input
-            id="pickupAdress"
-            name="pickupAdress"
-            value={formik.values.pickupAdress}
+            id="birthDate"
+            name="birthDate"
+            value={formik.values.birthDate}
             className={
-              formik.errors.pickupAdress &&
-              formik.touched.pickupAdress &&
-              "error"
+              formik.errors.birthDate && formik.touched.birthDate && "error"
             }
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            placeholder={t("pickupAddress")}
-            invalid={formik.errors.pickupAdress && formik.touched.pickupAdress}
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              deactivateDateInput();
+            }}
+            onFocus={activateDateInput}
+            type={dateInputType}
+            invalid={formik.errors.birthDate && formik.touched.birthDate}
+            placeholder={
+              formik.errors.birthDate && formik.touched.birthDate
+                ? formik.errors.birthDate
+                : t("birthDate")
+            }
           />
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
           <Input
-            id="dropoffAdress"
-            name="dropoffAdress"
-            value={formik.values.dropoffAdress}
+            id="driverLicence"
+            name="driverLicence"
+            value={formik.values.driverLicence}
             className={
-              formik.errors.dropoffAdress &&
-              formik.touched.dropoffAdress &&
+              formik.errors.driverLicence &&
+              formik.touched.driverLicence &&
               "error"
             }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            placeholder={t("dropoffAddress")}
             invalid={
-              formik.errors.dropoffAdress && formik.touched.dropoffAdress
+              formik.errors.driverLicence && formik.touched.driverLicence
+            }
+            placeholder={
+              formik.errors.driverLicence && formik.touched.driverLicence
+                ? formik.errors.driverLicence
+                : t("driverLicence")
             }
           />
         </FormGroup>
@@ -158,7 +183,6 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
           <Input
             id="pickupDate"
             name="pickupDate"
-            placeholder={t("startDate")}
             value={formik.values.pickupDate}
             className={
               formik.errors.pickupDate &&
@@ -173,6 +197,11 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onFocus={activateDateInput}
             type={dateInputType}
             invalid={formik.errors.pickupDate && formik.touched.pickupDate}
+            placeholder={
+              formik.errors.startDate && formik.touched.startDate
+                ? formik.errors.startDate
+                : t("startDate")
+            }
           />
         </FormGroup>
 
@@ -180,7 +209,6 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
           <Input
             id="dropoffDate"
             name="dropoffDate"
-            placeholder={t("endDate")}
             value={formik.values.dropoffDate}
             className={
               formik.errors.dropoffDate && formik.touched.dropoffDate && "error"
@@ -193,6 +221,11 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             onFocus={activateDateInput}
             type={dateInputType}
             invalid={formik.errors.dropoffDate && formik.touched.dropoffDate}
+            placeholder={
+              formik.errors.endDate && formik.touched.endDate
+                ? formik.errors.endDate
+                : t("endDate")
+            }
           />
         </FormGroup>
 

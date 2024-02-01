@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -21,6 +21,14 @@ import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 const signUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    if(token){
+      navigate("/profile")
+    }
+  }, [])
 
   const formik = useFormik({
     initialValues: {

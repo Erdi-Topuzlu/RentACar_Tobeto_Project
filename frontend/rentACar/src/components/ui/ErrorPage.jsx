@@ -10,7 +10,7 @@ const ErrorPage = ({ errorMessage }) => {
       <section>
         <Container className="d-flex justify-content-center">
           <div className="d-block flex-column align-items-center">
-            <img width={350} src={imgError} alt="Error Image" />
+            {/* <img width={350} src={imgError} alt="Error Image" /> */}
             <h2 className="section__title text-center">{errorMessage}</h2>
           </div>
         </Container>

@@ -9,8 +9,6 @@ import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
 import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import Typography from "@mui/joy/Typography";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
@@ -38,18 +36,8 @@ import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors"
 import ErrorPage from "../../components/ui/ErrorPage";
 import fetchUserPhotoUpdateData from "../../redux/actions/fetchUserPhotoUpdateData";
 import { toastSuccess } from "../../service/ToastifyService";
+import Loading from "../../components/ui/Loading";
 
-// Validation schema using Yup
-const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  // email: Yup.string()
-  //   .email("Invalid email address")
-  //   .required("Email is required"),
-  // password: Yup.string()
-  //   .required("Password required!")
-  //   .min(5, "Minimum of 5 characters"),
-});
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -59,6 +47,8 @@ export default function Profile() {
   const [token, setToken] = useState("");
   const [id, setId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const canAccessPage =
+    userRoles.includes("USER") || userRoles.includes("ADMIN");
 
   const decodeJWT = (token) => {
     try {
@@ -124,7 +114,7 @@ export default function Profile() {
       };
 
       reader.readAsDataURL(file);
-      toastSuccess("Uploaded Photo")
+      toastSuccess("Uploaded Photo");
     }
   };
 
@@ -132,18 +122,19 @@ export default function Profile() {
     firstName: "",
     lastName: "",
     image: "",
+    birthdate: "",
   };
 
   // Formik hook
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema:userProfileScheme,
     onSubmit: async (values, actions) => {
       const updatedData = {
         id: id,
         name: values.firstName || details.name,
         surname: values.lastName || details.surname,
-        birthDate: null,
+        birthDate: values.birthdate || details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
 
@@ -152,13 +143,12 @@ export default function Profile() {
           `api/v1/users/${id}`,
           updatedData
         );
-
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
       } finally {
         actions.setSubmitting(false);
       }
-      toastSuccess("Editted Profile Information")
+      toastSuccess("Editted Profile Information");
     },
   });
 
@@ -166,6 +156,7 @@ export default function Profile() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {canAccessPage ? (
         <Box sx={{ flex: 1, width: "100%" }}>
           <Box
             sx={{
@@ -270,8 +261,12 @@ export default function Profile() {
                     sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                   >
                     <img
-                      src={selectedImage || details.userPhotoUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x" }
-                      srcSet = {details.userPhotoUrl || selectedImage}
+                      src={
+                        selectedImage ||
+                        details.userPhotoUrl ||
+                        "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                      }
+                      srcSet={details.userPhotoUrl || selectedImage}
                       loading="lazy"
                       alt=""
                     />
@@ -340,6 +335,21 @@ export default function Profile() {
                       {touched.lastName && errors.lastName && (
                         <div style={{ color: "red" }}>{errors.lastName}</div>
                       )}
+
+                      <FormControl>
+                        <FormLabel>Birthdate</FormLabel>
+                        <Input
+                          name="birthdate"
+                          value={values.birthdate}
+                          onChange={handleChange}
+                          type="date"
+                          size="sm"
+                          placeholder="Birthdate"
+                        />
+                      </FormControl>
+                      {touched.birthdate && errors.birthdate && (
+                        <div style={{ color: "red" }}>{errors.birthdate}</div>
+                      )}
                     </FormControl>
                   </Stack>
                   {/* <Stack direction="row" spacing={2}>
@@ -394,7 +404,12 @@ export default function Profile() {
                       sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                     >
                       <img
-                        src={selectedImage || details.userPhotoUrl}
+                        src={
+                          selectedImage ||
+                          details.userPhotoUrl ||
+                          "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                        }
+                        srcSet={details.userPhotoUrl || selectedImage}
                         loading="lazy"
                         alt=""
                       />
@@ -427,7 +442,7 @@ export default function Profile() {
                     </IconButton>
                   </Stack>
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Firstname</FormLabel>
                     <FormControl
                       sx={{
                         display: {
@@ -450,7 +465,9 @@ export default function Profile() {
                         <div style={{ color: "red" }}>{errors.firstName}</div>
                       )}
 
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                      
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                      <FormLabel>Lastname</FormLabel>
                         <Input
                           name="lastName"
                           value={values.lastName}
@@ -463,14 +480,26 @@ export default function Profile() {
                       {touched.lastName && errors.lastName && (
                         <div style={{ color: "red" }}>{errors.lastName}</div>
                       )}
+
+                      <FormControl>
+                        <FormLabel>Birthdate</FormLabel>
+                        <Input
+                          name="birthdate"
+                          value={values.birthdate}
+                          onChange={handleChange}
+                          type="date"
+                          size="sm"
+                          placeholder="Birthdate"
+                        />
+                      </FormControl>
+                      {touched.birthdate && errors.birthdate && (
+                        <div style={{ color: "red" }}>{errors.birthdate}</div>
+                      )}
                     </FormControl>
                   </Stack>
                 </Stack>
-                <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
+
+                {/* <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>E-mail</FormLabel>
 
                   <FormControl sx={{ display: "flex-column", gap: 2 }}>
@@ -486,33 +515,7 @@ export default function Profile() {
                   {touched.email && errors.email && (
                     <div style={{ color: "red" }}>{errors.email}</div>
                   )}
-                </FormControl>
-                <div>
-                  <CountrySelector />
-                </div>
-                <div>
-                  <FormControl sx={{ display: { sm: "contents" } }}>
-                    <FormLabel>Timezone</FormLabel>
-                    <Select
-                      size="sm"
-                      startDecorator={<AccessTimeFilledRoundedIcon />}
-                      defaultValue="1"
-                    >
-                      <Option value="1">
-                        Indochina Time (Bangkok){" "}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                      <Option value="2">
-                        Indochina Time (Ho Chi Minh City){" "}
-                        <Typography textColor="text.tertiary" ml={0.5}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                    </Select>
-                  </FormControl>
-                </div>
+                </FormControl> */}
               </Stack>
 
               {/* BUTTONS */}
@@ -531,6 +534,9 @@ export default function Profile() {
             </Card>
           </Stack>
         </Box>
+      ) : (
+        <Loading />
+      )}
     </Form>
   );
 }

@@ -1,53 +1,48 @@
+import { Height } from "@mui/icons-material";
+import { useState } from "react";
 import { Button } from "reactstrap";
 
 const extrasContents = [
   {
-    header: "Free",
+    header: "Super Mini Coverage Package",
     price: 0,
     features: [
-      "10 users included",
-      "2 GB of storage",
-      "Email support",
-      "Help center access",
+      "Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
+      "Super Mini Coverage",
     ],
     buttonLabel: "Sign up for free",
-    outline: true,
+    outline: false,
   },
   {
-    header: "Pro",
+    header: "Medium Coverage Package",
     price: 15,
     features: [
-      "20 users included",
-      "10 GB of storage",
-      "Priority email support",
-      "Help center access",
+      "Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
+      "Super Mini Coverage",
+      "Supplementary Liability Coverage",
+      "Personal Accident Assurance",
     ],
     buttonLabel: "Get started",
     outline: false,
   },
-  {
-    header: "Enterprise",
-    price: 29,
-    features: [
-      "30 users included",
-      "15 GB storage",
-      "Phone and email support",
-      "Help center access",
-    ],
-    buttonLabel: "Contact us",
-    outline: false,
-  },
+  
 ];
 
 const Extra = (props) => {
+  const [isOutline, setIsOutline] = useState(true);
+
+  const handleButtonClick = () => {
+    setIsOutline(!isOutline);
+    // Add any other logic you may need on button click
+  };
   return (
-    <div className="card mb-4 shadow-sm">
+    <div style={{ height: '300px' }} className="card mb-4 shadow-sm">
       <div className="card-header">
         <h4 className="my-0 font-weight-normal">{props.header}</h4>
       </div>
-      <div className="card-body">
+      <div style={{ height: '200px' }} className="card-body">
         <h1 className="card-title pricing-card-title">
-          {`$${props.price}`}
+          {`₺${props.price}`}
           <small className="text-muted">/ mo</small>
         </h1>
         <ul className="list-unstyled mt-3 mb-4">
@@ -55,33 +50,43 @@ const Extra = (props) => {
             <li key={i}>{feature}</li>
           ))}
         </ul>
-        <button
-          className={`btn btn-lg btn-block ${
-            props.outline ? "btn-outline-primary" : "btn-primary"
-          }`}
-          type="button"
-        >
-          {props.buttonLabel}
-        </button>
       </div>
+      <button
+        className={`btn btn-md btn-block ${
+          props.isSelected ? 'btn-primary' : 'btn-outline-primary'
+        }`}
+        type="button"
+        onClick={props.onButtonClick}
+      >
+        {props.buttonLabel}
+      </button>
     </div>
   );
 };
 
 export const Extras = ({ steps, activeStep, setActiveStep }) => {
+  const [selectedPackageIndex, setSelectedPackageIndex] = useState(null);
+
+  const handlePackageClick = (index) => {
+    setSelectedPackageIndex(index);
+    // Add any other logic you may need on package click
+  };
+
   const extras = extrasContents.map((obj, i) => {
     return (
-      <div key={obj.header} className="col-md-4">
+      <div key={obj.header} className="col-md-6">
         <Extra
           header={obj.header}
           price={obj.price}
           features={obj.features}
           buttonLabel={obj.buttonLabel}
-          outline={obj.outline}
+          isSelected={selectedPackageIndex === i}
+          onButtonClick={() => handlePackageClick(i)}
         />
       </div>
     );
   });
+
 
   return (
     <div className="row card-deck mb-3 text-center">
