@@ -19,6 +19,17 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     setDateInputType("text");
   };
 
+  const licenseTypes = [
+    "A - Motorcycle License",
+    "B - Car License",
+    "C - Truck License",
+    "D - Bus License",
+    "E - Trailer License",
+    "F - Tractor License",
+    "G - Temporary Driver's License",
+    // Diğer ehliyet türleri eklenmeli
+  ];
+
   useEffect(() => {
     // Sayfa yenilendiğinde localStorage'ı temizle
     const handleBeforeUnload = () => {
@@ -40,7 +51,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
       email: storedUserData.email || "",
       phoneNumber: storedUserData.phoneNumber || "",
       birthDate: storedUserData.birthDate || "",
-      driverLicence: storedUserData.driverLicence || "",
+      driverLicense: storedUserData.driverLicense || "",
       pickupDate: storedUserData.pickupDate || "",
       dropoffDate: storedUserData.dropoffDate || "",
     },
@@ -50,6 +61,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
       const data = JSON.stringify(values);
       localStorage.setItem("userData", data);
       setActiveStep(activeStep + 1);
+      console.log(data);
     },
   });
 
@@ -161,27 +173,22 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-          <Input
-            id="driverLicence"
-            name="driverLicence"
-            value={formik.values.driverLicence}
-            className={
-              formik.errors.driverLicence &&
-              formik.touched.driverLicence &&
-              "error"
-            }
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            type="text"
-            invalid={
-              formik.errors.driverLicence && formik.touched.driverLicence
-            }
-            placeholder={
-              formik.errors.driverLicence && formik.touched.driverLicence
-                ? formik.errors.driverLicence
-                : t("driverLicence")
-            }
-          />
+        <Input
+          type="select"
+          id="driverLicense"
+          name="driverLicense"
+          value={formik.values.driverLicense}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          invalid={
+            formik.errors.driverLicense && formik.touched.driverLicense
+          }
+        >
+          <option value="" label="Select a license type" />
+          {licenseTypes.map((type, index) => (
+            <option key={index} value={type} label={type} />
+          ))}
+        </Input>
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
