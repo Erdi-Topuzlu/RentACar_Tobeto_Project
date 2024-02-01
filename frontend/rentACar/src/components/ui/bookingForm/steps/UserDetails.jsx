@@ -4,6 +4,8 @@ import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import InputMask from 'react-input-mask';
+
 export function UserDetails({ steps, activeStep, setActiveStep }) {
   const [dateInputType, setDateInputType] = useState("text");
   const { t } = useTranslation();
@@ -113,22 +115,25 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-          <Input
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formik.values.phoneNumber}
-            className={
-              formik.errors.phoneNumber && formik.touched.phoneNumber && "error"
-            }
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            invalid={formik.errors.phoneNumber && formik.touched.phoneNumber}
-            placeholder={
-              formik.errors.phoneNumber && formik.touched.phoneNumber
-                ? formik.errors.phoneNumber
-                : t("phoneNumber")
-            }
-          />
+        <InputMask
+          mask="(999) 999-99-99"
+          className={`form-control ${
+            formik.touched.phoneNumber
+              ? "is-invalid"
+              : ""
+          }`}
+          type="text"
+          name="phoneNumber"
+          id="phoneNumber"
+          value={formik.values.phoneNumber}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          placeholder={
+            formik.errors.phoneNumber && formik.touched.phoneNumber
+              ? formik.errors.phoneNumber
+              : t("phoneNumber")}
+        />
+        
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
