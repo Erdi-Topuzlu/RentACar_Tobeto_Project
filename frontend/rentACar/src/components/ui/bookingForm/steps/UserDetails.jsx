@@ -4,7 +4,7 @@ import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
 export function UserDetails({ steps, activeStep, setActiveStep }) {
   const [dateInputType, setDateInputType] = useState("text");
@@ -27,7 +27,6 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     "E - Trailer License",
     "F - Tractor License",
     "G - Temporary Driver's License",
-    // Diğer ehliyet türleri eklenmeli
   ];
 
   useEffect(() => {
@@ -127,25 +126,23 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <InputMask
-          mask="(999) 999-99-99"
-          className={`form-control ${
-            formik.touched.phoneNumber
-              ? "is-invalid"
-              : ""
-          }`}
-          type="text"
-          name="phoneNumber"
-          id="phoneNumber"
-          value={formik.values.phoneNumber}
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
-          placeholder={
-            formik.errors.phoneNumber && formik.touched.phoneNumber
-              ? formik.errors.phoneNumber
-              : t("phoneNumber")}
-        />
-        
+          <InputMask
+            mask="(999) 999-99-99"
+            className={`form-control ${
+              formik.touched.phoneNumber ? "is-invalid" : ""
+            }`}
+            type="text"
+            name="phoneNumber"
+            id="phoneNumber"
+            value={formik.values.phoneNumber}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            placeholder={
+              formik.errors.phoneNumber && formik.touched.phoneNumber
+                ? formik.errors.phoneNumber
+                : t("phoneNumber")
+            }
+          />
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
@@ -166,29 +163,29 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             invalid={formik.errors.birthDate && formik.touched.birthDate}
             placeholder={
               formik.errors.birthDate && formik.touched.birthDate
-                ? formik.errors.birthDate
-                : t("birthDate")
+                ? (formik.errors.birthDate)
+                : (t("birthDate"))
             }
           />
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <Input
-          type="select"
-          id="driverLicense"
-          name="driverLicense"
-          value={formik.values.driverLicense}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          invalid={
-            formik.errors.driverLicense && formik.touched.driverLicense
-          }
-        >
-          <option value="" label="Select a license type" />
-          {licenseTypes.map((type, index) => (
-            <option key={index} value={type} label={type} />
-          ))}
-        </Input>
+          <Input
+            type="select"
+            id="driverLicense"
+            name="driverLicense"
+            value={formik.values.driverLicense}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            invalid={
+              formik.errors.driverLicense && formik.touched.driverLicense
+            }
+          >
+            <option value="" label="Select a license type" />
+            {licenseTypes.map((type, index) => (
+              <option key={index} value={type} label={type} />
+            ))}
+          </Input>
         </FormGroup>
 
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
