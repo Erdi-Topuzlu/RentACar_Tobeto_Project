@@ -20,14 +20,15 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import ErrorPage from "../components/ui/ErrorPage";
+import RedirectLogin from "../components/ui/RedirectLogin";
 
 const CarDetails = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
-
   const { details, status, error } = useSelector((state) => state.carDetail);
   const { t } = useTranslation();
+  const token = localStorage.getItem("access_token");
+
 
   useEffect(() => {
     dispatch(fetchCarDetailData(id));
@@ -144,7 +145,7 @@ const CarDetails = () => {
                 </div>
               </div>
             </Col>
-
+            {token ? (
             <Col lg="12" className="mt-5">
               <div className="booking-info mt-5">
                 <h5 className="mb-4 fw-bold text-center ">
@@ -153,6 +154,10 @@ const CarDetails = () => {
                 <BookingForm />
               </div>
             </Col>
+            ) : (
+              
+              <RedirectLogin />
+            )}
           </Row>
         </Container>
       </section>
