@@ -1,5 +1,5 @@
 import { Height } from "@mui/icons-material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "reactstrap";
 
 const extrasContents = [
@@ -73,6 +73,13 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
     setSelectedPackageIndex((prevIndex) => (prevIndex === index ? null : index));
     // Add any other logic you may need on package click
   };
+
+  React.useEffect(() => {
+    if (selectedPackageIndex !== null) {
+      const selectedPackage = extrasContents[selectedPackageIndex];
+      console.log("Selected Package:", selectedPackage);
+    }
+  }, [selectedPackageIndex]);
 
   const extras = extrasContents.map((obj, i) => {
     return (
