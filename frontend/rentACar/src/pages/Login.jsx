@@ -46,7 +46,8 @@ const Login = () => {
           "api/v1/auth/authenticate",
           values
         );
-
+        
+        console.log(response.data)
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
         navigate("/home");

@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,6 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterUserRequest request) {
         var user = User.builder()
-                .id(request.getId())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
@@ -48,6 +48,9 @@ public class AuthenticationService {
 
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
+                .id(savedUser.getId())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole().toString())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -67,6 +70,9 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole().toString())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -99,19 +105,21 @@ public class AuthenticationService {
     }
 
 
-    public void refreshToken(
+    public ResponseEntity<AuthenticationResponse> refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        extracted(request, response);
+        refreshAccessToken(request, response);
+        return ResponseEntity.ok().build();
     }
 
-    private void extracted(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void refreshAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith(bearer)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
             return;
         }
 
@@ -119,18 +127,21 @@ public class AuthenticationService {
         userEmail = jwtService.extractUsername(refreshToken);
 
         if (userEmail != null) {
-            var user = userRepository.findByEmail(userEmail).orElseThrow();
+            var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found!"));
 
             if (jwtService.isTokenValidate(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user, user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()
+                        .id(user.getId())
+                        .email(user.getEmail())
+                        .role(user.getRole().toString())
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
 
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+                response.getWriter().write(new ObjectMapper().writeValueAsString(authResponse));
             }
         }
     }

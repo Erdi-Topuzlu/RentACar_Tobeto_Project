@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.services.dtos.responses.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tobeto.RentACar.security.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,5 @@ public class GetByIdUserResponse {
     private LocalDate birthDate;
     private String password;
     private String userPhotoUrl;
+    private Role role;
 }
