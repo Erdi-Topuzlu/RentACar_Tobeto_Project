@@ -1,5 +1,11 @@
+import PaymentForm from "./creditCard/PaymentForm";
 
 export function PaymentDetails() {
-    return <h2>Payment Info</h2>;
-  }
-  
+  return (
+    <div>
+      <PaymentForm />
+    </div>
+
+
+  )
+}
