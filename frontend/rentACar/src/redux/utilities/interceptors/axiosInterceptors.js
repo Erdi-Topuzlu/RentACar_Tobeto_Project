@@ -1,67 +1,68 @@
 import axios from "axios";
-
-
+import { toastError, toastSuccess, toastWarning } from "../../../service/ToastifyService";
 
 const axiosInstance = axios.create({
-    baseURL:"http://localhost:8080/",
-    
+  baseURL: "http://localhost:8080/",
 });
-
 
 axiosInstance.interceptors.request.use(
   (config) => {
     try {
-      
-      // if (token) {
-      //   //Token uygun yapıda mı ?
-      //   if (token && /^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+$/.test(token)) {
-        
-      //   config.headers.Authorization = `Bearer ${token}`;
-      // }}else{
-      //   console.log("Bearer Token Alınama (Kontrol et)")
-      // }
+      const accessToken = localStorage.getItem("access_token");
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+
       return config;
-      //Hata durumu
     } catch (error) {
       console.error("Request interceptor error:", error);
-      return Promise.reject(error);
+      toastError("Request interceptor error:", error);
+      throw error; // Promise.reject yerine direkt throw
     }
   },
   (error) => {
-    return Promise.reject(error);
-    
+    throw error; // Promise.reject yerine direkt throw
   }
 );
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    try {
-      console.error("Response interceptor error:", error);
-      return Promise.reject(error);
-    } catch (error) {
-      console.error("Response interceptor error (unexpected):", error);
-      return Promise.reject(error);
+  async (error) => {
+    const originalConfig = error.config;
+    if (error.response.status === 401 && !originalConfig._retry) {
+      originalConfig._retry = true;
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (refreshToken) {
+        try {
+          const response = await axiosInstance.post("api/v1/auth/refresh-token");
+          const { access_token } = response.data;
+          localStorage.setItem("access_token", access_token);
+          toastSuccess("Token Yenilendi...");
+
+          originalConfig.headers.Authorization = `Bearer ${access_token}`; // Yalnızca ilgili isteğe eklendi
+
+          return axiosInstance(originalConfig);
+        } catch (refreshError) {
+          toastError("Refresh token error:" + refreshError);
+          localStorage.clear();
+          window.location.href = "/login";
+          throw refreshError; // Promise.reject yerine direkt throw
+        }
+      } else {
+        toastError("Refresh token bulunamadı!");
+        throw error; // 401 hatası için direkt throw
+      }
+    } else if (error.response.status === 403) {
+      toastWarning("403 Hatası: Yetkisiz erişim!");
+      localStorage.clear();
+      window.location.href = "/login";
+      throw error; // 403 hatası için direkt throw
+    } else {
+      toastWarning("Refresh token error:" + error);
+      throw error; // Diğer hatalar için direkt throw
     }
   }
 );
 
-
-
 export default axiosInstance;
-
-
-
-// axiosInstance.interceptors.response.use((value)=>{
-//     console.log("Başarılı bir cevap alındı.");
-//     return value;
-// },
-// error => {
-//     if (error.type == "BusinessException"){
-//         //error.message => Alert ile göster
-//         console.log("Bir hata ile karşılaşıldı", error.response.data.message);
-//         return error;
-//         //return Promise.reject(error); => kullanırsak Then Catch bloklarıda yazılması gerekiyor. Direk error kullanmak yaygın yöntem
-//     }
-// },
-// )

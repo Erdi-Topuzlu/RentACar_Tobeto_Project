@@ -11,6 +11,7 @@ import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import io.swagger.v3.oas.annotations.info.Contact;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -74,6 +75,14 @@ public class UserManager implements UserService {
         return response;
     }
 
+    // Id olmadan artık jwt authentication filter yöntemi ile ile user bilgilerine ulaşabiliyoruz
+    @Override
+    public GetByIdUserResponse getUser() {
+        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        GetByIdUserResponse response = modelMapperService.entityToDto().map(user, GetByIdUserResponse.class);
+        return response;
+    }
+
     @Override
     public boolean existsById(int id) {
         return userRepository.existsById(id);
@@ -86,12 +95,13 @@ public class UserManager implements UserService {
 
     // User Photo Upload Url
     @Override
-    public String uploadUserPhotoUrl(String id, MultipartFile file) {
-        log.info("Saving picture for user with id: {} ", id);
-        var user = userRepository.findById(Integer.parseInt(id)).orElseThrow();
-        String userPhotoUrl = photoFunction.apply(id, file);
-        user.setUserPhotoUrl(userPhotoUrl);
-        userRepository.save(user);
+    public String uploadUserPhotoUrl(MultipartFile file) {
+        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Saving picture for user with user: {} ",user);
+        User response = modelMapperService.entityToDto().map(user, User.class);
+        String userPhotoUrl = photoFunction.apply(response.getId(), file);
+        response.setUserPhotoUrl(userPhotoUrl);
+        userRepository.save(response);
         return userPhotoUrl;
     }
 
@@ -102,7 +112,7 @@ public class UserManager implements UserService {
                 .orElse(".png");
     }
 
-    private final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
+    private final BiFunction<Integer, MultipartFile, String> photoFunction = (id, image) -> {
         String fileName = id + fileExtension().apply(image.getOriginalFilename());
         try {
             Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY).toAbsolutePath().normalize();
@@ -112,7 +122,7 @@ public class UserManager implements UserService {
             Files.copy(image.getInputStream(), fileStorageLocation.resolve(fileName), REPLACE_EXISTING);
             return  ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/v1/users/userImage/" + fileName)
+                    .path("/api/v1/userImage/" + fileName)
 //                    .path(fileName)
                     .toUriString();
         } catch (Exception e) {

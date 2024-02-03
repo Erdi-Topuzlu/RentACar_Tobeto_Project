@@ -18,10 +18,13 @@ public interface UserService{
     List<GetAllUserResponse> getAll();
 
     GetByIdUserResponse getById(int id);
+
+    GetByIdUserResponse getUser();
+
     boolean existsById(int id);
 
     Optional<User> findByEmail(String username);
 
-    String uploadUserPhotoUrl(String id , MultipartFile file);
+    String uploadUserPhotoUrl(MultipartFile file);
 
 }

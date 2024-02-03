@@ -24,11 +24,11 @@ const signUp = () => {
 
   const token = localStorage.getItem("access_token");
 
-  useEffect(() => {
-    if(token){
-      navigate("/profile")
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(token){
+  //     navigate("/profile")
+  //   }
+  // }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -50,8 +50,8 @@ const signUp = () => {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
 
-        navigate("/profile");
-        window.location.reload();
+        navigate("/login");
+        // window.location.reload();
 
       } catch (error) {
         

@@ -37,51 +37,31 @@ import ErrorPage from "../../components/ui/ErrorPage";
 import fetchUserPhotoUpdateData from "../../redux/actions/fetchUserPhotoUpdateData";
 import { toastSuccess } from "../../service/ToastifyService";
 import Loading from "../../components/ui/Loading";
-
+import Helmet from "../../components/Helmet";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
   const dispatch = useDispatch();
   const { details, status, error } = useSelector((state) => state.userDetail);
-  const [userRoles, setUserRoles] = useState([]);
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
-  const [id, setId] = useState(null);
+  // const [id, setId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const canAccessPage =
-    userRoles.includes("USER") || userRoles.includes("ADMIN");
+  const { t } = useTranslation();
+  const id = details.id;
 
-  const decodeJWT = (token) => {
-    try {
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      return decoded;
-    } catch (error) {
-      console.error("JWT çözümlenirken bir hata oluştu:", error);
-      return null;
-    }
-  };
+  if (status === "LOADING") {
+    return <Loading />;
+  }else if (status === "FAIL"){
+    return <ErrorPage errorMessage={error} />
+  }
+  // setId(details.id);
 
-  useEffect(() => {
-    // JWT'den yetkilendirme bilgilerini okuma işlemi
-    const storedJWT = localStorage.getItem("access_token");
-    if (storedJWT) {
-      const decodedToken = decodeJWT(storedJWT);
-      const id = decodedToken.id;
+  console.log(details)
 
-      console.log(decodedToken);
-
-      setToken(storedJWT);
-      setId(id);
-      if (decodedToken && decodedToken.role) {
-        setUserRoles(decodedToken.role);
-        dispatch(fetchUserData(id));
-      }
-    }
-  }, [dispatch]);
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
-    formData.append("id", id);
     formData.append("file", file, file.name);
 
     if (file) {
@@ -92,7 +72,7 @@ export default function Profile() {
 
         try {
           const response = await axiosInstance.put(
-            "/api/v1/users/userImage",
+            "/api/v1/userImage",
             formData,
             {
               headers: {
@@ -128,7 +108,7 @@ export default function Profile() {
   // Formik hook
   const formik = useFormik({
     initialValues,
-    validationSchema:userProfileScheme,
+    validationSchema: userProfileScheme,
     onSubmit: async (values, actions) => {
       const updatedData = {
         id: id,
@@ -143,6 +123,9 @@ export default function Profile() {
           `api/v1/users/${id}`,
           updatedData
         );
+        if (response.status === 200) {
+          toastSuccess("Kayıt İşlemi Başarılı.");
+        }
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
       } finally {
@@ -155,57 +138,58 @@ export default function Profile() {
   const { handleChange, handleSubmit, values, errors, touched } = formik;
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {canAccessPage ? (
-        <Box sx={{ flex: 1, width: "100%" }}>
-          <Box
-            sx={{
-              position: "sticky",
-              top: { sm: -100, md: -110 },
-              bgcolor: "background.body",
-              zIndex: 9995,
-            }}
-          >
-            <Box sx={{ px: { xs: 2, md: 6 } }}>
-              <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                Welcome, {details.name ? details.name : "User"}
-              </Typography>
-            </Box>
-            <Tabs
-              defaultValue={0}
+    <Helmet title={t("Profile")}>
+      {/* {canAccessPage ? ( */}
+        <Form onSubmit={handleSubmit}>
+          <Box sx={{ flex: 1, width: "100%" }}>
+            <Box
               sx={{
-                bgcolor: "transparent",
+                position: "sticky",
+                top: { sm: -100, md: -110 },
+                bgcolor: "background.body",
+                zIndex: 9995,
               }}
             >
-              <TabList
-                tabFlex={1}
-                size="sm"
+              <Box sx={{ px: { xs: 2, md: 6 } }}>
+                <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
+                  Welcome, {details.name ? details.name : "User"}
+                </Typography>
+              </Box>
+              <Tabs
+                defaultValue={0}
                 sx={{
-                  pl: { xs: 0, md: 4 },
-                  justifyContent: "left",
-                  [`&& .${tabClasses.root}`]: {
-                    fontWeight: "600",
-                    flex: "initial",
-                    color: "text.tertiary",
-                    [`&.${tabClasses.selected}`]: {
-                      bgcolor: "transparent",
-                      color: "text.primary",
-                      "&::after": {
-                        height: "2px",
-                        bgcolor: "primary.500",
-                      },
-                    },
-                  },
+                  bgcolor: "transparent",
                 }}
               >
-                <Tab
-                  sx={{ borderRadius: "6px 6px 0 0" }}
-                  indicatorInset
-                  value={0}
+                <TabList
+                  tabFlex={1}
+                  size="sm"
+                  sx={{
+                    pl: { xs: 0, md: 4 },
+                    justifyContent: "left",
+                    [`&& .${tabClasses.root}`]: {
+                      fontWeight: "600",
+                      flex: "initial",
+                      color: "text.tertiary",
+                      [`&.${tabClasses.selected}`]: {
+                        bgcolor: "transparent",
+                        color: "text.primary",
+                        "&::after": {
+                          height: "2px",
+                          bgcolor: "primary.500",
+                        },
+                      },
+                    },
+                  }}
                 >
-                  Profile Settings
-                </Tab>
-                {/* <Tab
+                  <Tab
+                    sx={{ borderRadius: "6px 6px 0 0" }}
+                    indicatorInset
+                    value={0}
+                  >
+                    Profile Settings
+                  </Tab>
+                  {/* <Tab
                   sx={{ borderRadius: "6px 6px 0 0" }}
                   indicatorInset
                   value={1}
@@ -226,177 +210,34 @@ export default function Profile() {
                 >
                   My Bills
                 </Tab> */}
-              </TabList>
-            </Tabs>
-          </Box>
-          <Stack
-            spacing={4}
-            sx={{
-              display: "flex",
-              maxWidth: "800px",
-              mx: "auto",
-              px: { xs: 2, md: 6 },
-              py: { xs: 2, md: 3 },
-            }}
-          >
-            {/* WEB FORM */}
-            <Card>
-              <Box sx={{ mb: 1 }}>
-                <Typography level="title-md">Personal info</Typography>
-                <Typography level="body-sm">
-                  Customize how your profile information will apper to the
-                  networks.
-                </Typography>
-              </Box>
-              <Divider />
-              <Stack
-                direction="row"
-                spacing={3}
-                sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
-              >
-                <Stack direction="column" spacing={1}>
-                  <AspectRatio
-                    ratio="1"
-                    maxHeight={108}
-                    sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
-                  >
-                    <img
-                      src={
-                        selectedImage ||
-                        details.userPhotoUrl ||
-                        "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
-                      }
-                      srcSet={details.userPhotoUrl || selectedImage}
-                      loading="lazy"
-                      alt=""
-                    />
-                  </AspectRatio>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={handleImageChange}
-                  />
-                  <IconButton
-                    aria-label="upload new picture"
-                    size="sm"
-                    variant="outlined"
-                    color="neutral"
-                    sx={{
-                      bgcolor: "background.body",
-                      position: "absolute",
-                      zIndex: 2,
-                      borderRadius: "50%",
-                      left: 85,
-                      top: 180,
-                      boxShadow: "sm",
-                    }}
-                  >
-                    <label htmlFor="image-upload">
-                      <EditRoundedIcon />
-                    </label>
-                  </IconButton>
-                </Stack>
-                <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                  <Stack spacing={1}>
-                    <FormLabel>Firstname</FormLabel>
-                    <FormControl
-                      sx={{
-                        display: { sm: "flex-column", md: "flex-row" },
-                        gap: 2,
-                      }}
-                    >
-                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                        <Input
-                          name="firstName"
-                          value={values.firstName}
-                          onChange={handleChange}
-                          size="sm"
-                          placeholder="First name"
-                        />
-                      </FormControl>
-
-                      {touched.firstName && errors.firstName && (
-                        <div style={{ color: "red" }}>{errors.firstName}</div>
-                      )}
-
-                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                        <FormLabel>Lastname</FormLabel>
-                        <Input
-                          name="lastName"
-                          value={values.lastName}
-                          onChange={handleChange}
-                          size="sm"
-                          placeholder="Last name"
-                        />
-                      </FormControl>
-
-                      {touched.lastName && errors.lastName && (
-                        <div style={{ color: "red" }}>{errors.lastName}</div>
-                      )}
-
-                      <FormControl>
-                        <FormLabel>Birthdate</FormLabel>
-                        <Input
-                          name="birthdate"
-                          value={values.birthdate}
-                          onChange={handleChange}
-                          type="date"
-                          size="sm"
-                          placeholder="Birthdate"
-                        />
-                      </FormControl>
-                      {touched.birthdate && errors.birthdate && (
-                        <div style={{ color: "red" }}>{errors.birthdate}</div>
-                      )}
-                    </FormControl>
-                  </Stack>
-                  {/* <Stack direction="row" spacing={2}>
-                    <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>E-mail</FormLabel>
-
-                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                        <Input
-                          name="email"
-                          value={values.email}
-                          onChange={handleChange}
-                          size="sm"
-                          placeholder="E-mail"
-                        />
-                      </FormControl>
-                      {touched.email && errors.email && (
-                        <div style={{ color: "red" }}>{errors.email}</div>
-                      )}
-                    </FormControl>
-                    <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>Password</FormLabel>
-
-                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                        <Input
-                          name="password"
-                          value={values.password}
-                          onChange={handleChange}
-                          size="sm"
-                          placeholder="Password"
-                          type="password"
-                        />
-                      </FormControl>
-                      {touched.password && errors.password && (
-                        <div style={{ color: "red" }}>{errors.password}</div>
-                      )}
-                    </FormControl>
-                  </Stack> */}
-                </Stack>
-              </Stack>
-
-              {/* MOBILE FORM */}
-              <Stack
-                direction="column"
-                spacing={2}
-                sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
-              >
-                <Stack direction="row" spacing={2}>
+                </TabList>
+              </Tabs>
+            </Box>
+            <Stack
+              spacing={4}
+              sx={{
+                display: "flex",
+                maxWidth: "800px",
+                mx: "auto",
+                px: { xs: 2, md: 6 },
+                py: { xs: 2, md: 3 },
+              }}
+            >
+              {/* WEB FORM */}
+              <Card>
+                <Box sx={{ mb: 1 }}>
+                  <Typography level="title-md">Personal info</Typography>
+                  <Typography level="body-sm">
+                    Customize how your profile information will apper to the
+                    networks.
+                  </Typography>
+                </Box>
+                <Divider />
+                <Stack
+                  direction="row"
+                  spacing={3}
+                  sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
+                >
                   <Stack direction="column" spacing={1}>
                     <AspectRatio
                       ratio="1"
@@ -441,65 +282,207 @@ export default function Profile() {
                       </label>
                     </IconButton>
                   </Stack>
-                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                    <FormLabel>Firstname</FormLabel>
-                    <FormControl
-                      sx={{
-                        display: {
-                          sm: "flex-column",
-                          md: "flex-row",
-                        },
-                        gap: 2,
-                      }}
-                    >
-                      <FormControl sx={{ display: "flex-column", gap: 2 }}>
-                        <Input
-                          name="firstName"
-                          value={values.firstName}
-                          onChange={handleChange}
-                          size="sm"
-                          placeholder="First name"
-                        />
-                      </FormControl>
-                      {touched.firstName && errors.firstName && (
-                        <div style={{ color: "red" }}>{errors.firstName}</div>
-                      )}
+                  <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                    <Stack spacing={1}>
+                      <FormLabel>Firstname</FormLabel>
+                      <FormControl
+                        sx={{
+                          display: { sm: "flex-column", md: "flex-row" },
+                          gap: 2,
+                        }}
+                      >
+                        <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                          <Input
+                            name="firstName"
+                            value={values.firstName}
+                            onChange={handleChange}
+                            size="sm"
+                            placeholder="First name"
+                          />
+                        </FormControl>
 
-                      
+                        {touched.firstName && errors.firstName && (
+                          <div style={{ color: "red" }}>{errors.firstName}</div>
+                        )}
+
+                        <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                          <FormLabel>Lastname</FormLabel>
+                          <Input
+                            name="lastName"
+                            value={values.lastName}
+                            onChange={handleChange}
+                            size="sm"
+                            placeholder="Last name"
+                          />
+                        </FormControl>
+
+                        {touched.lastName && errors.lastName && (
+                          <div style={{ color: "red" }}>{errors.lastName}</div>
+                        )}
+
+                        <FormControl>
+                          <FormLabel>Birthdate</FormLabel>
+                          <Input
+                            name="birthdate"
+                            value={values.birthdate}
+                            onChange={handleChange}
+                            type="date"
+                            size="sm"
+                            placeholder="Birthdate"
+                          />
+                        </FormControl>
+                        {touched.birthdate && errors.birthdate && (
+                          <div style={{ color: "red" }}>{errors.birthdate}</div>
+                        )}
+                      </FormControl>
+                    </Stack>
+                    {/* <Stack direction="row" spacing={2}>
+                    <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>E-mail</FormLabel>
+
                       <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                      <FormLabel>Lastname</FormLabel>
                         <Input
-                          name="lastName"
-                          value={values.lastName}
+                          name="email"
+                          value={values.email}
                           onChange={handleChange}
                           size="sm"
-                          placeholder="Last name"
+                          placeholder="E-mail"
                         />
                       </FormControl>
-
-                      {touched.lastName && errors.lastName && (
-                        <div style={{ color: "red" }}>{errors.lastName}</div>
-                      )}
-
-                      <FormControl>
-                        <FormLabel>Birthdate</FormLabel>
-                        <Input
-                          name="birthdate"
-                          value={values.birthdate}
-                          onChange={handleChange}
-                          type="date"
-                          size="sm"
-                          placeholder="Birthdate"
-                        />
-                      </FormControl>
-                      {touched.birthdate && errors.birthdate && (
-                        <div style={{ color: "red" }}>{errors.birthdate}</div>
+                      {touched.email && errors.email && (
+                        <div style={{ color: "red" }}>{errors.email}</div>
                       )}
                     </FormControl>
+                    <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Password</FormLabel>
+
+                      <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                        <Input
+                          name="password"
+                          value={values.password}
+                          onChange={handleChange}
+                          size="sm"
+                          placeholder="Password"
+                          type="password"
+                        />
+                      </FormControl>
+                      {touched.password && errors.password && (
+                        <div style={{ color: "red" }}>{errors.password}</div>
+                      )}
+                    </FormControl>
+                  </Stack> */}
                   </Stack>
                 </Stack>
 
-                {/* <FormControl sx={{ flexGrow: 1 }}>
+                {/* MOBILE FORM */}
+                <Stack
+                  direction="column"
+                  spacing={2}
+                  sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
+                >
+                  <Stack direction="row" spacing={2}>
+                    <Stack direction="column" spacing={1}>
+                      <AspectRatio
+                        ratio="1"
+                        maxHeight={108}
+                        sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
+                      >
+                        <img
+                          src={
+                            selectedImage ||
+                            details.userPhotoUrl ||
+                            "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                          }
+                          srcSet={details.userPhotoUrl || selectedImage}
+                          loading="lazy"
+                          alt=""
+                        />
+                      </AspectRatio>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleImageChange}
+                      />
+                      <IconButton
+                        aria-label="upload new picture"
+                        size="sm"
+                        variant="outlined"
+                        color="neutral"
+                        sx={{
+                          bgcolor: "background.body",
+                          position: "absolute",
+                          zIndex: 2,
+                          borderRadius: "50%",
+                          left: 85,
+                          top: 180,
+                          boxShadow: "sm",
+                        }}
+                      >
+                        <label htmlFor="image-upload">
+                          <EditRoundedIcon />
+                        </label>
+                      </IconButton>
+                    </Stack>
+                    <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                      <FormLabel>Firstname</FormLabel>
+                      <FormControl
+                        sx={{
+                          display: {
+                            sm: "flex-column",
+                            md: "flex-row",
+                          },
+                          gap: 2,
+                        }}
+                      >
+                        <FormControl sx={{ display: "flex-column", gap: 2 }}>
+                          <Input
+                            name="firstName"
+                            value={values.firstName}
+                            onChange={handleChange}
+                            size="sm"
+                            placeholder="First name"
+                          />
+                        </FormControl>
+                        {touched.firstName && errors.firstName && (
+                          <div style={{ color: "red" }}>{errors.firstName}</div>
+                        )}
+
+                        <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                          <FormLabel>Lastname</FormLabel>
+                          <Input
+                            name="lastName"
+                            value={values.lastName}
+                            onChange={handleChange}
+                            size="sm"
+                            placeholder="Last name"
+                          />
+                        </FormControl>
+
+                        {touched.lastName && errors.lastName && (
+                          <div style={{ color: "red" }}>{errors.lastName}</div>
+                        )}
+
+                        <FormControl>
+                          <FormLabel>Birthdate</FormLabel>
+                          <Input
+                            name="birthdate"
+                            value={values.birthdate}
+                            onChange={handleChange}
+                            type="date"
+                            size="sm"
+                            placeholder="Birthdate"
+                          />
+                        </FormControl>
+                        {touched.birthdate && errors.birthdate && (
+                          <div style={{ color: "red" }}>{errors.birthdate}</div>
+                        )}
+                      </FormControl>
+                    </Stack>
+                  </Stack>
+
+                  {/* <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>E-mail</FormLabel>
 
                   <FormControl sx={{ display: "flex-column", gap: 2 }}>
@@ -516,27 +499,28 @@ export default function Profile() {
                     <div style={{ color: "red" }}>{errors.email}</div>
                   )}
                 </FormControl> */}
-              </Stack>
+                </Stack>
 
-              {/* BUTTONS */}
-              <CardOverflow
-                sx={{ borderTop: "1px solid", borderColor: "divider" }}
-              >
-                <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                  <Button size="sm" variant="outlined" color="neutral">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSubmit} size="sm" variant="solid">
-                    Save
-                  </Button>
-                </CardActions>
-              </CardOverflow>
-            </Card>
-          </Stack>
-        </Box>
-      ) : (
+                {/* BUTTONS */}
+                <CardOverflow
+                  sx={{ borderTop: "1px solid", borderColor: "divider" }}
+                >
+                  <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
+                    <Button size="sm" variant="outlined" color="neutral">
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSubmit} size="sm" variant="solid">
+                      Save
+                    </Button>
+                  </CardActions>
+                </CardOverflow>
+              </Card>
+            </Stack>
+          </Box>
+        </Form>
+      {/* ) : (
         <Loading />
-      )}
-    </Form>
+      )} */}
+    </Helmet>
   );
 }

@@ -27,11 +27,11 @@ const Login = () => {
 
   const navigate = useNavigate();
   
-  useEffect(() => {
-    if(token){
-      navigate("/profile")
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(token){
+  //     navigate("/profile")
+  //   }
+  // }, [])
   
 
   const formik = useFormik({

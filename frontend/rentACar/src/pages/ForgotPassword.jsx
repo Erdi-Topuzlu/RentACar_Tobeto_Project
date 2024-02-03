@@ -8,7 +8,7 @@ import { loginValidationSchema } from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
 
 
-const FoprgotPassword = () => {
+const ForgotPassword = () => {
   const { t } = useTranslation();
 
   const formik = useFormik({
@@ -86,4 +86,4 @@ const FoprgotPassword = () => {
   );
 };
 
-export default FoprgotPassword;
+export default ForgotPassword;
