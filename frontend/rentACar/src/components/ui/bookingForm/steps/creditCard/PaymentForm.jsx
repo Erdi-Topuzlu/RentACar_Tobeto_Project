@@ -8,8 +8,9 @@ import {
     formatExpirationDate,
     formatFormData
 } from "./utils";
+import { Col, Container, Row } from 'reactstrap';
 
-const PaymentForm = () => {
+const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
     const [state, setState] = useState({
         number: "",
         name: "",
@@ -19,6 +20,7 @@ const PaymentForm = () => {
         focused: "",
         formData: null
     });
+    
 
 
     const formRef = useRef(null);
@@ -47,10 +49,13 @@ const PaymentForm = () => {
         }
 
         setState(prevState => ({ ...prevState, [target.name]: value }));
+        localStorage.setItem("PaymentFormData", JSON.stringify(state));
+
     };
 
     const handleSubmit = e => {
         e.preventDefault();
+        
         const { issuer } = state;
         const formData = [...e.target.elements]
             .filter(d => d.name)
@@ -67,91 +72,92 @@ const PaymentForm = () => {
     const { name, number, expiry, cvc, focused, issuer, formData } = state;
 
     return (
+        
+            <Container>
+    <Row>
+      {/* Left Column */}
+      <Col md="6">
         <div key="Payment">
-            <div className="App-payment ">
-                <Cards
-                    number={number}
-                    name={name}
-                    expiry={expiry}
-                    cvc={cvc}
-                    focused={focused}
-                    callback={handleCallback}
+          <div className="App-payment">
+            <form ref={formRef} onSubmit={handleSubmit}>
+              <div className="form-group mb-4 mt-4">
+                <input
+                  type="text"
+                  id="number"
+                  name="number"
+                  className="form-control"
+                  placeholder="Enter Card Number"
+                  pattern="\d*"
+                  maxLength="16"
+                  required
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
                 />
-                <form ref={formRef} onSubmit={handleSubmit}>
-                    <div className="form-group mb-4 mt-4">
-                        <input
-                            type="text"
-                            id="number"
-                            name="number"
-                            className="form-control"
-                            placeholder="Enter Card Number"
-                            pattern="\d*"
-                            maxLength="16"
-                            required
-                            onChange={handleInputChange}
-                            onFocus={handleInputFocus}
-                        />
-                    </div>
-                    <div className="form-group mb-4">
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            className="form-control"
-                            placeholder="Enter Name"
-                            pattern="[A-Za-z ]+"
-                            required
-                            onChange={handleInputChange}
-                            onFocus={handleInputFocus}
-                        />
-                    </div>
-                    <div className="row">
-                        <div className="col-6">
-                            <input
-                                type="text"
-                                id="expiry"
-                                name="expiry"
-                                className="form-control"
-                                placeholder="MM/YY"
-                                maxLength="4"
-                                required
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                            />
-                        </div>
-                        <div className="col-6">
-                            <input
-                                type="number"
-                                id="cvc"
-                                name="cvc"
-                                className="form-control"
-                                placeholder="CVC"
-                                pattern="\d{3,4}"
-                                maxLength="3"
-                                required
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                            />
-                        </div>
-                    </div>
-                    <input type="hidden" name="issuer" value={issuer} />
-                    {/* <div className="form-actions">
-                        <button type="submit" className="btn btn-primary btn-block">PAY</button>
-                    </div> */}
-                </form>
-
-                {/* Girilen bilgileri ekrana yazdırmak için */}
-                {/* {formData && (
-                    <div className="App-highlight">
-                        {formatFormData(formData).map((d, i) => (
-                            <div key={i}>{d}</div>
-                        ))}
-                    </div>
-                )} */}
-
-                <hr style={{ margin: "60px 0 30px" }} />
-            </div>
+              </div>
+              <div className="form-group mb-4">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="form-control"
+                  placeholder="Enter Name"
+                  pattern="[A-Za-z ]+"
+                  required
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
+                />
+              </div>
+              <div className="row">
+                <div className="col-6">
+                  <input
+                    type="text"
+                    id="expiry"
+                    name="expiry"
+                    className="form-control"
+                    placeholder="MM/YY"
+                    maxLength="4"
+                    required
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                  />
+                </div>
+                <div className="col-6">
+                  <input
+                    type="text"
+                    id="cvc"
+                    name="cvc"
+                    className="form-control"
+                    placeholder="CVC"
+                    pattern="\d{3,4}"
+                    maxLength="4"
+                    required
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </Col>
+
+      {/* Right Column */}
+      <Col md="6">
+        <div className="App-payment">
+          <Cards
+            number={number}
+            name={name}
+            expiry={expiry}
+            cvc={cvc}
+            focused={focused}
+            callback={handleCallback}
+          />
+        </div>
+      </Col>
+    </Row>
+  </Container>
+       
+                   
     );
 
 };

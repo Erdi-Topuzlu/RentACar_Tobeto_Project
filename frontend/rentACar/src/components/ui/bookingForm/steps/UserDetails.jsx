@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { userDetailBookingFormScheme } from "../../../../schemes/userDetailBookingFormScheme";
+import { userDetailBookingFormScheme } from "../../../../schemes/userDetailScheme";
 import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -128,14 +128,17 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
         <FormGroup className="booking__form d-inline-block ms-1 mb-4">
           <InputMask
             mask="(999) 999-99-99"
-            className={`form-control ${
-              formik.touched.phoneNumber ? "is-invalid" : ""
-            }`}
-            type="text"
+            className={`form-control ${formik.errors.phoneNumber && formik.touched.phoneNumber
+                ? "is-invalid"
+                : ""
+              }`}
             name="phoneNumber"
             id="phoneNumber"
             value={formik.values.phoneNumber}
-            onBlur={formik.handleBlur}
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              formik.validateField("phoneNumber"); // Trigger validation manually
+            }}
             onChange={formik.handleChange}
             placeholder={
               formik.errors.phoneNumber && formik.touched.phoneNumber
@@ -237,6 +240,8 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             }
           />
         </FormGroup>
+        <hr style={{ margin: "60px 0 30px" }} />
+
 
         <FormGroup>
           <div className="d-flex align-items-center justify-content-between">
