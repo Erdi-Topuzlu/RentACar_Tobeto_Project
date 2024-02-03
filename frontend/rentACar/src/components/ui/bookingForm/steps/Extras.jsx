@@ -71,13 +71,17 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
 
   const handlePackageClick = (index) => {
     setSelectedPackageIndex((prevIndex) => (prevIndex === index ? null : index));
+          localStorage.removeItem("Extras");
+
     // Add any other logic you may need on package click
   };
 
   React.useEffect(() => {
     if (selectedPackageIndex !== null) {
       const selectedPackage = extrasContents[selectedPackageIndex];
-      console.log("Selected Package:", selectedPackage);
+      //console.log("Selected Package:", selectedPackage);
+      localStorage.setItem("Extras", JSON.stringify(selectedPackage));
+
     }
   }, [selectedPackageIndex]);
 
@@ -100,7 +104,10 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
   return (
     <div className="row card-deck mb-3 text-center">
       {extras}
+      <hr style={{ margin: "60px 0 30px" }} />
+
       <div className="d-flex align-items-center justify-content-between mt-4">
+        
         {activeStep !== steps.length - 1 && (
           <Button
             disabled={activeStep === 0}
@@ -123,6 +130,8 @@ export const Extras = ({ steps, activeStep, setActiveStep }) => {
           </div>
         }
       </div>
+      
     </div>
+    
   );
 };

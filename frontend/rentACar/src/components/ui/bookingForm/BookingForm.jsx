@@ -5,6 +5,7 @@ import { Extras } from "./steps/Extras/";
 import { PaymentDetails } from "./steps/PaymentDetails/";
 import { useTranslation } from "react-i18next";
 import { CustomStepper } from "../../helper/stepper";
+import Review from "./steps/Review";
 
 const BookingForm = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -14,6 +15,7 @@ const BookingForm = () => {
     { label: t("userDetails"), onClick: () => setActiveStep(0) },
     { label: t("extras"), onClick: () => setActiveStep(1) },
     { label: t("paymentInfo"), onClick: () => setActiveStep(2) },
+    { label: t("review"), onClick: () => setActiveStep(3) },
   ];
 
   function getSectionComponent() {
@@ -35,9 +37,19 @@ const BookingForm = () => {
           />
         );
       case 2:
-        return <PaymentDetails />;
-      default:
-        return null;
+        return <PaymentDetails
+          steps={steps}
+          activeStep={activeStep}
+          setActiveStep={setActiveStep} />;
+      
+
+        case 3:
+          return <Review
+            steps={steps}
+            activeStep={activeStep}
+            setActiveStep={setActiveStep} />;
+        default:
+          return null;
     }
   }
 
