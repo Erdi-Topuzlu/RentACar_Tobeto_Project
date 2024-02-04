@@ -260,7 +260,7 @@ function Header() {
                       >
                         User Profile
                       </NavDropdown.Item>
-                      {canAccessPage ? (
+                      {details.role === "ADMIN" ? (
                       <NavDropdown.Item
                         onClick={() => {
                           navigate("/admin");

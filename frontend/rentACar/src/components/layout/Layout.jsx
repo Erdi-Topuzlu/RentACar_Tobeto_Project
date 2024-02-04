@@ -11,11 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 function Layout() {
   return (
     <div>
-      <Provider store={store}>
         <Header/>
         <Outlet/>
         <Footer/>
-        </Provider>
         <ToastContainer />
     </div>
 

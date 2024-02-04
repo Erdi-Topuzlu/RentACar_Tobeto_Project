@@ -2,11 +2,9 @@ package com.tobeto.RentACar.security.config;
 
 import com.tobeto.RentACar.security.config.jwt.JwtAuthenticationFilter;
 import com.tobeto.RentACar.security.entities.Permission;
-import com.tobeto.RentACar.security.entities.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,10 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static com.tobeto.RentACar.security.entities.Permission.*;
-import static com.tobeto.RentACar.security.entities.Role.ADMIN;
+import static com.tobeto.RentACar.security.entities.Role.*;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -42,7 +39,7 @@ public class SecurityConfiguration {
                                         .requestMatchers(
                                                 "/api/v1/auth/**",
                                                 "/api/v1/cars/**",
-                                                "/api/v1/users/**",
+                                                "/api/v1/userImage/**",
                                                 "/v2/api-docs",
                                                 "/v3/api-docs",
                                                 "/v3/api-docs/**",
@@ -56,7 +53,7 @@ public class SecurityConfiguration {
                                         )
                                         .permitAll()
                                         // Burada management endpoint'i için ADMIN ve MANAGER'e rol ve yetkilendirme verdik.
-                                        .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), Role.MANAGER.name())
+                                        .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                         .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), Permission.MANAGER_READ.name())
                                         .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), Permission.MANAGER_CREATE.getPermission())
                                         .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), Permission.MANAGER_UPDATE.name())
@@ -70,8 +67,9 @@ public class SecurityConfiguration {
                                         .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
 
                                         // Bura da user endpoint'i için USER, MANAGER ve ADMIN'e rol ve yetkilendirme verdik.
-                                        .requestMatchers("/api/v1/**").hasAnyRole(ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
-                                        .requestMatchers(GET, "/api/v1/**").hasAnyAuthority(ADMIN_READ.name(), Permission.MANAGER_READ.name(), Role.USER.name())
+                                        .requestMatchers("api/v1/users/**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
+                                        .requestMatchers(GET, "api/v1/users/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name(), USER_READ.name())
+                                        .requestMatchers(PUT, "api/v1/users/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name(), USER_UPDATE.name())
                                         .anyRequest()
                                         .authenticated()
 

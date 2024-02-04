@@ -22,6 +22,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const {items, status, error} = useSelector((state) => state.carAllData);
+  const { details} = useSelector((state) => state.userDetail);
+
   
   useEffect(() => {
     dispatch(fetchAllCarData());
@@ -33,6 +35,7 @@ const Home = () => {
     return <ErrorPage errorMessage={error} />
   }
 
+  console.log(details)
 
   return (
     <Helmet title={t("home")}>

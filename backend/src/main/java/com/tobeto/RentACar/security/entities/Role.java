@@ -14,7 +14,14 @@ import java.util.stream.Collectors;
 public enum Role {
 
     // Kullanıcının hiçbir yetkisi yok
-    USER(Collections.emptySet()),
+    USER(
+            Set.of(
+                    Permission.USER_READ,
+                    Permission.USER_CREATE,
+                    Permission.USER_UPDATE,
+                    Permission.USER_DELETE
+            )
+    ),
 
     // Adminin tüm yetkileri var
     ADMIN(
