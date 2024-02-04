@@ -34,16 +34,17 @@ import Dashboard from "./pages/admin/components/Dashboard.jsx";
 import BrandTable from "./pages/admin/components/Brand/BrandTable.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { store } from "./redux/store.js";
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Layout />}>
+        <Route index pat element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/cars">
           <Route index element={<CarListing />} />
@@ -61,7 +62,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route exact element={<ProtectedRoute />}>
-      <Route path="/admin" element={<Admin />}>
+        <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="brands" element={<BrandTable />} />
@@ -73,6 +74,6 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-  <RouterProvider router={router} />
-</Provider>
+    <RouterProvider router={router} />
+  </Provider>
 );
