@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { userDetailBookingFormScheme } from "../../../../schemes/userDetailScheme";
-import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
+import { Form, FormFeedback, FormGroup, Input } from "reactstrap";
+import {  Container,  Grid,Button } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -66,6 +67,8 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
 
   return (
     <div className="d-flex align-items-center justify-content-center">
+               <Container>
+
       <Form onSubmit={formik.handleSubmit}>
         <FormGroup className="booking__form d-inline-block me-4 mb-4">
           <Input
@@ -240,36 +243,41 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             }
           />
         </FormGroup>
-        <hr style={{ margin: "60px 0 30px" }} />
 
 
-        <FormGroup>
-          <div className="d-flex align-items-center justify-content-between">
-            {activeStep !== steps.length - 1 && (
-              <Button
-                disabled={activeStep === 0}
-                color="secondary"
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                {t("previous")}
-              </Button>
-            )}
-            {
-              <div className="d-flex justify-content-end">
-                {activeStep !== steps.length - 1 && (
-                  <Button
-                    type="submit"
-                    className="form__btn"
-                    onSubmit={() => setActiveStep(activeStep + 1)}
-                  >
-                    {t("next")}
-                  </Button>
-                )}
-              </div>
-            }
-          </div>
-        </FormGroup>
+       
+
+
+
+<div className="row card-deck mb-3 text-center">
+  <hr style={{ margin: "60px 0 30px" }} />
+
+  <Grid container justifyContent="space-between">
+
+    {activeStep !== steps.length - 1 && (
+      <Button
+        disabled={activeStep === 0}
+        color="secondary"
+        onClick={() => setActiveStep(activeStep - 1)}
+      >
+        {t("previous")}
+      </Button>
+    )}
+    {activeStep !== steps.length - 1 && (
+      <Button
+        className="form__btn"
+        onClick={() => setActiveStep(activeStep + 1)}
+      >
+        Next
+      </Button>
+    )}
+  </Grid>
+</div>
+
+
+
       </Form>
+      </Container>
     </div>
   );
 }

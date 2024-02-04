@@ -8,7 +8,7 @@ import {
   formatExpirationDate,
   formatFormData
 } from "./utils";
-import { Col, Container, Row } from 'reactstrap';
+import { Col, Container, Input, Row } from 'reactstrap';
 
 const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
   const [state, setState] = useState({
@@ -33,6 +33,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
 
   const handleInputFocus = ({ target }) => {
     setState(prevState => ({ ...prevState, focused: target.name }));
+    
   };
 
   const handleInputChange = ({ target }) => {
@@ -47,6 +48,8 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
     } else if (target.name === "name") {
       value = value.replace(/[^A-Za-z ]/g, ''); // Sadece harfleri ve boşlukları kabul et
     }
+
+    
 
     setState(prevState => ({ ...prevState, [target.name]: value }));
     localStorage.setItem("PaymentFormData", JSON.stringify(state));
@@ -73,7 +76,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
 
   return (
 
-    <Container>
+    <Container className='d-flex justify-content-center'>
       <Row>
         {/* Left Column */}
         <Col md="6" className='mt-2'>
@@ -81,7 +84,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
             <div className="App-payment">
               <form ref={formRef} onSubmit={handleSubmit}>
                 <div className="form-group mb-4 mt-4">
-                  <input
+                  <Input
                     type="text"
                     id="number"
                     name="number"
@@ -95,7 +98,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
                   />
                 </div>
                 <div className="form-group mb-4">
-                  <input
+                  <Input
                     type="text"
                     id="name"
                     name="name"
@@ -109,7 +112,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
                 </div>
                 <div className="row">
                   <div className="col-6">
-                    <input
+                    <Input
                       type="text"
                       id="expiry"
                       name="expiry"
@@ -122,7 +125,7 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
                     />
                   </div>
                   <div className="col-6">
-                    <input
+                    <Input
                       type="text"
                       id="cvc"
                       name="cvc"
@@ -157,7 +160,11 @@ const PaymentForm = ({ steps, activeStep, setActiveStep }) => {
       </Row>
       <hr style={{ margin: "60px 0 30px" }} />
 
+      
+
     </Container>
+
+    
 
 
   );
