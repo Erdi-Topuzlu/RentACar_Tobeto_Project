@@ -55,5 +55,4 @@ export const userDetailBookingFormScheme = yup.object().shape({
   .date()
   .min(yup.ref("pickupDate"), "Dropoff date must be after pickup date")
   .required("Dropoff date is required"),
-
 });
