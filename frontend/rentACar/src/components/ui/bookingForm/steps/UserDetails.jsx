@@ -257,7 +257,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     {activeStep !== steps.length - 1 && (
       <Button
         disabled={activeStep === 0}
-        color="secondary"
+        style={{ backgroundColor: "GrayText", color: "white" }}
         onClick={() => setActiveStep(activeStep - 1)}
       >
         {t("previous")}
@@ -265,10 +265,11 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
     )}
     {activeStep !== steps.length - 1 && (
       <Button
-        className="form__btn"
-        onClick={() => setActiveStep(activeStep + 1)}
+        type="submit"
+        style={{ backgroundColor: "#673ab7", color: "white" }}
+        onSubmit={() => setActiveStep(activeStep + 1)}
       >
-        Next
+        {t("next")}
       </Button>
     )}
   </Grid>

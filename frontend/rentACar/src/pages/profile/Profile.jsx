@@ -152,7 +152,7 @@ export default function Profile() {
             >
               <Box sx={{ px: { xs: 2, md: 6 } }}>
                 <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                  Welcome, {details.name ? details.name : "User"}
+                {t("welcomeProfile")}{details.name ? details.name : "User"}
                 </Typography>
               </Box>
               <Tabs
@@ -187,7 +187,7 @@ export default function Profile() {
                     indicatorInset
                     value={0}
                   >
-                    Profile Settings
+                    {t("profileSetting")}
                   </Tab>
                   {/* <Tab
                   sx={{ borderRadius: "6px 6px 0 0" }}
@@ -226,10 +226,9 @@ export default function Profile() {
               {/* WEB FORM */}
               <Card>
                 <Box sx={{ mb: 1 }}>
-                  <Typography level="title-md">Personal info</Typography>
+                  <Typography level="title-md">{t("personalInfo")}</Typography>
                   <Typography level="body-sm">
-                    Customize how your profile information will apper to the
-                    networks.
+                  {t("personalInfoDesc")}
                   </Typography>
                 </Box>
                 <Divider />
@@ -284,7 +283,7 @@ export default function Profile() {
                   </Stack>
                   <Stack spacing={2} sx={{ flexGrow: 1 }}>
                     <Stack spacing={1}>
-                      <FormLabel>Firstname</FormLabel>
+                      <FormLabel>{t("name")}</FormLabel>
                       <FormControl
                         sx={{
                           display: { sm: "flex-column", md: "flex-row" },
@@ -297,7 +296,7 @@ export default function Profile() {
                             value={values.firstName}
                             onChange={handleChange}
                             size="sm"
-                            placeholder="First name"
+                            placeholder={t("fName")}
                           />
                         </FormControl>
 
@@ -306,13 +305,13 @@ export default function Profile() {
                         )}
 
                         <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                          <FormLabel>Lastname</FormLabel>
+                          <FormLabel>{t("lName")}</FormLabel>
                           <Input
                             name="lastName"
                             value={values.lastName}
                             onChange={handleChange}
                             size="sm"
-                            placeholder="Last name"
+                            placeholder={t("lName")}
                           />
                         </FormControl>
 
@@ -321,14 +320,14 @@ export default function Profile() {
                         )}
 
                         <FormControl>
-                          <FormLabel>Birthdate</FormLabel>
+                          <FormLabel>{t("birthDate")}</FormLabel>
                           <Input
                             name="birthdate"
                             value={values.birthdate}
                             onChange={handleChange}
                             type="date"
                             size="sm"
-                            placeholder="Birthdate"
+                            placeholder={t("birthDate")}
                           />
                         </FormControl>
                         {touched.birthdate && errors.birthdate && (
@@ -426,7 +425,7 @@ export default function Profile() {
                       </IconButton>
                     </Stack>
                     <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                      <FormLabel>Firstname</FormLabel>
+                      <FormLabel>{t("fName")}</FormLabel>
                       <FormControl
                         sx={{
                           display: {
@@ -442,7 +441,7 @@ export default function Profile() {
                             value={values.firstName}
                             onChange={handleChange}
                             size="sm"
-                            placeholder="First name"
+                            placeholder={t("fName")}
                           />
                         </FormControl>
                         {touched.firstName && errors.firstName && (
@@ -450,13 +449,13 @@ export default function Profile() {
                         )}
 
                         <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                          <FormLabel>Lastname</FormLabel>
+                          <FormLabel>{t("lName")}</FormLabel>
                           <Input
                             name="lastName"
                             value={values.lastName}
                             onChange={handleChange}
                             size="sm"
-                            placeholder="Last name"
+                            placeholder={t("lName")}
                           />
                         </FormControl>
 
@@ -465,14 +464,14 @@ export default function Profile() {
                         )}
 
                         <FormControl>
-                          <FormLabel>Birthdate</FormLabel>
+                          <FormLabel>{t("birthDate")}</FormLabel>
                           <Input
                             name="birthdate"
                             value={values.birthdate}
                             onChange={handleChange}
                             type="date"
                             size="sm"
-                            placeholder="Birthdate"
+                            placeholder={t("birthDate")}
                           />
                         </FormControl>
                         {touched.birthdate && errors.birthdate && (
@@ -507,10 +506,10 @@ export default function Profile() {
                 >
                   <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
                     <Button size="sm" variant="outlined" color="neutral">
-                      Cancel
+                    {t("cancel")}
                     </Button>
                     <Button onClick={handleSubmit} size="sm" variant="solid">
-                      Save
+                    {t("save")}
                     </Button>
                   </CardActions>
                 </CardOverflow>

@@ -136,14 +136,68 @@
   "userDetails":"Kullanıcı Bilgileri",
   "extras":"Ekstralar",
   "paymentInfo":"Ödeme Bilgileri",
+  "review":"Gözden Geçirme",
+  "complete":"Sipariş Tamamlandı",
   "next":"İleri",
   "previous":"Geri",
   "fName":"İsim",
   "lName":"Soyisim",
+  "birthDate":"Doğum Tarihi",
   "phoneNumber":"Telefon Numarası",
   "pickupAddress":"Teslim Alma Adresi",
   "dropoffAddress":"Teslimat Adresi",
   "startDate":"Başlangıç Tarihi",
-  "endDate":"Bitiş Tarihi"
+  "endDate":"Bitiş Tarihi",
+
+  "_Schemes":"Schemes-TR",
+  "schemeName":"İsim gereklidir",
+  "schemeLastname":"Soyisim gereklidir",
+  "schemeEmail":"E-Posta gereklidir",
+  "schemeInvalidEmail":"Geçersiz E-posta biçimi",
+
+  "schemeMessage":"Mesaj gereklidir",
+  "schemeMessageMin":"Mesajınız en az 50 karakterden oluşmalıdır",
+  "schemeMessageMax":"Mesajınız en fazla 500 karakterden oluşmalıdır",
+
+  "schemePassword":"Şifre gereklidir",
+  "schemeConfirmPassword":"Şifre onaylamak gereklidir",
+  "schemeConfirmPasswordMatch":"Şifreler eşleşmiyor",
+  "schemePasswordMin":"Şifreniz en az 5 karakterden oluşmalıdır",
+
+  "schemeCardNumber":"Kart Numarası gereklidir",
+  "schemeExpiry":"Son kullanma tarihi gereklidir",
+  "schemeCvv":"CVV gereklidir",
+
+  "schemePhoneNumber":"Telefon Numarası gereklidir",
+  "schemeInvalidPhoneNumber":"Geçersiz Telefon Numarası formatı",
+
+  "schemeBirthDate":"Doğum tarihi gereklidir",
+  "schemeCheckBirthDate":"En az 18 yaşında olmalısınız",
+
+  "schemeDriverLicense":"Sürücü Belgesi gereklidir",
+
+  "schemeStartDate":"Başlangıç tarihi gereklidir",
+  "schemeInvalidStartDate":"Geçersiz tarih, bugün veya sonrası olmalıdır",
+
+  "schemeEndDate":"Bitiş tarihi gereklidir",
+  "schemeInvalidEndDate":"Bitiş tarihi başlangıç tarihinden sonra olmalıdır",
+
+  "_packages":"Packages-TR",
+  "miniPackage":"Süper Mini Kapsamlı",
+  "miniDesc":"Tekerlek, Ön Cam, Far ve Arka Lamba ve Yan Ayna Kapsamı",
+
+  "mediumPackage":"Orta Kapsamlı",
+  "supplementary":"Tamamlayıcı Sorumluluk Teminatı",
+  "personalAccident":"Ferdi Kaza Güvencesi",
+
+  "month":"Ay",
+
+  "_profilePage":"Profile Page-TR",
+  "welcomeProfile":"Hoşgeldin, ",
+  "profileSetting":"Profil Ayarları",
+  "personalInfo":"Kişisel Bilgiler",
+  "personalInfoDesc":"Kişisel bilgilerinizi özelleştirin",
+  "save":"Kaydet",
+  "cancel":"Vazgeç"
 
 }

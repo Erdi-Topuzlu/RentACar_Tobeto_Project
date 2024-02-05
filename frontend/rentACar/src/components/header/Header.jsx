@@ -16,6 +16,7 @@ import fetchUserData from "../../redux/actions/fetchUserData";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
+  localStorage.setItem("lang",eventKey);
 };
 
 function Header() {

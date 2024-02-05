@@ -13,7 +13,7 @@ const RedirectLogin = () => {
           <AnimatedUTD direction="up">
             <div className="contact__info text-center mt-4 p-4">
               <h3 className="fw-bold mb-4">To rent this car</h3>
-              <Link to={`/cars/sad}`}>
+              <Link to={`/login`}>
                 <button
                   style={{ color: "white" }}
                   className=" w-25 car__item-btn car__btn-rent link"
@@ -22,7 +22,7 @@ const RedirectLogin = () => {
                 </button>
               </Link>
               <span className="m-4"></span>
-              <Link to={`/cars/`}>
+              <Link to={`/sign-up`}>
                 <button
                   style={{ color: "white" }}
                   className=" w-25 car__item-btn car__btn-details"

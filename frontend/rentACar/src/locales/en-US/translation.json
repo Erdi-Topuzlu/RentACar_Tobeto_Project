@@ -132,20 +132,74 @@
   "vehicleType":"Vehicle Type : ",
   "filter":"Filter",
 
-
   "_formInputs":"Booking FORM INPUTS-EN",
   "bookingInfo": "Booking Information",
   "userDetails":"User Details",
   "extras":"Extras",
   "paymentInfo":"Payment Details",
+  "review":"Review",
+  "complete":"Order Completed",
   "next":"Next",
   "previous":"Previous",
   "fName":"First Name",
   "lName":"Last Name",
+  "birthDate":"Birthdate",
   "phoneNumber":"Phone Number",
   "pickupAddress":"Pick-up Address",
   "dropoffAddress":"Drop-off Address",
   "startDate":"Start Date",
-  "endDate":"End Date"
+  "endDate":"End Date",
+
+  "_Schemes":"Schemes-EN",
+  "schemeName":"Name is required",
+  "schemeLastname":"Lastname is required",
+  "schemeEmail":"E-Mail is required",
+  "schemeInvalidEmail":"Invalid E-mail format",
+
+  "schemeMessage":"Message is required",
+  "schemeMessageMin":"Your message must have a minimum of 50 characters",
+  "schemeMessageMax":"Your message must have a maximum of 500 characters",
+
+  "schemePassword":"Password is required",
+  "schemeConfirmPassword":"Confirm Password is required",
+  "schemeConfirmPasswordMatch":"Passwords do not match",
+  "schemePasswordMin":"Your password must be at least 5 characters",
+
+  "schemeCardNumber":"Card Number is required",
+  "schemeExpiry":"Expiry Date is required",
+  "schemeCvv":"CVV is required",
+
+  "schemePhoneNumber":"Phone Number is required",
+  "schemeInvalidPhoneNumber":"Invalid Phone Number format",
+
+  "schemeBirthDate":"Birthdate is required",
+  "schemeCheckBirthDate":"You must be at least 18 years",
+
+  "schemeDriverLicense":"Driver License is required",
+
+  "schemeStartDate":"Start date is required",
+  "schemeInvalidStartDate":"Invalid date, must be today or later",
+
+  "schemeEndDate":"End date is required",
+  "schemeInvalidEndDate":"End date must be after start date",
+
+  "_packages":"Packages-EN",
+  "miniPackage":"Super Mini Coverage",
+  "miniDesc":"Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
+
+  "mediumPackage":"Medium Coverage",
+  "supplementary":"Supplementary Liability Coverage",
+  "personalAccident":"Personal Accident Assurance",
+
+  "month":"Mo",
+
+  "_profilePage":"Profile Page-EN",
+  "welcomeProfile":"Welcome, ",
+  "profileSetting":"Profile Settings",
+  "personalInfo":"Personal Info",
+  "personalInfoDesc":"Customize your profile information",
+  "save":"Save",
+  "cancel":"Cancel"
+  
 
 }
