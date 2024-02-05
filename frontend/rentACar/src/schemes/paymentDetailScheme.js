@@ -3,17 +3,18 @@ import * as yup from "yup";
 
 export const paymentDetailScheme = yup.object().shape({
    
-      cardNumber: yup
+      number: yup
             .string()
-            .required("Card Number is required!"),
+            .required("Card Number is required!")
+            .min(19,"debene"),
       name: yup
             .string()
             .required("Name is required!"),            
       expiry: yup
             .string()
             .required("Expiry Date is required!"),            
-      cvv: yup
+      cvc: yup
             .string()
-            .required("CVV is required!"), 
+            .required("CVC is required!"), 
             
 });

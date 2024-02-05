@@ -3,16 +3,19 @@ import {
   formatCreditCardNumber,
   formatCVC,
   formatExpirationDate,
-} from "./creditCard/utils";
+} from "./utils";
 import { useFormik } from "formik";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { Col, Container, Form, Input, Row } from "reactstrap";
 import { Button, Grid } from "@mui/material";
 import { paymentDetailScheme } from "../../../../schemes/paymentDetailScheme";
+import { useEffect, useState } from "react";
 
 export function PaymentDetails({ steps, activeStep, setActiveStep }) {
   const { t } = useTranslation();
+  const [issuer, setIssuer] = useState("");
+
   const formik = useFormik({
     initialValues: {
       number: "",
@@ -20,19 +23,14 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
       expiry: "",
       cvc: "",
     },
-    onSubmit: (values) => {
+    validationSchema: paymentDetailScheme,
+    onSubmit: (values, actions) => {
       // Handle form submission here
-      console.log("Form Data:", values);
-      // Reset the form
-      formik.resetForm();
+      const data = JSON.stringify(values);
+      localStorage.setItem("paymentData", data);
+      setActiveStep(activeStep + 1);
     },
   });
-
-  const handleCallback = ({ issuer }, isValid) => {
-    if (isValid) {
-      formik.setFieldValue("issuer", issuer);
-    }
-  };
 
   const handleInputFocus = ({ target }) => {
     formik.setFieldValue("focused", target.name);
@@ -40,10 +38,10 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
 
   const handleInputChange = ({ target }) => {
     let value = target.value;
-  
+
     if (target.name === "number") {
       // Remove non-numeric characters
-     
+
       // Format the credit card number
       value = formatCreditCardNumber(value);
     } else if (target.name === "expiry") {
@@ -53,31 +51,41 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
     } else if (target.name === "name") {
       value = value.replace(/[^A-Za-z ]/g, "");
     }
-  
+
     formik.setFieldValue(target.name, value);
   };
 
   return (
     <Container>
+      <Form onSubmit={formik.handleSubmit}>
       <div>
         <Container className="d-flex justify-content-center">
           <Row>
-          <Form onSubmit={formik.handleSubmit}>
-            {/* Left Column */}
-            <Col md="6" className="mt-2">
-              <div key="Payment">
-                <div className="App-payment">
-                  <form onSubmit={formik.handleSubmit}>
+            
+              {/* Left Column */}
+              <Col md="6" className="mt-2">
+                <div key="Payment">
+                  <div className="App-payment">
                     <div className="form-group mb-4 mt-4">
                       <Input
                         type="text"
                         id="number"
                         name="number"
-                        className="form-control"
-                        placeholder="Enter Card Number"
-                        pattern="\d*"
-                        maxLength="16"
+                        className={
+                          formik.errors.number &&
+                          formik.touched.number &&
+                          "error"
+                        }
+                        placeholder={
+                          formik.errors.number && formik.touched.number
+                            ? formik.errors.number
+                            : t("lName")
+                        }
+                        //pattern="\d*"
+                        maxLength="19"
+                        invalid={formik.errors.number && formik.touched.number}
                         onChange={handleInputChange}
+                        onBlur={formik.handleBlur}
                         onFocus={handleInputFocus}
                         value={formik.values.number}
                       />
@@ -87,12 +95,19 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                         type="text"
                         id="name"
                         name="name"
-                        className="form-control"
-                        placeholder="Enter Name"
-                        maxLength="30"
+                        className={
+                          formik.errors.name && formik.touched.name && "error"
+                        }
+                        placeholder={
+                          formik.errors.name && formik.touched.name
+                            ? formik.errors.name
+                            : t("fName")
+                        }
+                        maxLength="25"
+                        invalid={formik.errors.name && formik.touched.name}
                         pattern="[A-Za-z ]+"
-                        required
                         onChange={handleInputChange}
+                        onBlur={formik.handleBlur}
                         onFocus={handleInputFocus}
                         value={formik.values.name}
                       />
@@ -103,11 +118,18 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                           type="text"
                           id="expiry"
                           name="expiry"
-                          className="form-control"
-                          placeholder="MM/YY"
+                          className={
+                            formik.errors.expiry && formik.touched.expiry && "error"
+                          }
+                          placeholder={
+                            formik.errors.expiry && formik.touched.expiry
+                              ? formik.errors.expiry
+                              : t("fName")
+                          }
                           maxLength="5"
-                          required
+                          invalid={formik.errors.expiry && formik.touched.expiry}
                           onChange={handleInputChange}
+                          onBlur={formik.handleBlur}
                           onFocus={handleInputFocus}
                           value={formik.values.expiry}
                         />
@@ -117,22 +139,28 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                           type="text"
                           id="cvc"
                           name="cvc"
-                          className="form-control"
-                          placeholder="CVC"
+                          className={
+                            formik.errors.cvc && formik.touched.cvc && "error"
+                          }
+                          placeholder={
+                            formik.errors.cvc && formik.touched.cvc
+                              ? formik.errors.cvc
+                              : t("CVC")
+                          }
                           pattern="\d{3,4}"
                           maxLength="4"
-                          required
+                          invalid={formik.errors.cvc && formik.touched.cvc}
                           onChange={handleInputChange}
+                          onBlur={formik.handleBlur}
                           onFocus={handleInputFocus}
                           value={formik.values.cvc}
                         />
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </Col>
-            </Form>
+              </Col>
+           
 
             {/* Right Column */}
             <Col md="6" className="mt-4">
@@ -143,7 +171,6 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                   expiry={formik.values.expiry}
                   cvc={formik.values.cvc}
                   focused={formik.values.focused}
-                  callback={handleCallback}
                 />
               </div>
             </Col>
@@ -176,6 +203,7 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
           </Grid>
         </div>
       </div>
+      </Form>
     </Container>
   );
 }
