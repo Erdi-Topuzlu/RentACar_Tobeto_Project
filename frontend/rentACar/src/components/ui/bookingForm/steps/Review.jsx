@@ -8,7 +8,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     const Extras = JSON.parse(localStorage.getItem("Extras"));
     const carData = JSON.parse(localStorage.getItem("carData"));
-    const paymentFormData = JSON.parse(localStorage.getItem("PaymentFormData"));
+    const paymentData = JSON.parse(localStorage.getItem("paymentData"));
 
     useEffect(() => {
         const startDate = new Date(userData.pickupDate);
@@ -38,7 +38,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
         }
         
       };
-      const maskedNumber = numberWithStars(paymentFormData.number);
+      const maskedNumber = numberWithStars(paymentData.number);
 
     return (
         <Container>
@@ -73,7 +73,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                                     </ListItem>
                                     
                                     <ListItem>
-                                        <Typography fontWeight="bold">Kart Sahibi: <span style={{fontWeight:"normal"}}>{paymentFormData.name.toUpperCase()}</span></Typography>
+                                        <Typography fontWeight="bold">Kart Sahibi: <span style={{fontWeight:"normal"}}>{paymentData.name.toUpperCase()}</span></Typography>
                                     </ListItem>
 
                                     <ListItem>
@@ -81,7 +81,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                                     </ListItem>
 
                                     <ListItem>
-                                        <Typography fontWeight="bold">Son Kullanım Tarihi: <span style={{fontWeight:"normal"}}>{paymentFormData.expiry}</span></Typography>
+                                        <Typography fontWeight="bold">Son Kullanım Tarihi: <span style={{fontWeight:"normal"}}>{paymentData.expiry}</span></Typography>
                                     </ListItem>
                                 </List>
                             </>
