@@ -17,7 +17,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en', // Default dil
+    lng: localStorage.getItem("lang"), // Default dil
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react için gerekli

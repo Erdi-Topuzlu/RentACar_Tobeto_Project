@@ -181,16 +181,14 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                     {activeStep !== steps.length - 1 && (
                         <Button
                             disabled={activeStep === 0}
-                            color="secondary"
+                            style={{ backgroundColor: "GrayText", color: "white" }}
                             onClick={() => setActiveStep(activeStep - 1)}
                         >
                             {t("previous")}
                         </Button>
                     )}
                     <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
+                        style={{ backgroundColor: "#673ab7", color: "white" }}
                         onClick={() => setActiveStep(activeStep + 1)} 
                     >
                         {t("Rent this car ")}

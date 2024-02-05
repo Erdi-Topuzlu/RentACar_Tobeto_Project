@@ -5,21 +5,15 @@ export const paymentDetailScheme = yup.object().shape({
    
       cardNumber: yup
             .string()
-            .email("Invalid E-mail format")
-            .required("E-mail required!"),
+            .required("Card Number is required!"),
       name: yup
             .string()
-            .required("Password required!")
-            .min(5, "Minimum of 5 characters"),
-            
+            .required("Name is required!"),            
       expiry: yup
             .string()
-            .required("Password required!")
-            .min(5, "Minimum of 5 characters"),
-            
+            .required("Expiry Date is required!"),            
       cvv: yup
             .string()
-            .required("Password required!")
-            .min(5, "Minimum of 5 characters"),
+            .required("CVV is required!"), 
             
 });
