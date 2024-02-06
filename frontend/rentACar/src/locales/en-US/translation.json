@@ -7,6 +7,7 @@
   "_header": "HEADER-EN",
 
   "login": "Login",
+  "email":"E-Mail",
   "signup": "Sign up",
   "needhelp": "Need Help?",
   "country": "Turkey",
@@ -165,9 +166,14 @@
   "schemeConfirmPasswordMatch":"Passwords do not match",
   "schemePasswordMin":"Your password must be at least 5 characters",
 
+  "expiry":"Expiry",
+  "cardNumber":"Card Number",
+  "cardFullName":"Full Name",
+  "cardMonthandYear":"MM/YY",
   "schemeCardNumber":"Card Number is required",
+  "schemeInvalidCardNumber":"Invalid Card Number format",
   "schemeExpiry":"Expiry Date is required",
-  "schemeCvv":"CVV is required",
+  "schemeCvv":"CVC is required",
 
   "schemePhoneNumber":"Phone Number is required",
   "schemeInvalidPhoneNumber":"Invalid Phone Number format",
@@ -176,6 +182,7 @@
   "schemeCheckBirthDate":"You must be at least 18 years",
 
   "schemeDriverLicense":"Driver License is required",
+  "schemeUserDriverLicense":"Select a license type",
 
   "schemeStartDate":"Start date is required",
   "schemeInvalidStartDate":"Invalid date, must be today or later",
@@ -190,7 +197,21 @@
   "mediumPackage":"Medium Coverage",
   "supplementary":"Supplementary Liability Coverage",
   "personalAccident":"Personal Accident Assurance",
+  "selectedPackage":"Selected Package",
+  "packageDetails":"Package Details",
+  "anyPackage":"You have not selected any package.",
+  "packageAmount":"Package Amount : ",
 
+  "carDetails":"Car Details",
+  "selectedCar":"Your Car : ",
+  "dailyPrice":"Daily Price : ",
+  "rentalDays":"Rental Dates : ",
+  "days":"Days",
+  "totalAmount":"Total Amount : ",
+
+  
+  "completedRental":"Your rental process has been completed successfully",
+  "myRentals":"My Rentals",
   "month":"Mo",
 
   "_profilePage":"Profile Page-EN",

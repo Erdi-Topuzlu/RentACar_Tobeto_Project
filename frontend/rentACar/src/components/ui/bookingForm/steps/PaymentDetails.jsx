@@ -9,10 +9,13 @@ import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { Col, Container, Form, Input, Row } from "reactstrap";
 import { Button, Grid } from "@mui/material";
-import { paymentDetailScheme } from "../../../../schemes/paymentDetailScheme";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import getPaymentDetailScheme from "../../../../schemes/paymentDetailScheme";
+
+
 
 export function PaymentDetails({ steps, activeStep, setActiveStep }) {
+  const paymentDetailScheme = getPaymentDetailScheme();
   const { t } = useTranslation();
   const [issuer, setIssuer] = useState("");
 
@@ -79,7 +82,7 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                         placeholder={
                           formik.errors.number && formik.touched.number
                             ? formik.errors.number
-                            : t("lName")
+                            : t("cardNumber")
                         }
                         //pattern="\d*"
                         maxLength="19"
@@ -101,7 +104,7 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("fName")
+                            : t("cardFullName")
                         }
                         maxLength="25"
                         invalid={formik.errors.name && formik.touched.name}
@@ -124,7 +127,7 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
                           placeholder={
                             formik.errors.expiry && formik.touched.expiry
                               ? formik.errors.expiry
-                              : t("fName")
+                              : t("cardMonthandYear")
                           }
                           maxLength="5"
                           invalid={formik.errors.expiry && formik.touched.expiry}

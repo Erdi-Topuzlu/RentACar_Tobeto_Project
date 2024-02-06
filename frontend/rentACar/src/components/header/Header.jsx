@@ -140,7 +140,6 @@ function Header() {
       console.error("Çıkış işlemi sırasında bir hata oluştu:", error);
     }
   };
-  console.log(details);
 
   const fetchLocationDetails = async (latitude, longitude) => {
     try {
@@ -152,8 +151,6 @@ function Header() {
       const country = data.address.country;
       const province = data.address.province;
       const town = data.address.town;
-
-      //console.log("Full Address Data:", data.address);
 
       setUserLocation({
         country,

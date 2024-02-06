@@ -4,12 +4,15 @@ import {  Container,  Grid,Button } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+
 import InputMask from "react-input-mask";
+import getUserDetailBookingFormSchema from "../../../../schemes/userDetailScheme";
 
 export function UserDetails({ steps, activeStep, setActiveStep }) {
   const [dateInputType, setDateInputType] = useState("text");
   const { t } = useTranslation();
   const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
+  const userDetailBookingFormScheme = getUserDetailBookingFormSchema();
 
   const activateDateInput = () => {
     setDateInputType("date");
@@ -60,7 +63,6 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
       const data = JSON.stringify(values);
       localStorage.setItem("userData", data);
       setActiveStep(activeStep + 1);
-      console.log(data);
     },
   });
 
@@ -186,7 +188,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
               formik.errors.driverLicense && formik.touched.driverLicense
             }
           >
-            <option value="" label="Select a license type" />
+            <option value="" label={t("schemeUserDriverLicense")} />
             {licenseTypes.map((type, index) => (
               <option key={index} value={type} label={type} />
             ))}
