@@ -5,6 +5,7 @@ import com.tobeto.RentACar.services.dtos.requests.brand.DeleteBrandRequest;
 import com.tobeto.RentACar.services.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetByIdBrandResponse;
+import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
 
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface BrandService {
     DeleteBrandRequest delete(int id);
 
     List<GetAllBrandResponse> getAll();
+
 
     GetByIdBrandResponse getById(int id);
 

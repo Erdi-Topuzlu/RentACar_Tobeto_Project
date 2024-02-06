@@ -12,7 +12,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "extras")
+@Table(name = "extra")
 @Data
 public class Extras extends BaseEntity {
 
