@@ -30,6 +30,9 @@ public class Car extends BaseEntity {
     @Column(name = "daily_price")
     private double dailyPrice;
 
+    @Column(name = "is_available")
+    private Boolean isAvailable = true;
+
     @ManyToOne
     @JoinColumn(name = "color_id")
     private Color color;
