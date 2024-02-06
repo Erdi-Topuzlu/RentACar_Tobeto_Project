@@ -14,8 +14,16 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Card } from "@mui/joy";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 
 function createData(name, calories, fat, carbs, protein, price) {
+
+  const { details, status, error } = useSelector((state) => state.userDetail);
+
+  console.log("rentals",details)
+ 
   return {
     name,
     calories,
@@ -110,14 +118,15 @@ function Row(props) {
   );
 }
 
-const rows = [
-  createData("Erdi"),
-  createData("Halil"),
-  createData("Melih"),
-  createData("Nida"),
-];
+
 
 export default function CollapsibleTable() {
+  const rows = [
+    createData("Erdi"),
+    createData("Halil"),
+    createData("Melih"),
+    createData("Nida"),
+  ];
   return (
     <Card>
     <TableContainer component={Paper}>

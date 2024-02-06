@@ -32,4 +32,6 @@ public class UpdateRentalRequest {
     @NotNull(message = Messages.userIdNotEmpty)
     @Positive(message = Messages.userIdPositive)
     private int userId;
+
+    private int extraId;
 }

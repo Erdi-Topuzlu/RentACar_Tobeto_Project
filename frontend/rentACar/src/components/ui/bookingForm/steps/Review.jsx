@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 
 const Review = ({ steps, activeStep, setActiveStep }) => {
   const [totalDays, setTotalDays] = useState(1);
@@ -23,10 +24,12 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const usersId = details.id;
 
+  console.log("carid",id)
   console.log("user", userData);
   console.log("extra", Extras);
   console.log("car", carData);
   console.log("pay", paymentData);
+  console.log("usrid", usersId);
   console.log(Extras.id);
   useEffect(() => {
     const startDate = new Date(userData.pickupDate);
@@ -55,28 +58,29 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
     }
   };
   const maskedNumber = numberWithStars(paymentData.number);
+  
 
   const handleSubmit = async () => {
     const data = {
-      startDate: userData.pickupDate,
-      endDate: userData.dropoffDate,
+      startDate: userData?.pickupDate,
+      endDate: userData?.dropoffDate,
       carId: id,
       userId: usersId,
-      extraId: Extras.id,
+      extraId: Extras?.id,
     };
 
-    try {
-      const response = await axiosInstance.post("api/v1/auth/register", values);
 
-      navigate("/login");
+    try {
+      const response = await axiosInstance.post("api/v1/rentals",
+      data);
       // window.location.reload();
       setActiveStep(activeStep + 1);
+      console.log("response", response)
     } catch (error) {
-      console.error("Kayıt hatası:", response.error.data);
-    } finally {
-      actions.setSubmitting(false);
-    }
+      console.error("Kayıt hatası:" ,error);
+    
   };
+}
 
   return (
     <Container>
@@ -102,7 +106,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("cardFullName")} :{" "}
                   <span style={{ fontWeight: "normal" }}>
-                    {userData.firstname} {userData.lastname.toUpperCase()}
+                    {userData?.firstname} {userData?.lastname.toUpperCase()}
                   </span>
                 </span>
               </ListItem>
@@ -128,7 +132,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("phone")}{" "}
                   <span style={{ fontWeight: "normal" }}>
-                    {userData.phoneNumber}
+                    {userData?.phoneNumber}
                   </span>
                 </span>
               </ListItem>
@@ -167,7 +171,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("cardFullName")} :{" "}
                   <span style={{ fontWeight: "normal" }}>
-                    {paymentData.name.toUpperCase()}
+                    {paymentData?.name.toUpperCase()}
                   </span>
                 </span>
               </ListItem>
@@ -194,7 +198,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("expiry")} :{" "}
                   <span style={{ fontWeight: "normal" }}>
-                    {paymentData.expiry}
+                    {paymentData?.expiry}
                   </span>
                 </span>
               </ListItem>
@@ -224,7 +228,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                     >
                       {t("selectedPackage")} :{" "}
                       <span style={{ fontWeight: "normal" }}>
-                        {Extras.header}
+                        {Extras?.header}
                       </span>
                     </span>
                   </ListItem>
@@ -238,7 +242,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                     >
                       {t("packageDetails")} :
                       <List>
-                        {Extras.features.map((feature, index) => (
+                        {Extras?.features.map((feature, index) => (
                           <ListItem key={index}>
                             <span
                               style={{
@@ -268,7 +272,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                     >
                       {" "}
                       {t("packageAmount")}
-                      {Extras.price} ₺{" "}
+                      {Extras?.price} ₺{" "}
                     </span>
                   </div>
                 </div>
@@ -298,7 +302,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("selectedCar")}
                   <span style={{ fontWeight: "normal" }}>
-                    {carData.modelId.brandId.name} | {carData.modelId.name}
+                    {carData?.modelId?.brandId?.name} | {carData?.modelId?.name}
                   </span>
                 </span>
               </ListItem>
@@ -312,7 +316,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("dailyPrice")}
                   <span style={{ fontWeight: "normal" }}>
-                    {carData.dailyPrice} ₺
+                    {carData?.dailyPrice} ₺
                   </span>
                 </span>
               </ListItem>
@@ -326,7 +330,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                 >
                   {t("rentalDays")}
                   <span style={{ fontWeight: "normal" }}>
-                    {userData.pickupDate} / {userData.dropoffDate} ({totalDays}{" "}
+                    {userData?.pickupDate} / {userData?.dropoffDate} ({totalDays}{" "}
                     {t("days")})
                   </span>
                 </span>
@@ -344,7 +348,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                   }}
                 >
                   {t("totalAmount")}
-                  {totalDays * carData.dailyPrice + (Extras?.price || 0)} ₺{" "}
+                  {totalDays * carData?.dailyPrice + (Extras?.price || 0)} ₺{" "}
                 </span>
               </div>
             </div>
@@ -367,8 +371,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
           )}
           <Button
             style={{ backgroundColor: "#673ab7", color: "white" }}
-            onClick={() => setActiveStep(activeStep + 1)}
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
           >
             {t("Rent this car ")}
           </Button>
