@@ -25,5 +25,6 @@ public class GetAllCarResponse {
     GearType gearType;
     VehicleType vehicleType;
     SeatType seatType;
+    private Boolean isAvailable;
 
 }
