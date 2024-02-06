@@ -182,6 +182,9 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             id="driverLicense"
             name="driverLicense"
             value={formik.values.driverLicense}
+            className={
+              formik.errors.driverLicense && formik.touched.driverLicense && "error"
+            }
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             invalid={
