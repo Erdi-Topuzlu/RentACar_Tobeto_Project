@@ -12,10 +12,31 @@ import { useTranslation } from "react-i18next";
 import { TabPanel } from "@mui/joy";
 import Rentals from "./Rentals";
 import Settings from "./Settings";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ChangePassword from "./ChangePassword";
 
 export default function Profile() {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const { t } = useTranslation();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    // Eğer location.state'te tabIndex varsa, bu değeri kullanabilirsiniz
+    const tabIndex = location.state?.tabIndex;
+
+    if (tabIndex !== undefined) {
+      console.log("Gelen tabIndex:", tabIndex);
+      setActiveTab(tabIndex);
+      // Burada istediğiniz işlemleri gerçekleştirebilirsiniz
+      // Örneğin, belirtilen taba geçiş işlemleri veya başka bir şey
+    }
+  }, [location.state]);
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   if (status === "LOADING") {
     return <Loading />;
@@ -41,7 +62,9 @@ export default function Profile() {
             </Typography>
           </Box>
           <Tabs
-            defaultValue={0}
+            index={activeTab}
+            value={activeTab}
+            onChange={handleTabChange}
             sx={{
               bgcolor: "transparent",
             }}
@@ -71,48 +94,40 @@ export default function Profile() {
               <Tab
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
-                value={0}
+                index={0}
               >
                 {t("profileSetting")}
               </Tab>
               <Tab
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
-                value={1}
+                index={1}
               >
-                Saved Credit Cards
+                {t("myRentals")}
               </Tab>
               <Tab
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
-                value={2}
+                index={2}
               >
-                My Reservations
+                {t("changePassword")}
               </Tab>
-              <Tab
-                sx={{ borderRadius: "6px 6px 0 0" }}
-                indicatorInset
-                value={3}
-              >
-                My Bills
-              </Tab>
+              
             </TabList>
             <TabPanel value={0}>
                 <Settings />
             </TabPanel>
             <TabPanel value={1}>
-              <h1>My Cards</h1>
-            </TabPanel>
-
-            <TabPanel value={2}>
-              <Container>
+            <Container>
                 <Rentals />
               </Container>
             </TabPanel>
 
-            <TabPanel value={3}>
-              <h1>My Bills</h1>
+            <TabPanel value={2}>
+              <ChangePassword />
             </TabPanel>
+
+            
           </Tabs>
         </Box>
       </Box>

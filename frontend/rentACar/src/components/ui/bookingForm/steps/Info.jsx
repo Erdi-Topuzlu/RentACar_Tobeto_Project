@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactSVG } from "react-svg";
 import { Paper, Container } from "@mui/material";
 import { Button } from "reactstrap";
@@ -8,6 +8,11 @@ import { useTranslation } from "react-i18next";
 const Info = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const handleGoToProfileTab = () => {
+    // 'tabIndex' parametresini, Profile sayfasında hangi taba geçmek istediğinize göre ayarlayın
+    navigate("/profile", { state: { tabIndex: 1 } });
+  };
 
   localStorage.removeItem("userData");
   localStorage.removeItem("Extras");
@@ -24,7 +29,7 @@ const Info = () => {
         </div>
         <div className="d-flex justify-content-center">
           <Button
-            onClick={() => navigate("/profile")}
+            onClick={handleGoToProfileTab}
             className="mb-4  form__btn"
           >
             {t("myRentals")}
