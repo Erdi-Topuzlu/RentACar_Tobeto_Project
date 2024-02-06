@@ -1,8 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.extras.Extras;
-import com.tobeto.RentACar.repositories.ColorRepository;
+import com.tobeto.RentACar.entities.concretes.extras.Extra;
 import com.tobeto.RentACar.repositories.ExtrasRepository;
 import com.tobeto.RentACar.services.abstracts.ExtrasService;
 import com.tobeto.RentACar.services.dtos.responses.extras.GetAllExtrasResponse;
@@ -23,16 +22,16 @@ public class ExtrasManager implements ExtrasService {
 
     @Override
     public List<GetAllExtrasResponse> getAll() {
-        List<Extras> extras = extrasRepository.findAll();
+        List<Extra> extras = extrasRepository.findAll();
         List<GetAllExtrasResponse> extrasResponses = extras.stream()
-                .map(extras1 -> modelMapperService.entityToDto()
-                .map(extras1,GetAllExtrasResponse.class)).toList();
+                .map(extra1 -> modelMapperService.entityToDto()
+                .map(extra1,GetAllExtrasResponse.class)).toList();
         return extrasResponses;
     }
 
     @Override
     public GetByIdExtrasResponse getById(int id) {
-        Extras extras = extrasRepository.findById(id).orElseThrow();
+        Extra extras = extrasRepository.findById(id).orElseThrow();
         GetByIdExtrasResponse extra = modelMapperService.entityToDto().map(extras,GetByIdExtrasResponse.class);
         return extra;
     }

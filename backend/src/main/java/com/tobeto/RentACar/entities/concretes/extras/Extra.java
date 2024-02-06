@@ -14,12 +14,12 @@ import java.util.List;
 @Entity
 @Table(name = "extra")
 @Data
-public class Extras extends BaseEntity {
+public class Extra extends BaseEntity {
 
     @Column(name = "extra_price")
     private int extraPrice;
 
-    @OneToMany(mappedBy = "extras")
+    @OneToMany(mappedBy = "extra")
     @JsonIgnore
     private List<Rental> rentals;
 

@@ -44,14 +44,12 @@ public class RentalManager implements RentalService {
 
         int extraPrice = 0;
 
-        // code block
-        if (extraId.equals(1)) {
+        if (extraId.getId() == 1) {
             extraPrice = 200;
-        } else if (extraId.equals(2)) {
+        } else if (extraId.getId() == 2) {
             extraPrice = 350;
-        }else {
+        } else {
             extraPrice = 0;
-
         }
 
 
@@ -89,14 +87,12 @@ public class RentalManager implements RentalService {
 
         int extraPrice = 0;
 
-        // code block
-        if (extraId.equals(1)) {
+        if (extraId.getId() == 1) {
             extraPrice = 200;
-        } else if (extraId.equals(2)) {
+        } else if (extraId.getId() == 2) {
             extraPrice = 350;
-        }else {
+        } else {
             extraPrice = 0;
-
         }
 
         if (rental.getReturnDate() == null){
