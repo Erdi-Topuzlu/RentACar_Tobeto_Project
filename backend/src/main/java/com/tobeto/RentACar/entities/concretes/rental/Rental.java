@@ -2,7 +2,7 @@ package com.tobeto.RentACar.entities.concretes.rental;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tobeto.RentACar.entities.abstracts.BaseEntity;
-import com.tobeto.RentACar.entities.concretes.extras.Extras;
+import com.tobeto.RentACar.entities.concretes.extras.Extra;
 import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.entities.concretes.car.Car;
 import com.tobeto.RentACar.entities.concretes.invoice.Invoice;
@@ -42,7 +42,7 @@ public class Rental extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "extra_id")
-    private Extras extras;
+    private Extra extra;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
