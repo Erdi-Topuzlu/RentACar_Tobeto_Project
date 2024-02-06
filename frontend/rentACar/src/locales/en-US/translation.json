@@ -220,7 +220,14 @@
   "personalInfo":"Personal Info",
   "personalInfoDesc":"Customize your profile information",
   "save":"Save",
-  "cancel":"Cancel"
+  "cancel":"Cancel",
+
+  "_changePassword":"Change Password - EN",
+  "changePassword":"Change Password",
+  "changePasswordDesc":"",
+  "oldPassword":"Old Password",
+  "newPassword":"New Password",
+  "newConfirmPassword":"New Confirm Password"
   
 
 }

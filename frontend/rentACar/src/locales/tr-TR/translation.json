@@ -218,6 +218,13 @@
   "personalInfo":"Kişisel Bilgiler",
   "personalInfoDesc":"Kişisel bilgilerinizi özelleştirin",
   "save":"Kaydet",
-  "cancel":"Vazgeç"
+  "cancel":"Vazgeç",
+
+  "_changePassword":"Change Password - TR",
+  "changePassword":"Şifre Değiştir",
+  "changePasswordDesc":"",
+  "oldPassword":"Eski Şifre",
+  "newPassword":"Yeni Şifre",
+  "newConfirmPassword":"Yeni Şifre Onayı"
 
 }

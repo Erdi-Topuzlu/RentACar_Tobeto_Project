@@ -50,6 +50,16 @@ const Settings = () => {
     
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const [dateInputType, setDateInputType] = useState("text");
+
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
+
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
+
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -213,18 +223,21 @@ const Settings = () => {
                             >
                               <Input
                                 name="firstName"
+                                className={
+                                  formik.errors.firstName && formik.touched.firstName && "error"
+                                }
                                 value={values.firstName}
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.firstName && formik.touched.firstName}
                                 size="sm"
-                                placeholder={t("fName")}
+                                placeholder={
+                                  formik.errors.firstName && formik.touched.firstName
+                                    ? formik.errors.firstName
+                                    : t("fName")
+                                }
                               />
                             </FormControl>
-
-                            {touched.firstName && errors.firstName && (
-                              <div style={{ color: "red" }}>
-                                {errors.firstName}
-                              </div>
-                            )}
 
                             <FormControl
                               sx={{ display: "flex-column", gap: 1 }}
@@ -232,35 +245,48 @@ const Settings = () => {
                               <FormLabel>{t("lName")}</FormLabel>
                               <Input
                                 name="lastName"
+                                className={
+                                  formik.errors.lastName && formik.touched.lastName && "error"
+                                }
                                 value={values.lastName}
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.lastName && formik.touched.lastName}
                                 size="sm"
-                                placeholder={t("lName")}
+                                placeholder={
+                                  formik.errors.lastName && formik.touched.lastName
+                                    ? formik.errors.lastName
+                                    : t("lName")
+                                }
                               />
                             </FormControl>
 
-                            {touched.lastName && errors.lastName && (
-                              <div style={{ color: "red" }}>
-                                {errors.lastName}
-                              </div>
-                            )}
-
+                           
                             <FormControl>
                               <FormLabel>{t("birthDate")}</FormLabel>
                               <Input
                                 name="birthdate"
+                                type={dateInputType}
+                                className={
+                                  formik.errors.birthdate && formik.touched.birthdate && "error"
+                                }
                                 value={values.birthdate}
-                                onChange={handleChange}
-                                type="date"
+                                onFocus={activateDateInput}
+                                onBlur={(e) => {
+                                  formik.handleBlur(e);
+                                  deactivateDateInput();
+                                }}
+                                onChange={formik.handleChange}
+                                error={formik.errors.birthdate && formik.touched.birthdate}
                                 size="sm"
-                                placeholder={t("birthDate")}
+                                placeholder={
+                                  formik.errors.birthdate && formik.touched.birthdate
+                                    ? formik.errors.birthdate
+                                    : t("birthDate")
+                                }
                               />
                             </FormControl>
-                            {touched.birthdate && errors.birthdate && (
-                              <div style={{ color: "red" }}>
-                                {errors.birthdate}
-                              </div>
-                            )}
+                           
                           </FormControl>
                         </Stack>
                       </Stack>
@@ -337,17 +363,22 @@ const Settings = () => {
                             >
                               <Input
                                 name="firstName"
+                                className={
+                                  formik.errors.firstName && formik.touched.firstName && "error"
+                                }
                                 value={values.firstName}
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.firstName && formik.touched.firstName}
                                 size="sm"
-                                placeholder={t("fName")}
+                                placeholder={
+                                  formik.errors.firstName && formik.touched.firstName
+                                    ? formik.errors.firstName
+                                    : t("fName")
+                                }
                               />
                             </FormControl>
-                            {touched.firstName && errors.firstName && (
-                              <div style={{ color: "red" }}>
-                                {errors.firstName}
-                              </div>
-                            )}
+                      
 
                             <FormControl
                               sx={{ display: "flex-column", gap: 1 }}
@@ -355,35 +386,47 @@ const Settings = () => {
                               <FormLabel>{t("lName")}</FormLabel>
                               <Input
                                 name="lastName"
+                                className={
+                                  formik.errors.lastName && formik.touched.lastName && "error"
+                                }
                                 value={values.lastName}
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.lastName && formik.touched.lastName}
                                 size="sm"
-                                placeholder={t("lName")}
+                                placeholder={
+                                  formik.errors.lastName && formik.touched.lastName
+                                    ? formik.errors.lastName
+                                    : t("lName")
+                                }
                               />
                             </FormControl>
-
-                            {touched.lastName && errors.lastName && (
-                              <div style={{ color: "red" }}>
-                                {errors.lastName}
-                              </div>
-                            )}
 
                             <FormControl>
                               <FormLabel>{t("birthDate")}</FormLabel>
                               <Input
                                 name="birthdate"
+                                type={dateInputType}
+                                className={
+                                  formik.errors.birthdate && formik.touched.birthdate && "error"
+                                }
                                 value={values.birthdate}
-                                onChange={handleChange}
-                                type="date"
+                                onFocus={activateDateInput}
+                                onBlur={(e) => {
+                                  formik.handleBlur(e);
+                                  deactivateDateInput();
+                                }}
+                                onChange={formik.handleChange}
+                                error={formik.errors.birthdate && formik.touched.birthdate}
                                 size="sm"
-                                placeholder={t("birthDate")}
+                                placeholder={
+                                  formik.errors.birthdate && formik.touched.birthdate
+                                    ? formik.errors.birthdate
+                                    : t("birthDate")
+                                }
                               />
                             </FormControl>
-                            {touched.birthdate && errors.birthdate && (
-                              <div style={{ color: "red" }}>
-                                {errors.birthdate}
-                              </div>
-                            )}
+                            
                           </FormControl>
                         </Stack>
                       </Stack>
@@ -399,6 +442,7 @@ const Settings = () => {
                         </Button>
                         <Button
                           onClick={handleSubmit}
+                          style={{ backgroundColor: "#673ab7", color: "white" }}
                           size="sm"
                           variant="solid"
                         >
