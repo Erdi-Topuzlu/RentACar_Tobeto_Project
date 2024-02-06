@@ -2,6 +2,8 @@ package com.tobeto.RentACar.services.dtos.responses.rental;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
+import com.tobeto.RentACar.services.dtos.responses.extras.GetAllExtrasResponse;
+import com.tobeto.RentACar.services.dtos.responses.extras.GetByIdExtrasResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +26,6 @@ public class GetByIdRentalResponse {
     private double totalPrice;
     GetByIdCarResponse carId;
     GetByIdUserResponse userId;
+    GetAllExtrasResponse extraId;
+
 }

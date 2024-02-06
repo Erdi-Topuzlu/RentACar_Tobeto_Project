@@ -22,6 +22,6 @@ public class GetByIdUserResponse {
     private String password;
     private String userPhotoUrl;
     private Role role;
-    GetByIdRentalResponse rentalId;
+
 
 }

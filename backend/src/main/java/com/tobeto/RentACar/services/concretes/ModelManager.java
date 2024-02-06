@@ -50,7 +50,9 @@ public class ModelManager implements ModelService {
     public List<GetAllModelResponse> getAll() {
         List<Model>models = modelRepository.findAll();
         List<GetAllModelResponse>modelResponses = models.stream()
-                .map(model -> modelMapperService.entityToDto().map(model, GetAllModelResponse.class)).toList();
+                .map(model -> modelMapperService
+                        .entityToDto()
+                        .map(model, GetAllModelResponse.class)).toList();
         return modelResponses;
     }
 

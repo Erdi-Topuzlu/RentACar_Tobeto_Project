@@ -3,6 +3,8 @@ package com.tobeto.RentACar.services.dtos.requests.rental;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
+import com.tobeto.RentACar.services.dtos.requests.extras.AddExtrasRequests;
+import com.tobeto.RentACar.services.dtos.responses.extras.GetAllExtrasResponse;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +31,5 @@ public class AddRentalRequest {
     @Positive(message = Messages.userIdPositive)
     private int userId;
 
-    private int extraId;
+    AddExtrasRequests extraId;
 }

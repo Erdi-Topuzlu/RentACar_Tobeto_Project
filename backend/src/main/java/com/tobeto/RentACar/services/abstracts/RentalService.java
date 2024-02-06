@@ -16,6 +16,8 @@ public interface RentalService {
 
     List<GetAllRentalResponse>getAll();
 
+    List<GetAllRentalResponse>getByUserId(int id);
+
     GetByIdRentalResponse getById(int id);
 
 }

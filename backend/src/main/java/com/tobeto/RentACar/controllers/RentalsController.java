@@ -30,6 +30,11 @@ public class RentalsController {
         return rentalService.getById(id);
     }
 
+    @GetMapping("/byUser/{id}")
+    public List<GetAllRentalResponse>getByUserId(@PathVariable int id) {
+        return rentalService.getByUserId(id);
+    }
+
     @DeleteMapping("/{id}")
     public DeleteRentalRequest delete(@PathVariable int id) {
         return rentalService.delete(id);
