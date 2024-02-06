@@ -16,8 +16,8 @@ import java.util.List;
 @Data
 public class Extras extends BaseEntity {
 
-    @Column(name = "extras_name")
-    private String name;
+    @Column(name = "extra_price")
+    private int extraPrice;
 
     @OneToMany(mappedBy = "extras")
     @JsonIgnore

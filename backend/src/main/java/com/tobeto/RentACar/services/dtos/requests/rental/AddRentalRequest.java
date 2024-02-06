@@ -28,4 +28,6 @@ public class AddRentalRequest {
     @NotNull(message = Messages.userIdNotEmpty)
     @Positive(message = Messages.userIdPositive)
     private int userId;
+
+    private int extraId;
 }

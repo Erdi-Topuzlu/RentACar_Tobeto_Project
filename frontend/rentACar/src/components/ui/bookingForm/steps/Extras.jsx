@@ -10,6 +10,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
     // Your content here
     {
       header: t("miniPackage"),
+      id:1,
       price: 200.99,
       features: [
         t("miniDesc"),
@@ -21,6 +22,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
     {
       header: t("mediumPackage"),
       price: 350.99,
+      id:2,
       features: [
         t("miniDesc"),
         t("miniPackage"),

@@ -24,4 +24,5 @@ public class GetByIdCarResponse {
     SeatType seatType;
     GetByIdColorResponse colorId;
     GetByIdModelResponse modelId;
+    private Boolean isAvailable;
 }

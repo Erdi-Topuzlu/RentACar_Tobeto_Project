@@ -9,6 +9,8 @@ import {
   ListItem,
   Paper,
 } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Review = ({ steps, activeStep, setActiveStep }) => {
   const [totalDays, setTotalDays] = useState(1);
@@ -17,7 +19,15 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   const Extras = JSON.parse(localStorage.getItem("Extras"));
   const carData = JSON.parse(localStorage.getItem("carData"));
   const paymentData = JSON.parse(localStorage.getItem("paymentData"));
+  const { id } = useParams();
+  const { details, status, error } = useSelector((state) => state.userDetail);
+  const usersId = details.id;
 
+  console.log("user", userData);
+  console.log("extra", Extras);
+  console.log("car", carData);
+  console.log("pay", paymentData);
+  console.log(Extras.id);
   useEffect(() => {
     const startDate = new Date(userData.pickupDate);
     const endDate = new Date(userData.dropoffDate);
@@ -46,20 +56,40 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   };
   const maskedNumber = numberWithStars(paymentData.number);
 
+  const handleSubmit = async () => {
+    const data = {
+      startDate: userData.pickupDate,
+      endDate: userData.dropoffDate,
+      carId: id,
+      userId: usersId,
+      extraId: Extras.id,
+    };
+
+    try {
+      const response = await axiosInstance.post("api/v1/auth/register", values);
+
+      navigate("/login");
+      // window.location.reload();
+      setActiveStep(activeStep + 1);
+    } catch (error) {
+      console.error("Kayıt hatası:", response.error.data);
+    } finally {
+      actions.setSubmitting(false);
+    }
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
         {/* Left Column */}
         <Grid item xs={12} md={6} className="mt-4">
           <Paper elevation={3} className="preview-container">
-            
             <span
               style={{ fontWeight: "bold", margin: "8px", fontSize: "20px" }}
             >
               <i className="ri-user-line"></i> {t("userDetails")}
             </span>
-        
-            
+
             <hr />
             <List>
               <ListItem>
@@ -338,6 +368,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
           <Button
             style={{ backgroundColor: "#673ab7", color: "white" }}
             onClick={() => setActiveStep(activeStep + 1)}
+            onSubmit={handleSubmit}
           >
             {t("Rent this car ")}
           </Button>

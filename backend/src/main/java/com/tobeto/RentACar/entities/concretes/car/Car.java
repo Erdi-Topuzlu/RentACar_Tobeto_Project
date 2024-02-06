@@ -31,7 +31,7 @@ public class Car extends BaseEntity {
     private double dailyPrice;
 
     @Column(name = "is_available")
-    private Boolean isAvailable = true;
+    private Boolean isAvailable;
 
     @ManyToOne
     @JoinColumn(name = "color_id")
