@@ -16,9 +16,9 @@ import java.time.LocalDate;
 public class AddRentalRequest {
 
     @FutureOrPresent(message = Messages.startDateNotBeforeToday) //Biz bunu iş kuralı olarak da yazardık ama yazmadık :)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
 
     @NotNull(message = Messages.carIdNotEmpty)
