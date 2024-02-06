@@ -4,12 +4,14 @@ import { Container, Row, Col, Form, FormGroup, Input, FormFeedback, Button, Labe
 import Helmet from "../components/Helmet";
 import "../styles/form.css";
 import { useFormik } from "formik";
-import { loginValidationSchema } from "../schemes/loginScheme";
+import getLoginValidationSchema from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
 
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
+  
+  const loginValidationSchema = getLoginValidationSchema();
 
   const formik = useFormik({
     initialValues: {
@@ -58,16 +60,14 @@ const ForgotPassword = () => {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           type="text"
-                          placeholder="E-mail"
+                          placeholder={
+                            formik.errors.email && formik.touched.email
+                              ? formik.errors.email
+                              : t("email")
+                          }
                           invalid={formik.errors.email && formik.touched.email}
                         />
-                        {formik.errors.email && formik.touched.email && (
-
-                          <FormFeedback >
-                            <p className="text-danger"> {formik.errors.email}</p>
-                          </FormFeedback>
-                        )}
-
+                        
                       </FormGroup>
                     </div>
    

@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import "../styles/form.css";
 import Helmet from "../components/Helmet";
-import { signUpValidationSchema } from "../schemes/signUpScheme";
+import getSignUpValidationSchema from "../schemes/signUpScheme";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { AnimatedLTR } from "../components/ui/animation/animateDiv";
@@ -21,6 +21,8 @@ import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 const signUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  
+  const signUpValidationSchema = getSignUpValidationSchema();
 
   const token = localStorage.getItem("access_token");
 
@@ -89,19 +91,16 @@ const signUp = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             type="text"
-                            placeholder="E-mail"
+                            placeholder={
+                              formik.errors.email && formik.touched.email
+                                ? formik.errors.email
+                                : t("email")
+                            }
                             invalid={
                               formik.errors.email && formik.touched.email
                             }
                           />
-                          {formik.errors.email && formik.touched.email && (
-                            <FormFeedback>
-                              <p className="text-danger">
-                                {" "}
-                                {formik.errors.email}
-                              </p>
-                            </FormFeedback>
-                          )}
+                          
                         </FormGroup>
                       </div>
                       <div>
@@ -118,20 +117,16 @@ const signUp = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             type="password"
-                            placeholder={t("password")}
+                            placeholder={
+                              formik.errors.password && formik.touched.password
+                                ? formik.errors.password
+                                : t("password")
+                            }
                             invalid={
                               formik.errors.password && formik.touched.password
                             }
                           />
-                          {formik.errors.password &&
-                            formik.touched.password && (
-                              <FormFeedback>
-                                <p className="text-danger">
-                                  {" "}
-                                  {formik.errors.password}
-                                </p>
-                              </FormFeedback>
-                            )}
+                          
                         </FormGroup>
                       </div>
                       <div>
@@ -148,21 +143,17 @@ const signUp = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             type="password"
-                            placeholder={t("confirm")}
+                            placeholder={
+                              formik.errors.confirmPassword && formik.touched.confirmPassword
+                                ? formik.errors.confirmPassword
+                                : t("confirm")
+                            }
                             invalid={
                               formik.errors.confirmPassword &&
                               formik.touched.confirmPassword
                             }
                           />
-                          {formik.errors.confirmPassword &&
-                            formik.touched.confirmPassword && (
-                              <FormFeedback>
-                                <p className="text-danger">
-                                  {" "}
-                                  {formik.errors.confirmPassword}
-                                </p>
-                              </FormFeedback>
-                            )}
+                          
                         </FormGroup>
                       </div>
                       <FormGroup>

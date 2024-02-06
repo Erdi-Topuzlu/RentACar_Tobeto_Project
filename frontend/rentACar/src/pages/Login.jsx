@@ -14,7 +14,7 @@ import {
 import Helmet from "../components/Helmet";
 import "../styles/form.css";
 import { useFormik } from "formik";
-import { loginValidationSchema } from "../schemes/loginScheme";
+import getLoginValidationSchema from "../schemes/loginScheme";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 import { AnimatedLTR } from "../components/ui/animation/animateDiv";
@@ -26,6 +26,8 @@ const Login = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  
+  const loginValidationSchema = getLoginValidationSchema();
   
   // useEffect(() => {
   //   if(token){
@@ -86,19 +88,16 @@ const Login = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             type="text"
-                            placeholder="E-mail"
+                            placeholder={
+                              formik.errors.email && formik.touched.email
+                                ? formik.errors.email
+                                : t("email")
+                            }
                             invalid={
                               formik.errors.email && formik.touched.email
                             }
                           />
-                          {formik.errors.email && formik.touched.email && (
-                            <FormFeedback>
-                              <p className="text-danger">
-                                {" "}
-                                {formik.errors.email}
-                              </p>
-                            </FormFeedback>
-                          )}
+                          
                         </FormGroup>
                       </div>
                       <div>
@@ -115,20 +114,16 @@ const Login = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             type="password"
-                            placeholder={t("password")}
+                            placeholder={
+                              formik.errors.password && formik.touched.password
+                                ? formik.errors.password
+                                : t("password")
+                            }
                             invalid={
                               formik.errors.password && formik.touched.password
                             }
                           />
-                          {formik.errors.password &&
-                            formik.touched.password && (
-                              <FormFeedback>
-                                <p className="text-danger">
-                                  {" "}
-                                  {formik.errors.password}
-                                </p>
-                              </FormFeedback>
-                            )}
+                         
                         </FormGroup>
                       </div>
 

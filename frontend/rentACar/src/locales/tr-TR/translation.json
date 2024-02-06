@@ -6,6 +6,7 @@
 
   "_header": "HEADER-TR",
   "login": "Giriş Yap",
+  "email":"E-Posta",
   "signup": "Üye Ol",
   "needhelp": "Yardıma mı ihtiyacınız var?",
   "country": "Türkiye",
@@ -164,9 +165,14 @@
   "schemeConfirmPasswordMatch":"Şifreler eşleşmiyor",
   "schemePasswordMin":"Şifreniz en az 5 karakterden oluşmalıdır",
 
-  "schemeCardNumber":"Kart Numarası gereklidir",
+  "expiry":"Son Kullanma Tarihi",
+  "cardNumber":"Kart Numarası",
+  "cardFullName":"Ad Soyad",
+  "cardMonthandYear":"AA/YY",
+  "schemeCardNumber":"Kart Numarası gereklidir",  
+  "schemeInvalidCardNumber":"Geçersiz Kart Numarası",
   "schemeExpiry":"Son kullanma tarihi gereklidir",
-  "schemeCvv":"CVV gereklidir",
+  "schemeCvv":"CVC gereklidir",
 
   "schemePhoneNumber":"Telefon Numarası gereklidir",
   "schemeInvalidPhoneNumber":"Geçersiz Telefon Numarası formatı",
@@ -175,6 +181,7 @@
   "schemeCheckBirthDate":"En az 18 yaşında olmalısınız",
 
   "schemeDriverLicense":"Sürücü Belgesi gereklidir",
+  "schemeUserDriverLicense":"Ehliyet Türü",
 
   "schemeStartDate":"Başlangıç tarihi gereklidir",
   "schemeInvalidStartDate":"Geçersiz tarih, bugün veya sonrası olmalıdır",
@@ -189,7 +196,20 @@
   "mediumPackage":"Orta Kapsamlı",
   "supplementary":"Tamamlayıcı Sorumluluk Teminatı",
   "personalAccident":"Ferdi Kaza Güvencesi",
+  "selectedPackage":"Seçilen Paket",
+  "packageDetails":"Paket Detayları",
+  "anyPackage":"Herhangi bir paket seçmediniz!",
+  "packageAmount":"Paket Tutarı : ",
 
+  "carDetails":"Araç Detayları",
+  "selectedCar":"Aracınız : ",
+  "dailyPrice":"Günlük Ücret : ",
+  "rentalDays":"Kiralama Tarihleri : ",
+  "days":"Gün",
+  "totalAmount":"Toplam Tutar : ",
+
+  "completedRental":"Kiralama İşleminiz Başarıyla Tamamlanmıştır",
+  "myRentals":"Kiramalarım",
   "month":"Ay",
 
   "_profilePage":"Profile Page-TR",

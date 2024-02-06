@@ -24,7 +24,7 @@ spring:
 jwt:
   secret-key: A9pPomvZ5vkCC8OWRCkqrBn4k8EftWAxRG2enCUi0Xfzze7xEwrqmayQUF2btuo3mhOlMJR+Bo4OqMoZUOPuYg==
   bearer: "Bearer "
-  expiration: 60000
+  expiration: 14400000
   refresh-token:
     expiration: 604800000
 

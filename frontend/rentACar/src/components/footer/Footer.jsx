@@ -71,10 +71,10 @@ function Footer() {
           <Col lg="3" md="4" sm="6">
             <div className="mb-4">
               <h5 className="footer__link-title mb-4">{t("head")}</h5>
-              <p className="office__info">Istanbul,Turkey</p>
+              <p className="office__info">İstanbul, Türkiye</p>
               <p className="office__info">{t("phone")}+90 0535 9898 9898</p>
 
-              <p className="office__info">Email : Pair1@gmail.com</p>
+              <p className="office__info">{t("email")} : pair1@gmail.com</p>
 
               <p className="office__info">{t("office")}</p>
             </div>
