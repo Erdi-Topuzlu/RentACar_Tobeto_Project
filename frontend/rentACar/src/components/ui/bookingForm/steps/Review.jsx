@@ -30,7 +30,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   console.log("car", carData);
   console.log("pay", paymentData);
   console.log("usrid", usersId);
-  console.log(Extras.id);
+  console.log(Extras ? Extras.id : null);
   useEffect(() => {
     const startDate = new Date(userData.pickupDate);
     const endDate = new Date(userData.dropoffDate);
@@ -66,7 +66,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
       endDate: userData?.dropoffDate,
       carId: id,
       userId: usersId,
-      extraId: Extras?.id,
+      extraId: Extras?.id || 0,
     };
 
 

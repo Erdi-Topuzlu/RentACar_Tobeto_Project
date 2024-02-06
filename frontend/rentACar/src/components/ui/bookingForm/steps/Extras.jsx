@@ -11,7 +11,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
     {
       header: t("miniPackage"),
       id:1,
-      price: 200.99,
+      price: 200,
       features: [
         t("miniDesc"),
         t("miniPackage"),
@@ -21,7 +21,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
     },
     {
       header: t("mediumPackage"),
-      price: 350.99,
+      price: 350,
       id:2,
       features: [
         t("miniDesc"),
