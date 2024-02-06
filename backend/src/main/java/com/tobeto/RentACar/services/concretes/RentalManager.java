@@ -48,7 +48,11 @@ public class RentalManager implements RentalService {
             extraPrice = 200;
         } else if (extraId.getId() == 2) {
             extraPrice = 350;
-        } else {
+        }else if (extraId.getId() == 3) {
+            extraPrice = 0;
+        }
+
+        else {
             extraPrice = 0;
         }
 
@@ -91,7 +95,10 @@ public class RentalManager implements RentalService {
             extraPrice = 200;
         } else if (extraId.getId() == 2) {
             extraPrice = 350;
-        } else {
+        }else if (extraId.getId() == 0) {
+            extraPrice = 0;
+        }
+        else {
             extraPrice = 0;
         }
 

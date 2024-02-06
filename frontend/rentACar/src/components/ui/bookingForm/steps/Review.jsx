@@ -30,7 +30,12 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   console.log("car", carData);
   console.log("pay", paymentData);
   console.log("usrid", usersId);
-  console.log(Extras ? Extras.id : null);
+  
+  const extraId = Extras ? Extras.id : 3;
+  
+  console.log(extraId)
+
+
   useEffect(() => {
     const startDate = new Date(userData.pickupDate);
     const endDate = new Date(userData.dropoffDate);
@@ -39,7 +44,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
         ? 1
         : Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))
     );
-  }, [userData.pickupDate, userData.dropoffDate]);
+  }, [userData?.pickupDate, userData?.dropoffDate]);
 
   const numberWithStars = (number) => {
     if (number && typeof number === "string") {
@@ -66,7 +71,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
       endDate: userData?.dropoffDate,
       carId: id,
       userId: usersId,
-      extraId: Extras?.id || 0,
+      extraId: extraId
     };
 
 
@@ -119,7 +124,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
                   }}
                 >
                   {t("email")} :{" "}
-                  <span style={{ fontWeight: "normal" }}>{userData.email}</span>
+                  <span style={{ fontWeight: "normal" }}>{userData?.email}</span>
                 </span>
               </ListItem>
               <ListItem>
