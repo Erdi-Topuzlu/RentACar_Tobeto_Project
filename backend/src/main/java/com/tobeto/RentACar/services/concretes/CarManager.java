@@ -35,7 +35,7 @@ public class CarManager implements CarService {
     }
 
     @Override
-    public void update(UpdateCarRequest request) {
+    public void update(UpdateCarRequest request,int id) {
         //Business Rules
         carBusinessRulesService.checkIfByIdExists(request.getId());
         carBusinessRulesService.checkIfPlateNameExists(request.getPlate());

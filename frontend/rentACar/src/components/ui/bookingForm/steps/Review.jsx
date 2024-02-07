@@ -74,11 +74,39 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
       extraId: extraId
     };
 
+    const carDataUpdate =  {
+      kilometer : carData?.kilometer,
+      plate : carData?.plate,
+      year : carData?.year,
+      dailyPrice : carData?.dailyPrice,
+      fuelType : carData?.fuelType,
+      gearType : carData?.gearType,
+      vehicleType : carData?.vehicleType,
+      seatType : carData?.seatType,
+      isAvailable:false,
+      colorId: 1,
+      modelId: 1
+    }
+
 
     try {
       const response = await axiosInstance.post("api/v1/users/rentals",
       data);
-      // window.location.reload();
+     // window.location.reload();
+      try {
+        const response = await axiosInstance.put(
+          `api/v1/cars/${id}`,
+          carDataUpdate
+        );
+        if (response.status === 200) {
+          toastSuccess("Kayıt İşlemi Başarılı.");
+        }
+      } catch (error) {
+        console.error("Güncelleme hatası hatası:", error.response.data);
+      } finally {
+        actions.setSubmitting(false);
+      }
+     
       setActiveStep(activeStep + 1);
       console.log("response", response)
     } catch (error) {

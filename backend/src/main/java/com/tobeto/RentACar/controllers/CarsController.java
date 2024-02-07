@@ -24,12 +24,12 @@ public class CarsController {
         this.carService = carService;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<GetAllCarResponse> getAll() {
         return carService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getByCar/{id}")
     public GetByIdCarResponse getById(@PathVariable int id) {
         return carService.getById(id);
     }
@@ -44,9 +44,9 @@ public class CarsController {
         carService.add(request);
     }
 
-    @PutMapping
-    public void update(@RequestBody @Valid UpdateCarRequest request) {
-        carService.update(request);
+    @PutMapping("/{id}")
+    public void update(@RequestBody @Valid UpdateCarRequest request, @PathVariable int id) {
+        carService.update(request,id);
     }
 
 

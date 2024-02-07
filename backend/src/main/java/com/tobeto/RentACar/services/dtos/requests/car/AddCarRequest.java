@@ -48,4 +48,6 @@ public class AddCarRequest {
     @NotNull(message = Messages.modelIdNotEmpty)
     @Positive(message = Messages.modelIdPositive)
     private int modelId;
+    private Boolean isAvailable;
+
 }

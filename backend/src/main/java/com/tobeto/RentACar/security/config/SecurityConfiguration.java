@@ -38,7 +38,8 @@ public class SecurityConfiguration {
                                 authorizeHttpRequests
                                         .requestMatchers(
                                                 "/api/v1/auth/**",
-                                                "/api/v1/cars/**",
+                                                "/api/v1/cars/getAll",
+                                                "/api/v1/cars/getByCar/**",
                                               /*  "/api/v1/extras/**",
                                                 "/api/v1/rentals/**",*/
                                                 "/api/v1/userImage/**",
@@ -73,6 +74,10 @@ public class SecurityConfiguration {
                                         .requestMatchers(GET, "api/v1/users/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name(), USER_READ.name())
                                         .requestMatchers(PUT, "api/v1/users/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name(), USER_UPDATE.name())
                                         .requestMatchers(POST, "api/v1/users/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name(), USER_CREATE.name())
+                                        .requestMatchers("api/v1/cars/**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
+                                        .requestMatchers(PUT, "api/v1/cars/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name(), USER_CREATE.name())
+
+
                                         .anyRequest()
                                         .authenticated()
 
