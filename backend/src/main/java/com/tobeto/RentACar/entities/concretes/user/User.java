@@ -33,10 +33,10 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "email", updatable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "password", updatable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "name")

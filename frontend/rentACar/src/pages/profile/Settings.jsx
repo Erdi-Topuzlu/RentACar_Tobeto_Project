@@ -76,12 +76,14 @@ const Settings = () => {
         id: id,
         name: values.firstName || details.name,
         surname: values.lastName || details.surname,
+        email: details.email,
+        password: details.password,
         birthDate: values.birthdate || details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
 
       try {
-        const response = await axiosInstance.put(
+        const response = await axiosInstance.patch(
           `api/v1/users/${id}`,
           updatedData
         );
@@ -93,7 +95,6 @@ const Settings = () => {
       } finally {
         actions.setSubmitting(false);
       }
-      toastSuccess("Editted Profile Information");
     },
   });
 

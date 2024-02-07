@@ -1,5 +1,7 @@
-#DATABASE Connection
+#DATABASE Connection spring.main.allow-circular-references
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     url: jdbc:postgresql://localhost:5432/rentacar
     username: postgres

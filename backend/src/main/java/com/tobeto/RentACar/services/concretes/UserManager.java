@@ -5,13 +5,17 @@ import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.UserService;
-import com.tobeto.RentACar.services.dtos.requests.user.*;
+import com.tobeto.RentACar.services.dtos.requests.user.AddUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.ChangePasswordUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
-import io.swagger.v3.oas.annotations.info.Contact;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,23 +23,23 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.tobeto.RentACar.core.utilities.constant.Constant.PHOTO_DIRECTORY;
-import static io.swagger.v3.core.util.AnnotationsUtils.getContact;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class UserManager implements UserService {
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final ModelMapperService modelMapperService;
     private final UserBusinessRulesService userBusinessRulesService;
-
 
     @Override
     public void add(AddUserRequest request) {
@@ -68,12 +72,12 @@ public class UserManager implements UserService {
         return userResponses;
     }
 
-    @Override
-    public GetByIdUserResponse getById(int id) {
-        User user = userRepository.findById(id).orElseThrow();
-        GetByIdUserResponse response = modelMapperService.entityToDto().map(user, GetByIdUserResponse.class);
-        return response;
-    }
+//    @Override
+//    public GetByIdUserResponse getById(int id) {
+//        User user = userRepository.findById(id).orElseThrow();
+//        GetByIdUserResponse response = modelMapperService.entityToDto().map(user, GetByIdUserResponse.class);
+//        return response;
+//    }
 
     // Id olmadan artık jwt authentication filter yöntemi ile ile user bilgilerine ulaşabiliyoruz
     @Override
@@ -86,11 +90,6 @@ public class UserManager implements UserService {
     @Override
     public boolean existsById(int id) {
         return userRepository.existsById(id);
-    }
-
-    @Override
-    public Optional<User> findByEmail(String username) {
-        return userRepository.findByEmail(username);
     }
 
     // User Photo Upload Url
@@ -129,6 +128,34 @@ public class UserManager implements UserService {
             throw new RuntimeException("Unable to save Image");
         }
     };
+
+
+    @Override
+    public void changePasswordUser(ChangePasswordUserRequest changePasswordRequest, Principal connectedUser) {
+
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        // check if the current password is not correct
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Current password is not correct");
+        }
+
+        // check if the new password and confirm password are not the same
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+            throw new IllegalStateException("New password and confirm password are not the same");
+        }
+
+        // check if the new password is the same as the current password
+        if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), user.getPassword())) {
+            throw new IllegalStateException("New password cannot be the same as the current password");
+        }
+
+        // change the password
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        // save the user new password
+        userRepository.save(user);
+
+    }
 }
 
 

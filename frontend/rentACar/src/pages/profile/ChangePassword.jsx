@@ -12,7 +12,7 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import { useFormik } from "formik";
 import { Form } from "reactstrap";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
-import { toastSuccess } from "../../service/ToastifyService";
+import { toastSuccess, toastWarning } from "../../service/ToastifyService";
 import { useTranslation } from "react-i18next";
 import getChangePasswordValidationSchema from "../../schemes/changePasswordScheme";
 const ChangePassword = () => {
@@ -32,25 +32,27 @@ const ChangePassword = () => {
     validationSchema: changePasswordScheme,
     onSubmit: async (values, actions) => {
       const updatedData = {
-        oldPassword: formik.values.oldPassword,
+        currentPassword: formik.values.oldPassword,
         newPassword: formik.values.newPassword,
-        newConfirmPassword: formik.values.newConfirmPassword,
+        confirmPassword: formik.values.newConfirmPassword,
       };
 
       try {
-        const response = await axiosInstance.put(
-          `api/v1/users/${id}`,
+        const response = await axiosInstance.patch(
+          `api/v1/users/changePassword`,
           updatedData
         );
         if (response.status === 200) {
-          toastSuccess("Kayıt İşlemi Başarılı.");
+          toastSuccess("Şifre Başarılı Bir Şekilde Güncellendi.");
+        }
+        if(response.status === 403) {
+          toastWarning("Lütfen Şifrenizi Doğru Girdiğinizden Emin Olunuz.")
         }
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
       } finally {
         actions.setSubmitting(false);
       }
-      toastSuccess("Editted Profile Information");
     },
   });
 
