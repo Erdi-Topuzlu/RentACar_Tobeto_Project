@@ -75,6 +75,8 @@ axiosInstance.interceptors.response.use(
       }
     }
     toastWarning("Bir hata oluştu, lütfen tekrar deneyin.");
+    localStorage.clear();
+    window.location.href = "/login";
     return Promise.reject(error);
   }
 );
