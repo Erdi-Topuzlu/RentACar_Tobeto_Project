@@ -44,12 +44,7 @@ public class RentalManager implements RentalService {
         rental.setStartKilometer(carId.getKilometer());
 
         if ((ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate())) == 0) {
-            Double totalPrice;
-            if(extraId != null){
-                totalPrice = (1 * carId.getDailyPrice());
-            }else {
-                totalPrice = (1 * carId.getDailyPrice()) + extraId.getExtraPrice();
-            }
+            Double totalPrice = carId.getDailyPrice() + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
 
         } else if (rental.getReturnDate() == null) {
@@ -78,7 +73,7 @@ public class RentalManager implements RentalService {
         GetByIdExtrasResponse extraId = extrasService.getById(request.getExtraId());
         rental.setStartKilometer(carId.getKilometer());
 
-        if (rental.getStartDate() == rental.getEndDate()) {
+        if ((ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate())) == 0) {
             Double totalPrice = carId.getDailyPrice() + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
         } else if (rental.getReturnDate() == null) {

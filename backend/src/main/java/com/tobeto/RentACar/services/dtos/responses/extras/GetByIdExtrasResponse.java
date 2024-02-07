@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetByIdExtrasResponse {
 
-
+    private String extraName;
     private int extraPrice;
 }
