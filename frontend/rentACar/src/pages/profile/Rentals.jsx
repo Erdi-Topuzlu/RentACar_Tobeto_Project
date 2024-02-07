@@ -15,14 +15,37 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Card } from "@mui/joy";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import fetchAllRental from "../../redux/actions/fetchAllRentals";
+import { useState } from "react";
+import fetchByUserIdRental from "../../redux/actions/fetchByUserIdRental";
 
 
 function createData(name, calories, fat, carbs, protein, price) {
+  const dispatch = useDispatch();
 
-  const { details, status, error } = useSelector((state) => state.userDetail);
+     //const { rentals, status, error } = useSelector(state => state.allRentals); 
+     const { rentalDetails, status, error } = useSelector(state => state.rentalDetail); 
+     const { details} = useSelector((state) => state.userDetail);
 
-  console.log("rentals",details)
+    
+
+  //------------tüm rentaller için--------------
+
+  // useEffect(() => {
+  //   dispatch(fetchAllRental())
+  // }, [dispatch]);
+
+  // console.log("rentals",rentals)
+
+
+  //-------------detay rental için---------------
+
+  useEffect(() => {
+    dispatch(fetchByUserIdRental(details.id))
+  }, [dispatch]);
+
+  console.log("kişisel rentals",rentalDetails)
  
   return {
     name,
