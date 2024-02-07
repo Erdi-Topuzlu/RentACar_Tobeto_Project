@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/v1/extras")
+@RequestMapping("api/v1/users/extras")
 @Tag(name = "Extras Controller", description = "Extras Endpoints")
 public class ExtrasController {
 

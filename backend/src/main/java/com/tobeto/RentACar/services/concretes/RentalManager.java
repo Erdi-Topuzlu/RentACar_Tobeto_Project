@@ -29,9 +29,10 @@ public class RentalManager implements RentalService {
     private final ModelMapperService modelMapperService;
     private final RentalBusinessRulesService rentalBusinessRulesService;
     private final CarService carService;
+
     @Override
     public void add(AddRentalRequest request) {
-        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
+        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(), request.getStartDate());
         rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
         rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
         rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());
@@ -39,33 +40,18 @@ public class RentalManager implements RentalService {
 
         Rental rental = modelMapperService.dtoToEntity().map(request, Rental.class);
         GetByIdCarResponse carId = carService.getById(request.getCarId());
-        GetByIdExtrasResponse extraId = extrasService.getById(request.getExtraId().getId());
+        GetByIdExtrasResponse extraId = extrasService.getById(request.getExtraId());
         rental.setStartKilometer(carId.getKilometer());
 
-        int extraPrice = 0;
-
-        if (extraId.getId() == 1) {
-            extraPrice = 200;
-        } else if (extraId.getId() == 2) {
-            extraPrice = 350;
-        }else if (extraId.getId() == 3) {
-            extraPrice = 0;
-        }
-
-        else {
-            extraPrice = 0;
-        }
-
-
-        if (rental.getReturnDate() == null){
-            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice())+extraPrice;
+        if ((ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate())) == 0) {
+            Double totalPrice = carId.getDailyPrice() + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
-        }else if(rental.getStartDate() == rental.getEndDate()){
-            Double totalPrice = (1 * carId.getDailyPrice())+extraPrice;
+
+        } else if (rental.getReturnDate() == null) {
+            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
-        }
-        else {
-            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice())+extraPrice ;
+        } else {
+            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
         }
 
@@ -75,45 +61,28 @@ public class RentalManager implements RentalService {
     @Override
     public void update(UpdateRentalRequest request) {
         rentalBusinessRulesService.checkIfByIdExists(request.getId());
-        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(),request.getStartDate());
+        rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(), request.getStartDate());
         rentalBusinessRulesService.checkIfReturnDateBeforeStartDate(request.getReturnDate(), request.getStartDate());
         rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
         rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
         rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());
 
 
-
-
         Rental rental = modelMapperService.dtoToEntity().map(request, Rental.class);
         GetByIdCarResponse carId = carService.getById(request.getCarId());
-        GetByIdExtrasResponse extraId = extrasService.getById(request.getExtraId().getId());
+        GetByIdExtrasResponse extraId = extrasService.getById(request.getExtraId());
         rental.setStartKilometer(carId.getKilometer());
 
-        int extraPrice = 0;
-
-        if (extraId.getId() == 1) {
-            extraPrice = 200;
-        } else if (extraId.getId() == 2) {
-            extraPrice = 350;
-        }else if (extraId.getId() == 0) {
-            extraPrice = 0;
-        }
-        else {
-            extraPrice = 0;
-        }
-
-        if (rental.getReturnDate() == null){
-            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice())+extraPrice;
+        if ((ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate())) == 0) {
+            Double totalPrice = carId.getDailyPrice() + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
-        }else if(request.getTotalPrice()>0) {
+        } else if (rental.getReturnDate() == null) {
+            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
+            rental.setTotalPrice(totalPrice);
+        } else if (request.getTotalPrice() > 0) {
             rental.setTotalPrice(request.getTotalPrice());
-        }else if(rental.getStartDate() == rental.getEndDate()) {
-            Double totalPrice = (1 * carId.getDailyPrice()) + extraPrice;
-            rental.setTotalPrice(totalPrice);
-        }
-
-        else{
-            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice())+extraPrice;
+        } else {
+            Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
         }
 
@@ -130,7 +99,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public List<GetAllRentalResponse> getAll() {
-        List<Rental>rentals = rentalRepository.findAll();
+        List<Rental> rentals = rentalRepository.findAll();
         List<GetAllRentalResponse> rentalResponses = rentals.stream()
                 .map(rental -> modelMapperService.entityToDto().map(rental, GetAllRentalResponse.class)).toList();
         return rentalResponses;
@@ -139,7 +108,7 @@ public class RentalManager implements RentalService {
     @Override
     public List<GetAllRentalResponse> getByUserId(int id) {
         List<Rental> rentals = rentalRepository.findByUserId(id);
-        List<GetAllRentalResponse> rentalResponses = rentals.stream().map(rental -> modelMapperService.entityToDto().map(rental,GetAllRentalResponse.class)).toList();
+        List<GetAllRentalResponse> rentalResponses = rentals.stream().map(rental -> modelMapperService.entityToDto().map(rental, GetAllRentalResponse.class)).toList();
         return rentalResponses;
     }
 

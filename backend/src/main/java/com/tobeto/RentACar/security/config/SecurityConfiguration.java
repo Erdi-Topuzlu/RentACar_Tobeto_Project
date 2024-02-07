@@ -39,8 +39,8 @@ public class SecurityConfiguration {
                                         .requestMatchers(
                                                 "/api/v1/auth/**",
                                                 "/api/v1/cars/**",
-                                                "/api/v1/extras/**",
-                                                "/api/v1/rentals/**",
+                                              /*  "/api/v1/extras/**",
+                                                "/api/v1/rentals/**",*/
                                                 "/api/v1/userImage/**",
                                                 "/v2/api-docs",
                                                 "/v3/api-docs",
@@ -72,6 +72,7 @@ public class SecurityConfiguration {
                                         .requestMatchers("api/v1/users/**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
                                         .requestMatchers(GET, "api/v1/users/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name(), USER_READ.name())
                                         .requestMatchers(PUT, "api/v1/users/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name(), USER_UPDATE.name())
+                                        .requestMatchers(POST, "api/v1/users/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name(), USER_CREATE.name())
                                         .anyRequest()
                                         .authenticated()
 

@@ -76,7 +76,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
 
 
     try {
-      const response = await axiosInstance.post("api/v1/rentals",
+      const response = await axiosInstance.post("api/v1/users/rentals",
       data);
       // window.location.reload();
       setActiveStep(activeStep + 1);

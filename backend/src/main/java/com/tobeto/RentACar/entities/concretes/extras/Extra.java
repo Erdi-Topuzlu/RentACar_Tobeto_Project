@@ -16,6 +16,9 @@ import java.util.List;
 @Data
 public class Extra extends BaseEntity {
 
+    @Column(name = "extra_name")
+    private String extraName;
+
     @Column(name = "extra_price")
     private int extraPrice;
 

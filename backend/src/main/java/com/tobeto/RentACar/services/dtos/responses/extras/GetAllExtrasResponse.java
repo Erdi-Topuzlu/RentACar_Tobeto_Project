@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllExtrasResponse {
-
-    private int id;
+    private String extraName;
     private int extraPrice;
 }

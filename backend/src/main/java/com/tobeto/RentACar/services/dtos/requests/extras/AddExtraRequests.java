@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class AddExtrasRequests {
-    private int id;
+public class AddExtraRequests {
+
 }
