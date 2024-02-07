@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class GetByIdExtrasResponse {
 
 
-    private int id;
     private int extraPrice;
 }
