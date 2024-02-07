@@ -1,176 +1,65 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Card } from "@mui/joy";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import fetchAllRental from "../../redux/actions/fetchAllRentals";
-import { useState } from "react";
-import fetchByUserIdRental from "../../redux/actions/fetchByUserIdRental";
+import React, { useEffect } from 'react'
+import Accordion from 'react-bootstrap/Accordion';
+import { useDispatch, useSelector } from 'react-redux';
+import fetchByUserIdRental from '../../redux/actions/fetchByUserIdRental';
+import Loading from '../../components/ui/Loading';
+import ErrorPage from '../../components/ui/ErrorPage';
+import { FaceRetouchingNatural } from '@mui/icons-material';
+import { Table } from 'react-bootstrap';
 
-
-function createData(name, calories, fat, carbs, protein, price) {
+const Rentals = () => {
   const dispatch = useDispatch();
 
-     //const { rentals, status, error } = useSelector(state => state.allRentals); 
-     const { rentalDetails, status, error } = useSelector(state => state.rentalDetail); 
-     const { details} = useSelector((state) => state.userDetail);
+const { rentalDetails, status, error } = useSelector(state => state.rentalDetail); 
+const { details} = useSelector((state) => state.userDetail);
 
-    
+useEffect(() => {  
+ dispatch(fetchByUserIdRental(details.id))
+}, [dispatch]);
 
-  //------------tüm rentaller için--------------
+console.log("kişisel rentals",rentalDetails)
 
-  // useEffect(() => {
-  //   dispatch(fetchAllRental())
-  // }, [dispatch]);
-
-  // console.log("rentals",rentals)
-
-
-  //-------------detay rental için---------------
-
-  useEffect(() => {
-    dispatch(fetchByUserIdRental(details.id))
-  }, [dispatch]);
-
-  console.log("kişisel rentals",rentalDetails)
- 
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
+if (status === "LOADING") {
+ return <Loading />;
 }
-
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
+if (status === "FAIL") {
+ return <ErrorPage errorMessage={error} />;
+}
   return (
-    <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Details
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ fontWeight: "bold" }}>
-                      Customer
-                    </TableCell>
-                    <TableCell style={{ fontWeight: "bold" }}>
-                      Start Date / End Date
-                    </TableCell>
-                    <TableCell style={{ fontWeight: "bold" }}>
-                      Brand / Model
-                    </TableCell>
-                    <TableCell style={{ fontWeight: "bold" }}>Extras</TableCell>
-                    <TableCell style={{ fontWeight: "bold" }}>
-                      Total price ($)
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell>{historyRow.date}</TableCell>
-
-                      <TableCell></TableCell>
-                      <TableCell>{historyRow.amount}</TableCell>
-                      <TableCell>
-                        {/* {Math.round(historyRow.amount * row.price * 100) / 100} */}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-      </>
-  );
+    <Accordion defaultActiveKey="0">
+       {rentalDetails.map((rental, i)=>(
+      
+      <Accordion.Item key={i} eventKey={i}> 
+       
+        <Accordion.Header><h5>{i=i+1}. Kiralamanız <span style={{fontWeight:"bold"}}>{rental.carId.modelId.brandId.name} - {rental.carId.modelId.name}</span></h5></Accordion.Header>
+        <Accordion.Body>
+          <h3>Details & Invoice</h3>
+          <hr />
+          <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Start Date / End Date</th>
+          <th>Customer Full Name</th>
+          <th>Extras</th>
+          <th>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{rental.startDate} / {rental.endDate}</td>
+          <td>{rental.userId.name} {rental.userId.surname}</td>
+          <td>{rental.extraId.extraName}</td>
+          <td style={{fontWeight:"bold"}}>{rental.totalPrice}₺</td>
+        </tr>
+        
+        
+      </tbody>
+    </Table>
+        </Accordion.Body>
+      </Accordion.Item>
+      ))}
+    </Accordion>
+  )
 }
 
-
-
-export default function CollapsibleTable() {
-  const rows = [
-    createData("Erdi"),
-    createData("Halil"),
-    createData("Melih"),
-    createData("Nida"),
-  ];
-  return (
-    <Card>
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell style={{ fontWeight: "bold" }}>My Rentals1</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </Card>
-  );
-}
+export default Rentals

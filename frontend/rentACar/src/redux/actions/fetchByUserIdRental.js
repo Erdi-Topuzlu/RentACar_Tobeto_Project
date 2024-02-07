@@ -8,3 +8,5 @@ const fetchByUserIdRental = createAsyncThunk("data/fetchByUserIdRental", async (
   });
 
 export default fetchByUserIdRental;
+
+
