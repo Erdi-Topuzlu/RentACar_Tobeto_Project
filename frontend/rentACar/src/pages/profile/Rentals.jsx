@@ -13,6 +13,8 @@ const Rentals = () => {
 const { rentalDetails, status, error } = useSelector(state => state.rentalDetail); 
 const { details} = useSelector((state) => state.userDetail);
 
+console.log(details)
+
 useEffect(() => {  
  dispatch(fetchByUserIdRental(details.id))
 }, [dispatch]);
@@ -27,7 +29,8 @@ if (status === "FAIL") {
 }
   return (
     <Accordion defaultActiveKey="0">
-       {rentalDetails.map((rental, i)=>(
+       {rentalDetails.length > 0 ? 
+       rentalDetails.map((rental, i)=>(
       
       <Accordion.Item key={i} eventKey={i}> 
        
@@ -47,7 +50,7 @@ if (status === "FAIL") {
       <tbody>
         <tr>
           <td>{rental.startDate} / {rental.endDate}</td>
-          <td>{rental.userId.name} {rental.userId.surname}</td>
+          <td>{details.name} {details.surname}</td>
           <td>{rental.extraId.extraName}</td>
           <td style={{fontWeight:"bold"}}>{rental.totalPrice}₺</td>
         </tr>
@@ -57,7 +60,7 @@ if (status === "FAIL") {
     </Table>
         </Accordion.Body>
       </Accordion.Item>
-      ))}
+      )): <h2 className='p-4 font-bold'>Geçmiş kiralama bilgisi bulunamadı!</h2>} 
     </Accordion>
   )
 }
