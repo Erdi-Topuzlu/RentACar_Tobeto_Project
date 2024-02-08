@@ -16,7 +16,7 @@ import fetchUserData from "../../redux/actions/fetchUserData";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
-  localStorage.setItem("lang",eventKey);
+  localStorage.setItem("lang", eventKey);
 };
 
 function Header() {
@@ -260,14 +260,14 @@ function Header() {
                         User Profile
                       </NavDropdown.Item>
                       {details.role === "ADMIN" ? (
-                      <NavDropdown.Item
-                        onClick={() => {
-                          navigate("/admin");
-                          setShowProfileDropdown(false);
-                        }}
-                      >
-                        Admin Panel
-                      </NavDropdown.Item>
+                        <NavDropdown.Item
+                          onClick={() => {
+                            navigate("/admin");
+                            setShowProfileDropdown(false);
+                          }}
+                        >
+                          Admin Panel
+                        </NavDropdown.Item>
                       ) : (
                         null
                       )}
@@ -290,7 +290,7 @@ function Header() {
                     ) : i18n.language === "tr" ? (
                       <img width={24} src={turkey} />
                     ) : // Handle other languages if needed
-                    null
+                      null
                   }
                   id="nav-dropdown"
                   onSelect={langSelect}
@@ -304,7 +304,7 @@ function Header() {
                       <img width={16} src={england} /> {t("en-US")}
                     </NavDropdown.Item>
                   ) : // Handle other languages if needed
-                  null}
+                    null}
                 </NavDropdown>
               </div>
             </Col>
@@ -418,44 +418,38 @@ function Header() {
                     <div>
                       {/* Login and Signup buttons for mobile */}
                       {showUi ? (
-                        <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex gap-2">
-                          <Link
-                            to="/login"
-                            className="d-flex-inline align-items-center gap-2"
-                          >
+                        <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex flex-column gap-2">
+                          <Link to="/login" className="d-flex-inline align-items-center gap-2">
                             <i className="ri-login-circle-line"></i>
                             {t("login")}
                           </Link>
 
-                          <Link
-                            to="/sign-up"
-                            className="d-flex-inline align-items-center gap-2"
-                          >
+                          <Link to="/sign-up" className="d-flex-inline align-items-center gap-2">
                             <i className="ri-user-line"></i> {t("signup")}
                           </Link>
                         </div>
-                      ): <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex gap-2">
-                      <Link
-                        to="/profile"
-                        className="d-flex-inline align-items-center gap-2"
-                       
-                      >
-                        <i className="ri-login-circle-line"></i>
-                        {t("User Profile")}
-                      </Link>
+                      ) : (
+                        <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex flex-column gap-2">
+                          <Link to="/profile" className="border text-center p-2 d-flex-inline align-items-center gap-2">
+                            <i className="ri-user-line"></i>
+                            {t("User Profile")}
+                          </Link>
 
-                      <Link
-                  
-                        className="d-flex-inline align-items-center gap-2"
-                        onClick={handleLogout}
+                          {/* Admin panel link only for ADMIN role */}
+                          {details.role === 'ADMIN' && (
+                            <Link to="/admin" className="border text-center p-2 d-flex-inline align-items-center gap-2">
+                              <i className="ri-user-line"></i>
+                              {t("Admin Profile")}
+                            </Link>
+                          )}
 
-                      >
-                        <i className="ri-user-line"></i> {t("Logout")}
-                      </Link>
-                    </div>
-                    
-                      }
-                     
+                          <Link className="border p-2 text-center d-flex-inline align-items-center gap-2"
+                          onClick={handleLogout}>
+                            <i className="ri-user-line"></i>
+                            {t("Logout")}
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
