@@ -1,33 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from "react"
-import Box from "@mui/joy/Box"
-import Avatar from "@mui/joy/Avatar"
-import Chip from "@mui/joy/Chip"
-import Link from "@mui/joy/Link"
-import Divider from "@mui/joy/Divider"
-import IconButton from "@mui/joy/IconButton"
-import Typography from "@mui/joy/Typography"
-import List from "@mui/joy/List"
-import ListItem from "@mui/joy/ListItem"
-import ListItemContent from "@mui/joy/ListItemContent"
-import ListItemDecorator from "@mui/joy/ListItemDecorator"
-import ListDivider from "@mui/joy/ListDivider"
-import Menu from "@mui/joy/Menu"
-import MenuButton from "@mui/joy/MenuButton"
-import MenuItem from "@mui/joy/MenuItem"
-import Dropdown from "@mui/joy/Dropdown"
+import * as React from "react";
+import Box from "@mui/joy/Box";
+import Avatar from "@mui/joy/Avatar";
+import Chip from "@mui/joy/Chip";
+import Link from "@mui/joy/Link";
+import Divider from "@mui/joy/Divider";
+import IconButton from "@mui/joy/IconButton";
+import Typography from "@mui/joy/Typography";
+import List from "@mui/joy/List";
+import ListItem from "@mui/joy/ListItem";
+import ListItemContent from "@mui/joy/ListItemContent";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
+import ListDivider from "@mui/joy/ListDivider";
+import Menu from "@mui/joy/Menu";
+import MenuButton from "@mui/joy/MenuButton";
+import MenuItem from "@mui/joy/MenuItem";
+import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded"
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded"
-import BlockIcon from "@mui/icons-material/Block"
-import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded"
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft"
-import { useDispatch, useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData"
-import { Table } from "@mui/joy"
+import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import BlockIcon from "@mui/icons-material/Block";
+import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import { Table } from "@mui/joy";
+import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -37,8 +38,6 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
-
-
 
 function getComparator(order, orderBy) {
   return order === "desc"
@@ -57,8 +56,15 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
+const handleDelete = async (id) => {
+  try {
+    await axiosInstance.delete(`api/v1/admin/brands/${id}`);
+  } catch (error) {
+    console.error("Kayıt hatası:", error);
+  }
+};
 
-function RowMenu() {
+function RowMenu({ id }) {
   return (
     <Dropdown>
       <MenuButton
@@ -70,14 +76,15 @@ function RowMenu() {
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
         <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
+        <MenuItem onClick={() => handleDelete(id)} color="danger">
+          Delete
+        </MenuItem>
       </Menu>
     </Dropdown>
-  )
+  );
 }
 
 export default function BrandList() {
-  
   const [order, setOrder] = React.useState("desc");
   const { items, status, error } = useSelector((state) => state.brandAllData);
 
@@ -89,51 +96,49 @@ export default function BrandList() {
   }, [dispatch]);
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
-    <Table
-          aria-labelledby="tableTitle"
-          stickyHeader
-          hoverRow
-          sx={{
-            "--TableCell-headBackground":
-              "var(--joy-palette-background-level1)",
-            "--Table-headerUnderlineThickness": "1px",
-            "--TableRow-hoverBackground":
-              "var(--joy-palette-background-level1)",
-            "--TableCell-paddingY": "4px",
-            "--TableCell-paddingX": "8px",
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: "40px", padding: "12px 6px" }}>
-                <Link
-                 underline="none"
-                 color="primary"
-                 component="button"
-                 onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
-                 fontWeight="lg"
-                 endDecorator={<ArrowDropDownIcon />}
-                 sx={{
-                   '& svg': {
-                     transition: '0.2s',
-                     transform:
-                       order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
-                   },
-                 }}
-                >
-                  ID
-                </Link>
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
+      <Table
+        aria-labelledby="tableTitle"
+        stickyHeader
+        hoverRow
+        sx={{
+          "--TableCell-headBackground": "var(--joy-palette-background-level1)",
+          "--Table-headerUnderlineThickness": "1px",
+          "--TableRow-hoverBackground": "var(--joy-palette-background-level1)",
+          "--TableCell-paddingY": "4px",
+          "--TableCell-paddingX": "8px",
+        }}
+      >
+        <thead>
+          <tr>
+            <th style={{ width: "40px", padding: "12px 6px" }}>
+              <Link
+                underline="none"
+                color="primary"
+                component="button"
+                onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                fontWeight="lg"
+                endDecorator={<ArrowDropDownIcon />}
+                sx={{
+                  "& svg": {
+                    transition: "0.2s",
+                    transform:
+                      order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
+                  },
                 }}
               >
-                Brand Name
-              </th>
-              {/* <th
+                ID
+              </Link>
+            </th>
+            <th
+              style={{
+                width: "auto",
+                padding: "12px 6px",
+                textAlign: "center",
+              }}
+            >
+              Brand Name
+            </th>
+            {/* <th
                 style={{
                   width: "auto",
                   padding: "12px 6px",
@@ -151,32 +156,32 @@ export default function BrandList() {
               >
                 Customer
               </th> */}
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "right",
-                }}
-              >
-                Actions
-              </th>
-            </tr>
-          </thead>
-          </Table>
-    
-          {stableSort(items, getComparator(order, "id")).map((item) => (
+            <th
+              style={{
+                width: "auto",
+                padding: "12px 6px",
+                textAlign: "right",
+              }}
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+      </Table>
+
+      {stableSort(items, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
           sx={{
-            "--ListItem-paddingX": 0
+            "--ListItem-paddingX": 0,
           }}
         >
           <ListItem
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "start"
+              alignItems: "start",
             }}
           >
             <ListItemContent
@@ -185,9 +190,11 @@ export default function BrandList() {
               <ListItemDecorator>
                 <Avatar size="sm">{item.id}</Avatar>
               </ListItemDecorator>
-              <div style={{
+              <div
+                style={{
                   padding: "6px 60px",
-                }}>
+                }}
+              >
                 <Typography fontWeight={600} gutterBottom>
                   {item.name}
                 </Typography>
@@ -200,14 +207,13 @@ export default function BrandList() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: 0.5,
-                    mb: 1
+                    mb: 1,
                   }}
                 >
                   {/* <Typography level="body-xs">{item.date}</Typography>
                   <Typography level="body-xs">&bull;</Typography>
                   <Typography level="body-xs">{item.id}</Typography> */}
                 </Box>
-                
               </div>
             </ListItemContent>
             {/* <Chip
@@ -230,17 +236,13 @@ export default function BrandList() {
             >
               {item.status}
             </Chip> */}
-            <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-                >
-                 
-                  <RowMenu />
-                </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <RowMenu id={item.id} />
+            </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
-      
     </Box>
-  )
+  );
 }
