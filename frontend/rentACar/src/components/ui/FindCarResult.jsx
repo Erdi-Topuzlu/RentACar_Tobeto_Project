@@ -55,9 +55,14 @@ const FindCarResult = () => {
 
   filteredItems = filteredItems.filter((item) => item.isAvailable === true);
 
-  if (selectedBrand && selectedModel) {
+  if (selectedBrand) {
     filteredItems = filteredItems.filter(
-      (item) => item.modelId.brandId.name === selectedBrand && item.modelId.name === selectedModel
+      (item) => item.modelId.brandId.name === selectedBrand 
+    );
+  }
+  if (selectedModel ) {
+    filteredItems = filteredItems.filter(
+      (item) => item.modelId.name === selectedModel
     );
   }
 
