@@ -56,33 +56,6 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-const handleDelete = async (id) => {
-  try {
-    await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-  } catch (error) {
-    console.error("Kayıt hatası:", error);
-  }
-};
-
-function RowMenu({ id }) {
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
-      >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <Divider />
-        <MenuItem onClick={() => handleDelete(id)} color="danger">
-          Delete
-        </MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
 
 export default function BrandList() {
   const [order, setOrder] = React.useState("desc");
@@ -94,6 +67,37 @@ export default function BrandList() {
   React.useEffect(() => {
     dispatch(fetchAllBrandData());
   }, [dispatch]);
+
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`api/v1/admin/brands/${id}`);
+      dispatch(fetchAllBrandData());
+    } catch (error) {
+      console.error("Kayıt hatası:", error);
+    }
+  };
+
+  function RowMenu({ id }) {
+    return (
+      <Dropdown>
+        <MenuButton
+          slots={{ root: IconButton }}
+          slotProps={{
+            root: { variant: "plain", color: "neutral", size: "sm" },
+          }}
+        >
+          <MoreHorizRoundedIcon />
+        </MenuButton>
+        <Menu size="sm" sx={{ minWidth: 140 }}>
+          <MenuItem>Edit</MenuItem>
+          <Divider />
+          <MenuItem onClick={() => handleDelete(id)} color="danger">
+            Delete
+          </MenuItem>
+        </Menu>
+      </Dropdown>
+    );
+  }
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
       <Table

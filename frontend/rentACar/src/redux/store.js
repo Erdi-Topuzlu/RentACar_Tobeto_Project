@@ -7,6 +7,7 @@ import { userPhotoUpdateSlice } from "./slices/userPhotoUpdateSlice";
 import allRentalsSlice from "./slices/allRentalsSlice";
 import rentalDetailSlice from "./slices/rentalDetailSlice";
 import brandDataSlice from "./slices/admin/brandDataSlice";
+import brandByIdDataSlice from "./slices/admin/brandByIdDataSlice";
 
 
 
@@ -20,5 +21,6 @@ export const store = configureStore({
         rentalDetail: rentalDetailSlice,
         allRentals: allRentalsSlice,
         brandAllData: brandDataSlice,
+        brandById: brandByIdDataSlice,
     }
 })

@@ -4,49 +4,29 @@ import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
-import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
-import Tabs from "@mui/joy/Tabs";
-import TabList from "@mui/joy/TabList";
-import Tab, { tabClasses } from "@mui/joy/Tab";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded";
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import FileUpload from "../../components/helper/profile/FileUpload";
-import CountrySelector from "../../components/helper/profile/CountrySelector";
-import EditorToolbar from "../../components/helper/profile/EditorToolbar";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import fetchUserData from "../../redux/actions/fetchUserData";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Container, Form } from "reactstrap";
 import { userProfileScheme } from "../../schemes/userProfileScheme";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
-import ErrorPage from "../../components/ui/ErrorPage";
-import fetchUserPhotoUpdateData from "../../redux/actions/fetchUserPhotoUpdateData";
 import { toastSuccess } from "../../service/ToastifyService";
-import Loading from "../../components/ui/Loading";
-import Helmet from "../../components/Helmet";
 import { useTranslation } from "react-i18next";
-import { TabPanel } from "@mui/joy";
-import Rentals from "./Rentals";
+import { Form } from "reactstrap";
 
 const Settings = () => {
     
   const { details, status, error } = useSelector((state) => state.userDetail);
     const { t } = useTranslation();
     const id = details.id;
+    const dispatch = useDispatch();
     
   const [selectedImage, setSelectedImage] = useState(null);
 

@@ -59,33 +59,10 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-const handleDelete = async (id) => {
-  try {
-    await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-  } catch (error) {
-    console.error("Kayıt hatası:", error);
-  }
-};
-
-function RowMenu({id}) {
-  return (
-    <Dropdown>
-      <MenuButton   
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
-      >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <Divider />
-        <MenuItem onClick={()=>handleDelete(id)} color="danger">Delete</MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
 
 export default function BrandTable() {
+  const [id, setId] = React.useState();
+  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { items, status, error } = useSelector((state) => state.brandAllData);
@@ -95,9 +72,41 @@ export default function BrandTable() {
 
   React.useEffect(() => {
     dispatch(fetchAllBrandData());
-  }, [dispatch]);
+  }, [dispatch, id, brandName]);
 
   const brandValidationSchema = getBrandValidationSchema();
+
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`api/v1/admin/brands/${id}`);
+      toastSuccess("Brand Başarıyla Silindi.");
+      dispatch(fetchAllBrandData());
+    } catch (error) {
+      console.error("Kayıt hatası:", error);
+    }
+  };
+
+  const handleUpdate = async (id) => {
+   
+    const data = {
+      id:id,
+      name: brandName,
+    };
+
+
+    try {
+      await axiosInstance.put(`api/v1/admin/brands/${id}`,
+      data);
+      toastSuccess("Brand Başarıyla Güncellendi.");
+      setOpen(false);
+      dispatch(fetchAllBrandData());
+    } catch (error) {
+      console.log(id)
+      console.error("Kayıt hatası:" ,error);
+    
+  };
+}
+
 
   const formik = useFormik({
     initialValues: {
@@ -114,6 +123,7 @@ export default function BrandTable() {
 
         toastSuccess("Brand Başarıyla Eklendi.");
         setOpen(false);
+        dispatch(fetchAllBrandData());
         formik.resetForm();
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
@@ -137,7 +147,14 @@ export default function BrandTable() {
         <Typography level="h2" component="h1">
           BRANDS
         </Typography>
-        <Button color="success" size="md" onClick={() => setOpen(true)}>
+        <Button
+          color="success"
+          size="md"
+          onClick={() => {
+            setBrandName("");
+            setOpen(true);
+          }}
+        >
           Add New
         </Button>
       </Box>
@@ -303,7 +320,41 @@ export default function BrandTable() {
                   </div>
                 </td> */}
                 <td style={{ textAlign: "center" }}>
-                  <RowMenu id={row.id}/>
+                  <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{
+                        root: {
+                          variant: "plain",
+                          color: "neutral",
+                          size: "sm",
+                        },
+                      }}
+                    >
+                      <MoreHorizRoundedIcon />
+                    </MenuButton>
+                    <Menu size="sm" sx={{ minWidth: 140 }}>
+                      <MenuItem
+                        onClick={() => {
+                          setId(row.id);
+                          setBrandName(row.name);
+                          setOpen(true);
+                        }}
+                      >
+                        Edit
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem
+                        onClick={() => {
+                          setId(row.id);
+                          handleDelete(row.id);
+                        }}
+                        color="danger"
+                      >
+                        Delete
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
                 </td>
               </tr>
             ))}
@@ -314,7 +365,11 @@ export default function BrandTable() {
           aria-labelledby="modal-title"
           aria-describedby="modal-desc"
           open={open}
-          onClose={() => setOpen(false)}
+          onClose={() => {
+            formik.resetForm();
+            setId(null);
+            setOpen(false);
+          }}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -359,13 +414,17 @@ export default function BrandTable() {
                         id="brandName"
                         name="brandName"
                         type="text"
-                        value={formik.values.brandName}
+                        value={formik.values.brandName || brandName}
                         className={
                           formik.errors.brandName &&
                           formik.touched.brandName &&
                           "error"
                         }
-                        onChange={formik.handleChange}
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setBrandName(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
                         onBlur={formik.handleBlur}
                         placeholder={
                           formik.errors.brandName && formik.touched.brandName
@@ -378,14 +437,19 @@ export default function BrandTable() {
                       />
                     </FormGroup>
                   </div>
-
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    {t("add")}
-                  </Button>
+                  {id ? (
+                    <Button onClick={()=>{
+                      handleUpdate(id);
+                    }} className=" form__btn">{t("update")}</Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                    >
+                      {t("add")}
+                    </Button>
+                  )}
                 </Form>
               </Grid>
             </Grid>

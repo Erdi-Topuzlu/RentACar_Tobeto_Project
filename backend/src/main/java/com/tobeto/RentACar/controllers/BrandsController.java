@@ -41,7 +41,7 @@ public class BrandsController {
         brandService.add(request);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void update(@RequestBody @Valid UpdateBrandRequest request) {
         brandService.update(request);
     }
