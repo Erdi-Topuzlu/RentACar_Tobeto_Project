@@ -1,82 +1,36 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
-import Avatar from "@mui/joy/Avatar";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
-import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
 import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
 import ModalClose from "@mui/joy/ModalClose";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import Table from "@mui/joy/Table";
 import Sheet from "@mui/joy/Sheet";
-import Checkbox from "@mui/joy/Checkbox";
-import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
+import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import BlockIcon from "@mui/icons-material/Block";
-import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import BrandList from "./BrandList";
-import { ReactSVG } from "react-svg";
+import { Grid } from "@mui/joy";
+import { Form, FormGroup } from "reactstrap";
+import { useTranslation } from "react-i18next";
+import { useFormik } from "formik";
 
-const rows = [
-  {
-    id: "INV-1234",
-    date: "Feb 3, 2023",
-    status: "Refunded",
-    customer: {
-      initial: "O",
-      name: "Olivia Ryhe",
-      email: "olivia@email.com",
-    },
-  },
-  {
-    id: "INV-1233",
-    date: "Feb 3, 2023",
-    status: "Paid",
-    customer: {
-      initial: "S",
-      name: "Steve Hampton",
-      email: "steve.hamp@email.com",
-    },
-  },
-
-  {
-    id: "INV-1217",
-    date: "Feb 3, 2023",
-    status: "Paid",
-    customer: {
-      initial: "S",
-      name: "Sachin Flynn",
-      email: "s.flyn@email.com",
-    },
-  },
-  {
-    id: "INV-1216",
-    date: "Feb 3, 2023",
-    status: "Cancelled",
-    customer: {
-      initial: "B",
-      name: "Bradley Rosales",
-      email: "brad123@email.com",
-    },
-  },
-];
+import getBrandValidationSchema from "../../../../schemes/brandScheme";
+import { toastSuccess } from "../../../../service/ToastifyService";
+import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import { useDispatch, useSelector } from "react-redux";
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -94,10 +48,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -109,11 +59,18 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
+const handleDelete = async (id) => {
+  try {
+    await axiosInstance.delete(`api/v1/brands/${id}`);
+  } catch (error) {
+    console.error("Kayıt hatası:", error);
+  }
+};
 
-function RowMenu() {
+function RowMenu({id}) {
   return (
     <Dropdown>
-      <MenuButton
+      <MenuButton   
         slots={{ root: IconButton }}
         slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
       >
@@ -122,7 +79,7 @@ function RowMenu() {
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
         <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
+        <MenuItem onClick={(id)=>handleDelete(id)} color="danger">Delete</MenuItem>
       </Menu>
     </Dropdown>
   );
@@ -130,9 +87,40 @@ function RowMenu() {
 
 export default function BrandTable() {
   const [order, setOrder] = React.useState("desc");
-  const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
- 
+  const { items, status, error } = useSelector((state) => state.brandAllData);
+
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  React.useEffect(() => {
+    dispatch(fetchAllBrandData());
+  }, [dispatch]);
+
+  const brandValidationSchema = getBrandValidationSchema();
+
+  const formik = useFormik({
+    initialValues: {
+      brandName: "",
+    },
+    validationSchema: brandValidationSchema,
+    onSubmit: async (values, actions) => {
+      const data = {
+        name: values.brandName,
+      };
+      console.log(data);
+      try {
+        await axiosInstance.post("api/v1/brands", data);
+
+        toastSuccess("Brand Başarıyla Eklendi.");
+        setOpen(false);
+        formik.resetForm();
+      } catch (error) {
+        console.error("Kayıt hatası:", error.response.data);
+      }
+    },
+  });
+
   return (
     <React.Fragment>
       <Box
@@ -147,15 +135,11 @@ export default function BrandTable() {
         }}
       >
         <Typography level="h2" component="h1">
-        BRANDS 
+          BRANDS
         </Typography>
-        <Button
-              color="success"
-              size="md"
-            >
-              Add New
-            </Button>
-        
+        <Button color="success" size="md" onClick={() => setOpen(true)}>
+          Add New
+        </Button>
       </Box>
       <Sheet
         className="SearchAndFilters-mobile"
@@ -171,28 +155,6 @@ export default function BrandTable() {
           startDecorator={<SearchIcon />}
           sx={{ flexGrow: 1 }}
         />
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          onClick={() => setOpen(true)}
-        >
-          <FilterAltIcon />
-        </IconButton>
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <ModalDialog aria-labelledby="filter-modal" layout="fullscreen">
-            <ModalClose />
-            <Typography id="filter-modal" level="h2">
-              Filters
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Sheet sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Button color="primary" onClick={() => setOpen(false)}>
-                Submit
-              </Button>
-            </Sheet>
-          </ModalDialog>
-        </Modal>
       </Sheet>
       <Box
         className="SearchAndFilters-tabletUp"
@@ -244,8 +206,7 @@ export default function BrandTable() {
         >
           <thead>
             <tr>
-              
-            <th style={{ width: "auto", padding: "12px 6px" }}>
+              <th style={{ width: "40px", padding: "12px 12px" }}>
                 <Link
                   underline="none"
                   color="primary"
@@ -264,23 +225,54 @@ export default function BrandTable() {
                   ID
                 </Link>
               </th>
-              <th style={{ width: "auto", padding: "12px 6px", textAlign: "center" }}>Brand Name</th>
-              <th style={{ width: "auto", padding: "12px 6px", textAlign: "center" }}>Status</th>
-              <th style={{ width: "auto", padding: "12px 6px", textAlign: "center" }}>Customer</th>
-              <th style={{ width: "auto", padding: "12px 6px", textAlign: "center" }}>Actions</th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Brand Name
+              </th>
+              {/* <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Status
+              </th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Customer
+              </th> */}
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, "id")).map((row) => (
+            {stableSort(items, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
-                
-                <td>
+                <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.date}</Typography>
+                  <Typography level="body-xs">{row.name}</Typography>
                 </td>
-                <td style={{ textAlign: "center" }}>
+                {/* <td style={{ textAlign: "center" }}>
                   <Chip
                     variant="soft"
                     size="sm"
@@ -289,40 +281,116 @@ export default function BrandTable() {
                         Paid: <CheckRoundedIcon />,
                         Refunded: <AutorenewRoundedIcon />,
                         Cancelled: <BlockIcon />,
-                      }[row.status]
+                      }[row.id]
                     }
                     color={
                       {
                         Paid: "success",
                         Refunded: "neutral",
                         Cancelled: "danger",
-                      }[row.status]
+                      }[row.id]
                     }
                   >
-                    {row.status}
+                    {row.id}
                   </Chip>
-                </td>
+                </td> */}
+                {/* <td style={{ textAlign: "center" }}>
+                  <div>
+                    <Typography level="body-xs">{}</Typography>
+                    <Typography level="body-xs">
+                      {}
+                    </Typography>
+                  </div>
+                </td> */}
                 <td style={{ textAlign: "center" }}>
-                  
-                    
-                    <div>
-                      <Typography level="body-xs">
-                        {row.customer.name}
-                      </Typography>
-                      <Typography level="body-xs">
-                        {row.customer.email}
-                      </Typography>
-                    </div>
-                 
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  
-                    <RowMenu />
+                  <RowMenu id={row.id}/>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Modal
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => setOpen(false)}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
+          }}
+        >
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
+          >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              Add New Brand
+            </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                  <div>
+                    <FormLabel>Brand Name</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="brandName"
+                        name="brandName"
+                        type="text"
+                        value={formik.values.brandName}
+                        className={
+                          formik.errors.brandName &&
+                          formik.touched.brandName &&
+                          "error"
+                        }
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.brandName && formik.touched.brandName
+                            ? formik.errors.brandName
+                            : t("brandName")
+                        }
+                        error={
+                          formik.errors.brandName && formik.touched.brandName
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+
+                  <Button
+                    className=" form__btn"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
+                    {t("add")}
+                  </Button>
+                </Form>
+              </Grid>
+            </Grid>
+          </Sheet>
+        </Modal>
       </Sheet>
       <BrandList />
     </React.Fragment>

@@ -35,7 +35,7 @@ import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 import BusinessIcon from "@mui/icons-material/Business";
 import BurstModeIcon from "@mui/icons-material/BurstMode";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import ColorSchemeToggle from "./ColorShemeToggle";
 import { closeSidebar } from "../utils";
@@ -64,6 +64,10 @@ function Toggler({ defaultExpanded = false, renderToggle, children }) {
 }
 
 export default function Sidebar() {
+  const isSelected = (targetPath) => {
+    const location = useLocation();
+    return location.pathname === targetPath;
+  };
   return (
     <Sheet
       className="Sidebar"
@@ -145,7 +149,7 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton selected>
+            <ListItemButton>
             <ReactSVG src="/src/assets/icons/dashboard-mini.svg" />
               <Link component={RouterLink} to="dashboard" underline="none">
                 <ListItemContent>

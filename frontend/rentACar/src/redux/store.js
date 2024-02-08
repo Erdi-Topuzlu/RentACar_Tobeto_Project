@@ -6,6 +6,7 @@ import userDataUpdateSlice from "./slices/userDataUpdateSlice";
 import { userPhotoUpdateSlice } from "./slices/userPhotoUpdateSlice";
 import allRentalsSlice from "./slices/allRentalsSlice";
 import rentalDetailSlice from "./slices/rentalDetailSlice";
+import brandDataSlice from "./slices/admin/brandDataSlice";
 
 
 
@@ -17,6 +18,7 @@ export const store = configureStore({
         userUpdate: userDataUpdateSlice,
         userPhoto: userPhotoUpdateSlice,
         rentalDetail: rentalDetailSlice,
-        allRentals: allRentalsSlice
+        allRentals: allRentalsSlice,
+        brandAllData: brandDataSlice,
     }
 })

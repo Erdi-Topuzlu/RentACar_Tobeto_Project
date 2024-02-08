@@ -44,10 +44,16 @@ const signUp = () => {
     onSubmit: async (values, actions) => {
       // alert(JSON.stringify(values, null, 2));
       // actions.resetForm();
+      const data = {
+        email: values.email,
+        name : values.name,
+        surname: values.surname,
+        password:values.password,
+      }
       try {
         const response = await axiosInstance.post(
           "api/v1/auth/register",
-          values
+          data
         );
 
         console.log(response.data);

@@ -190,6 +190,9 @@
   "schemeEndDate":"End date is required",
   "schemeInvalidEndDate":"End date must be after start date",
 
+  "schemeBrandName":"Brand Name is required",
+  "brandName":"Brand Name",
+
   "_packages":"Packages-EN",
   "miniPackage":"Super Mini Coverage",
   "miniDesc":"Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
@@ -227,7 +230,9 @@
   "changePasswordDesc":"",
   "oldPassword":"Old Password",
   "newPassword":"New Password",
-  "newConfirmPassword":"New Confirm Password"
+  "newConfirmPassword":"New Confirm Password",
+
+  "add":"Add"
   
 
 }
