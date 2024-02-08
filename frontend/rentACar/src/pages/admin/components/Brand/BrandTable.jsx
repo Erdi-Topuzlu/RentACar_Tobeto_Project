@@ -61,7 +61,7 @@ function stableSort(array, comparator) {
 }
 const handleDelete = async (id) => {
   try {
-    await axiosInstance.delete(`api/v1/brands/${id}`);
+    await axiosInstance.delete(`api/v1/admin/brands/${id}`);
   } catch (error) {
     console.error("Kayıt hatası:", error);
   }
@@ -79,7 +79,7 @@ function RowMenu({id}) {
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
         <Divider />
-        <MenuItem onClick={(id)=>handleDelete(id)} color="danger">Delete</MenuItem>
+        <MenuItem onClick={()=>handleDelete(id)} color="danger">Delete</MenuItem>
       </Menu>
     </Dropdown>
   );
@@ -110,7 +110,7 @@ export default function BrandTable() {
       };
       console.log(data);
       try {
-        await axiosInstance.post("api/v1/brands", data);
+        await axiosInstance.post("api/v1/admin/brands", data);
 
         toastSuccess("Brand Başarıyla Eklendi.");
         setOpen(false);

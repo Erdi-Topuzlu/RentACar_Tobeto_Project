@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/brands")
+@RequestMapping("api/v1/admin/brands")
 @RequiredArgsConstructor
 @Tag(name = "Brand Controller", description = "Brands Endpoints")
 public class BrandsController {
