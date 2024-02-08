@@ -141,6 +141,8 @@ function Header() {
     }
   };
 
+  console.log("show",showUi);
+
   const fetchLocationDetails = async (latitude, longitude) => {
     try {
       const response = await fetch(
@@ -416,7 +418,7 @@ function Header() {
 
                     <div>
                       {/* Login and Signup buttons for mobile */}
-                      {showUi && (
+                      {showUi ? (
                         <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex gap-2">
                           <Link
                             to="/login"
@@ -433,7 +435,15 @@ function Header() {
                             <i className="ri-user-line"></i> {t("signup")}
                           </Link>
                         </div>
-                      )}
+                      ): <Link
+                      to="/login"
+                      className="d-flex align-items-center gap-1"
+                      onClick={handleLogout}
+                    >
+                      <i className="ri-login-circle-line"></i>
+                      {t("Logout")}
+                    </Link>
+                      }
                     </div>
                   </div>
                 </div>
