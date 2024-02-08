@@ -9,6 +9,9 @@ import Loading from "../../components/ui/Loading";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-bootstrap";
 import ErrorPage from "../../components/ui/ErrorPage";
+import { Paper } from "@mui/material";
+import { Link } from "react-router-dom";
+
 
 const FindCarResult = () => {
   const dispatch = useDispatch();
@@ -47,7 +50,7 @@ const FindCarResult = () => {
 
   if (status === "LOADING") {
     return <Loading />;
-  }else if (status === "FAIL"){
+  } else if (status === "FAIL") {
     return <ErrorPage errorMessage={error} />
   }
 
@@ -57,10 +60,10 @@ const FindCarResult = () => {
 
   if (selectedBrand) {
     filteredItems = filteredItems.filter(
-      (item) => item.modelId.brandId.name === selectedBrand 
+      (item) => item.modelId.brandId.name === selectedBrand
     );
   }
-  if (selectedModel ) {
+  if (selectedModel) {
     filteredItems = filteredItems.filter(
       (item) => item.modelId.name === selectedModel
     );
@@ -102,7 +105,6 @@ const FindCarResult = () => {
     filteredItems.sort((a, b) => b.dailyPrice - a.dailyPrice);
   }
 
-  console.log(filteredItems);
   return (
     <Helmet title={t("cars")}>
       <CommonSection title={t("cars")} />
@@ -111,90 +113,110 @@ const FindCarResult = () => {
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center">
-              <Container>
-              <h4 className="section__title">{t('filter')}</h4>
-                <hr />
-                <Row className="mt-4">
-                  <Col lg="4" md="4" sm="6" className="mb-3">
-                  <div className="d-flex align-items-center gap-3">
-                      <span className="d-flex align-items-center gap-2">
-                      <i className="ri-settings-2-line"></i> {t("gearType")}
-                      </span>
-                      <Form.Select
-                      value={gearType}
-                      onChange={handleGearTypeChange}
-                    >
-                      <option value="all">{t("all")}</option>
-                      <option value="MANUAL">{t("manual")}</option>
-                      <option value="AUTOMATIC">{t("automatic")}</option>
-                    </Form.Select>
-                    </div>
-                    
-                  </Col>
-                  <Col lg="4" md="4" sm="6" className="mb-3">
-                  <div className="d-flex align-items-center gap-3">
-                      <span className="d-flex align-items-center gap-2">
-                      <i className="ri-gas-station-fill"></i> {t("fuelType")}
-                      </span>
-                      <Form.Select
-                      value={fuelType}
-                      onChange={handleFuelTypeChange}
-                    >
-                      <option value="all">{t("all")}</option>
-                      <option value="GASOLINE">{t("gasoline")}</option>
-                      <option value="DIESEL">{t("diesel")}</option>
-                      <option value="HYBRID">{t("hybrid")}</option>
-                      <option value="ELECTRIC">{t("electric")}</option>
-                    </Form.Select>
-                    </div>
-                    
-                  </Col>
-                  <Col lg="4" md="4" sm="6" className="mb-3">
-                    <div className="d-flex align-items-center gap-3">
-                      <span className="d-flex align-items-center gap-2">
-                      <i className="ri-caravan-line"></i> {t("vehicleType")}
-                      </span>
-                      <Form.Select
-                      value={vehicleType}
-                      onChange={handleVehicleTypeChange}
-                    >
-                      <option value="all">{t("all")}</option>
-                      <option value="SUV">{t("suv")}</option>
-                      <option value="SEDAN">{t("sedan")}</option>
-                      <option value="HB">{t("hatchback")}</option>
-                    </Form.Select>
-                    </div>
-
-                    
-                  </Col>
-                </Row>
-                <Col lg="9"></Col>
-                <div className="d-flex justify-content-end mt-4">
-                  <Col lg="3">
-                    <Col lg="12">
+              {filteredItems.length > 0 && (
+                <Container>
+                  <h4 className="section__title">{t('filter')}</h4>
+                  <hr />
+                  <Row className="mt-4">
+                    <Col lg="4" md="4" sm="6" className="mb-3">
                       <div className="d-flex align-items-center gap-3">
                         <span className="d-flex align-items-center gap-2">
-                          <i className="ri-sort-asc"></i> {t("sort")}
+                          <i className="ri-settings-2-line"></i> {t("gearType")}
                         </span>
-                        <select
-                          className="form-control"
-                          value={sortType}
-                          onChange={handleSortChange}
+                        <Form.Select
+                          value={gearType}
+                          onChange={handleGearTypeChange}
                         >
-                          <option value="">{t("select")}</option>
-                          <option value="low">{t("ltoh")}</option>
-                          <option value="high">{t("htol")}</option>
-                        </select>
+                          <option value="all">{t("all")}</option>
+                          <option value="MANUAL">{t("manual")}</option>
+                          <option value="AUTOMATIC">{t("automatic")}</option>
+                        </Form.Select>
                       </div>
+
                     </Col>
-                  </Col>
-                </div>
-              </Container>
+                    <Col lg="4" md="4" sm="6" className="mb-3">
+                      <div className="d-flex align-items-center gap-3">
+                        <span className="d-flex align-items-center gap-2">
+                          <i className="ri-gas-station-fill"></i> {t("fuelType")}
+                        </span>
+                        <Form.Select
+                          value={fuelType}
+                          onChange={handleFuelTypeChange}
+                        >
+                          <option value="all">{t("all")}</option>
+                          <option value="GASOLINE">{t("gasoline")}</option>
+                          <option value="DIESEL">{t("diesel")}</option>
+                          <option value="HYBRID">{t("hybrid")}</option>
+                          <option value="ELECTRIC">{t("electric")}</option>
+                        </Form.Select>
+                      </div>
+
+                    </Col>
+                    <Col lg="4" md="4" sm="6" className="mb-3">
+                      <div className="d-flex align-items-center gap-3">
+                        <span className="d-flex align-items-center gap-2">
+                          <i className="ri-caravan-line"></i> {t("vehicleType")}
+                        </span>
+                        <Form.Select
+                          value={vehicleType}
+                          onChange={handleVehicleTypeChange}
+                        >
+                          <option value="all">{t("all")}</option>
+                          <option value="SUV">{t("suv")}</option>
+                          <option value="SEDAN">{t("sedan")}</option>
+                          <option value="HB">{t("hatchback")}</option>
+                        </Form.Select>
+                      </div>
+
+
+                    </Col>
+                  </Row>
+                  <Col lg="9"></Col>
+                  <div className="d-flex justify-content-end mt-4">
+                    <Col lg="3">
+                      <Col lg="12">
+                        <div className="d-flex align-items-center gap-3">
+                          <span className="d-flex align-items-center gap-2">
+                            <i className="ri-sort-asc"></i> {t("sort")}
+                          </span>
+                          <select
+                            className="form-control"
+                            value={sortType}
+                            onChange={handleSortChange}
+                          >
+                            <option value="">{t("select")}</option>
+                            <option value="low">{t("ltoh")}</option>
+                            <option value="high">{t("htol")}</option>
+                          </select>
+                        </div>
+                      </Col>
+                    </Col>
+                  </div>
+                </Container>
+              )}
             </Col>
 
-            {filteredItems.map((item) => (
-              <CarItem item={item} key={item.id} />
-            ))}
+
+            {filteredItems.length === 0 ? (
+              <Paper>
+                <Col lg="12" className="text-center p-4">
+                  <h4>{t("Üzgünüz, şu anda bu marka/model'e ait uygun bir kiralama opsiyonu yoktur ")}</h4>
+                  <Link to={"/home"}>
+                    <button
+                      style={{ color: "white" }}
+                      className=" w-50 car__item-btn car__btn-details link mt-4"
+                    >
+                      {t("Aramaya geri dön")}
+                    </button>
+                  </Link>
+                </Col>
+              </Paper>
+
+            ) : (
+              filteredItems.map((item) => (
+                <CarItem item={item} key={item.id} />
+              ))
+            )}
           </Row>
         </Container>
       </section>

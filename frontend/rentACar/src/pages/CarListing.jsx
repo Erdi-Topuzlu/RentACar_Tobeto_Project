@@ -9,6 +9,8 @@ import Loading from "../components/ui/Loading";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-bootstrap";
 import ErrorPage from "../components/ui/ErrorPage";
+import { Paper } from "@mui/material";
+
 
 const CarListing = () => {
   const dispatch = useDispatch();
@@ -83,7 +85,6 @@ const CarListing = () => {
     filteredItems.sort((a, b) => b.dailyPrice - a.dailyPrice);
   }
 
-  console.log(filteredItems);
   return (
     <Helmet title={t("cars")}>
       <CommonSection title={t("cars")} />
@@ -171,11 +172,21 @@ const CarListing = () => {
                   </Col>
                 </div>
               </Container>
+
             </Col>
 
-            {filteredItems.map((item) => (
-              <CarItem item={item} key={item.id} />
-            ))}
+            {filteredItems.length === 0 ? (
+              <Paper>
+                <Col lg="12" className="text-center p-4">
+                  <h4>{t("Üzgünüz, bu kriterlere uygun bir kiralama opsiyonu bulunmamaktadır")}</h4>
+                </Col>
+              </Paper>
+
+            ) : (
+              filteredItems.map((item) => (
+                <CarItem item={item} key={item.id} />
+              ))
+            )}
           </Row>
         </Container>
       </section>
