@@ -192,6 +192,9 @@
   "schemeEndDate":"Bitiş tarihi gereklidir",
   "schemeInvalidEndDate":"Bitiş tarihi başlangıç tarihinden sonra olmalıdır",
 
+  "schemeBrandName":"Marka ismi gereklidir",
+  "brandName":"Marka İsmi",
+
   "_packages":"Packages-TR",
   "miniPackage":"Süper Mini Kapsamlı",
   "miniDesc":"Tekerlek, Ön Cam, Far ve Arka Lamba ve Yan Ayna Kapsamı",
@@ -228,6 +231,8 @@
   "changePasswordDesc":"",
   "oldPassword":"Eski Şifre",
   "newPassword":"Yeni Şifre",
-  "newConfirmPassword":"Yeni Şifre Onayı"
+  "newConfirmPassword":"Yeni Şifre Onayı",
+
+  "add":"Ekle"
 
 }

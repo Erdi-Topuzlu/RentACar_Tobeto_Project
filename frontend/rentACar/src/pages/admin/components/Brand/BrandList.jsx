@@ -16,6 +16,7 @@ import Menu from "@mui/joy/Menu"
 import MenuButton from "@mui/joy/MenuButton"
 import MenuItem from "@mui/joy/MenuItem"
 import Dropdown from "@mui/joy/Dropdown"
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded"
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded"
@@ -23,29 +24,39 @@ import BlockIcon from "@mui/icons-material/Block"
 import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded"
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft"
-
-const listItems = [
-  {
-    id: "INV-1230",
-    date: "Feb 3, 2023",
-    status: "Cancelled",
-    customer: {
-      initial: "C",
-      name: "Charles Fulton",
-      email: "fulton@email.com"
-    }
-  },
-  {
-    id: "INV-1229",
-    date: "Feb 3, 2023",
-    status: "Cancelled",
-    customer: {
-      initial: "J",
-      name: "Jay Hooper",
-      email: "hooper@email.com"
-    }
+import { useDispatch, useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData"
+import { Table } from "@mui/joy"
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
   }
-]
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+
+
+function getComparator(order, orderBy) {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
 
 function RowMenu() {
   return (
@@ -58,8 +69,6 @@ function RowMenu() {
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
         <Divider />
         <MenuItem color="danger">Delete</MenuItem>
       </Menu>
@@ -68,11 +77,96 @@ function RowMenu() {
 }
 
 export default function BrandList() {
+  
+  const [order, setOrder] = React.useState("desc");
+  const { items, status, error } = useSelector((state) => state.brandAllData);
+
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  React.useEffect(() => {
+    dispatch(fetchAllBrandData());
+  }, [dispatch]);
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
-      {listItems.map(listItem => (
+    <Table
+          aria-labelledby="tableTitle"
+          stickyHeader
+          hoverRow
+          sx={{
+            "--TableCell-headBackground":
+              "var(--joy-palette-background-level1)",
+            "--Table-headerUnderlineThickness": "1px",
+            "--TableRow-hoverBackground":
+              "var(--joy-palette-background-level1)",
+            "--TableCell-paddingY": "4px",
+            "--TableCell-paddingX": "8px",
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={{ width: "40px", padding: "12px 6px" }}>
+                <Link
+                 underline="none"
+                 color="primary"
+                 component="button"
+                 onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
+                 fontWeight="lg"
+                 endDecorator={<ArrowDropDownIcon />}
+                 sx={{
+                   '& svg': {
+                     transition: '0.2s',
+                     transform:
+                       order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
+                   },
+                 }}
+                >
+                  ID
+                </Link>
+              </th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Brand Name
+              </th>
+              {/* <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Status
+              </th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                Customer
+              </th> */}
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "right",
+                }}
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          </Table>
+    
+          {stableSort(items, getComparator(order, "id")).map((item) => (
         <List
-          key={listItem.id}
+          key={item.id}
           size="sm"
           sx={{
             "--ListItem-paddingX": 0
@@ -89,15 +183,17 @@ export default function BrandList() {
               sx={{ display: "flex", gap: 2, alignItems: "start" }}
             >
               <ListItemDecorator>
-                <Avatar size="sm">{listItem.customer.initial}</Avatar>
+                <Avatar size="sm">{item.id}</Avatar>
               </ListItemDecorator>
-              <div>
+              <div style={{
+                  padding: "6px 60px",
+                }}>
                 <Typography fontWeight={600} gutterBottom>
-                  {listItem.customer.name}
+                  {item.name}
                 </Typography>
-                <Typography level="body-xs" gutterBottom>
-                  {listItem.customer.email}
-                </Typography>
+                {/* <Typography level="body-xs" gutterBottom>
+                  {item.customer.email}
+                </Typography> */}
                 <Box
                   sx={{
                     display: "flex",
@@ -107,21 +203,14 @@ export default function BrandList() {
                     mb: 1
                   }}
                 >
-                  <Typography level="body-xs">{listItem.date}</Typography>
+                  {/* <Typography level="body-xs">{item.date}</Typography>
                   <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{listItem.id}</Typography>
+                  <Typography level="body-xs">{item.id}</Typography> */}
                 </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-                >
-                  <Link level="body-sm" component="button">
-                    Download
-                  </Link>
-                  <RowMenu />
-                </Box>
+                
               </div>
             </ListItemContent>
-            <Chip
+            {/* <Chip
               variant="soft"
               size="sm"
               startDecorator={
@@ -129,50 +218,29 @@ export default function BrandList() {
                   Paid: <CheckRoundedIcon />,
                   Refunded: <AutorenewRoundedIcon />,
                   Cancelled: <BlockIcon />
-                }[listItem.status]
+                }[item.status]
               }
               color={
                 {
                   Paid: "success",
                   Refunded: "neutral",
                   Cancelled: "danger"
-                }[listItem.status]
+                }[item.status]
               }
             >
-              {listItem.status}
-            </Chip>
+              {item.status}
+            </Chip> */}
+            <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
+                 
+                  <RowMenu />
+                </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
-      <Box
-        className="Pagination-mobile"
-        sx={{
-          display: { xs: "flex", md: "none" },
-          alignItems: "center",
-          py: 2
-        }}
-      >
-        <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <KeyboardArrowLeftIcon />
-        </IconButton>
-        <Typography level="body-sm" mx="auto">
-          Page 1 of 10
-        </Typography>
-        <IconButton
-          aria-label="next page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <KeyboardArrowRightIcon />
-        </IconButton>
-      </Box>
+      
     </Box>
   )
 }
