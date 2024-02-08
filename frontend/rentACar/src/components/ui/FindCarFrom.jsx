@@ -3,59 +3,83 @@ import "../../styles/find-car-form.css";
 import "../../styles/find-car-form.css";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastWarning } from "../../service/ToastifyService";
 
 const FindCarForm = () => {
+  const { items, status, error } = useSelector((state) => state.carAllData);
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
   const { t } = useTranslation();
-  const [dateInputType, setDateInputType] = useState("text");
+  const navigate = useNavigate()
 
-  const activateDateInput = () => {
-    setDateInputType("date");
+  const handleBrandChange = (event) => {
+    setSelectedBrand(event.target.value);
+    setSelectedModel(""); 
   };
 
-  const deactivateDateInput = () => {
-    setDateInputType("text");
+  const handleModelChange = (event) => {
+    setSelectedModel(event.target.value);
   };
+
+  const handleFindCar = () => {
+    if (!selectedBrand && !selectedModel) {
+     toastWarning("Lütfen bir marka ve model seçiniz.");
+      // Her iki input da seçilmişse yönlendirme yapılacak burada
+    } else {
+      localStorage.setItem("selectedBrand", selectedBrand);
+      localStorage.setItem("selectedModel", selectedModel);
+      navigate("/findCarResult");
+
+    }
+  }
+
+
   return (
-    <Form className="form">
+    
+    <Form className="form ">
       <div className=" d-flex align-items-center justify-content-between flex-wrap">
-        <FormGroup className="form__group">
-          <input type="text" placeholder="From address" required />
-        </FormGroup>
-
-        <FormGroup className="form__group">
-          <input type="text" placeholder="To address" required />
-        </FormGroup>
-
-        <FormGroup className="form__group">
-          {/* <input type="date" placeholder="Journey date" required /> */}
-          <input
-            className="form-control"
-            type={dateInputType}
-            placeholder="Nursel was here"
-            id="date"
-            onFocus={activateDateInput}
-            onBlur={deactivateDateInput}
-            pattern="\d{2}\d{2}\d{4}"
-          />
-        </FormGroup>
-
-        <FormGroup className="form__group">
-          <input
-            className="journey__time"
-            type="time"
-            placeholder="Journey time"
-            required
-          />
-        </FormGroup>
+        {/* Brand */}
         <FormGroup className="select__group">
-          <select>
-            <option value="ac">AC Car</option>
-            <option value="non-ac">Non AC Car</option>
+          <select className="mt-4"
+            value={selectedBrand}
+            onChange={handleBrandChange}
+          >
+            <option value="">{t("Brand")}</option>
+            {items.map((car, i) => (
+              <option key={i} value={car.modelId?.brandId?.name}>
+                {car.modelId?.brandId?.name}
+              </option>
+            ))}
           </select>
         </FormGroup>
 
-        <FormGroup className="form__group">
-          <button className="btn find__car-btn">{t("findBtn")}</button>
+        {/* Model */}
+        <FormGroup className="select__group">
+          <select
+           className="mt-4"
+            value={selectedModel}
+            onChange={handleModelChange}
+            disabled={!selectedBrand}
+          >
+            <option value="">{t("Model")}</option>
+            {/* Markaya göre filtreleme*/}
+            {items
+              .filter(car => car.modelId.brandId.name === selectedBrand)
+              .map((car, index) => (
+                <option key={index} value={car.modelId.name}>
+                  {car.modelId.name}
+                </option>
+              ))}
+          </select>
+        </FormGroup>
+
+        <FormGroup className="form__group  mt-4">
+          <button className="btn find__car-btn" onClick={handleFindCar}>
+            {t("findBtn")}
+          </button>
         </FormGroup>
       </div>
     </Form>

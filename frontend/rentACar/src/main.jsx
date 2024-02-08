@@ -35,6 +35,7 @@ import BrandTable from "./pages/admin/components/Brand/BrandTable.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
+import FindCarResult from "./components/ui/FindCarResult.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index pat element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/findCarResult" element={<FindCarResult />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
