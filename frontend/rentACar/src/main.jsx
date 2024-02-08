@@ -36,6 +36,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
 import FindCarResult from "./components/ui/FindCarResult.jsx";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -77,5 +78,6 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <RouterProvider router={router} />
+    <ToastContainer />
   </Provider>
 );
