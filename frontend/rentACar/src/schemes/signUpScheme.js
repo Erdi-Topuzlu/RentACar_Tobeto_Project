@@ -5,6 +5,12 @@ export const getSignUpValidationSchema = () => {
       const { t } = useTranslation();
     
       return yup.object().shape({
+        name: yup
+        .string()
+        .required(t("schemeName")),
+        surname: yup
+        .string()
+        .required(t("schemeLastname")),
         email: yup
           .string()
           .email(t("schemeInvalidEmail"))

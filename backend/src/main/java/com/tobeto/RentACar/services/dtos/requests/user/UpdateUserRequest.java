@@ -21,22 +21,24 @@ public class UpdateUserRequest {
     @NotBlank(message = Messages.userSurnameNotEmpty)
     private String surname;
 
-    private Role role;
+    private Double tcNo;
+
+    private String username;
 
     /*@NotBlank(message = Messages.userEmailNotEmpty)
     @Email(message = Messages.invalidEmail)*/
     private String email;
 
+    private String password;
+
+    private Role role;
+
     //@NotNull(message = Messages.userBirthDateNotEmpty)
     private LocalDate birthDate;
 
-    private String password;
-
     private String userPhotoUrl;
-
 
     public Role getRole() {
         return (role == null) ? Role.USER : role;
     }
-
 }

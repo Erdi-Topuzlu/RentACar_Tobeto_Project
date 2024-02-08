@@ -21,7 +21,7 @@ import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 const signUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  
+
   const signUpValidationSchema = getSignUpValidationSchema();
 
   const token = localStorage.getItem("access_token");
@@ -35,6 +35,8 @@ const signUp = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
+      name: "",
+      surname: "",
       password: "",
       confirmPassword: "",
     },
@@ -48,17 +50,14 @@ const signUp = () => {
           values
         );
 
-        console.log(response.data)
+        console.log(response.data);
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
 
         navigate("/login");
         // window.location.reload();
-
       } catch (error) {
-        
         console.error("Kayıt hatası:", response.error.data);
-
       } finally {
         actions.setSubmitting(false);
       }
@@ -77,6 +76,56 @@ const signUp = () => {
                 <div className="d-flex mt-4 justify-content-center align-items-center">
                   <Col lg="4" className="mb-5 text-center">
                     <Form onSubmit={formik.handleSubmit}>
+                    <div>
+                        <FormGroup>
+                          <Input
+                            id="name"
+                            name="name"
+                            value={formik.values.name}
+                            className={
+                              formik.errors.name &&
+                              formik.touched.name &&
+                              "error"
+                            }
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="text"
+                            placeholder={
+                              formik.errors.name && formik.touched.name
+                                ? formik.errors.name
+                                : t("firstName")
+                            }
+                            invalid={
+                              formik.errors.name && formik.touched.name
+                            }
+                          />
+                        </FormGroup>
+                      </div>
+                      <div>
+                        <FormGroup>
+                          <Input
+                            id="surname"
+                            name="surname"
+                            value={formik.values.surname}
+                            className={
+                              formik.errors.surname &&
+                              formik.touched.surname &&
+                              "error"
+                            }
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            type="text"
+                            placeholder={
+                              formik.errors.surname && formik.touched.surname
+                                ? formik.errors.surname
+                                : t("lastName")
+                            }
+                            invalid={
+                              formik.errors.surname && formik.touched.surname
+                            }
+                          />
+                        </FormGroup>
+                      </div>
                       <div>
                         <FormGroup>
                           <Input
@@ -100,7 +149,6 @@ const signUp = () => {
                               formik.errors.email && formik.touched.email
                             }
                           />
-                          
                         </FormGroup>
                       </div>
                       <div>
@@ -126,7 +174,6 @@ const signUp = () => {
                               formik.errors.password && formik.touched.password
                             }
                           />
-                          
                         </FormGroup>
                       </div>
                       <div>
@@ -144,7 +191,8 @@ const signUp = () => {
                             onBlur={formik.handleBlur}
                             type="password"
                             placeholder={
-                              formik.errors.confirmPassword && formik.touched.confirmPassword
+                              formik.errors.confirmPassword &&
+                              formik.touched.confirmPassword
                                 ? formik.errors.confirmPassword
                                 : t("confirm")
                             }
@@ -153,7 +201,6 @@ const signUp = () => {
                               formik.touched.confirmPassword
                             }
                           />
-                          
                         </FormGroup>
                       </div>
                       <FormGroup>

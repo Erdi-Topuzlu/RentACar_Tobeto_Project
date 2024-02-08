@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "tc_no")
+    private Double tcNo;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

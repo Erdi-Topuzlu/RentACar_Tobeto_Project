@@ -16,12 +16,13 @@ public class GetByIdUserResponse {
     private String id;
     private String name;
     private String surname;
+    private Double tcNo;
     private String email;
+    private String password;
+    private String username;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
-    private String password;
     private String userPhotoUrl;
     private Role role;
-
 
 }

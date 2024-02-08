@@ -63,6 +63,8 @@ const Settings = () => {
   const initialValues = {
     firstName: "",
     lastName: "",
+    tcNo: "",
+    username: "",
     image: "",
     birthdate: "",
   };
@@ -78,6 +80,8 @@ const Settings = () => {
         surname: values.lastName || details.surname,
         email: details.email,
         password: details.password,
+        tcNo: values.tcNo || details.tcNo,
+        username: values.username || details.username,
         birthDate: values.birthdate || details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
@@ -258,6 +262,51 @@ const Settings = () => {
                                   formik.errors.lastName && formik.touched.lastName
                                     ? formik.errors.lastName
                                     : t("lName")
+                                }
+                              />
+                            </FormControl>
+
+                            
+                            <FormControl
+                              sx={{ display: "flex-column", gap: 1 }}
+                            >
+                              <FormLabel>{t("TC No")}</FormLabel>
+                              <Input
+                                name="tcNo"
+                                className={
+                                  formik.errors.tcNo && formik.touched.tcNo && "error"
+                                }
+                                value={values.tcNo}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.tcNo && formik.touched.tcNo}
+                                size="sm"
+                                placeholder={
+                                  formik.errors.tcNo && formik.touched.tcNo
+                                    ? formik.errors.tcNo
+                                    : t("tcNo")
+                                }
+                              />
+                            </FormControl>
+
+                            <FormControl
+                              sx={{ display: "flex-column", gap: 1 }}
+                            >
+                              <FormLabel>{t("Username")}</FormLabel>
+                              <Input
+                                name="username"
+                                className={
+                                  formik.errors.username && formik.touched.username && "error"
+                                }
+                                value={values.username}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.errors.username && formik.touched.username}
+                                size="sm"
+                                placeholder={
+                                  formik.errors.username && formik.touched.username
+                                    ? formik.errors.username
+                                    : t("Username")
                                 }
                               />
                             </FormControl>
