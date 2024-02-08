@@ -45,6 +45,8 @@ const CarListing = () => {
 
   let filteredItems = [...items];
 
+  filteredItems = filteredItems.filter((item) => item.isAvailable === true);
+
   if (gearType === "MANUAL") {
     filteredItems = filteredItems.filter((item) => item.gearType === gearType);
   } else if (gearType === "AUTOMATIC") {
