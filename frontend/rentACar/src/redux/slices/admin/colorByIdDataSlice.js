@@ -1,4 +1,5 @@
-import {createSlice } from "@reduxjs/toolkit";
+
+import { createSlice } from "@reduxjs/toolkit";
 import fetchByIdColorData from "../../actions/admin/fetchByIdColorData";
 import { STATUS } from "../../utilities/status";
 
@@ -17,7 +18,7 @@ const colorByIdDataSlice = createSlice({
       })
       .addCase(fetchByIdColorData.fulfilled, (state, action) => {
         state.status = STATUS.SUCCESS;
-        state.brandDetails = action.payload;
+        state.colorDetails = action.payload;
       })
       .addCase(fetchByIdColorData.rejected, (state, action) => {
         state.status = STATUS.FAIL;

@@ -76,12 +76,16 @@ export default function BrandTable() {
   const brandValidationSchema = getBrandValidationSchema();
 
   const handleDelete = async (id) => {
-    try {
-      await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-      toastSuccess("Brand Başarıyla Silindi.");
-      dispatch(fetchAllBrandData());
-    } catch (error) {
-      console.error("Kayıt hatası:", error);
+    if (!id) {
+      toastError("Brand ID bulunamadı!");
+    } else {
+      try {
+        await axiosInstance.delete(`api/v1/admin/brands/${id}`);
+        toastSuccess("Brand Başarıyla Silindi.");
+        dispatch(fetchAllBrandData());
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+      }
     }
   };
 
@@ -152,6 +156,7 @@ export default function BrandTable() {
           onClick={() => {
             formik.resetForm();
             setBrandName("");
+            setId(null);
             setOpen(true);
           }}
         >
