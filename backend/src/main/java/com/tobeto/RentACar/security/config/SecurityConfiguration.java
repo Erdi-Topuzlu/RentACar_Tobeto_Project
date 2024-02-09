@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                                                 "/api/v1/auth/**",
                                                 "/api/v1/cars/**",
                                                 "/api/v1/userImage/**",
+                                                "/api/v1/sliderImage/**",
                                                 "/v2/api-docs",
                                                 "/v3/api-docs",
                                                 "/v3/api-docs/**",
@@ -64,6 +65,7 @@ public class SecurityConfiguration {
                                         .requestMatchers(GET, "/api/v1/admin/**").hasAuthority(ADMIN_READ.name())
                                         .requestMatchers(POST, "/api/v1/admin/**").hasAuthority(ADMIN_CREATE.name())
                                         .requestMatchers(PUT, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
+                                        .requestMatchers(PATCH, "/api/v1/admin/**").hasAuthority(ADMIN_UPDATE.name())
                                         .requestMatchers(DELETE, "/api/v1/admin/**").hasAuthority(ADMIN_DELETE.name())
 
                                         // Bura da user endpoint'i için USER, MANAGER ve ADMIN'e rol ve yetkilendirme verdik.

@@ -13,4 +13,7 @@ import lombok.NoArgsConstructor;
 public class AddSliderRequest {
     @NotBlank(message = Messages.imgPathNotEmpty)
     private String imgPath;
+    private String title;
+    private String description;
+    private String buttonLabelName;
 }

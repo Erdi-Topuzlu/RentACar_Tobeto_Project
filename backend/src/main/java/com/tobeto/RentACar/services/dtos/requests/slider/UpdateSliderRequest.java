@@ -13,4 +13,7 @@ public class UpdateSliderRequest {
     private int id;
     @NotBlank(message = Messages.imgPathNotEmpty)
     private String imgPath;
+    private String title;
+    private String description;
+    private String buttonLabelName;
 }

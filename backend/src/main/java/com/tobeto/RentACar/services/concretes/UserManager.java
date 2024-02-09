@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.tobeto.RentACar.core.utilities.constant.Constant.PHOTO_DIRECTORY;
+import static com.tobeto.RentACar.core.utilities.constant.Constant.USER_PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @RequiredArgsConstructor
@@ -114,7 +114,7 @@ public class UserManager implements UserService {
     private final BiFunction<Integer, MultipartFile, String> photoFunction = (id, image) -> {
         String fileName = id + fileExtension().apply(image.getOriginalFilename());
         try {
-            Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(USER_PHOTO_DIRECTORY).toAbsolutePath().normalize();
             if (!Files.exists(fileStorageLocation)) {
                 Files.createDirectories(fileStorageLocation);
             }
