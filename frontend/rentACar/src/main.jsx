@@ -32,6 +32,7 @@ import CampaignDetails from "./pages/CampaignDetails.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Dashboard from "./pages/admin/components/Dashboard.jsx";
 import BrandTable from "./pages/admin/components/Brand/BrandTable.jsx";
+import ColorTable from "./pages/admin/components/color/ColorTable.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
@@ -69,6 +70,7 @@ const router = createBrowserRouter(
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="brands" element={<BrandTable />} />
+          <Route path="colors" element={<ColorTable/>} />
         </Route>
       </Route>
     </>

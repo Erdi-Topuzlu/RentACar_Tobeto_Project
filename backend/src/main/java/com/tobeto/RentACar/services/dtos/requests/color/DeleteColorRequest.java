@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DeleteColorRequest {
-    private Integer id;
+    private int id;
 }

@@ -8,6 +8,9 @@ import allRentalsSlice from "./slices/allRentalsSlice";
 import rentalDetailSlice from "./slices/rentalDetailSlice";
 import brandDataSlice from "./slices/admin/brandDataSlice";
 import brandByIdDataSlice from "./slices/admin/brandByIdDataSlice";
+import colorByIdDataSlice from "./slices/admin/colorByIdDataSlice";
+import colorDataSlice from "./slices/admin/colorDataSlice";
+
 
 
 
@@ -22,5 +25,7 @@ export const store = configureStore({
         allRentals: allRentalsSlice,
         brandAllData: brandDataSlice,
         brandById: brandByIdDataSlice,
+        colorAllData: colorDataSlice,
+        colorById: colorByIdDataSlice,
     }
 })

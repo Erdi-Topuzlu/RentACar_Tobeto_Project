@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/colors")
+@RequestMapping("api/v1/admin/colors")
 @Tag(name = "Color Controller", description = "Colors Endpoints")
 public class ColorsController {
 
@@ -38,7 +38,7 @@ public class ColorsController {
         return colorService.getById(id);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void update(@RequestBody @Valid UpdateColorRequest request) {
         colorService.update(request);
     }
