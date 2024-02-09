@@ -6,7 +6,7 @@ import fetchAllBrandData from "../../actions/admin/fetchAllBrandData";
 const brandDataSlice = createSlice({
   name: "brandData",
   initialState: {
-    items: [],
+    brands: [],
     status: STATUS.IDLE,
     error: null,
   },
@@ -18,7 +18,7 @@ const brandDataSlice = createSlice({
       })
       .addCase(fetchAllBrandData.fulfilled, (state, action) => {
         state.status= STATUS.SUCCESS;
-        state.items = action.payload;
+        state.brands = action.payload;
       })
       .addCase(fetchAllBrandData.rejected, (state, action) => {
         state.status = STATUS.FAIL;

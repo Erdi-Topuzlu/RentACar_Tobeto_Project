@@ -10,6 +10,8 @@ import brandDataSlice from "./slices/admin/brandDataSlice";
 import brandByIdDataSlice from "./slices/admin/brandByIdDataSlice";
 import colorByIdDataSlice from "./slices/admin/colorByIdDataSlice";
 import colorDataSlice from "./slices/admin/colorDataSlice";
+import modelByIdDataSlice from "./slices/admin/modelByIdDataSlice";
+import modelDataSlice from "./slices/admin/modelDataSlice";
 
 
 
@@ -27,5 +29,7 @@ export const store = configureStore({
         brandById: brandByIdDataSlice,
         colorAllData: colorDataSlice,
         colorById: colorByIdDataSlice,
+        modelAllData: modelDataSlice,
+        modelById: modelByIdDataSlice,
     }
 })

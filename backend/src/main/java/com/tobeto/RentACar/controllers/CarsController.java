@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/cars")
+@RequestMapping("api/v1/admin/cars")
 @Tag(name = "Cars Controller", description = "Cars Endpoints")
 public class CarsController {
     private final CarService carService;
@@ -24,12 +24,12 @@ public class CarsController {
         this.carService = carService;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<GetAllCarResponse> getAll() {
         return carService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public GetByIdCarResponse getById(@PathVariable int id) {
         return carService.getById(id);
     }

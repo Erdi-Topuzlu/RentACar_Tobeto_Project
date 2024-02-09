@@ -184,9 +184,11 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/model-mini.svg" />
+            <Link component={RouterLink} to="models" underline="none">
               <ListItemContent>
                 <Typography level="title-sm">Models</Typography>
               </ListItemContent>
+              </Link>
             </ListItemButton>
           </ListItem>
 
@@ -204,38 +206,42 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/car-mini.svg" />
+            <Link component={RouterLink} to="cars" underline="none">
               <ListItemContent>
                 <Typography level="title-sm">Cars</Typography>
               </ListItemContent>
+              </Link>
             </ListItemButton>
           </ListItem>
 
           <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/key-mini.svg" />
+            <Link component={RouterLink} to="rentals" underline="none">
               <ListItemContent>
                 <Typography level="title-sm">Rentals</Typography>
               </ListItemContent>
+              </Link>
             </ListItemButton>
           </ListItem>
 
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/bill-mini.svg" />
               <ListItemContent>
                 <Typography level="title-sm">Invoices</Typography>
               </ListItemContent>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/user-mini.svg" />
               <ListItemContent>
                 <Typography level="title-sm">Users</Typography>
               </ListItemContent>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
 
         <List

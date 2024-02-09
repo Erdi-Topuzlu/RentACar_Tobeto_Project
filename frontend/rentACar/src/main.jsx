@@ -38,6 +38,9 @@ import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
 import FindCarResult from "./components/ui/FindCarResult.jsx";
 import { ToastContainer } from "react-toastify";
+import CarTable from "./pages/admin/components/car/CarTable.jsx";
+import RentalTable from "./pages/admin/components/rental/RentalTable.jsx";
+import ModelTable from "./pages/admin/components/model/ModelTable.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -71,6 +74,9 @@ const router = createBrowserRouter(
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="brands" element={<BrandTable />} />
           <Route path="colors" element={<ColorTable/>} />
+          <Route path="cars" element={<CarTable/>} />
+          <Route path="rentals" element={<RentalTable/>} />
+          <Route path="models" element={<ModelTable/>} />
         </Route>
       </Route>
     </>
