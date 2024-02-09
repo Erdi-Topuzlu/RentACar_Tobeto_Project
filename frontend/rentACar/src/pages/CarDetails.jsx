@@ -121,7 +121,7 @@ const CarDetails = () => {
 
                     <span className=" d-flex align-items-center gap-1 pb-3 section__description">
                       <ReactSVG src="/src/assets/icons/color.svg" />{" "}
-                      {details.colorId?.colorName}
+                      {details.colorId?.name}
                     </span>
                   </div>
 

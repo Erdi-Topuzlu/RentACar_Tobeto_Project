@@ -38,7 +38,8 @@ public class SecurityConfiguration {
                                 authorizeHttpRequests
                                         .requestMatchers(
                                                 "/api/v1/auth/**",
-                                                "/api/v1/cars/**",
+                                                "/api/v1/admin/cars/getAll",
+                                                "/api/v1/admin/cars/getById/**",
                                                 "/api/v1/userImage/**",
                                                 "/api/v1/sliderImage/**",
                                                 "/v2/api-docs",

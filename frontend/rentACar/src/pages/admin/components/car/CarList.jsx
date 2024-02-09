@@ -20,13 +20,12 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
-import getBrandValidationSchema from "../../../../schemes/brandScheme";
+import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -55,30 +54,29 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function BrandList() {
+export default function CarList() {
   const [id, setId] = React.useState();
-  const [brandName, setBrandName] = React.useState();
+  const [colorName, setColorName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { colors, status, error } = useSelector((state) => state.colorAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const brandValidationSchema = getBrandValidationSchema();
 
   React.useEffect(() => {
-    dispatch(fetchAllBrandData());
+    dispatch(fetchAllColorData());
   }, [dispatch]);
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Brand ID bulunamadı!");
+      toastError("Color ID bulunamadı!");
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-        toastSuccess("Brand Başarıyla Silindi.");
-        dispatch(fetchAllBrandData());
+        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
+        toastSuccess("Color Başarıyla Silindi.");
+        dispatch(fetchAllColorData());
       } catch (error) {
         console.error("Kayıt hatası:", error);
       }
@@ -86,20 +84,20 @@ export default function BrandList() {
   };
 
   const handleUpdate = async (id) => {
-    if (!brandName) {
+    if (!colorName) {
       setOpen(false);
-      toastError("Brand Name alanı boş bırakılamaz!");
+      toastError("Color Name alanı boş bırakılamaz!");
     } else {
       const data = {
         id: id,
-        name: brandName,
+        name: colorName,
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
-        toastSuccess("Brand Başarıyla Güncellendi.");
+        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
+        toastSuccess("Color Başarıyla Güncellendi.");
         setOpen(false);
-        dispatch(fetchAllBrandData());
+        dispatch(fetchAllColorData());
       } catch (error) {
         console.log(id);
         console.error("Kayıt hatası:", error);
@@ -109,7 +107,7 @@ export default function BrandList() {
 
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+      colorName: "",
     },
   });
 
@@ -155,7 +153,7 @@ export default function BrandList() {
                 textAlign: "center",
               }}
             >
-              Brand Name
+              Color Name
             </th>
             {/* <th
                 style={{
@@ -188,7 +186,7 @@ export default function BrandList() {
         </thead>
       </Table>
 
-      {stableSort(brands, getComparator(order, "id")).map((item) => (
+      {stableSort(colors, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -200,11 +198,11 @@ export default function BrandList() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignbrands: "start",
+              alignItems: "start",
             }}
           >
             <ListItemContent
-              sx={{ display: "flex", gap: 2, alignbrands: "start" }}
+              sx={{ display: "flex", gap: 2, alignItems: "start" }}
             >
               <ListItemDecorator>
                 <Avatar size="sm">{item.id}</Avatar>
@@ -223,7 +221,7 @@ export default function BrandList() {
                 <Box
                   sx={{
                     display: "flex",
-                    alignbrands: "center",
+                    alignItems: "center",
                     justifyContent: "space-between",
                     gap: 0.5,
                     mb: 1,
@@ -255,7 +253,7 @@ export default function BrandList() {
             >
               {item.status}
             </Chip> */}
-            <Box sx={{ display: "flex", alignbrands: "center", gap: 1, mb: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton
                   slots={{ root: IconButton }}
@@ -270,7 +268,7 @@ export default function BrandList() {
                     onClick={() => {
                       formik.resetForm();
                       setId(item.id);
-                      setBrandName(item.name);
+                      setColorName(item.name);
                       setOpen(true);
                     }}
                   >
@@ -305,7 +303,7 @@ export default function BrandList() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignbrands: "center",
+          alignItems: "center",
           zIndex: 10001,
         }}
       >
@@ -328,7 +326,7 @@ export default function BrandList() {
             fontWeight="lg"
             mb={1}
           >
-            Add New Brand
+            Add New Color
           </Typography>
           <hr />
           <Grid
@@ -340,31 +338,31 @@ export default function BrandList() {
             <Grid xs={12}>
               <Form onSubmit={formik.handleSubmit}>
                 <div>
-                  <FormLabel>Brand Name</FormLabel>
+                  <FormLabel>Color Name</FormLabel>
                   <FormGroup className="">
                     <Input
-                      id="brandName"
-                      name="brandName"
+                      id="colorName"
+                      name="colorName"
                       type="text"
-                      value={formik.values.brandName || brandName}
+                      value={formik.values.colorName || colorName}
                       className={
-                        formik.errors.brandName &&
-                        formik.touched.brandName &&
+                        formik.errors.colorName &&
+                        formik.touched.colorName &&
                         "error"
                       }
                       onChange={(e) => {
-                        // Update the brandName state when the input changes
-                        setBrandName(e.target.value);
+                        // Update the colorName state when the input changes
+                        setColorName(e.target.value);
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
                       onBlur={formik.handleBlur}
                       placeholder={
-                        formik.errors.brandName && formik.touched.brandName
-                          ? formik.errors.brandName
-                          : t("brandName")
+                        formik.errors.colorName && formik.touched.colorName
+                          ? formik.errors.colorName
+                          : t("colorName")
                       }
                       error={
-                        formik.errors.brandName && formik.touched.brandName
+                        formik.errors.colorName && formik.touched.colorName
                       }
                     />
                   </FormGroup>

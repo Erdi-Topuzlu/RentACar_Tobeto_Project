@@ -19,17 +19,17 @@ import Dropdown from "@mui/joy/Dropdown";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import BrandList from "./BrandList";
 import { Grid } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-
-import getBrandValidationSchema from "../../../../schemes/brandScheme";
-import { toastError, toastSuccess } from "../../../../service/ToastifyService";
-import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import getModelValidationSchema from "../../../../schemes/modelScheme";
+import { toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import ModelList from "./ModelList";
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -59,74 +59,77 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function BrandTable() {
+export default function ModelTable() {
   const [id, setId] = React.useState();
-  const [brandName, setBrandName] = React.useState();
+  const [carName, setCarName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { items, status, error } = useSelector((state) => state.carAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    dispatch(fetchAllBrandData());
+    dispatch(fetchAllCarData());
   }, [dispatch]);
 
-  const brandValidationSchema = getBrandValidationSchema();
+  const modelValidationSchema = getModelValidationSchema();
 
   const handleDelete = async (id) => {
-    if (!id) {
-      toastError("Brand ID bulunamadı!");
-    } else {
+    if(!id){
+      toastError("Color ID bulunamadı!");
+    }else{
       try {
-        await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-        toastSuccess("Brand Başarıyla Silindi.");
-        dispatch(fetchAllBrandData());
+        await axiosInstance.delete(`api/v1/cars/${id}`);
+        toastSuccess("Car Başarıyla Silindi.");
+        dispatch(fetchAllCarData());
       } catch (error) {
+          alert(error)
         console.error("Kayıt hatası:", error);
       }
-    }
+    }   
   };
 
   const handleUpdate = async (id) => {
-    if (!brandName) {
-      setOpen(false);
-      toastError("Brand Name alanı boş bırakılamaz!");
-    } else {
-      const data = {
-        id: id,
-        name: brandName,
-      };
+   if(!carName){
+    setOpen(false);
+    toastError("Car name alanı boş bırakılamaz!");
+   }else{
 
-      try {
-        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
-        toastSuccess("Brand Başarıyla Güncellendi.");
-        setOpen(false);
-        dispatch(fetchAllBrandData());
-      } catch (error) {
-        console.log(id);
-        console.error("Kayıt hatası:", error);
-      }
-    }
+    const data = {
+      id:id,
+      name: carName,
+    };
+
+    try {
+      await axiosInstance.put(`api/v1/cars/${id}`,
+      data);
+      toastSuccess("Car Başarıyla Güncellendi.");
+      setOpen(false);
+      dispatch(fetchAllCarData());
+    } catch (error) {
+      console.error("Kayıt hatası:" ,error);
+    
   };
+   } 
+}
+
 
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+        carName: "",
     },
-    validationSchema: brandValidationSchema,
+    validationSchema: modelValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
-        name: values.brandName,
+        name: values.carName,
       };
-      console.log(data);
+      
       try {
-        await axiosInstance.post("api/v1/admin/brands", data);
-
-        toastSuccess("Brand Başarıyla Eklendi.");
+        await axiosInstance.post("api/v1/cars", data);
+        toastSuccess("Car Başarıyla Eklendi.");
         setOpen(false);
-        dispatch(fetchAllBrandData());
+        dispatch(fetchAllCarData());
         formik.resetForm();
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
@@ -142,20 +145,20 @@ export default function BrandTable() {
           mb: 1,
           gap: 1,
           flexDirection: { xs: "column", sm: "row" },
-          alignbrands: { xs: "start", sm: "center" },
+          alignItems: { xs: "start", sm: "center" },
           flexWrap: "wrap",
           justifyContent: "space-between",
         }}
       >
         <Typography level="h2" component="h1">
-          BRANDS
+          Colors
         </Typography>
         <Button
           color="success"
           size="md"
           onClick={() => {
             formik.resetForm();
-            setBrandName("");
+            setCarName("");
             setId(null);
             setOpen(true);
           }}
@@ -192,7 +195,7 @@ export default function BrandTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for brand</FormLabel>
+          <FormLabel>Search for color</FormLabel>
           <Input
             size="sm"
             placeholder="Search"
@@ -254,7 +257,7 @@ export default function BrandTable() {
                   textAlign: "center",
                 }}
               >
-                Brand Name
+                Color Name
               </th>
               {/* <th
                 style={{
@@ -286,7 +289,7 @@ export default function BrandTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(brands, getComparator(order, "id")).map((row) => (
+            {stableSort(items, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -341,9 +344,8 @@ export default function BrandTable() {
                     <Menu size="sm" sx={{ minWidth: 140 }}>
                       <MenuItem
                         onClick={() => {
-                          formik.resetForm();
                           setId(row.id);
-                          setBrandName(row.name);
+                          setCarName(row.name);
                           setOpen(true);
                         }}
                       >
@@ -379,7 +381,7 @@ export default function BrandTable() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignbrands: "center",
+            alignItems: "center",
             zIndex: 10001,
           }}
         >
@@ -402,7 +404,7 @@ export default function BrandTable() {
               fontWeight="lg"
               mb={1}
             >
-              Add New Brand
+              Add New color
             </Typography>
             <hr />
             <Grid
@@ -414,49 +416,45 @@ export default function BrandTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Brand Name</FormLabel>
+                    <FormLabel>Color Name</FormLabel>
                     <FormGroup className="">
                       <Input
-                        id="brandName"
-                        name="brandName"
+                        id="colorName"
+                        name="colorName"
                         type="text"
-                        value={formik.values.brandName || brandName}
+                        value={formik.values.carName || carName}
                         className={
-                          formik.errors.brandName &&
-                          formik.touched.brandName &&
+                          formik.errors.carName &&
+                          formik.touched.carName &&
                           "error"
                         }
                         onChange={(e) => {
                           // Update the brandName state when the input changes
-                          setBrandName(e.target.value);
+                          setCarName(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
-                          formik.errors.brandName && formik.touched.brandName
-                            ? formik.errors.brandName
-                            : t("brandName")
+                          formik.errors.carName && formik.touched.carName
+                            ? formik.errors.carName
+                            : t("carName")
                         }
                         error={
-                          formik.errors.brandName && formik.touched.brandName
+                          formik.errors.carName && formik.touched.carName
                         }
                       />
                     </FormGroup>
                   </div>
                   {id ? (
-                    <Button
-                      onClick={() => {
-                        handleUpdate(id);
-                      }}
-                      className=" form__btn"
-                    >
-                      {t("update")}
-                    </Button>
+                    <Button onClick={()=>{
+                      handleUpdate(id);
+                    }} className=" form__btn">{t("update")}</Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
+
                     >
                       {t("add")}
                     </Button>
@@ -467,7 +465,7 @@ export default function BrandTable() {
           </Sheet>
         </Modal>
       </Sheet>
-      <BrandList />
+      <ModelList/>
     </React.Fragment>
   );
 }
