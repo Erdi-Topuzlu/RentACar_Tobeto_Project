@@ -2,7 +2,6 @@
 import * as React from "react";
 import Box from "@mui/joy/Box";
 import Avatar from "@mui/joy/Avatar";
-import Chip from "@mui/joy/Chip";
 import Link from "@mui/joy/Link";
 import Divider from "@mui/joy/Divider";
 import IconButton from "@mui/joy/IconButton";
@@ -19,16 +18,15 @@ import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import BlockIcon from "@mui/icons-material/Block";
-import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-import { Table } from "@mui/joy";
+import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import { useFormik } from "formik";
+import { toastSuccess } from "../../../../service/ToastifyService";
+import { Form, FormGroup, Input } from "reactstrap";
+import getBrandValidationSchema from "../../../../schemes/brandScheme";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -58,11 +56,16 @@ function stableSort(array, comparator) {
 }
 
 export default function BrandList() {
+  const [id, setId] = React.useState();
+  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
+  const [open, setOpen] = React.useState(false);
   const { items, status, error } = useSelector((state) => state.brandAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const brandValidationSchema = getBrandValidationSchema();
 
   React.useEffect(() => {
     dispatch(fetchAllBrandData());
@@ -71,33 +74,41 @@ export default function BrandList() {
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`api/v1/admin/brands/${id}`);
+      toastSuccess("Brand Başarıyla Silindi.");
       dispatch(fetchAllBrandData());
     } catch (error) {
       console.error("Kayıt hatası:", error);
     }
   };
 
-  function RowMenu({ id }) {
-    return (
-      <Dropdown>
-        <MenuButton
-          slots={{ root: IconButton }}
-          slotProps={{
-            root: { variant: "plain", color: "neutral", size: "sm" },
-          }}
-        >
-          <MoreHorizRoundedIcon />
-        </MenuButton>
-        <Menu size="sm" sx={{ minWidth: 140 }}>
-          <MenuItem>Edit</MenuItem>
-          <Divider />
-          <MenuItem onClick={() => handleDelete(id)} color="danger">
-            Delete
-          </MenuItem>
-        </Menu>
-      </Dropdown>
-    );
-  }
+  const handleUpdate = async (id) => {
+    if (!brandName) {
+      setOpen(false);
+      toastError("Brand Name alanı boş bırakılamaz!");
+    } else {
+      const data = {
+        id: id,
+        name: brandName,
+      };
+
+      try {
+        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
+        toastSuccess("Brand Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllBrandData());
+      } catch (error) {
+        console.log(id);
+        console.error("Kayıt hatası:", error);
+      }
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      brandName: "",
+    },
+  });
+
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
       <Table
@@ -241,12 +252,142 @@ export default function BrandList() {
               {item.status}
             </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <RowMenu id={item.id} />
+              <Dropdown>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{
+                    root: { variant: "plain", color: "neutral", size: "sm" },
+                  }}
+                >
+                  <MoreHorizRoundedIcon />
+                </MenuButton>
+                <Menu size="sm" sx={{ minWidth: 140 }}>
+                  <MenuItem
+                    onClick={() => {
+                      formik.resetForm();
+                      setId(item.id);
+                      setBrandName(item.name);
+                      setOpen(true);
+                    }}
+                  >
+                    Edit
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                    onClick={() => {
+                      setId(item.id);
+                      handleDelete(item.id);
+                    }}
+                    color="danger"
+                  >
+                    Delete
+                  </MenuItem>
+                </Menu>
+              </Dropdown>
             </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => {
+          formik.resetForm();
+          setId(null);
+          setOpen(false);
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 10001,
+        }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            width: 500,
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            textAlign={"center"}
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
+          >
+            Add New Brand
+          </Typography>
+          <hr />
+          <Grid
+            textAlign={"center"}
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid xs={12}>
+              <Form onSubmit={formik.handleSubmit}>
+                <div>
+                  <FormLabel>Brand Name</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="brandName"
+                      name="brandName"
+                      type="text"
+                      value={formik.values.brandName || brandName}
+                      className={
+                        formik.errors.brandName &&
+                        formik.touched.brandName &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the brandName state when the input changes
+                        setBrandName(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.brandName && formik.touched.brandName
+                          ? formik.errors.brandName
+                          : t("brandName")
+                      }
+                      error={
+                        formik.errors.brandName && formik.touched.brandName
+                      }
+                    />
+                  </FormGroup>
+                </div>
+                {id ? (
+                  <Button
+                    onClick={() => {
+                      handleUpdate(id);
+                    }}
+                    className=" form__btn"
+                  >
+                    {t("update")}
+                  </Button>
+                ) : (
+                  <Button
+                    className=" form__btn"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
+                    {t("add")}
+                  </Button>
+                )}
+              </Form>
+            </Grid>
+          </Grid>
+        </Sheet>
+      </Modal>
     </Box>
   );
 }
