@@ -22,18 +22,17 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
   const paymentData = JSON.parse(localStorage.getItem("paymentData"));
   const { id } = useParams();
   const { details, status, error } = useSelector((state) => state.userDetail);
-  const usersId = details.id;
+  const usersId = details?.id;
 
   console.log("carid",id)
   console.log("user", userData);
   console.log("extra", Extras);
   console.log("car", carData);
   console.log("pay", paymentData);
-  console.log("usrid", usersId);
+  console.log("userid", usersId);
   
   const extraId = Extras ? Extras.id : 3;
   
-  console.log(extraId)
 
 
   useEffect(() => {
