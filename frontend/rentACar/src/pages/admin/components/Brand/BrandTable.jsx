@@ -16,7 +16,6 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
@@ -27,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
@@ -72,7 +71,7 @@ export default function BrandTable() {
 
   React.useEffect(() => {
     dispatch(fetchAllBrandData());
-  }, [dispatch, id, brandName]);
+  }, [dispatch]);
 
   const brandValidationSchema = getBrandValidationSchema();
 
@@ -87,26 +86,26 @@ export default function BrandTable() {
   };
 
   const handleUpdate = async (id) => {
-   
-    const data = {
-      id:id,
-      name: brandName,
-    };
-
-
-    try {
-      await axiosInstance.put(`api/v1/admin/brands/${id}`,
-      data);
-      toastSuccess("Brand Başarıyla Güncellendi.");
+    if (!brandName) {
       setOpen(false);
-      dispatch(fetchAllBrandData());
-    } catch (error) {
-      console.log(id)
-      console.error("Kayıt hatası:" ,error);
-    
-  };
-}
+      toastError("Brand Name alanı boş bırakılamaz!");
+    } else {
+      const data = {
+        id: id,
+        name: brandName,
+      };
 
+      try {
+        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
+        toastSuccess("Brand Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllBrandData());
+      } catch (error) {
+        console.log(id);
+        console.error("Kayıt hatası:", error);
+      }
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -151,6 +150,7 @@ export default function BrandTable() {
           color="success"
           size="md"
           onClick={() => {
+            formik.resetForm();
             setBrandName("");
             setOpen(true);
           }}
@@ -336,6 +336,7 @@ export default function BrandTable() {
                     <Menu size="sm" sx={{ minWidth: 140 }}>
                       <MenuItem
                         onClick={() => {
+                          formik.resetForm();
                           setId(row.id);
                           setBrandName(row.name);
                           setOpen(true);
@@ -438,9 +439,14 @@ export default function BrandTable() {
                     </FormGroup>
                   </div>
                   {id ? (
-                    <Button onClick={()=>{
-                      handleUpdate(id);
-                    }} className=" form__btn">{t("update")}</Button>
+                    <Button
+                      onClick={() => {
+                        handleUpdate(id);
+                      }}
+                      className=" form__btn"
+                    >
+                      {t("update")}
+                    </Button>
                   ) : (
                     <Button
                       className=" form__btn"
