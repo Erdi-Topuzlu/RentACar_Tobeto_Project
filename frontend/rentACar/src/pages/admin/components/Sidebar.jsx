@@ -193,9 +193,11 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/color-mini.svg" />
+            <Link component={RouterLink} to="colors" underline="none">
               <ListItemContent>
                 <Typography level="title-sm">Colors</Typography>
               </ListItemContent>
+              </Link>
             </ListItemButton>
           </ListItem>
 
