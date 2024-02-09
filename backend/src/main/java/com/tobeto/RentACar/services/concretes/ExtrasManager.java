@@ -19,7 +19,6 @@ public class ExtrasManager implements ExtrasService {
     private final ModelMapperService modelMapperService;
 
 
-
     @Override
     public List<GetAllExtrasResponse> getAll() {
         List<Extra> extras = extrasRepository.findAll();
@@ -34,5 +33,17 @@ public class ExtrasManager implements ExtrasService {
         Extra extras = extrasRepository.findById(id).orElseThrow();
         GetByIdExtrasResponse extra = modelMapperService.entityToDto().map(extras,GetByIdExtrasResponse.class);
         return extra;
+    }
+
+    @Override
+    public void addExtraIfNotExists(int id, String extraName, int extraPrice) {
+        Extra existingExtra = extrasRepository.findByExtraName(extraName);
+        if (existingExtra == null) {
+            Extra newExtra = new Extra();
+            newExtra.setId(id);
+            newExtra.setExtraName(extraName);
+            newExtra.setExtraPrice(extraPrice);
+            extrasRepository.save(newExtra);
+        }
     }
 }
