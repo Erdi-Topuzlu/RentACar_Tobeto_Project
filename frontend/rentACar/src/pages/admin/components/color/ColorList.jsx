@@ -2,7 +2,6 @@
 import * as React from "react";
 import Box from "@mui/joy/Box";
 import Avatar from "@mui/joy/Avatar";
-import Chip from "@mui/joy/Chip";
 import Link from "@mui/joy/Link";
 import Divider from "@mui/joy/Divider";
 import IconButton from "@mui/joy/IconButton";
@@ -17,12 +16,16 @@ import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
-import { Table } from "@mui/joy";
+import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import { useFormik } from "formik";
+import { toastSuccess } from "../../../../service/ToastifyService";
+import { Form, FormGroup, Input } from "reactstrap";
+import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -52,46 +55,62 @@ function stableSort(array, comparator) {
 }
 
 export default function ColorList() {
+  const [id, setId] = React.useState();
+  const [colorName, setColorName] = React.useState();
   const [order, setOrder] = React.useState("desc");
+  const [open, setOpen] = React.useState(false);
   const { colors, status, error } = useSelector((state) => state.colorAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
 
   React.useEffect(() => {
     dispatch(fetchAllColorData());
   }, [dispatch]);
 
   const handleDelete = async (id) => {
-    try {
-      await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-      dispatch(fetchAllColorData());
-    } catch (error) {
-      console.error("Kayıt hatası:", error);
+    if (!id) {
+      toastError("Color ID bulunamadı!");
+    } else {
+      try {
+        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
+        toastSuccess("Color Başarıyla Silindi.");
+        dispatch(fetchAllColorData());
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+      }
     }
   };
 
-  function RowMenu({ id }){
-    return (
-      <Dropdown>
-        <MenuButton
-          slots={{ root: IconButton }}
-          slotProps={{
-            root: { variant: "plain", color: "neutral", size: "sm" },
-          }}
-        >
-          <MoreHorizRoundedIcon />
-        </MenuButton>
-        <Menu size="sm" sx={{ minWidth: 140 }}>
-          <MenuItem>Edit</MenuItem>
-          <Divider />
-          <MenuItem onClick={() => handleDelete(id)} color="danger">
-            Delete
-          </MenuItem>
-        </Menu>
-      </Dropdown>
-    );
-  }
+  const handleUpdate = async (id) => {
+    if (!colorName) {
+      setOpen(false);
+      toastError("Color Name alanı boş bırakılamaz!");
+    } else {
+      const data = {
+        id: id,
+        name: colorName,
+      };
+
+      try {
+        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
+        toastSuccess("Color Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllColorData());
+      } catch (error) {
+        console.log(id);
+        console.error("Kayıt hatası:", error);
+      }
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      colorName: "",
+    },
+  });
+
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
       <Table
@@ -134,7 +153,7 @@ export default function ColorList() {
                 textAlign: "center",
               }}
             >
-              Brand Name
+              Color Name
             </th>
             {/* <th
                 style={{
@@ -167,9 +186,9 @@ export default function ColorList() {
         </thead>
       </Table>
 
-      {stableSort(colors, getComparator(order, "id")).map((color) => (
+      {stableSort(colors, getComparator(order, "id")).map((item) => (
         <List
-          key={color.id}
+          key={item.id}
           size="sm"
           sx={{
             "--ListItem-paddingX": 0,
@@ -186,7 +205,7 @@ export default function ColorList() {
               sx={{ display: "flex", gap: 2, alignItems: "start" }}
             >
               <ListItemDecorator>
-                <Avatar size="sm">{color.id}</Avatar>
+                <Avatar size="sm">{item.id}</Avatar>
               </ListItemDecorator>
               <div
                 style={{
@@ -194,7 +213,7 @@ export default function ColorList() {
                 }}
               >
                 <Typography fontWeight={600} gutterBottom>
-                  {color.name}
+                  {item.name}
                 </Typography>
                 {/* <Typography level="body-xs" gutterBottom>
                   {item.customer.email}
@@ -235,12 +254,142 @@ export default function ColorList() {
               {item.status}
             </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <RowMenu id={color.id} />
+              <Dropdown>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{
+                    root: { variant: "plain", color: "neutral", size: "sm" },
+                  }}
+                >
+                  <MoreHorizRoundedIcon />
+                </MenuButton>
+                <Menu size="sm" sx={{ minWidth: 140 }}>
+                  <MenuItem
+                    onClick={() => {
+                      formik.resetForm();
+                      setId(item.id);
+                      setColorName(item.name);
+                      setOpen(true);
+                    }}
+                  >
+                    Edit
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                    onClick={() => {
+                      setId(item.id);
+                      handleDelete(item.id);
+                    }}
+                    color="danger"
+                  >
+                    Delete
+                  </MenuItem>
+                </Menu>
+              </Dropdown>
             </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => {
+          formik.resetForm();
+          setId(null);
+          setOpen(false);
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 10001,
+        }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            width: 500,
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            textAlign={"center"}
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
+          >
+            Add New Color
+          </Typography>
+          <hr />
+          <Grid
+            textAlign={"center"}
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid xs={12}>
+              <Form onSubmit={formik.handleSubmit}>
+                <div>
+                  <FormLabel>Color Name</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="colorName"
+                      name="colorName"
+                      type="text"
+                      value={formik.values.colorName || colorName}
+                      className={
+                        formik.errors.colorName &&
+                        formik.touched.colorName &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the colorName state when the input changes
+                        setColorName(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.colorName && formik.touched.colorName
+                          ? formik.errors.colorName
+                          : t("colorName")
+                      }
+                      error={
+                        formik.errors.colorName && formik.touched.colorName
+                      }
+                    />
+                  </FormGroup>
+                </div>
+                {id ? (
+                  <Button
+                    onClick={() => {
+                      handleUpdate(id);
+                    }}
+                    className=" form__btn"
+                  >
+                    {t("update")}
+                  </Button>
+                ) : (
+                  <Button
+                    className=" form__btn"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
+                    {t("add")}
+                  </Button>
+                )}
+              </Form>
+            </Grid>
+          </Grid>
+        </Sheet>
+      </Modal>
     </Box>
   );
 }

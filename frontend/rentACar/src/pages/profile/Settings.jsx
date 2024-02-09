@@ -20,6 +20,7 @@ import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors"
 import { toastSuccess } from "../../service/ToastifyService";
 import { useTranslation } from "react-i18next";
 import { Form } from "reactstrap";
+import fetchUserData from "../../redux/actions/fetchUserData";
 
 const Settings = () => {
     
@@ -41,15 +42,15 @@ const Settings = () => {
   };
 
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    tcNo: "",
-    username: "",
-    image: "",
-    birthdate: "",
+    firstName: "" || details.name,
+    lastName: "" || details.surname,
+    tcNo: "" || details.tcNo,
+    username: "" || details.username,
+    image: "" || details.userPhotoUrl,
+    birthdate: "" || details.birthDate,
   };
 
-  // Formik hook
+
   const formik = useFormik({
     initialValues,
     validationSchema: userProfileScheme,
@@ -72,7 +73,8 @@ const Settings = () => {
           updatedData
         );
         if (response.status === 200) {
-          toastSuccess("Kayıt İşlemi Başarılı.");
+          dispatch(fetchUserData(id));
+          toastSuccess("Güncelleme İşlemi Başarılı.");
         }
       } catch (error) {
         console.error("Güncelleme hatası hatası:", error.response.data);
@@ -208,11 +210,16 @@ const Settings = () => {
                             >
                               <Input
                                 name="firstName"
+                                id="firstName"
                                 className={
                                   formik.errors.firstName && formik.touched.firstName && "error"
                                 }
                                 value={values.firstName}
-                                onChange={formik.handleChange}
+                                onChange={(e) => {
+                                  // Update the brandName state when the input changes
+                                  
+                                  formik.handleChange(e); // Invoke Formik's handleChange as well
+                                }}
                                 onBlur={formik.handleBlur}
                                 error={formik.errors.firstName && formik.touched.firstName}
                                 size="sm"
@@ -396,8 +403,12 @@ const Settings = () => {
                                 className={
                                   formik.errors.firstName && formik.touched.firstName && "error"
                                 }
-                                value={values.firstName}
-                                onChange={formik.handleChange}
+                                value={values.firstName || details.name}
+                                onChange={(e) => {
+                                  // Update the brandName state when the input changes
+                                  (e.target.value);
+                                  formik.handleChange(e); // Invoke Formik's handleChange as well
+                                }}
                                 onBlur={formik.handleBlur}
                                 error={formik.errors.firstName && formik.touched.firstName}
                                 size="sm"

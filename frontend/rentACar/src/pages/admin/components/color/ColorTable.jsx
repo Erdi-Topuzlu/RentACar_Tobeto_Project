@@ -25,10 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import getColorValidationSchema from "../../../../schemes/colorScheme";
 import { toastSuccess } from "../../../../service/ToastifyService";
-import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 import ColorList from "./ColorList";
+import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,26 +75,30 @@ export default function ColorTable() {
   const colorValidationSchema = getColorValidationSchema();
 
   const handleDelete = async (id) => {
-    alert(id);
-    try {
-      await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-      toastSuccess("Color Başarıyla Silindi.");
-      dispatch(fetchAllColorData());
-    } catch (error) {
-        alert(error)
-      console.error("Kayıt hatası:", error);
-    }
+    if(!id){
+      toastError("Color ID bulunamadı!");
+    }else{
+      try {
+        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
+        toastSuccess("Color Başarıyla Silindi.");
+        dispatch(fetchAllColorData());
+      } catch (error) {
+          alert(error)
+        console.error("Kayıt hatası:", error);
+      }
+    }   
   };
 
   const handleUpdate = async (id) => {
-   
+   if(!colorName){
+    setOpen(false);
+    toastError("Color Name alanı boş bırakılamaz!");
+   }else{
+
     const data = {
       id:id,
       name: colorName,
     };
-
-    
-
 
     try {
       await axiosInstance.put(`api/v1/admin/colors/${id}`,
@@ -103,10 +107,14 @@ export default function ColorTable() {
       setOpen(false);
       dispatch(fetchAllColorData());
     } catch (error) {
-      console.log(id)
       console.error("Kayıt hatası:" ,error);
     
   };
+
+   }
+
+
+    
 }
 
 
@@ -124,7 +132,6 @@ export default function ColorTable() {
       
       try {
         await axiosInstance.post("api/v1/admin/colors", data);
-        console.log(values)
         toastSuccess("Color Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllColorData());
@@ -155,8 +162,9 @@ export default function ColorTable() {
           color="success"
           size="md"
           onClick={() => {
-            console.log("Add New button clicked");
+            formik.resetForm();
             setColorName("");
+            setId(null);
             setOpen(true);
           }}
         >
