@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import fetchByUserIdRental from '../../redux/actions/fetchByUserIdRental';
 import Loading from '../../components/ui/Loading';
 import ErrorPage from '../../components/ui/ErrorPage';
-import { FaceRetouchingNatural } from '@mui/icons-material';
+import { Paper } from "@mui/material";
 import { Table } from 'react-bootstrap';
 
 const Rentals = () => {
@@ -64,9 +64,15 @@ if (status === "FAIL") {
     </Table>
         </Accordion.Body>
       </Accordion.Item>
-      )): <h2 className='p-4 font-bold'>Geçmiş kiralama bilgisi bulunamadı!</h2>} 
-    </Accordion>
+      
+      )): <Paper>
+      <h2 className='p-4 font-bold mt-4'>Geçmiş kiralama bilgisi bulunamadı!</h2>
+       </Paper>
+       }
+       </Accordion>
+    
   )
+  
 }
 
 export default Rentals
