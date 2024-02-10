@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetByIdModelResponse{
+    private int id;
     private String name;
     GetByIdBrandResponse brandId;
 }

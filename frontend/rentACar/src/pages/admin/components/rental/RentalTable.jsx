@@ -23,10 +23,10 @@ import { Grid } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import getCarValidationSchema from "../../../../schemes/carScheme";
+import getRentalValidationSchema from "../../../../schemes/rentalScheme";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
-import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import RentalList from "./RentalList";
 
@@ -62,28 +62,34 @@ function stableSort(array, comparator) {
 export default function RentalTable() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState();
-  const [carName, setCarName] = React.useState();
+  const [startDate, setStartDate] = React.useState();
+  const [endDate, setEndDate] = React.useState();
+  const [carId, setCarId] = React.useState();
+  const [userId, setUserId] = React.useState();
+  const [extraId, setExtraId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { items, status, error } = useSelector((state) => state.carAllData);
+  const { rentals } = useSelector((state) => state.allRentals);
+
+  
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    dispatch(fetchAllCarData());
+    dispatch(fetchAllRentals());
   }, [dispatch]);
 
-  const carValidationSchema = getCarValidationSchema();
+  const rentalValidationSchema = getRentalValidationSchema();
 
   const handleDelete = async (id) => {
     if(!id){
-      toastError("Color ID bulunamadı!");
+      toastError("Rental ID bulunamadı!");
     }else{
       try {
-        await axiosInstance.delete(`api/v1/cars/${id}`);
-        toastSuccess("Car Başarıyla Silindi.");
-        dispatch(fetchAllCarData());
+        await axiosInstance.delete(`api/v1/users/rentals/${id}`);
+        toastSuccess("Rental Başarıyla Silindi.");
+        dispatch(fetchAllRentals());
       } catch (error) {
           alert(error)
         console.error("Kayıt hatası:", error);
@@ -103,11 +109,11 @@ export default function RentalTable() {
     };
 
     try {
-      await axiosInstance.put(`api/v1/cars/${id}`,
+      await axiosInstance.put(`api/v1/users/rentals/${id}`,
       data);
       toastSuccess("Car Başarıyla Güncellendi.");
       setOpen(false);
-      dispatch(fetchAllCarData());
+      dispatch(fetchAllRentals());
     } catch (error) {
       console.error("Kayıt hatası:" ,error);
     
@@ -118,19 +124,28 @@ export default function RentalTable() {
 
   const formik = useFormik({
     initialValues: {
-        carName: "",
+      startDate:"",
+      endDate:"",
+      carId:"",
+      userId:"",
+      extraId:""
     },
-    validationSchema: carValidationSchema,
+    validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
-        name: values.carName,
+
+       startDate:values.startDate,
+       endDate:values.endDate,
+       carId:carId,
+       userId:userId,
+       extraId:extraId
       };
       
       try {
-        await axiosInstance.post("api/v1/cars", data);
-        toastSuccess("Car Başarıyla Eklendi.");
+        await axiosInstance.post("api/v1/users/rentals", data);
+        toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);
-        dispatch(fetchAllCarData());
+        dispatch(fetchAllRentals());
         formik.resetForm();
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
@@ -198,7 +213,7 @@ export default function RentalTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for color</FormLabel>
+          <FormLabel>Search for rental</FormLabel>
           <Input
             size="sm"
             placeholder="Search"
@@ -260,7 +275,7 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                Color Name
+                Rental
               </th>
               {/* <th
                 style={{
@@ -292,13 +307,13 @@ export default function RentalTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(items, getComparator(order, "id")).map((row) => (
+            {stableSort(rentals, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.name}</Typography>
+                  <Typography level="body-xs">{row.startDate}-{row.endDate}</Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -423,31 +438,31 @@ export default function RentalTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Color Name</FormLabel>
+                    <FormLabel>Start Date</FormLabel>
                     <FormGroup className="">
                       <Input
-                        id="colorName"
-                        name="colorName"
-                        type="text"
-                        value={formik.values.carName || carName}
+                        id="starDate"
+                        name="starDate"
+                        type="date"
+                        value={formik.values.startDate || startDate}
                         className={
-                          formik.errors.carName &&
-                          formik.touched.carName &&
+                          formik.errors.startDate &&
+                          formik.touched.startDate &&
                           "error"
                         }
                         onChange={(e) => {
                           // Update the brandName state when the input changes
-                          setCarName(e.target.value);
+                          setStartDate(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
-                          formik.errors.carName && formik.touched.carName
-                            ? formik.errors.carName
-                            : t("carName")
+                          formik.errors.startDate && formik.touched.startDate
+                            ? formik.errors.startDate
+                            : t("startDate")
                         }
                         error={
-                          formik.errors.carName && formik.touched.carName
+                          formik.errors.startDate && formik.touched.startDate
                         }
                       />
                     </FormGroup>

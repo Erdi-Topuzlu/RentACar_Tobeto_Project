@@ -5,9 +5,12 @@ export const getRentalValidationSchema = () => {
   const { t } = useTranslation();
 
   return yup.object().shape({
-    brandName: yup
-      .string()
-      .required(t("schemeRentalName")),
+    startDate: yup
+      .date()
+      .required(t("schemeRentalStartDate")),
+      endDate: yup
+      .date()
+      .required(t("schemeRentalEndDate")),
   });
 };
 

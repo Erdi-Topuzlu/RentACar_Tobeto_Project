@@ -12,6 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCarRequest {
+
+
     @NotNull(message = Messages.kilometerNotEmpty)
     @Positive(message = Messages.kilometerPositive)
     private int kilometer;
