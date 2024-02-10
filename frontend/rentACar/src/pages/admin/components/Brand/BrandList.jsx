@@ -24,7 +24,7 @@ import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData
 import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
 function descendingComparator(a, b, orderBy) {
@@ -57,6 +57,7 @@ function stableSort(array, comparator) {
 
 export default function BrandList() {
   const [id, setId] = React.useState();
+  const [isEdit, setIsEdit] = React.useState(false);
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
@@ -155,7 +156,7 @@ export default function BrandList() {
                 textAlign: "center",
               }}
             >
-              Brand Name
+              {t("brandName")}
             </th>
             {/* <th
                 style={{
@@ -182,7 +183,7 @@ export default function BrandList() {
                 textAlign: "right",
               }}
             >
-              Actions
+              {t("actions")}
             </th>
           </tr>
         </thead>
@@ -200,11 +201,11 @@ export default function BrandList() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignbrands: "start",
+              alignItems: "start",
             }}
           >
             <ListItemContent
-              sx={{ display: "flex", gap: 2, alignbrands: "start" }}
+              sx={{ display: "flex", gap: 2, alignItems: "start" }}
             >
               <ListItemDecorator>
                 <Avatar size="sm">{item.id}</Avatar>
@@ -223,7 +224,7 @@ export default function BrandList() {
                 <Box
                   sx={{
                     display: "flex",
-                    alignbrands: "center",
+                    alignItems: "center",
                     justifyContent: "space-between",
                     gap: 0.5,
                     mb: 1,
@@ -255,7 +256,7 @@ export default function BrandList() {
             >
               {item.status}
             </Chip> */}
-            <Box sx={{ display: "flex", alignbrands: "center", gap: 1, mb: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton
                   slots={{ root: IconButton }}
@@ -272,9 +273,10 @@ export default function BrandList() {
                       setId(item.id);
                       setBrandName(item.name);
                       setOpen(true);
+                      setIsEdit(true);
                     }}
                   >
-                    Edit
+                    {t("edit")}
                   </MenuItem>
                   <Divider />
                   <MenuItem
@@ -284,7 +286,7 @@ export default function BrandList() {
                     }}
                     color="danger"
                   >
-                    Delete
+                    {t("delete")}
                   </MenuItem>
                 </Menu>
               </Dropdown>
@@ -305,7 +307,7 @@ export default function BrandList() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignbrands: "center",
+          alignItems: "center",
           zIndex: 10001,
         }}
       >
@@ -328,7 +330,9 @@ export default function BrandList() {
             fontWeight="lg"
             mb={1}
           >
-            Add New Brand
+            {
+                isEdit ? t("updateBrand"): t("addNewBrand")
+              }
           </Typography>
           <hr />
           <Grid
@@ -340,7 +344,7 @@ export default function BrandList() {
             <Grid xs={12}>
               <Form onSubmit={formik.handleSubmit}>
                 <div>
-                  <FormLabel>Brand Name</FormLabel>
+                  <FormLabel>{t("brandName")}</FormLabel>
                   <FormGroup className="">
                     <Input
                       id="brandName"
@@ -375,6 +379,7 @@ export default function BrandList() {
                       handleUpdate(id);
                     }}
                     className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
                   >
                     {t("update")}
                   </Button>
@@ -383,6 +388,7 @@ export default function BrandList() {
                     className=" form__btn"
                     type="submit"
                     disabled={formik.isSubmitting}
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
                   >
                     {t("add")}
                   </Button>

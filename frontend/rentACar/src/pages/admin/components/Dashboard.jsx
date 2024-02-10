@@ -27,10 +27,11 @@ export default function Dashboard() {
         </Typography>
         
       </Box>
+      <hr />
       <Grid container>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="./slider" style={{textDecoration:"none"}}>
+        <Link to="../slider" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -50,7 +51,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="./brands" style={{textDecoration:"none"}}>
+        <Link to="../brands" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{

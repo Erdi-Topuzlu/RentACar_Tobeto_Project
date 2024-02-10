@@ -199,6 +199,8 @@
   "schemeMin5Char":"Username must have at least 5 characters",
   "identifyNumber":"Identify Number",
   "userName":"Username",
+  
+  "schemeColorName":"Color Name is required",
 
   "_packages":"Packages-EN",
   "miniPackage":"Super Mini Coverage",
@@ -239,7 +241,59 @@
   "newPassword":"New Password",
   "newConfirmPassword":"New Confirm Password",
 
-  "add":"Add"
+  "dashboard":"Dashboard",
+  "slider":"Slider",
+  "brands":"Brands",
+  "models":"Models",
+  "colors":"Colors",
+  "rentals":"Rentals",
+  "pair-1":"Pair-1 Rental",
+  
+  "brand":"Brand",
+  "model":"Model",
+
+  "add":"Add",
+  "update":"Update",
+  "edit":"Edit",
+  "delete":"Delete",
+  "actions":"Actions",
+  "addNew":"Add New",
+
+  "addNewBrand":"Add New Brand",
+  "updateBrand":"Update to Brand",
+
+  "modelName":"Model Name",
+  "addNewModel":"Add New Model",
+  "updateModel":"Update to Model",
+  "selectBrand":"Select a Brand",
+
+  "colorName":"Color Name",
+  "color":"Color",
+  "addNewColor":"Add New Color",
+  "updateColor":"Update to Color",
+
+  "addNewCar":"Add New Car",
+  "updateCar":"Update to Car",
+  "kilometer":"Kilometer",
+  "plate":"Plate Number",
+  "year":"Year",
+  "selectBrandAndModel":"Select Brand and Model",
+  "selectColor":"Select a Color",
+  "selectFuelAndGear":"Select Fuel and Gear type",
+  "selectVehicleAndSeat":"Select Vehicle and Seat type",
+  "dailyPriceCar":"Daily Price",
+  "fuelCar":"Fuel",
+  "gearCar":"Gear",
+  "vehicleCar":"Vehicle",
+  "seatCar":"Seat",
+  
+  "selectModel":"Select a Model",
+  "selectFuelType":"Select a Fuel Type",
+  "selectGearType":"Select a Gear Type",
+  "selectVehicleType":"Select a Vehicle Type",
+  "selectSeatType":"Select a Seat Type"
+  
+
   
 
 }

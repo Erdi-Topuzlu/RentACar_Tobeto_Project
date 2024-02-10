@@ -16,16 +16,21 @@ import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
+import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+
+
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -56,27 +61,46 @@ function stableSort(array, comparator) {
 
 export default function CarList() {
   const [id, setId] = React.useState();
-  const [colorName, setColorName] = React.useState();
-  const [order, setOrder] = React.useState("desc");
+  const [isChecked, setIsChecked] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(false);
+  const [kilometer, setKilometer] = React.useState();
+  const [plate, setPlate] = React.useState();
+  const [year, setYear] = React.useState();
+  const [dailyPrice, setDailyPrice] = React.useState();
+  const [fuelType, setFuelType] = React.useState();
+  const [gearType, setGearType] = React.useState();
+  const [vehicleType, setVehicleType] = React.useState("");
+  const [seatType, setSeatType] = React.useState("");
+  const [colorId, setColorId] = React.useState("");
+  const [modelId, setModelId] = React.useState("");
+  const [brandId, setBrandId] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const { colors, status, error } = useSelector((state) => state.colorAllData);
+  const [order, setOrder] = React.useState("");
+  const { items, status, error } = useSelector((state) => state.carAllData);
+  const { colors } = useSelector((state) => state.colorAllData);
+  const { models } = useSelector((state) => state.modelAllData);
+  const { brands } = useSelector((state) => state.brandAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
 
   React.useEffect(() => {
+    dispatch(fetchAllCarData());
     dispatch(fetchAllColorData());
+    dispatch(fetchAllModelData());
+    dispatch(fetchAllBrandData());
   }, [dispatch]);
+
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Color ID bulunamadı!");
+      toastError("Car ID bulunamadı!");
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-        toastSuccess("Color Başarıyla Silindi.");
-        dispatch(fetchAllColorData());
+        await axiosInstance.delete(`api/v1/admin/cars/${id}`);
+        toastSuccess("Car Başarıyla Silindi.");
+        dispatch(fetchAllCarData());
       } catch (error) {
         console.error("Kayıt hatası:", error);
       }
@@ -84,22 +108,31 @@ export default function CarList() {
   };
 
   const handleUpdate = async (id) => {
-    if (!colorName) {
+    if (!kilometer) {
       setOpen(false);
-      toastError("Color Name alanı boş bırakılamaz!");
+      toastError("Kilometer alanı boş bırakılamaz!");
     } else {
-      const data = {
+      const updatedData = {
         id: id,
-        name: colorName,
+        kilometer: kilometer,
+        plate: plate,
+        year: year,
+        dailyPrice: dailyPrice,
+        fuelType: fuelType,
+        gearType: gearType,
+        vehicleType: vehicleType,
+        seatType: seatType,
+        isAvailable: "true",
+        modelId: modelId,
+        colorId: colorId,
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
-        toastSuccess("Color Başarıyla Güncellendi.");
+        await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
+        toastSuccess("Car Başarıyla Güncellendi.");
         setOpen(false);
-        dispatch(fetchAllColorData());
+        dispatch(fetchAllCarData());
       } catch (error) {
-        console.log(id);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -153,7 +186,7 @@ export default function CarList() {
                 textAlign: "center",
               }}
             >
-              Color Name
+              {t("cars")}
             </th>
             {/* <th
                 style={{
@@ -180,13 +213,13 @@ export default function CarList() {
                 textAlign: "right",
               }}
             >
-              Actions
+              {t("actions")}
             </th>
           </tr>
         </thead>
       </Table>
 
-      {stableSort(colors, getComparator(order, "id")).map((item) => (
+      {stableSort(items, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -213,24 +246,14 @@ export default function CarList() {
                 }}
               >
                 <Typography fontWeight={600} gutterBottom>
-                  {item.name}
+                {item.modelId?.brandId?.name} | {item.modelId?.name}
                 </Typography>
-                {/* <Typography level="body-xs" gutterBottom>
-                  {item.customer.email}
-                </Typography> */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 0.5,
-                    mb: 1,
-                  }}
-                >
-                  {/* <Typography level="body-xs">{item.date}</Typography>
-                  <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{item.id}</Typography> */}
-                </Box>
+                <Typography level="body-xs" gutterBottom>
+                {item.year} &bull; {item.colorId.name}
+                </Typography>
+                <Typography level="body-xs">{item.plate}</Typography>
+                <Typography level="body-xs">{item.dailyPrice} ₺</Typography>
+                
               </div>
             </ListItemContent>
             {/* <Chip
@@ -254,142 +277,451 @@ export default function CarList() {
               {item.status}
             </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: { variant: "plain", color: "neutral", size: "sm" },
-                  }}
-                >
-                  <MoreHorizRoundedIcon />
-                </MenuButton>
-                <Menu size="sm" sx={{ minWidth: 140 }}>
-                  <MenuItem
-                    onClick={() => {
-                      formik.resetForm();
-                      setId(item.id);
-                      setColorName(item.name);
-                      setOpen(true);
-                    }}
-                  >
-                    Edit
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      handleDelete(item.id);
-                    }}
-                    color="danger"
-                  >
-                    Delete
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
+            <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{
+                        root: {
+                          variant: "plain",
+                          color: "neutral",
+                          size: "sm",
+                        },
+                      }}
+                    >
+                      <MoreHorizRoundedIcon />
+                    </MenuButton>
+                    <Menu size="sm" sx={{ minWidth: 140 }}>
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          //setCarName(row.name);
+                          setOpen(true);
+                          setIsEdit(true);
+                        }}
+                      >
+                        {t("edit")}
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          handleDelete(row.id);
+                        }}
+                        color="danger"
+                      >
+                        {t("delete")}
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
             </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
       <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setOpen(false);
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
-        }}
-      >
-        <Sheet
-          variant="outlined"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => {
+            formik.resetForm();
+            setId(null);
+            setOpen(false);
+          }}
           sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
           >
-            Add New Color
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>Color Name</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="colorName"
-                      name="colorName"
-                      type="text"
-                      value={formik.values.colorName || colorName}
-                      className={
-                        formik.errors.colorName &&
-                        formik.touched.colorName &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the colorName state when the input changes
-                        setColorName(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              {!isEdit ? t("addNewCar") : t("updateCar")}
+            </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                  <div>
+                    <FormLabel>{t("kilometer")}</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="kilometer"
+                        name="kilometer"
+                        type="text"
+                        value={formik.values.kilometer || kilometer}
+                        className={
+                          formik.errors.kilometer &&
+                          formik.touched.kilometer &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          setKilometer(e.target.value);
+                          formik.handleChange(e); 
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.kilometer && formik.touched.kilometer
+                            ? formik.errors.kilometer
+                            : t("kilometer")
+                        }
+                        error={
+                          formik.errors.kilometer && formik.touched.kilometer
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("plate")}</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="plate"
+                        name="plate"
+                        type="text"
+                        value={formik.values.plate || plate}
+                        className={
+                          formik.errors.plate && formik.touched.plate && "error"
+                        }
+                        onChange={(e) => {
+                          setPlate(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.plate && formik.touched.plate
+                            ? formik.errors.plate
+                            : t("plate")
+                        }
+                        error={formik.errors.plate && formik.touched.plate}
+                      />
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("year")}</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="year"
+                        name="year"
+                        type="text"
+                        value={formik.values.year || year}
+                        className={
+                          formik.errors.year && formik.touched.year && "error"
+                        }
+                        onChange={(e) => {
+                          setYear(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.year && formik.touched.year
+                            ? formik.errors.year
+                            : t("year")
+                        }
+                        error={formik.errors.year && formik.touched.year}
+                      />
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("dailyPriceCar")}</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="dailyPrice"
+                        name="dailyPrice"
+                        type="text"
+                        value={formik.values.dailyPrice || dailyPrice}
+                        className={
+                          formik.errors.dailyPrice &&
+                          formik.touched.dailyPrice &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          setDailyPrice(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.dailyPrice && formik.touched.dailyPrice
+                            ? formik.errors.dailyPrice
+                            : t("dailyPriceCar")
+                        }
+                        error={
+                          formik.errors.dailyPrice && formik.touched.dailyPrice
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("selectBrandAndModel")}</FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="brand"
+                        name="brandId"
+                        value={brandId}
+                        onChange={(e) => {
+                          const selectedBrandId = e.target.value;
+                          setBrandId(selectedBrandId);
+
+                          const selectedBrandModels = models.filter(
+                            (model) =>
+                              model.brandId.id === parseInt(selectedBrandId)
+                          );
+
+                          if (selectedBrandModels.length > 0) {
+                            setModelId(selectedBrandModels[0].id);
+                          } else {
+                            setModelId("");
+                          }
+                        }}
+                      >
+                        <option value="">{t("selectBrand")}</option>
+                        {brands.map((brand) => (
+                          <option key={brand.id} value={brand.id}>
+                            {brand.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        id="model"
+                        name="modelId"
+                        value={modelId}
+                        onChange={(e) => setModelId(e.target.value)}
+                        disabled={!brandId}
+                      >
+                        <option value="">{t("selectModel")}</option>
+                        {models
+                          .filter(
+                            (model) => model.brandId.id === parseInt(brandId)
+                          )
+                          .map((model) => (
+                            <option key={model.id} value={model.id}>
+                              {model.name}
+                            </option>
+                          ))}
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("selectColor")}</FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="color"
+                        name="color"
+                        type="text"
+                        value={formik.values.colorId}
+                        className={
+                          formik.errors.colorId &&
+                          formik.touched.colorId &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          setColorId(e.target.value);
+                          formik.setFieldValue("colorId", e.target.value);
+                        }}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">{t("selectColor")}</option>
+                        {colors.map((color) => {
+                          const colorId = color.id;
+                          return (
+                            <option key={colorId} value={colorId}>
+                              {color.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+
+                      {/* <label>
+                        <input
+                          id="isAvailable"
+                          name="isAvailable"
+                          type="checkbox"
+                          checked={formik.values.isAvailable}
+                          onChange={(e) => {
+                            formik.setFieldValue("isAvailable", e.target.checked); 
+                          }}
+                        />
+                        Is Available
+                      </label> */}
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel htmlFor="fuelType">
+                      {t("selectFuelAndGear")}
+                    </FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="fuelType"
+                        name="fuelType"
+                        value={formik.values.fuelType || fuelType}
+                        onChange={(e) => {
+                          setFuelType(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        className={
+                          formik.errors.fuelType &&
+                          formik.touched.fuelType &&
+                          "error"
+                        }
+                      >
+                        <option value="">{t("selectFuelType")}</option>
+                        <option value="GASOLINE" key="1">
+                          Gasoline
+                        </option>
+                        <option value="DIESEL" key="2">
+                          Diesel
+                        </option>
+                        <option value="HYBRID" key="3">
+                          Hybrid
+                        </option>
+                      </select>
+
+                      <select
+                        id="gearType"
+                        name="gearType"
+                        type="text"
+                        value={formik.values.gearType || gearType}
+                        className={
+                          formik.errors.gearType &&
+                          formik.touched.gearType &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setGearType(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">{t("selectGearType")}</option>
+                        <option value="AUTOMATIC" key="1">
+                          Automatic
+                        </option>
+                        <option value="MANUAL" key="2">
+                          Manual
+                        </option>
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="vehicleType"
+                        name="vehicleType"
+                        type="text"
+                        value={formik.values.vehicleType || vehicleType}
+                        className={
+                          formik.errors.vehicleType &&
+                          formik.touched.vehicleType &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setVehicleType(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">{t("selectVehicleType")}</option>
+                        <option value="SUV" key="1">
+                          SUV
+                        </option>
+                        <option value="SEDAN" key="2">
+                          Sedan
+                        </option>
+                        <option value="HB" key="3">
+                          Hatchback
+                        </option>
+                      </select>
+
+                      <select
+                        id="seatType"
+                        name="seatType"
+                        type="text"
+                        value={formik.values.seatType || seatType}
+                        className={
+                          formik.errors.seatType &&
+                          formik.touched.seatType &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setSeatType(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                      >
+                        <option value="">{t("selectSeatType")}</option>
+                        <option value="TWO" key="1">
+                          2
+                        </option>
+                        <option value="FIVE" key="2">
+                          5
+                        </option>
+                        <option value="SEVEN" key="3">
+                          7
+                        </option>
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  {id ? (
+                    <Button
+                      onClick={() => {
+                        setIsEdit(true);
+                        handleUpdate(id);
                       }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.colorName && formik.touched.colorName
-                          ? formik.errors.colorName
-                          : t("colorName")
-                      }
-                      error={
-                        formik.errors.colorName && formik.touched.colorName
-                      }
-                    />
-                  </FormGroup>
-                </div>
-                {id ? (
-                  <Button
-                    onClick={() => {
-                      handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
+                      className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("update")}
+                    </Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("add")}
+                    </Button>
+                  )}
+                </Form>
+              </Grid>
             </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+          </Sheet>
+        </Modal>
     </Box>
   );
 }

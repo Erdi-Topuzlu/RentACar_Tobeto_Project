@@ -35,7 +35,7 @@ import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 import BusinessIcon from "@mui/icons-material/Business";
 import BurstModeIcon from "@mui/icons-material/BurstMode";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 
 import ColorSchemeToggle from "./ColorShemeToggle";
 import { closeSidebar } from "../utils";
@@ -43,6 +43,7 @@ import { Link } from "@mui/joy";
 import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { toastSuccess } from "../../../service/ToastifyService";
 
 function Toggler({ defaultExpanded = false, renderToggle, children }) {
   const [open, setOpen] = React.useState(defaultExpanded);
@@ -69,17 +70,52 @@ export default function Sidebar() {
   
   const { details, status, error } = useSelector((state) => state.userDetail);
   const { t } = useTranslation();
+  
+  const navigate = useNavigate();
 
   const location = useLocation();
+  const token = localStorage.getItem("access_token");
+
+  const handleLogout = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/logout", {
+        method: "POST",
+        headers: headers,
+      });
+
+      if (response.ok) {
+
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        toastSuccess("Çıkış işlemi başarılı.");
+        navigate("/home");
+      } else {
+
+        toastError("Çıkış işlemi başarısız.")
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setShowUi(true);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Çıkış işlemi sırasında bir hata oluştu:", error);
+    }
+  };
+
 
   const menuItems = [
-    { label: "Dashboard", route: "dashboard" },
-    { label: "Slider", route: "slider" },
-    { label: "Brands", route: "brands" },
-    { label: "Models", route: "models" },
-    { label: "Colors", route: "colors" },
-    { label: "Cars", route: "cars" },
-    { label: "Rentals", route: "rentals" },
+    { label: t("dashboard"), route: "dashboard" },
+    { label: t("slider"), route: "slider" },
+    { label: t("brands"), route: "brands" },
+    { label: t("models"), route: "models" },
+    { label: t("colors"), route: "colors" },
+    { label: t("cars"), route: "cars" },
+    { label: t("rentals"), route: "rentals" },
   ];
 
   const isMenuItemSelected = (route) => {
@@ -143,7 +179,7 @@ export default function Sidebar() {
           <IconButton variant="soft" color="neutral" size="lg">
             <CarRentalIcon />
           </IconButton>
-          <Typography level="title-lg">Pair-1 Rental</Typography>
+          <Typography level="title-lg">{t("pair-1")}</Typography>
         </Link>
         <ColorSchemeToggle sx={{ ml: "auto" }} />
       </Box>
@@ -236,9 +272,9 @@ export default function Sidebar() {
           <Typography level="title-sm">{details.name}</Typography>
           <Typography level="body-xs">{details.email}</Typography>
         </Box>
-        {/* <IconButton size="md" variant="plain" color="neutral">
+        <IconButton onClick={handleLogout} size="md" variant="plain" color="neutral">
           <LogoutRoundedIcon />
-        </IconButton> */}
+        </IconButton>
       </Box>
     </Sheet>
   );

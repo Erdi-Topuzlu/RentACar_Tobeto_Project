@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
@@ -16,7 +15,6 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { Grid } from "@mui/joy";
@@ -111,11 +109,7 @@ export default function ColorTable() {
         console.error("Kayıt hatası:", error);
 
       };
-
     }
-
-
-
   }
 
 
@@ -157,7 +151,7 @@ export default function ColorTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Colors
+          {t("colors").toUpperCase()}
         </Typography>
         <Button
           color="success"
@@ -170,46 +164,10 @@ export default function ColorTable() {
             setIsEdit(false);
           }}
         >
-          Add New
+          {t("addNew")}
         </Button>
       </Box>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: { xs: "flex", sm: "none" },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-      </Sheet>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: "sm",
-          py: 2,
-          display: { xs: "none", sm: "flex" },
-          flexWrap: "wrap",
-          gap: 1.5,
-          "& > *": {
-            minWidth: { xs: "120px", md: "160px" },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for color</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-      </Box>
+      <hr />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"
@@ -264,7 +222,7 @@ export default function ColorTable() {
                   textAlign: "center",
                 }}
               >
-                Color Name
+                {t("colorName")}
               </th>
               {/* <th
                 style={{
@@ -291,18 +249,18 @@ export default function ColorTable() {
                   textAlign: "center",
                 }}
               >
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
           <tbody>
-            {stableSort(colors, getComparator(order, "id")).map((color) => (
-              <tr key={color.id}>
+            {stableSort(colors, getComparator(order, "id")).map((row) => (
+              <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
-                  <Typography level="body-xs">{color.id}</Typography>
+                  <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{color.name}</Typography>
+                  <Typography level="body-xs">{row.name}</Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -351,23 +309,23 @@ export default function ColorTable() {
                     <Menu size="sm" sx={{ minWidth: 140 }}>
                       <MenuItem
                         onClick={() => {
-                          setId(color.id);
-                          setColorName(color.name);
+                          setId(row.id);
+                          setColorName(row.name);
                           setOpen(true);
                           setIsEdit(true);
                         }}
                       >
-                        Edit
+                        {t("edit")}
                       </MenuItem>
                       <Divider />
                       <MenuItem
                         onClick={() => {
-                          setId(color.id);
-                          handleDelete(color.id);
+                          setId(row.id);
+                          handleDelete(row.id);
                         }}
                         color="danger"
                       >
-                        Delete
+                        {t("delete")}
                       </MenuItem>
                     </Menu>
                   </Dropdown>
@@ -413,7 +371,7 @@ export default function ColorTable() {
               mb={1}
             >
               {
-                isEdit ? "Update Color":  "Add New Color" 
+                isEdit ? t("updateColor") :  t("addNewColor")
               }
 
              </Typography>
@@ -427,7 +385,7 @@ export default function ColorTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Color Name</FormLabel>
+                    <FormLabel>{t("colorName")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="colorName"
@@ -459,12 +417,15 @@ export default function ColorTable() {
                   {id ? (
                     <Button onClick={() => {
                       handleUpdate(id);
-                    }} className=" form__btn">{t("update")}</Button>
+                    }} className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >{t("update")}</Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
 
                     >
                       {t("add")}

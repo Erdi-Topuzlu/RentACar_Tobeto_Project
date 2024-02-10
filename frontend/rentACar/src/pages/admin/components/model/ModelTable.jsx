@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
@@ -16,7 +15,6 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { Grid } from "@mui/joy";
@@ -122,8 +120,7 @@ export default function ModelTable() {
 
       };
     }
-  }
-
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -164,10 +161,10 @@ export default function ModelTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Models
+        {t("models").toUpperCase()}
         </Typography>
         <Button
-          Model="success"
+          color="success"
           size="md"
           onClick={() => {
             formik.resetForm();
@@ -178,46 +175,10 @@ export default function ModelTable() {
 
           }}
         >
-          Add New
+          {t("addNew")}
         </Button>
       </Box>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: { xs: "flex", sm: "none" },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-      </Sheet>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: "sm",
-          py: 2,
-          display: { xs: "none", sm: "flex" },
-          flexWrap: "wrap",
-          gap: 1.5,
-          "& > *": {
-            minWidth: { xs: "120px", md: "160px" },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for Model</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-      </Box>
+      <hr />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"
@@ -249,7 +210,7 @@ export default function ModelTable() {
               <th style={{ width: "40px", padding: "12px 12px" }}>
                 <Link
                   underline="none"
-                  Model="primary"
+                  color="primary"
                   component="button"
                   onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
                   fontWeight="lg"
@@ -272,17 +233,18 @@ export default function ModelTable() {
                   textAlign: "center",
                 }}
               >
-                Model Name
+                {t("modelName")}
               </th>
-              {/* <th
+               <th
                 style={{
                   width: "auto",
                   padding: "12px 6px",
                   textAlign: "center",
                 }}
               >
-                Status
+                {t("brandName")}
               </th>
+              {/*
               <th
                 style={{
                   width: "auto",
@@ -299,11 +261,12 @@ export default function ModelTable() {
                   textAlign: "center",
                 }}
               >
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
           <tbody>
+           
             {stableSort(models, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
@@ -312,28 +275,9 @@ export default function ModelTable() {
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">{row.name}</Typography>
                 </td>
-                {/* <td style={{ textAlign: "center" }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.id]
-                    }
-                    Model={
-                      {
-                        Paid: "success",
-                        Refunded: "neutral",
-                        Cancelled: "danger",
-                      }[row.id]
-                    }
-                  >
-                    {row.id}
-                  </Chip>
-                </td> */}
+                 <td style={{ textAlign: "center" }}>
+                 <Typography level="body-xs">{row.brandId?.name}</Typography>
+                </td> 
                 {/* <td style={{ textAlign: "center" }}>
                   <div>
                     <Typography level="body-xs">{}</Typography>
@@ -349,7 +293,7 @@ export default function ModelTable() {
                       slotProps={{
                         root: {
                           variant: "plain",
-                          Model: "neutral",
+                          color: "neutral",
                           size: "sm",
                         },
                       }}
@@ -366,7 +310,7 @@ export default function ModelTable() {
 
                         }}
                       >
-                        Edit
+                        {t("edit")}
                       </MenuItem>
                       <Divider />
                       <MenuItem
@@ -374,9 +318,9 @@ export default function ModelTable() {
                           setId(row.id);
                           handleDelete(row.id);
                         }}
-                        Model="danger"
+                        color="danger"
                       >
-                        Delete
+                        {t("delete")}
                       </MenuItem>
                     </Menu>
                   </Dropdown>
@@ -417,12 +361,12 @@ export default function ModelTable() {
               component="h2"
               id="modal-title"
               level="h4"
-              textModel="inherit"
+              textColor="inherit"
               fontWeight="lg"
               mb={1}
             >
               {
-                isEdit ? "Update Model" : "Add New Model"
+                isEdit ? t("updateModel") : t("addNewModel")
               }
             </Typography>
             <hr />
@@ -434,7 +378,7 @@ export default function ModelTable() {
             >
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
-                    <FormLabel>Model Name</FormLabel>
+                    <FormLabel>{t("modelName")}</FormLabel>
                     <div>
                     <FormGroup className="">
                       <Input
@@ -456,7 +400,7 @@ export default function ModelTable() {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("name")
+                            : t("modelName")
                         }
                         error={
                           formik.errors.name && formik.touched.name
@@ -464,7 +408,7 @@ export default function ModelTable() {
                       />
                     </FormGroup>
                     
-                      <FormLabel>Select a Brand</FormLabel>
+                      <FormLabel>{t("selectBrand")}</FormLabel>
                       <FormGroup className="">
                       <select
                         id="brandId"
@@ -475,7 +419,7 @@ export default function ModelTable() {
                           setBrandId(selectedBrandId);
                         }}
                       >
-                        <option value="">Select a brand</option>
+                        <option value="">{t("selectBrand")}</option>
                         {brands.map((brand) => (
                           <option key={brand.id} value={brand.id}>
                             {brand.name}
@@ -489,12 +433,15 @@ export default function ModelTable() {
                   {id ? (
                     <Button onClick={() => {
                       handleUpdate(id);
-                    }} className=" form__btn">{t("update")}</Button>
+                    }} className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >{t("update")}</Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
 
                     >
                       {t("add")}
