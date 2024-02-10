@@ -60,7 +60,7 @@ const Settings = () => {
         role: details.role,
         tcNo: values.tcNo || details.tcNo,
         usernames: values.usernames || details.usernames,
-        // birthDate: values.birthdate || details.birthDate,
+        birthDate: details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
 
@@ -265,7 +265,7 @@ const Settings = () => {
                       placeholder={
                         formik.errors.tcNo && formik.touched.tcNo
                           ? formik.errors.tcNo
-                          : t("tcNo")
+                          : t("identifyNumber")
                       }
                     />
                   </FormControl>

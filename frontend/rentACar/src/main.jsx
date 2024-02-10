@@ -31,7 +31,7 @@ import Campaign from "./pages/Campaign.jsx";
 import CampaignDetails from "./pages/CampaignDetails.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Dashboard from "./pages/admin/components/Dashboard.jsx";
-import BrandTable from "./pages/admin/components/Brand/BrandTable.jsx";
+import BrandTable from "./pages/admin/components/brand/BrandTable.jsx";
 import ColorTable from "./pages/admin/components/color/ColorTable.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import { store } from "./redux/store.js";
@@ -41,6 +41,7 @@ import { ToastContainer } from "react-toastify";
 import CarTable from "./pages/admin/components/car/CarTable.jsx";
 import RentalTable from "./pages/admin/components/rental/RentalTable.jsx";
 import ModelTable from "./pages/admin/components/model/ModelTable.jsx";
+import SliderTable from "./pages/admin/components/slider/SliderTable.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -72,6 +73,7 @@ const router = createBrowserRouter(
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="slider" element={<SliderTable />} />
           <Route path="brands" element={<BrandTable />} />
           <Route path="colors" element={<ColorTable/>} />
           <Route path="cars" element={<CarTable/>} />
