@@ -4,11 +4,15 @@ import com.tobeto.RentACar.entities.concretes.FuelType;
 import com.tobeto.RentACar.entities.concretes.GearType;
 import com.tobeto.RentACar.entities.concretes.SeatType;
 import com.tobeto.RentACar.entities.concretes.VehicleType;
+import com.tobeto.RentACar.entities.concretes.carImage.CarImage;
+import com.tobeto.RentACar.services.dtos.responses.carImage.GetAllCarImageResponse;
 import com.tobeto.RentACar.services.dtos.responses.color.GetByIdColorResponse;
 import com.tobeto.RentACar.services.dtos.responses.model.GetByIdModelResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +29,7 @@ public class GetAllCarResponse {
     GearType gearType;
     VehicleType vehicleType;
     SeatType seatType;
+    List<GetAllCarImageResponse> carImages;
     private Boolean isAvailable;
 
 }

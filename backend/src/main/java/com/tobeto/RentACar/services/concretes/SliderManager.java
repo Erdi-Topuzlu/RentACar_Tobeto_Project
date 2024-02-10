@@ -97,7 +97,7 @@ public class SliderManager implements SliderService {
             Files.copy(image.getInputStream(), fileStorageLocation.resolve(fileName), REPLACE_EXISTING);
             return ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/v1/admin/slider" + fileName)
+                    .path("/api/v1/admin/slider/" + fileName)
                     .toUriString();
         } catch (Exception e) {
             throw new RuntimeException("Unable to save Image");

@@ -14,12 +14,14 @@ import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/car-images")
+@RequestMapping("api/v1/admin/car-images")
 @AllArgsConstructor
 @Tag(name = "CarImages Controller", description = "CarImages Endpoints")
 public class CarImagesController {
@@ -41,13 +43,13 @@ public class CarImagesController {
     }
 
     @PostMapping
-    public void add(@RequestBody @Valid AddCarImageRequest request) {
-        carImageService.add(request);
+    public ResponseEntity<String> add(@RequestParam("carId") Integer carId, @RequestParam("file") MultipartFile[] file) {
+        return ResponseEntity.ok().body(carImageService.addCarImageUrl(carId, file));
     }
 
     @PutMapping
-    public void update(@RequestBody @Valid UpdateCarImageRequest request) {
-        carImageService.update(request);
+    public ResponseEntity<String> update(@RequestParam("id") Integer id, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok().body(carImageService.updateCarImageUrl(id, file));
     }
 
 }

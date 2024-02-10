@@ -16,7 +16,7 @@ public class AddCarImageRequest {
     @NotBlank(message = Messages.imgPathNotEmpty)
     private String imgPath;
 
-    @NotNull(message = Messages.carIdNotEmpty)
+//    @NotNull(message = Messages.carIdNotEmpty)
     @Positive(message = Messages.carIdPositive)
     private int carId;
 }
