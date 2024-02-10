@@ -61,6 +61,7 @@ function stableSort(array, comparator) {
 
 export default function RentalTable() {
   const [id, setId] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
   const [carName, setCarName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
@@ -151,7 +152,7 @@ export default function RentalTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Colors
+          Rentals
         </Typography>
         <Button
           color="success"
@@ -161,6 +162,8 @@ export default function RentalTable() {
             setCarName("");
             setId(null);
             setOpen(true);
+            setIsEdit(false);
+
           }}
         >
           Add New
@@ -347,6 +350,7 @@ export default function RentalTable() {
                           setId(row.id);
                           setCarName(row.name);
                           setOpen(true);
+                          setIsEdit(true);
                         }}
                       >
                         Edit
@@ -404,7 +408,10 @@ export default function RentalTable() {
               fontWeight="lg"
               mb={1}
             >
-              Add New color
+              {
+                isEdit ? "Update Rental":  "Add New Rental" 
+              }
+
             </Typography>
             <hr />
             <Grid

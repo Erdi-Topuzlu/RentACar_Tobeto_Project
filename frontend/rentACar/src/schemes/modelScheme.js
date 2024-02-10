@@ -5,9 +5,10 @@ export const getModelValidationSchema = () => {
   const { t } = useTranslation();
 
   return yup.object().shape({
-    brandName: yup
+    modelName: yup
       .string()
       .required(t("schemeModelName")),
+   
   });
 };
 

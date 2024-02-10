@@ -60,6 +60,7 @@ function stableSort(array, comparator) {
 
 export default function ColorTable() {
   const [id, setId] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
   const [colorName, setColorName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
@@ -75,61 +76,61 @@ export default function ColorTable() {
   const colorValidationSchema = getColorValidationSchema();
 
   const handleDelete = async (id) => {
-    if(!id){
+    if (!id) {
       toastError("Color ID bulunamadı!");
-    }else{
+    } else {
       try {
         await axiosInstance.delete(`api/v1/admin/colors/${id}`);
         toastSuccess("Color Başarıyla Silindi.");
         dispatch(fetchAllColorData());
       } catch (error) {
-          alert(error)
+        alert(error)
         console.error("Kayıt hatası:", error);
       }
-    }   
+    }
   };
 
   const handleUpdate = async (id) => {
-   if(!colorName){
-    setOpen(false);
-    toastError("Color Name alanı boş bırakılamaz!");
-   }else{
-
-    const data = {
-      id:id,
-      name: colorName,
-    };
-
-    try {
-      await axiosInstance.put(`api/v1/admin/colors/${id}`,
-      data);
-      toastSuccess("Color Başarıyla Güncellendi.");
+    if (!colorName) {
       setOpen(false);
-      dispatch(fetchAllColorData());
-    } catch (error) {
-      console.error("Kayıt hatası:" ,error);
-    
-  };
+      toastError("Color Name alanı boş bırakılamaz!");
+    } else {
 
-   }
+      const data = {
+        id: id,
+        name: colorName,
+      };
+
+      try {
+        await axiosInstance.put(`api/v1/admin/colors/${id}`,
+          data);
+        toastSuccess("Color Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllColorData());
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+
+      };
+
+    }
 
 
-    
-}
+
+  }
 
 
 
 
   const formik = useFormik({
     initialValues: {
-        colorName: "",
+      colorName: "",
     },
     validationSchema: colorValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
         name: values.colorName,
       };
-      
+
       try {
         await axiosInstance.post("api/v1/admin/colors", data);
         toastSuccess("Color Başarıyla Eklendi.");
@@ -166,6 +167,7 @@ export default function ColorTable() {
             setColorName("");
             setId(null);
             setOpen(true);
+            setIsEdit(false);
           }}
         >
           Add New
@@ -352,6 +354,7 @@ export default function ColorTable() {
                           setId(color.id);
                           setColorName(color.name);
                           setOpen(true);
+                          setIsEdit(true);
                         }}
                       >
                         Edit
@@ -409,8 +412,11 @@ export default function ColorTable() {
               fontWeight="lg"
               mb={1}
             >
-              Add New color
-            </Typography>
+              {
+                isEdit ? "Update Color":  "Add New Color" 
+              }
+
+             </Typography>
             <hr />
             <Grid
               textAlign={"center"}
@@ -451,7 +457,7 @@ export default function ColorTable() {
                     </FormGroup>
                   </div>
                   {id ? (
-                    <Button onClick={()=>{
+                    <Button onClick={() => {
                       handleUpdate(id);
                     }} className=" form__btn">{t("update")}</Button>
                   ) : (

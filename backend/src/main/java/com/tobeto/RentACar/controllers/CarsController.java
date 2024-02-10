@@ -44,9 +44,9 @@ public class CarsController {
         carService.add(request);
     }
 
-    @PutMapping
-    public void update(@RequestBody @Valid UpdateCarRequest request) {
-        carService.update(request);
+    @PutMapping("/{id}")
+    public void update(@PathVariable int id,@RequestBody @Valid UpdateCarRequest request) {
+        carService.update(id,request);
     }
 
 

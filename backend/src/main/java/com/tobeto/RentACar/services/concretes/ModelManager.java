@@ -31,7 +31,7 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public void update(UpdateModelRequest request) {
+    public void update(UpdateModelRequest request,int id) {
         modelBusinessRulesService.checkIfByIdExists(request.getId());
         modelBusinessRulesService.checkIfNameExists(request.getName());
         modelBusinessRulesService.checkIfBrandIdExists(request.getBrandId());
