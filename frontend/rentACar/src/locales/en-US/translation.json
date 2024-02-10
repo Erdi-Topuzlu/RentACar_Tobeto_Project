@@ -193,6 +193,13 @@
   "schemeBrandName":"Brand Name is required",
   "brandName":"Brand Name",
 
+  "schemeIdentfyNumber":"Identfy Number is required",
+  "schemeMin11Char":"Identfy Number must have 11 digits",
+  "schemeUserName":"Username is required",
+  "schemeMin5Char":"Username must have at least 5 characters",
+  "identfyNumber":"Identfy Number",
+  "userName":"Username",
+
   "_packages":"Packages-EN",
   "miniPackage":"Super Mini Coverage",
   "miniDesc":"Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",

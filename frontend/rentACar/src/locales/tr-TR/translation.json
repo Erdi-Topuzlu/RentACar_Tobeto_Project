@@ -195,6 +195,13 @@
   "schemeBrandName":"Marka ismi gereklidir",
   "brandName":"Marka İsmi",
 
+  "schemeIdentfyNumber":"Kimlik Numarası gereklidir",
+  "schemeMin11Char":"Kimlik Numarası 11 basamaklı olmalıdır",
+  "schemeUserName":"Kullanıcı Adı gereklidir",
+  "schemeMin5Char":"Kullanıcı Adı en az 5 karakter olmalıdır",
+  "identfyNumber":"Kimlik Numarası",
+  "userName":"Kullanıcı Adı",
+
   "_packages":"Packages-TR",
   "miniPackage":"Süper Mini Kapsamlı",
   "miniDesc":"Tekerlek, Ön Cam, Far ve Arka Lamba ve Yan Ayna Kapsamı",
