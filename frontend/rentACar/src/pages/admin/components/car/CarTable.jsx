@@ -64,6 +64,7 @@ function stableSort(array, comparator) {
 export default function CarTable() {
   const [id, setId] = React.useState();
   const [isChecked, setIsChecked] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(false);
   const [kilometer, setKilometer] = React.useState();
   const [plate, setPlate] = React.useState();
   const [year, setYear] = React.useState();
@@ -83,6 +84,7 @@ export default function CarTable() {
   const { brands } = useSelector((state) => state.brandAllData);
 
 
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -91,6 +93,8 @@ export default function CarTable() {
     dispatch(fetchAllColorData());
     dispatch(fetchAllModelData());
     dispatch(fetchAllBrandData());
+    console.log(items) // Ensure modelId is treated as string
+
   }, [dispatch]);
 
 
@@ -102,6 +106,7 @@ export default function CarTable() {
       toastError("Car ID bulunamadı!");
     } else {
       try {
+        alert(id)
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
         toastSuccess("Car Başarıyla Silindi.");
         dispatch(fetchAllCarData());
@@ -113,19 +118,35 @@ export default function CarTable() {
   };
 
   const handleUpdate = async (id) => {
-    if (!carName) {
+    if (!kilometer) {
       setOpen(false);
-      toastError("Car name alanı boş bırakılamaz!");
+      toastError("Kilometer alanı boş bırakılamaz!");
     } else {
 
-      const data = {
-        id: id,
-        name: carName,
+      alert(id)
+
+      const updatedData = {
+        id:id,
+        kilometer: kilometer,
+        plate: plate,
+        year: year,
+        dailyPrice: dailyPrice,
+        fuelType: fuelType,
+        gearType: gearType,
+        vehicleType: vehicleType,
+        seatType: seatType,
+        isAvailable: "true",
+        modelId: modelId,
+        colorId: colorId,
+        
+
+
       };
+
 
       try {
         await axiosInstance.put(`api/v1/admin/cars/${id}`,
-          data);
+          updatedData);
         toastSuccess("Car Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllCarData());
@@ -150,12 +171,8 @@ export default function CarTable() {
       colorId: "",
       modelId: "",
       isAvailable: ""
-
-
-
-
-
     },
+
     validationSchema: carValidationSchema,
     onSubmit: async (values, actions) => {
 
@@ -164,13 +181,14 @@ export default function CarTable() {
         plate: values.plate,
         year: values.year,
         dailyPrice: values.dailyPrice,
-        fuelType: fuelType,
-        gearType: gearType,
-        vehicleType: vehicleType,
-        seatType: seatType,
+        fuelType: values.fuelType,
+        gearType: values.gearType,
+        vehicleType: values.vehicleType,
+        seatType: values.seatType,
+        isAvailable: "True",
         modelId: modelId,
         colorId: colorId,
-        isAvailable: "true"
+        
 
 
       };
@@ -187,6 +205,7 @@ export default function CarTable() {
       }
     },
   });
+
 
   return (
     <React.Fragment>
@@ -212,6 +231,7 @@ export default function CarTable() {
             //setCarName("");
             setId(null);
             setOpen(true);
+            setIsEdit(false);
           }}
         >
           Add New
@@ -403,6 +423,7 @@ export default function CarTable() {
                           setId(row.id);
                           //setCarName(row.name);
                           setOpen(true);
+                          setIsEdit(true);
                         }}
                       >
                         Edit
@@ -460,7 +481,10 @@ export default function CarTable() {
               fontWeight="lg"
               mb={1}
             >
-              Add New car
+              {
+                !isEdit ? " Add New car" : "Update Car"
+              }
+             
             </Typography>
             <hr />
             <Grid
@@ -604,52 +628,46 @@ export default function CarTable() {
                         id="brand"
                         name="brandId"
                         value={brandId}
-                        onBlur={formik.handleBlur}
                         onChange={(e) => {
-                          setBrandId(e.target.value);
-                          formik.setFieldValue("brandId", e.target.value);
+                          const selectedBrandId = e.target.value;
+                          setBrandId(selectedBrandId);
+
+                          const selectedBrandModels = models.filter(model => model.brandId.id === parseInt(selectedBrandId));
+
+                          if (selectedBrandModels.length > 0) {
+                            setModelId(selectedBrandModels[0].id);
+                          } else {
+                            setModelId(""); 
+                          }
                         }}
-                        className={
-                          formik.errors.brandId && formik.touched.brandId && "error"
-                        }
                       >
                         <option value="">Select a brand</option>
-                        {brands.map((brand) => {
-                          const brandId = brand.id;
-                          return (
-                            <option key={brandId} value={brandId}>
-                              {brand.name}
-                            </option>
-                          );
-                        })}
+                        {brands.map((brand) => (
+                          <option key={brand.id} value={brand.id}>
+                            {brand.name}
+                          </option>
+                        ))}
                       </select>
 
                       <select
                         id="model"
                         name="modelId"
                         value={modelId}
-                        onBlur={formik.handleBlur}
-                        onChange={(e) => {
-                          setModelId(e.target.value);
-                          formik.setFieldValue("modelId", e.target.value);
-                        }}
-                        className={
-                          formik.errors.modelId && formik.touched.modelId && "error"
-                        }
+                        onChange={(e) => setModelId(e.target.value)}
+                        disabled={!brandId}
                       >
                         <option value="">Select a model</option>
-                        {models.map((model) => {
-                          const modelId = model.id;
-                          return (
-                            <option key={modelId} value={modelId}>
+                        {models
+                          .filter((model) => model.brandId.id === parseInt(brandId))
+                          .map((model) => (
+                            <option key={model.id} value={model.id}>
                               {model.name}
                             </option>
-                          );
-                        })}
+                          ))}
                       </select>
+
                     </FormGroup>
                   </div>
-
 
                   <div>
                     <FormLabel>Select Color and Availabelty</FormLabel>
@@ -806,6 +824,7 @@ export default function CarTable() {
 
                   {id ? (
                     <Button onClick={() => {
+                      setIsEdit(true)
                       handleUpdate(id);
                     }} className=" form__btn">{t("update")}</Button>
                   ) : (

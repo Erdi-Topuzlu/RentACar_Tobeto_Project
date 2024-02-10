@@ -61,6 +61,7 @@ function stableSort(array, comparator) {
 
 export default function BrandTable() {
   const [id, setId] = React.useState();
+  const [isEdit, setIsEdit] = React.useState(false);
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
@@ -142,7 +143,7 @@ export default function BrandTable() {
           mb: 1,
           gap: 1,
           flexDirection: { xs: "column", sm: "row" },
-          alignbrands: { xs: "start", sm: "center" },
+          alignItems: { xs: "start", sm: "center" },
           flexWrap: "wrap",
           justifyContent: "space-between",
         }}
@@ -158,6 +159,7 @@ export default function BrandTable() {
             setBrandName("");
             setId(null);
             setOpen(true);
+            setIsEdit(false);
           }}
         >
           Add New
@@ -345,6 +347,7 @@ export default function BrandTable() {
                           setId(row.id);
                           setBrandName(row.name);
                           setOpen(true);
+                          setIsEdit(true);
                         }}
                       >
                         Edit
@@ -379,7 +382,7 @@ export default function BrandTable() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignbrands: "center",
+            alignItems: "center",
             zIndex: 10001,
           }}
         >
@@ -402,7 +405,9 @@ export default function BrandTable() {
               fontWeight="lg"
               mb={1}
             >
-              Add New Brand
+              {
+                isEdit ? "Update Color":  "Add New Color" 
+              }
             </Typography>
             <hr />
             <Grid

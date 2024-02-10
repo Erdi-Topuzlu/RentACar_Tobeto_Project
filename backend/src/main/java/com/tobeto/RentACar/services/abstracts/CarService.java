@@ -12,7 +12,7 @@ public interface CarService {
 
     void add(AddCarRequest request);
 
-    void update(UpdateCarRequest request);
+    void update(int id,UpdateCarRequest request);
 
     DeleteCarRequest delete(int id);
 

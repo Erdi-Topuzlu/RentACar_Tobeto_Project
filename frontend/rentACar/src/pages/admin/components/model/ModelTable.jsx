@@ -26,9 +26,10 @@ import { useFormik } from "formik";
 import getModelValidationSchema from "../../../../schemes/modelScheme";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
-import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import ModelList from "./ModelList";
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -61,75 +62,87 @@ function stableSort(array, comparator) {
 
 export default function ModelTable() {
   const [id, setId] = React.useState();
-  const [carName, setCarName] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
+  const [name, setName] = React.useState();
+  const [brandId, setBrandId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { items, status, error } = useSelector((state) => state.carAllData);
+  const { models } = useSelector((state) => state.modelAllData);
+  const { brands } = useSelector((state) => state.brandAllData);
+
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    dispatch(fetchAllCarData());
+    dispatch(fetchAllModelData());
+    dispatch(fetchAllBrandData());
   }, [dispatch]);
 
   const modelValidationSchema = getModelValidationSchema();
 
   const handleDelete = async (id) => {
-    if(!id){
-      toastError("Color ID bulunamadı!");
-    }else{
+    if (!id) {
+      toastError("Model ID bulunamadı!");
+    } else {
       try {
-        await axiosInstance.delete(`api/v1/cars/${id}`);
-        toastSuccess("Car Başarıyla Silindi.");
-        dispatch(fetchAllCarData());
+        await axiosInstance.delete(`api/v1/admin/models/${id}`);
+        toastSuccess("Model Başarıyla Silindi.");
+        dispatch(fetchAllModelData());
       } catch (error) {
-          alert(error)
+        alert(error)
         console.error("Kayıt hatası:", error);
       }
-    }   
+    }
   };
 
   const handleUpdate = async (id) => {
-   if(!carName){
-    setOpen(false);
-    toastError("Car name alanı boş bırakılamaz!");
-   }else{
-
-    const data = {
-      id:id,
-      name: carName,
-    };
-
-    try {
-      await axiosInstance.put(`api/v1/cars/${id}`,
-      data);
-      toastSuccess("Car Başarıyla Güncellendi.");
+    if (!name) {
       setOpen(false);
-      dispatch(fetchAllCarData());
-    } catch (error) {
-      console.error("Kayıt hatası:" ,error);
-    
-  };
-   } 
-}
+      toastError("Model name alanı boş bırakılamaz!");
+    } else {
+
+      alert(id)
+
+
+      const updatedData = {
+        id: id,
+        name: name,
+        brandId: brandId,
+      };
+
+      try {
+        await axiosInstance.put(`api/v1/admin/models/${id}`,
+          updatedData);
+        toastSuccess("Model Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllModelData());
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+
+      };
+    }
+  }
 
 
   const formik = useFormik({
     initialValues: {
-        carName: "",
+      name: "",
+      brandId: "",
     },
     validationSchema: modelValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
-        name: values.carName,
+        name: values.modelName,
+        brandId:brandId,
       };
-      
+
       try {
-        await axiosInstance.post("api/v1/cars", data);
-        toastSuccess("Car Başarıyla Eklendi.");
+        alert(JSON.stringify(data));
+        await axiosInstance.post("api/v1/admin/models/add", data);
+        toastSuccess("Model Başarıyla Eklendi.");
         setOpen(false);
-        dispatch(fetchAllCarData());
+        dispatch(fetchAllModelData());
         formik.resetForm();
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
@@ -151,16 +164,18 @@ export default function ModelTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Colors
+          Models
         </Typography>
         <Button
-          color="success"
+          Model="success"
           size="md"
           onClick={() => {
             formik.resetForm();
-            setCarName("");
+            //setName("")
             setId(null);
             setOpen(true);
+            setIsEdit(false);
+
           }}
         >
           Add New
@@ -195,7 +210,7 @@ export default function ModelTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for color</FormLabel>
+          <FormLabel>Search for Model</FormLabel>
           <Input
             size="sm"
             placeholder="Search"
@@ -234,7 +249,7 @@ export default function ModelTable() {
               <th style={{ width: "40px", padding: "12px 12px" }}>
                 <Link
                   underline="none"
-                  color="primary"
+                  Model="primary"
                   component="button"
                   onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
                   fontWeight="lg"
@@ -257,7 +272,7 @@ export default function ModelTable() {
                   textAlign: "center",
                 }}
               >
-                Color Name
+                Model Name
               </th>
               {/* <th
                 style={{
@@ -289,7 +304,7 @@ export default function ModelTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(items, getComparator(order, "id")).map((row) => (
+            {stableSort(models, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -308,7 +323,7 @@ export default function ModelTable() {
                         Cancelled: <BlockIcon />,
                       }[row.id]
                     }
-                    color={
+                    Model={
                       {
                         Paid: "success",
                         Refunded: "neutral",
@@ -334,7 +349,7 @@ export default function ModelTable() {
                       slotProps={{
                         root: {
                           variant: "plain",
-                          color: "neutral",
+                          Model: "neutral",
                           size: "sm",
                         },
                       }}
@@ -345,8 +360,10 @@ export default function ModelTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          setCarName(row.name);
+                          //setCarName(row.name);
                           setOpen(true);
+                          setIsEdit(true);
+
                         }}
                       >
                         Edit
@@ -357,7 +374,7 @@ export default function ModelTable() {
                           setId(row.id);
                           handleDelete(row.id);
                         }}
-                        color="danger"
+                        Model="danger"
                       >
                         Delete
                       </MenuItem>
@@ -400,11 +417,13 @@ export default function ModelTable() {
               component="h2"
               id="modal-title"
               level="h4"
-              textColor="inherit"
+              textModel="inherit"
               fontWeight="lg"
               mb={1}
             >
-              Add New color
+              {
+                isEdit ? "Update Model" : "Add New Model"
+              }
             </Typography>
             <hr />
             <Grid
@@ -415,38 +434,60 @@ export default function ModelTable() {
             >
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
-                  <div>
-                    <FormLabel>Color Name</FormLabel>
+                    <FormLabel>Model Name</FormLabel>
+                    <div>
                     <FormGroup className="">
                       <Input
-                        id="colorName"
-                        name="colorName"
+                        id="modelName"
+                        name="modelName"
                         type="text"
-                        value={formik.values.carName || carName}
+                        value={formik.values.name || name}
                         className={
-                          formik.errors.carName &&
-                          formik.touched.carName &&
+                          formik.errors.name &&
+                          formik.touched.name &&
                           "error"
                         }
                         onChange={(e) => {
                           // Update the brandName state when the input changes
-                          setCarName(e.target.value);
+                          setName(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
-                          formik.errors.carName && formik.touched.carName
-                            ? formik.errors.carName
-                            : t("carName")
+                          formik.errors.name && formik.touched.name
+                            ? formik.errors.name
+                            : t("name")
                         }
                         error={
-                          formik.errors.carName && formik.touched.carName
+                          formik.errors.name && formik.touched.name
                         }
                       />
                     </FormGroup>
-                  </div>
+                    
+                      <FormLabel>Select a Brand</FormLabel>
+                      <FormGroup className="">
+                      <select
+                        id="brandId"
+                        name="brandId"
+                        value={brandId}
+                        onChange={(e) => {
+                          const selectedBrandId = e.target.value;
+                          setBrandId(selectedBrandId);
+                        }}
+                      >
+                        <option value="">Select a brand</option>
+                        {brands.map((brand) => (
+                          <option key={brand.id} value={brand.id}>
+                            {brand.name}
+                          </option>
+                        ))}
+                      </select>
+                      </FormGroup>
+
+                    </div>
+                    
                   {id ? (
-                    <Button onClick={()=>{
+                    <Button onClick={() => {
                       handleUpdate(id);
                     }} className=" form__btn">{t("update")}</Button>
                   ) : (
@@ -458,7 +499,9 @@ export default function ModelTable() {
                     >
                       {t("add")}
                     </Button>
+                    
                   )}
+                  
                 </Form>
               </Grid>
             </Grid>

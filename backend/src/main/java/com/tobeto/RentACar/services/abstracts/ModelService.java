@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ModelService {
     void add(AddModelRequest request);
-    void update(UpdateModelRequest request);
+    void update(UpdateModelRequest request,int id);
 
     DeleteModelRequest delete(int id);
 

@@ -17,7 +17,7 @@ public class AddCarRequest {
     private int kilometer;
 
     @NotBlank(message = Messages.plateNotEmpty)
-    //@Pattern(regexp = "^[1-8][0-9]{1}[a-zA-Z]{1,3}[0-9]{1,4}$", message = Messages.invalidPlate)
+    @Pattern(regexp = "^[1-8][0-9]{1}[a-zA-Z]{1,3}[0-9]{1,4}$", message = Messages.invalidPlate)
     private String plate;
 
     public void setPlate(String plate) {

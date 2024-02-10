@@ -41,6 +41,9 @@ public class UpdateCarRequest {
 
     private String seatType;
 
+    private Boolean isAvailable;
+
+
     @NotNull(message = Messages.colorIdNotEmpty)
     @Positive(message = Messages.colorIdPositive)
     private int colorId;

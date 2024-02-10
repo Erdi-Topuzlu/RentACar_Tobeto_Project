@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/models")
+@RequestMapping("api/v1/admin/models")
 @AllArgsConstructor
 @Tag(name = "Model Controller", description = "Models Endpoints")
 public class ModelsController {
@@ -35,14 +35,14 @@ public class ModelsController {
         return modelService.delete(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public void add(@RequestBody @Valid AddModelRequest request) {
         modelService.add(request);
     }
 
-    @PutMapping
-    public void update(@RequestBody @Valid UpdateModelRequest request) {
-        modelService.update(request);
+    @PutMapping("/{id}")
+    public void update(@RequestBody @Valid UpdateModelRequest request,@PathVariable int id) {
+        modelService.update(request,id);
     }
 
 }
