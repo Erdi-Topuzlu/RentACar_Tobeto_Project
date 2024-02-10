@@ -30,7 +30,7 @@ export default function Dashboard() {
       <Grid container>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../slider" style={{textDecoration:"none"}}>
+        <Link to="./slider" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -50,7 +50,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../brands" style={{textDecoration:"none"}}>
+        <Link to="./brands" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -69,7 +69,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../models" style={{textDecoration:"none"}}>
+        <Link to="./models" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -88,7 +88,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../colors" style={{textDecoration:"none"}}>
+        <Link to="./colors" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -107,7 +107,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../cars" style={{textDecoration:"none"}}>
+        <Link to="./cars" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
@@ -126,7 +126,7 @@ export default function Dashboard() {
         </Grid>
 
         <Grid xs={12} sm={6} md={4}>
-        <Link to="../rentals" style={{textDecoration:"none"}}>
+        <Link to="./rentals" style={{textDecoration:"none"}}>
           <Card>
             <CardActions
               sx={{
