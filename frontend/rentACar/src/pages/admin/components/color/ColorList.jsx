@@ -20,10 +20,18 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import {
+  Button,
+  FormLabel,
+  Grid,
+  Modal,
+  ModalClose,
+  Sheet,
+  Table,
+} from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 function descendingComparator(a, b, orderBy) {
@@ -56,6 +64,7 @@ function stableSort(array, comparator) {
 
 export default function ColorList() {
   const [id, setId] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
   const [colorName, setColorName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
@@ -63,7 +72,6 @@ export default function ColorList() {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
 
   React.useEffect(() => {
     dispatch(fetchAllColorData());
@@ -78,6 +86,7 @@ export default function ColorList() {
         toastSuccess("Color Başarıyla Silindi.");
         dispatch(fetchAllColorData());
       } catch (error) {
+        alert(error);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -99,7 +108,6 @@ export default function ColorList() {
         setOpen(false);
         dispatch(fetchAllColorData());
       } catch (error) {
-        console.log(id);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -153,7 +161,7 @@ export default function ColorList() {
                 textAlign: "center",
               }}
             >
-              Color Name
+              {t("colorName")}
             </th>
             {/* <th
                 style={{
@@ -180,7 +188,7 @@ export default function ColorList() {
                 textAlign: "right",
               }}
             >
-              Actions
+              {t("actions")}
             </th>
           </tr>
         </thead>
@@ -258,7 +266,11 @@ export default function ColorList() {
                 <MenuButton
                   slots={{ root: IconButton }}
                   slotProps={{
-                    root: { variant: "plain", color: "neutral", size: "sm" },
+                    root: {
+                      variant: "plain",
+                      color: "neutral",
+                      size: "sm",
+                    },
                   }}
                 >
                   <MoreHorizRoundedIcon />
@@ -266,13 +278,13 @@ export default function ColorList() {
                 <Menu size="sm" sx={{ minWidth: 140 }}>
                   <MenuItem
                     onClick={() => {
-                      formik.resetForm();
                       setId(item.id);
                       setColorName(item.name);
                       setOpen(true);
+                      setIsEdit(true);
                     }}
                   >
-                    Edit
+                    {t("edit")}
                   </MenuItem>
                   <Divider />
                   <MenuItem
@@ -282,7 +294,7 @@ export default function ColorList() {
                     }}
                     color="danger"
                   >
-                    Delete
+                    {t("delete")}
                   </MenuItem>
                 </Menu>
               </Dropdown>
@@ -292,104 +304,106 @@ export default function ColorList() {
         </List>
       ))}
       <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setOpen(false);
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
-        }}
-      >
-        <Sheet
-          variant="outlined"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => {
+            formik.resetForm();
+            setId(null);
+            setOpen(false);
+          }}
           sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
           >
-            Add New Color
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>Color Name</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="colorName"
-                      name="colorName"
-                      type="text"
-                      value={formik.values.colorName || colorName}
-                      className={
-                        formik.errors.colorName &&
-                        formik.touched.colorName &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the colorName state when the input changes
-                        setColorName(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.colorName && formik.touched.colorName
-                          ? formik.errors.colorName
-                          : t("colorName")
-                      }
-                      error={
-                        formik.errors.colorName && formik.touched.colorName
-                      }
-                    />
-                  </FormGroup>
-                </div>
-                {id ? (
-                  <Button
-                    onClick={() => {
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              {
+                isEdit ? t("updateColor") :  t("addNewColor")
+              }
+
+             </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                  <div>
+                    <FormLabel>{t("colorName")}</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="colorName"
+                        name="colorName"
+                        type="text"
+                        value={formik.values.colorName || colorName}
+                        className={
+                          formik.errors.colorName &&
+                          formik.touched.colorName &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setColorName(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.colorName && formik.touched.colorName
+                            ? formik.errors.colorName
+                            : t("colorName")
+                        }
+                        error={
+                          formik.errors.colorName && formik.touched.colorName
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+                  {id ? (
+                    <Button onClick={() => {
                       handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
+                    }} className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >{t("update")}</Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+
+                    >
+                      {t("add")}
+                    </Button>
+                  )}
+                </Form>
+              </Grid>
             </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+          </Sheet>
+        </Modal>
     </Box>
   );
 }

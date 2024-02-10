@@ -24,7 +24,8 @@ import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterce
 import { useFormik } from "formik";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
-import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
+import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
+import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,52 +57,63 @@ function stableSort(array, comparator) {
 
 export default function CarList() {
   const [id, setId] = React.useState();
-  const [colorName, setColorName] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
+  const [name, setName] = React.useState();
+  const [brandId, setBrandId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { colors, status, error } = useSelector((state) => state.colorAllData);
+  const { models } = useSelector((state) => state.modelAllData);
+  const { brands } = useSelector((state) => state.brandAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
 
   React.useEffect(() => {
-    dispatch(fetchAllColorData());
+    dispatch(fetchAllModelData());
+    dispatch(fetchAllBrandData());
   }, [dispatch]);
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Color ID bulunamadı!");
+      toastError("Model ID bulunamadı!");
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-        toastSuccess("Color Başarıyla Silindi.");
-        dispatch(fetchAllColorData());
+        await axiosInstance.delete(`api/v1/admin/models/${id}`);
+        toastSuccess("Model Başarıyla Silindi.");
+        dispatch(fetchAllModelData());
       } catch (error) {
+        alert(error)
         console.error("Kayıt hatası:", error);
       }
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!colorName) {
+    if (!name) {
       setOpen(false);
-      toastError("Color Name alanı boş bırakılamaz!");
+      toastError("Model name alanı boş bırakılamaz!");
     } else {
-      const data = {
+
+      alert(id)
+
+
+      const updatedData = {
         id: id,
-        name: colorName,
+        name: name,
+        brandId: brandId,
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
-        toastSuccess("Color Başarıyla Güncellendi.");
+        await axiosInstance.put(`api/v1/admin/models/${id}`,
+          updatedData);
+        toastSuccess("Model Başarıyla Güncellendi.");
         setOpen(false);
-        dispatch(fetchAllColorData());
+        dispatch(fetchAllModelData());
       } catch (error) {
-        console.log(id);
         console.error("Kayıt hatası:", error);
-      }
+
+      };
     }
   };
 
@@ -153,7 +165,7 @@ export default function CarList() {
                 textAlign: "center",
               }}
             >
-              Color Name
+              {t("modelName")}
             </th>
             {/* <th
                 style={{
@@ -180,13 +192,13 @@ export default function CarList() {
                 textAlign: "right",
               }}
             >
-              Actions
+             {t("actions")}
             </th>
           </tr>
         </thead>
       </Table>
 
-      {stableSort(colors, getComparator(order, "id")).map((item) => (
+      {stableSort(models, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -254,142 +266,172 @@ export default function CarList() {
               {item.status}
             </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: { variant: "plain", color: "neutral", size: "sm" },
-                  }}
-                >
-                  <MoreHorizRoundedIcon />
-                </MenuButton>
-                <Menu size="sm" sx={{ minWidth: 140 }}>
-                  <MenuItem
-                    onClick={() => {
-                      formik.resetForm();
-                      setId(item.id);
-                      setColorName(item.name);
-                      setOpen(true);
-                    }}
-                  >
-                    Edit
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      handleDelete(item.id);
-                    }}
-                    color="danger"
-                  >
-                    Delete
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
+            <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{
+                        root: {
+                          variant: "plain",
+                          color: "neutral",
+                          size: "sm",
+                        },
+                      }}
+                    >
+                      <MoreHorizRoundedIcon />
+                    </MenuButton>
+                    <Menu size="sm" sx={{ minWidth: 140 }}>
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          //setCarName(row.name);
+                          setOpen(true);
+                          setIsEdit(true);
+
+                        }}
+                      >
+                        {t("edit")}
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          handleDelete(item.id);
+                        }}
+                        color="danger"
+                      >
+                        {t("delete")}
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
             </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
       <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setOpen(false);
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
-        }}
-      >
-        <Sheet
-          variant="outlined"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => {
+            formik.resetForm();
+            setId(null);
+            setOpen(false);
+          }}
           sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
           >
-            Add New Color
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>Color Name</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="colorName"
-                      name="colorName"
-                      type="text"
-                      value={formik.values.colorName || colorName}
-                      className={
-                        formik.errors.colorName &&
-                        formik.touched.colorName &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the colorName state when the input changes
-                        setColorName(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.colorName && formik.touched.colorName
-                          ? formik.errors.colorName
-                          : t("colorName")
-                      }
-                      error={
-                        formik.errors.colorName && formik.touched.colorName
-                      }
-                    />
-                  </FormGroup>
-                </div>
-                {id ? (
-                  <Button
-                    onClick={() => {
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              {
+                isEdit ? t("updateModel") : t("addNewModel")
+              }
+            </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                    <FormLabel>{t("modelName")}</FormLabel>
+                    <div>
+                    <FormGroup className="">
+                      <Input
+                        id="modelName"
+                        name="modelName"
+                        type="text"
+                        value={formik.values.name || name}
+                        className={
+                          formik.errors.name &&
+                          formik.touched.name &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setName(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.name && formik.touched.name
+                            ? formik.errors.name
+                            : t("modelName")
+                        }
+                        error={
+                          formik.errors.name && formik.touched.name
+                        }
+                      />
+                    </FormGroup>
+                    
+                      <FormLabel>{t("selectBrand")}</FormLabel>
+                      <FormGroup className="">
+                      <select
+                        id="brandId"
+                        name="brandId"
+                        value={brandId}
+                        onChange={(e) => {
+                          const selectedBrandId = e.target.value;
+                          setBrandId(selectedBrandId);
+                        }}
+                      >
+                        <option value="">{t("selectBrand")}</option>
+                        {brands.map((brand) => (
+                          <option key={brand.id} value={brand.id}>
+                            {brand.name}
+                          </option>
+                        ))}
+                      </select>
+                      </FormGroup>
+
+                    </div>
+                    
+                  {id ? (
+                    <Button onClick={() => {
                       handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
+                    }} className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >{t("update")}</Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+
+                    >
+                      {t("add")}
+                    </Button>
+                    
+                  )}
+                  
+                </Form>
+              </Grid>
             </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+          </Sheet>
+        </Modal>
     </Box>
   );
 }

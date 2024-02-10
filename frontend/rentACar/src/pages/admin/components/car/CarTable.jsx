@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
@@ -16,10 +15,9 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Grid } from "@mui/joy";
+import { Grid  } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -83,8 +81,6 @@ export default function CarTable() {
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
 
-
-
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -92,12 +88,8 @@ export default function CarTable() {
     dispatch(fetchAllCarData());
     dispatch(fetchAllColorData());
     dispatch(fetchAllModelData());
-    dispatch(fetchAllBrandData());
-    console.log(items) // Ensure modelId is treated as string
-
+    dispatch(fetchAllBrandData()); // Ensure modelId is treated as string
   }, [dispatch]);
-
-
 
   const carValidationSchema = getCarValidationSchema();
 
@@ -106,12 +98,10 @@ export default function CarTable() {
       toastError("Car ID bulunamadı!");
     } else {
       try {
-        alert(id)
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
         toastSuccess("Car Başarıyla Silindi.");
         dispatch(fetchAllCarData());
       } catch (error) {
-        alert(error)
         console.error("Kayıt hatası:", error);
       }
     }
@@ -122,11 +112,8 @@ export default function CarTable() {
       setOpen(false);
       toastError("Kilometer alanı boş bırakılamaz!");
     } else {
-
-      alert(id)
-
       const updatedData = {
-        id:id,
+        id: id,
         kilometer: kilometer,
         plate: plate,
         year: year,
@@ -138,25 +125,18 @@ export default function CarTable() {
         isAvailable: "true",
         modelId: modelId,
         colorId: colorId,
-        
-
-
       };
 
-
       try {
-        await axiosInstance.put(`api/v1/admin/cars/${id}`,
-          updatedData);
+        await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
         toastSuccess("Car Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllCarData());
       } catch (error) {
         console.error("Kayıt hatası:", error);
-
-      };
+      }
     }
-  }
-
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -170,12 +150,11 @@ export default function CarTable() {
       seatType: "",
       colorId: "",
       modelId: "",
-      isAvailable: ""
+      isAvailable: "",
     },
 
     validationSchema: carValidationSchema,
     onSubmit: async (values, actions) => {
-
       const data = {
         kilometer: values.kilometer,
         plate: values.plate,
@@ -188,25 +167,19 @@ export default function CarTable() {
         isAvailable: "True",
         modelId: modelId,
         colorId: colorId,
-        
-
-
       };
 
       try {
-        alert(JSON.stringify(data))
         await axiosInstance.post("api/v1/admin/cars", data);
         toastSuccess("Car Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllCarData());
         formik.resetForm();
-        console.log(data)
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
       }
     },
   });
-
 
   return (
     <React.Fragment>
@@ -222,7 +195,7 @@ export default function CarTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Cars
+          {t("cars").toUpperCase()}
         </Typography>
         <Button
           color="success"
@@ -235,46 +208,10 @@ export default function CarTable() {
             setIsEdit(false);
           }}
         >
-          Add New
+          {t("addNew")}
         </Button>
       </Box>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: { xs: "flex", sm: "none" },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-      </Sheet>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: "sm",
-          py: 2,
-          display: { xs: "none", sm: "flex" },
-          flexWrap: "wrap",
-          gap: 1.5,
-          "& > *": {
-            minWidth: { xs: "120px", md: "160px" },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for car</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-      </Box>
+      <hr />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"
@@ -329,27 +266,8 @@ export default function CarTable() {
                   textAlign: "center",
                 }}
               >
-                Car
+                {t("brand")} | {t("model")}
               </th>
-
-              {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
 
               <th
                 style={{
@@ -358,52 +276,68 @@ export default function CarTable() {
                   textAlign: "center",
                 }}
               >
-                Actions
+                {t("year")} | {t("color")}
               </th>
 
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("plate")}
+              </th>
 
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("dailyPriceCar")}
+              </th>         
+
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("actions")}
+              </th>
             </tr>
-
           </thead>
           <tbody>
             {stableSort(items, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
+
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
+
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.modelId?.brandId?.name} | {row.modelId?.name}</Typography>
+                  <Typography level="body-xs">
+                    {row.modelId?.brandId?.name} | {row.modelId?.name}
+                  </Typography>
                 </td>
-                {/* <td style={{ textAlign: "center" }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.id]
-                    }
-                    color={
-                      {
-                        Paid: "success",
-                        Refunded: "neutral",
-                        Cancelled: "danger",
-                      }[row.id]
-                    }
-                  >
-                    {row.id}
-                  </Chip>
-                </td> */}
-                {/* <td style={{ textAlign: "center" }}>
+
+                <td style={{ textAlign: "center" }}>
+                  <Typography level="body-xs">
+                    {row.year} | {row.colorId.name}
+                  </Typography>
+                </td>
+
+                <td style={{ textAlign: "center" }}>{row.plate}</td>
+
+                <td style={{ textAlign: "center" }}>
                   <div>
-                    <Typography level="body-xs">{}</Typography>
-                    <Typography level="body-xs">
-                      {}
-                    </Typography>
+                    <Typography level="body-xs">{row.dailyPrice} ₺</Typography>
                   </div>
-                </td> */}
+                </td>
+
                 <td style={{ textAlign: "center" }}>
                   <Dropdown>
                     <MenuButton
@@ -427,7 +361,7 @@ export default function CarTable() {
                           setIsEdit(true);
                         }}
                       >
-                        Edit
+                        {t("edit")}
                       </MenuItem>
                       <Divider />
                       <MenuItem
@@ -437,7 +371,7 @@ export default function CarTable() {
                         }}
                         color="danger"
                       >
-                        Delete
+                        {t("delete")}
                       </MenuItem>
                     </Menu>
                   </Dropdown>
@@ -482,10 +416,7 @@ export default function CarTable() {
               fontWeight="lg"
               mb={1}
             >
-              {
-                !isEdit ? " Add New car" : "Update Car"
-              }
-             
+              {!isEdit ? t("addNewCar") : t("updateCar")}
             </Typography>
             <hr />
             <Grid
@@ -497,7 +428,7 @@ export default function CarTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Kilometer</FormLabel>
+                    <FormLabel>{t("kilometer")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="kilometer"
@@ -510,9 +441,8 @@ export default function CarTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setKilometer(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e); 
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -528,7 +458,7 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormLabel>Plate</FormLabel>
+                    <FormLabel>{t("plate")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="plate"
@@ -536,14 +466,11 @@ export default function CarTable() {
                         type="text"
                         value={formik.values.plate || plate}
                         className={
-                          formik.errors.plate &&
-                          formik.touched.plate &&
-                          "error"
+                          formik.errors.plate && formik.touched.plate && "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setPlate(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -551,16 +478,13 @@ export default function CarTable() {
                             ? formik.errors.plate
                             : t("plate")
                         }
-                        error={
-                          formik.errors.plate && formik.touched.plate
-                        }
+                        error={formik.errors.plate && formik.touched.plate}
                       />
                     </FormGroup>
                   </div>
 
-
                   <div>
-                    <FormLabel>Year</FormLabel>
+                    <FormLabel>{t("year")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="year"
@@ -568,14 +492,11 @@ export default function CarTable() {
                         type="text"
                         value={formik.values.year || year}
                         className={
-                          formik.errors.year &&
-                          formik.touched.year &&
-                          "error"
+                          formik.errors.year && formik.touched.year && "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setYear(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -583,16 +504,13 @@ export default function CarTable() {
                             ? formik.errors.year
                             : t("year")
                         }
-                        error={
-                          formik.errors.year && formik.touched.year
-                        }
+                        error={formik.errors.year && formik.touched.year}
                       />
                     </FormGroup>
                   </div>
 
-
                   <div>
-                    <FormLabel>Daily Price</FormLabel>
+                    <FormLabel>{t("dailyPriceCar")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="dailyPrice"
@@ -605,15 +523,14 @@ export default function CarTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setDailyPrice(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
                           formik.errors.dailyPrice && formik.touched.dailyPrice
                             ? formik.errors.dailyPrice
-                            : t("dailyPrice")
+                            : t("dailyPriceCar")
                         }
                         error={
                           formik.errors.dailyPrice && formik.touched.dailyPrice
@@ -623,7 +540,7 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormLabel>Select Brand and Model</FormLabel>
+                    <FormLabel>{t("selectBrandAndModel")}</FormLabel>
                     <FormGroup className="">
                       <select
                         id="brand"
@@ -633,16 +550,19 @@ export default function CarTable() {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
 
-                          const selectedBrandModels = models.filter(model => model.brandId.id === parseInt(selectedBrandId));
+                          const selectedBrandModels = models.filter(
+                            (model) =>
+                              model.brandId.id === parseInt(selectedBrandId)
+                          );
 
                           if (selectedBrandModels.length > 0) {
                             setModelId(selectedBrandModels[0].id);
                           } else {
-                            setModelId(""); 
+                            setModelId("");
                           }
                         }}
                       >
-                        <option value="">Select a brand</option>
+                        <option value="">{t("selectBrand")}</option>
                         {brands.map((brand) => (
                           <option key={brand.id} value={brand.id}>
                             {brand.name}
@@ -657,21 +577,22 @@ export default function CarTable() {
                         onChange={(e) => setModelId(e.target.value)}
                         disabled={!brandId}
                       >
-                        <option value="">Select a model</option>
+                        <option value="">{t("selectModel")}</option>
                         {models
-                          .filter((model) => model.brandId.id === parseInt(brandId))
+                          .filter(
+                            (model) => model.brandId.id === parseInt(brandId)
+                          )
                           .map((model) => (
                             <option key={model.id} value={model.id}>
                               {model.name}
                             </option>
                           ))}
                       </select>
-
                     </FormGroup>
                   </div>
 
                   <div>
-                    <FormLabel>Select Color and Availabelty</FormLabel>
+                    <FormLabel>{t("selectColor")}</FormLabel>
                     <FormGroup className="">
                       <select
                         id="color"
@@ -689,22 +610,15 @@ export default function CarTable() {
                         }}
                         onBlur={formik.handleBlur}
                       >
-                        <option value="">Select a color</option>
-                        {
-                          
-                          colors.map((color) => 
-                          
-                          {
-                            
-                            const colorId = color.id;
-                            return (
-                              <option key={colorId} value={colorId}>
-                                {color.name}
-                              </option>
-                            );
-                          })
-                        }
-
+                        <option value="">{t("selectColor")}</option>
+                        {colors.map((color) => {
+                          const colorId = color.id;
+                          return (
+                            <option key={colorId} value={colorId}>
+                              {color.name}
+                            </option>
+                          );
+                        })}
                       </select>
 
                       {/* <label>
@@ -719,13 +633,13 @@ export default function CarTable() {
                         />
                         Is Available
                       </label> */}
-
                     </FormGroup>
                   </div>
 
-
                   <div>
-                    <FormLabel htmlFor="fuelType">Select Fuel Type and Gear Type</FormLabel>
+                    <FormLabel htmlFor="fuelType">
+                      {t("selectFuelAndGear")}
+                    </FormLabel>
                     <FormGroup className="">
                       <select
                         id="fuelType"
@@ -736,12 +650,22 @@ export default function CarTable() {
                           formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
-                        className={formik.errors.fuelType && formik.touched.fuelType && "error"}
+                        className={
+                          formik.errors.fuelType &&
+                          formik.touched.fuelType &&
+                          "error"
+                        }
                       >
-                        <option value="">Select fuel type...</option>
-                        <option value="GASOLINE" key="1">Gasoline</option>
-                        <option value="DIESEL" key="2">Diesel</option>
-                        <option value="HYBRID" key="3">Hybrid</option>
+                        <option value="">{t("selectFuelType")}</option>
+                        <option value="GASOLINE" key="1">
+                          Gasoline
+                        </option>
+                        <option value="DIESEL" key="2">
+                          Diesel
+                        </option>
+                        <option value="HYBRID" key="3">
+                          Hybrid
+                        </option>
                       </select>
 
                       <select
@@ -761,21 +685,19 @@ export default function CarTable() {
                         }}
                         onBlur={formik.handleBlur}
                       >
-                        <option value="">Select gear type...</option>
-                        <option value="AUTOMATIC" key="1">Automatic</option>
-                        <option value="MANUAL" key="2">Manual</option>
+                        <option value="">{t("selectGearType")}</option>
+                        <option value="AUTOMATIC" key="1">
+                          Automatic
+                        </option>
+                        <option value="MANUAL" key="2">
+                          Manual
+                        </option>
                       </select>
-
                     </FormGroup>
                   </div>
 
-
-
-
-
-
                   <div>
-                    <FormLabel>Select Vehicle Type and Seat Type</FormLabel>
+                    <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
                     <FormGroup className="">
                       <select
                         id="vehicleType"
@@ -794,10 +716,16 @@ export default function CarTable() {
                         }}
                         onBlur={formik.handleBlur}
                       >
-                        <option value="">Select vehicle type...</option>
-                        <option value="SUV" key="1">Suv</option>
-                        <option value="SEDAN" key="2">Sedan</option>
-                        <option value="HB" key="3">Hatchback</option>
+                        <option value="">{t("selectVehicleType")}</option>
+                        <option value="SUV" key="1">
+                          SUV
+                        </option>
+                        <option value="SEDAN" key="2">
+                          Sedan
+                        </option>
+                        <option value="HB" key="3">
+                          Hatchback
+                        </option>
                       </select>
 
                       <select
@@ -817,33 +745,41 @@ export default function CarTable() {
                         }}
                         onBlur={formik.handleBlur}
                       >
-                        <option value="">Select seat type...</option>
-                        <option value="TWO" key="1">2</option>
-                        <option value="FIVE" key="2">5</option>
-                        <option value="SEVEN" key="3">7</option>
+                        <option value="">{t("selectSeatType")}</option>
+                        <option value="TWO" key="1">
+                          2
+                        </option>
+                        <option value="FIVE" key="2">
+                          5
+                        </option>
+                        <option value="SEVEN" key="3">
+                          7
+                        </option>
                       </select>
                     </FormGroup>
                   </div>
 
-
-
-
                   {id ? (
-                    <Button onClick={() => {
-                      setIsEdit(true)
-                      handleUpdate(id);
-                    }} className=" form__btn">{t("update")}</Button>
+                    <Button
+                      onClick={() => {
+                        setIsEdit(true);
+                        handleUpdate(id);
+                      }}
+                      className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("update")}
+                    </Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
-
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
                     >
                       {t("add")}
                     </Button>
                   )}
-
                 </Form>
               </Grid>
             </Grid>

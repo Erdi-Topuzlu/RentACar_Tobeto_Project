@@ -373,6 +373,7 @@ export default function CarList() {
                       handleUpdate(id);
                     }}
                     className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
                   >
                     {t("update")}
                   </Button>
@@ -381,6 +382,7 @@ export default function CarList() {
                     className=" form__btn"
                     type="submit"
                     disabled={formik.isSubmitting}
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
                   >
                     {t("add")}
                   </Button>

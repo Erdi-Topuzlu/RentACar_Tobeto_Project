@@ -85,9 +85,6 @@ export default function RentalTable() {
     setDateInputType("text");
   };
 
-
-
-
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -139,9 +136,6 @@ export default function RentalTable() {
     }
   }
 
-
-
-
   const formik = useFormik({
     initialValues: {
       startDate: "",
@@ -174,7 +168,6 @@ export default function RentalTable() {
     },
   });
 
-
   return (
     <React.Fragment>
       <Box
@@ -189,7 +182,7 @@ export default function RentalTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          Rentals
+          {t("rentals")}
         </Typography>
         <Button
           color="success"
@@ -203,46 +196,10 @@ export default function RentalTable() {
 
           }}
         >
-          Add New
+         {t("addNew")}
         </Button>
       </Box>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: { xs: "flex", sm: "none" },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-      </Sheet>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: "sm",
-          py: 2,
-          display: { xs: "none", sm: "flex" },
-          flexWrap: "wrap",
-          gap: 1.5,
-          "& > *": {
-            minWidth: { xs: "120px", md: "160px" },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for rental</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-      </Box>
+      <hr />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"
@@ -297,7 +254,7 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                Rental
+                {t("rentals")}
               </th>
               {/* <th
                 style={{
@@ -324,7 +281,7 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
@@ -390,7 +347,7 @@ export default function RentalTable() {
                           setIsEdit(true);
                         }}
                       >
-                        Edit
+                        {t("edit")}
                       </MenuItem>
                       <Divider />
                       <MenuItem
@@ -400,7 +357,7 @@ export default function RentalTable() {
                         }}
                         color="danger"
                       >
-                        Delete
+                        {t("delete")}
                       </MenuItem>
                     </Menu>
                   </Dropdown>

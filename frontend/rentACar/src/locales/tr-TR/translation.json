@@ -202,6 +202,8 @@
   "identifyNumber":"Kimlik Numarası",
   "userName":"Kullanıcı Adı",
 
+  "schemeColorName":"Renk İsmi gereklidir",
+
   "_packages":"Packages-TR",
   "miniPackage":"Süper Mini Kapsamlı",
   "miniDesc":"Tekerlek, Ön Cam, Far ve Arka Lamba ve Yan Ayna Kapsamı",
@@ -240,6 +242,55 @@
   "newPassword":"Yeni Şifre",
   "newConfirmPassword":"Yeni Şifre Onayı",
 
-  "add":"Ekle"
+  "dashboard":"Kontrol Paneli",
+  "slider":"Slider",
+  "brands":"Markalar",
+  "models":"Modeller",
+  "colors":"Renkler",
+  "rentals":"Kiralamalar",
+  "pair-1":"Pair-1 Kiralama",
 
+  "brand":"Marka",
+  "model":"Model",
+
+  "add":"Ekle",
+  "update":"Güncelle",
+  "edit":"Düzenle",
+  "delete":"Sil",
+  "actions":"Eylemler",
+  "addNew":"Yeni Ekle",
+
+  "addNewBrand":"Yeni Marka Ekle",
+  "updateBrand":"Markayı Güncelle",
+
+  "modelName":"Model İsmi",
+  "addNewModel":"Yeni Model Ekle",
+  "updateModel":"Modeli Güncelle",
+  "selectBrand":"Marka Seçiniz",
+
+  "colorName":"Renk İsmi",
+  "color":"Renk",
+  "addNewColor":"Yeni Renk Ekle",
+  "updateColor":"Rengi Güncelle",
+
+  "addNewCar":"Yeni Araba Ekle",
+  "updateCar":"Aracı Güncelle",
+  "kilometer":"Kilometre",
+  "plate":"Plaka",
+  "year":"Yıl",
+  "selectBrandAndModel":"Marka ve Model Seçiniz",
+  "selectColor":"Renk Seçiniz",
+  "selectFuelAndGear":"Yakıt Türü ve Vites Türü Seçiniz",
+  "selectVehicleAndSeat":"Araç Tipi ve Koltuk Sayısını Seçiniz",
+  "dailyPriceCar":"Günlük Ücret",
+  "fuelCar":"Yakıt",
+  "gearCar":"Vites",
+  "vehicleCar":"Araç",
+  "seatCar":"Koltuk",
+  
+  "selectModel":"Model Seçiniz",
+  "selectFuelType":"Yakıt Türü Seçiniz",
+  "selectGearType":"Vites Türü Seçiniz",
+  "selectVehicleType":"Araç Tipi Seçiniz",
+  "selectSeatType":"Koltuk Sayısı Seçiniz"
 }

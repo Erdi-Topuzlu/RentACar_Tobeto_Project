@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
@@ -16,7 +15,6 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import BrandList from "./BrandList";
@@ -106,7 +104,6 @@ export default function BrandTable() {
         setOpen(false);
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.log(id);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -121,7 +118,6 @@ export default function BrandTable() {
       const data = {
         name: values.brandName,
       };
-      console.log(data);
       try {
         await axiosInstance.post("api/v1/admin/brands", data);
 
@@ -149,7 +145,7 @@ export default function BrandTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          BRANDS
+        {t("brands").toUpperCase()}
         </Typography>
         <Button
           color="success"
@@ -162,46 +158,10 @@ export default function BrandTable() {
             setIsEdit(false);
           }}
         >
-          Add New
+          {t("addNew")}
         </Button>
       </Box>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: { xs: "flex", sm: "none" },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-      </Sheet>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: "sm",
-          py: 2,
-          display: { xs: "none", sm: "flex" },
-          flexWrap: "wrap",
-          gap: 1.5,
-          "& > *": {
-            minWidth: { xs: "120px", md: "160px" },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for brand</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-      </Box>
+      <hr />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"
@@ -256,7 +216,7 @@ export default function BrandTable() {
                   textAlign: "center",
                 }}
               >
-                Brand Name
+                {t("brandName")}
               </th>
               {/* <th
                 style={{
@@ -283,7 +243,7 @@ export default function BrandTable() {
                   textAlign: "center",
                 }}
               >
-                Actions
+                {t("actions")}
               </th>
             </tr>
           </thead>
@@ -350,7 +310,7 @@ export default function BrandTable() {
                           setIsEdit(true);
                         }}
                       >
-                        Edit
+                        {t("edit")}
                       </MenuItem>
                       <Divider />
                       <MenuItem
@@ -360,7 +320,7 @@ export default function BrandTable() {
                         }}
                         color="danger"
                       >
-                        Delete
+                        {t("delete")}
                       </MenuItem>
                     </Menu>
                   </Dropdown>
@@ -406,7 +366,7 @@ export default function BrandTable() {
               mb={1}
             >
               {
-                isEdit ? "Update Color":  "Add New Color" 
+                isEdit ? t("updateBrand"): t("addNewBrand")
               }
             </Typography>
             <hr />
@@ -419,7 +379,7 @@ export default function BrandTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Brand Name</FormLabel>
+                    <FormLabel>{t("brandName")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="brandName"
@@ -454,6 +414,7 @@ export default function BrandTable() {
                         handleUpdate(id);
                       }}
                       className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
                     >
                       {t("update")}
                     </Button>
@@ -461,6 +422,7 @@ export default function BrandTable() {
                     <Button
                       className=" form__btn"
                       type="submit"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
                       disabled={formik.isSubmitting}
                     >
                       {t("add")}
