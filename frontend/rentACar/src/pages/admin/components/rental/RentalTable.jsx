@@ -23,12 +23,14 @@ import { Grid } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import getRentalValidationSchema from "../../../../schemes/rentalScheme";
+// import getRentalValidationSchema from "../../../../schemes//rentalScheme";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import RentalList from "./RentalList";
+import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -69,79 +71,98 @@ export default function RentalTable() {
   const [extraId, setExtraId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
+  const [dateInputType, setDateInputType] = React.useState("text");
   const { rentals } = useSelector((state) => state.allRentals);
+  const { items } = useSelector((state) => state.carAllData);
+  const { users } = useSelector((state) => state.userAllData);
 
-  
+
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
+
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
+
+
+
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   React.useEffect(() => {
     dispatch(fetchAllRentals());
+    dispatch(fetchAllCarData());
+    dispatch(fetchAllUserData());
+    console.log(items)
   }, [dispatch]);
 
-  const rentalValidationSchema = getRentalValidationSchema();
+  // const rentalValidationSchema = getRentalValidationSchema();
 
   const handleDelete = async (id) => {
-    if(!id){
+    if (!id) {
       toastError("Rental ID bulunamadı!");
-    }else{
+    } else {
       try {
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
         toastSuccess("Rental Başarıyla Silindi.");
         dispatch(fetchAllRentals());
       } catch (error) {
-          alert(error)
+        alert(error)
         console.error("Kayıt hatası:", error);
       }
-    }   
+    }
   };
 
   const handleUpdate = async (id) => {
-   if(!carName){
-    setOpen(false);
-    toastError("Car name alanı boş bırakılamaz!");
-   }else{
-
-    const data = {
-      id:id,
-      name: carName,
-    };
-
-    try {
-      await axiosInstance.put(`api/v1/users/rentals/${id}`,
-      data);
-      toastSuccess("Car Başarıyla Güncellendi.");
+    if (!carName) {
       setOpen(false);
-      dispatch(fetchAllRentals());
-    } catch (error) {
-      console.error("Kayıt hatası:" ,error);
-    
-  };
-   } 
-}
+      toastError("Car name alanı boş bırakılamaz!");
+    } else {
+
+      const data = {
+        id: id,
+        name: carName,
+      };
+
+      try {
+        await axiosInstance.put(`api/v1/users/rentals/${id}`,
+          data);
+        toastSuccess("Car Başarıyla Güncellendi.");
+        setOpen(false);
+        dispatch(fetchAllRentals());
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+
+      };
+    }
+  }
+
+
 
 
   const formik = useFormik({
     initialValues: {
-      startDate:"",
-      endDate:"",
-      carId:"",
-      userId:"",
-      extraId:""
+      startDate: "",
+      endDate: "",
+      carId: "",
+      userId: "",
+      extraId: ""
     },
-    validationSchema: rentalValidationSchema,
+    //  validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
 
-       startDate:values.startDate,
-       endDate:values.endDate,
-       carId:carId,
-       userId:userId,
-       extraId:extraId
+        startDate: values.startDate,
+        endDate: values.endDate,
+        carId: carId,
+        userId: userId,
+        extraId: extraId
       };
-      
+
       try {
+        alert(JSON.stringify(data))
         await axiosInstance.post("api/v1/users/rentals", data);
         toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);
@@ -152,6 +173,7 @@ export default function RentalTable() {
       }
     },
   });
+
 
   return (
     <React.Fragment>
@@ -174,7 +196,7 @@ export default function RentalTable() {
           size="md"
           onClick={() => {
             formik.resetForm();
-            setCarName("");
+            //setCarName("");
             setId(null);
             setOpen(true);
             setIsEdit(false);
@@ -313,7 +335,7 @@ export default function RentalTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.startDate}-{row.endDate}</Typography>
+                  <Typography level="body-xs">{row.startDate}/{row.endDate}</Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -424,7 +446,7 @@ export default function RentalTable() {
               mb={1}
             >
               {
-                isEdit ? "Update Rental":  "Add New Rental" 
+                isEdit ? "Update Rental" : "Add New Rental"
               }
 
             </Typography>
@@ -441,34 +463,131 @@ export default function RentalTable() {
                     <FormLabel>Start Date</FormLabel>
                     <FormGroup className="">
                       <Input
-                        id="starDate"
-                        name="starDate"
-                        type="date"
-                        value={formik.values.startDate || startDate}
-                        className={
-                          formik.errors.startDate &&
-                          formik.touched.startDate &&
-                          "error"
-                        }
+                        id="startDate"
+                        name="startDate"
+                        value={formik.values.startDate || startDate} 
+                        // className={
+                        //   formik.errors.startDate &&
+                        //   formik.touched.startDate &&
+                        //   "error form-control"
+                        // }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setStartDate(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
+                          setStartDate(e.target.value); 
                         }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.startDate && formik.touched.startDate
-                            ? formik.errors.startDate
-                            : t("startDate")
-                        }
-                        error={
-                          formik.errors.startDate && formik.touched.startDate
-                        }
+                        onBlur={(e) => {
+                          formik.handleBlur(e);
+                          deactivateDateInput();
+                        }}
+                        onFocus={activateDateInput}
+                        type={dateInputType}
+                        // error={formik.errors.startDate && formik.touched.startDate}
+                        // placeholder={
+                        //   formik.errors.startDate && formik.touched.startDate
+                        //     ? formik.errors.startDate
+                        //     : t("startDate")
+                        // }
+                      /> 
+                    </FormGroup>
+                  </div>
+                  <div>
+                    <FormLabel>End Date</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="endDate"
+                        name="endDate"
+                        value={formik.values.endDate || endDate}
+                        // className={
+                        //   formik.errors.endDate &&
+                        //   formik.touched.endDate &&
+                        //   "error form-control"
+                        // }
+                        onChange={(e) => {
+                          setEndDate(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={(e) => {
+                          formik.handleBlur(e);
+                          deactivateDateInput();
+                        }}
+                        onFocus={activateDateInput}
+                        type={dateInputType}
+                       // error={formik.errors.endDate && formik.touched.endDate}
+                        // placeholder={
+                        //   formik.errors.endDate && formik.touched.endDate
+                        //     ? formik.errors.endDate
+                        //     : t("endDate")
+                        // }
                       />
                     </FormGroup>
                   </div>
+                  <div>
+                    <FormLabel>Select a Car</FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="car"
+                        name="carId"
+                        value={carId}
+                        onChange={(e) => {
+                          const selectedCarId = e.target.value;
+                          setCarId(selectedCarId);
+                        }}
+                      >
+                        <option value="">Car</option>
+                        {items.map((car) => (
+                          <option key={car.id} value={car.id}>
+                            {car.modelId?.brandId?.name} - {car.modelId?.name}
+                          </option>
+                        ))}
+                      </select>
+                    </FormGroup>
+                  </div>
+                  <div>
+                    <FormLabel>Select a User</FormLabel>
+                    <FormGroup className="">
+
+                      <select
+                        id="user"
+                        name="userId"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+
+                      >
+                        <option value="">User</option>
+                        {users
+                          .map((user) => (
+                            <option key={user.id} value={user.id}>
+                              {user.name}
+                            </option>
+                          ))}
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    <FormLabel htmlFor="fuelType">Select a Extra</FormLabel>
+                    <FormGroup className="">
+                      <select
+                        id="extra"
+                        name="extraId"
+                        value={formik.values.extraId || extraId}
+                        onChange={(e) => {
+                          setExtraId(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        className={formik.errors.extraId && formik.touched.extraId && "error"}
+                      >
+                        <option value="">Extra</option>
+                        <option value="1" key="1">Mini Package</option>
+                        <option value="2" key="2">Medium Package</option>
+                        <option value="3" key="3">Free Package</option>
+                      </select>
+                    </FormGroup>
+                  </div>
+
                   {id ? (
-                    <Button onClick={()=>{
+                    <Button onClick={() => {
                       handleUpdate(id);
                     }} className=" form__btn">{t("update")}</Button>
                   ) : (
@@ -487,7 +606,7 @@ export default function RentalTable() {
           </Sheet>
         </Modal>
       </Sheet>
-      <RentalList/>
+      <RentalList />
     </React.Fragment>
   );
 }

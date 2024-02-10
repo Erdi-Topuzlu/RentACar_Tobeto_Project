@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllUserResponse {
+    private int id;
     private String name;
     private String surname;
     private String email;
