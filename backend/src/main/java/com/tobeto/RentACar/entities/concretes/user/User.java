@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private int id;
 
     @Column(name = "username")
-    private String username;
+    private String usernames;
 
     @Column(name = "email")
     private String email;
@@ -70,6 +70,7 @@ public class User implements UserDetails {
         return role.getAuthorities();
     }
 
+    @Override
     public String getUsername() {
         return email;
     }

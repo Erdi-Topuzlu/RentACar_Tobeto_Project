@@ -11,6 +11,13 @@ export const getSignUpValidationSchema = () => {
         surname: yup
         .string()
         .required(t("schemeLastname")),
+        birthDate: yup
+        .date()
+        .required(t("schemeBirthDate"))
+        .max(
+          new Date(Date.now() - 18 * 365 * 24 * 60 * 60 * 1000),
+          t("schemeCheckBirthDate")
+        ),
         email: yup
           .string()
           .email(t("schemeInvalidEmail"))
