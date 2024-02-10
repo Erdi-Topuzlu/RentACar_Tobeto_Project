@@ -27,12 +27,6 @@ const signUp = () => {
 
   const token = localStorage.getItem("access_token");
 
-  // useEffect(() => {
-  //   if(token){
-  //     navigate("/profile")
-  //   }
-  // }, [])
-
   const activateDateInput = () => {
     setDateInputType("date");
   };

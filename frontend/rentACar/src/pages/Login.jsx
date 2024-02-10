@@ -27,14 +27,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   
-  const loginValidationSchema = getLoginValidationSchema();
-  
-  // useEffect(() => {
-  //   if(token){
-  //     navigate("/profile")
-  //   }
-  // }, [])
-  
+  const loginValidationSchema = getLoginValidationSchema();  
 
   const formik = useFormik({
     initialValues: {

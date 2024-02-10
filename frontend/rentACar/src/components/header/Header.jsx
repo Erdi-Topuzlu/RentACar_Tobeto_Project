@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/joy";
 import fetchUserData from "../../redux/actions/fetchUserData";
+import { toastError, toastSuccess } from "../../service/ToastifyService";
 
 const langSelect = (eventKey) => {
   i18n.changeLanguage(eventKey);
@@ -29,9 +30,6 @@ function Header() {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const [token, setToken] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [userRoles, setUserRoles] = useState([]);
-  const canAccessPage = userRoles.includes("ADMIN");
-
   const [userLocation, setUserLocation] = useState({
     country: "",
     province: "",
@@ -83,29 +81,13 @@ function Header() {
     },
   ];
 
-  const decodeJWT = (token) => {
-    try {
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      return decoded;
-    } catch (error) {
-      console.error("JWT çözümlenirken bir hata oluştu:", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     // JWT'den yetkilendirme bilgilerini okuma işlemi
     const storedJWT = localStorage.getItem("access_token");
-    if (storedJWT) {
-      const decodedToken = decodeJWT(storedJWT);
-      const id = decodedToken.id;
-
+    if (storedJWT) {;
+      dispatch(fetchUserData());
       setToken(storedJWT);
       setShowUi(false);
-      if (decodedToken && decodedToken.role) {
-        setUserRoles(decodedToken.role);
-        dispatch(fetchUserData(id));
-      }
     } else {
       setShowUi(true);
     }
@@ -124,13 +106,15 @@ function Header() {
       });
 
       if (response.ok) {
+
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-
+        toastSuccess("Çıkış işlemi başarılı.");
         setShowUi(true);
         navigate("/login");
       } else {
-        console.error("Çıkış işlemi başarısız.");
+
+        toastError("Çıkış işlemi başarısız.")
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setShowUi(true);
