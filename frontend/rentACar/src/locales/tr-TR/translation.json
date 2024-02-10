@@ -195,11 +195,11 @@
   "schemeBrandName":"Marka ismi gereklidir",
   "brandName":"Marka İsmi",
 
-  "schemeIdentfyNumber":"Kimlik Numarası gereklidir",
+  "schemeIdentifyNumber":"Kimlik Numarası gereklidir",
   "schemeMin11Char":"Kimlik Numarası 11 basamaklı olmalıdır",
   "schemeUserName":"Kullanıcı Adı gereklidir",
   "schemeMin5Char":"Kullanıcı Adı en az 5 karakter olmalıdır",
-  "identfyNumber":"Kimlik Numarası",
+  "identifyNumber":"Kimlik Numarası",
   "userName":"Kullanıcı Adı",
 
   "_packages":"Packages-TR",

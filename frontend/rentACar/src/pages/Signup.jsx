@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -21,6 +21,7 @@ import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 const signUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [dateInputType, setDateInputType] = useState("text");
 
   const signUpValidationSchema = getSignUpValidationSchema();
 
@@ -32,11 +33,20 @@ const signUp = () => {
   //   }
   // }, [])
 
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
+
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
       name: "",
       surname: "",
+      birthDate: "",
       password: "",
       confirmPassword: "",
     },
@@ -46,15 +56,13 @@ const signUp = () => {
       // actions.resetForm();
       const data = {
         email: values.email,
-        name : values.name,
+        name: values.name,
         surname: values.surname,
-        password:values.password,
-      }
+        birthDate: values.birthDate,
+        password: values.password,
+      };
       try {
-        const response = await axiosInstance.post(
-          "api/v1/auth/register",
-          data
-        );
+        const response = await axiosInstance.post("api/v1/auth/register", data);
 
         console.log(response.data);
         localStorage.setItem("access_token", response.data.access_token);
@@ -82,7 +90,7 @@ const signUp = () => {
                 <div className="d-flex mt-4 justify-content-center align-items-center">
                   <Col lg="4" className="mb-5 text-center">
                     <Form onSubmit={formik.handleSubmit}>
-                    <div>
+                      <div>
                         <FormGroup>
                           <Input
                             id="name"
@@ -101,9 +109,7 @@ const signUp = () => {
                                 ? formik.errors.name
                                 : t("fName")
                             }
-                            invalid={
-                              formik.errors.name && formik.touched.name
-                            }
+                            invalid={formik.errors.name && formik.touched.name}
                           />
                         </FormGroup>
                       </div>
@@ -128,6 +134,37 @@ const signUp = () => {
                             }
                             invalid={
                               formik.errors.surname && formik.touched.surname
+                            }
+                          />
+                        </FormGroup>
+                      </div>
+                      <div>
+                        <FormGroup>
+                          <Input
+                            id="birthDate"
+                            name="birthDate"
+                            value={formik.values.birthDate}
+                            className={
+                              formik.errors.birthDate &&
+                              formik.touched.birthDate &&
+                              "error"
+                            }
+                            onChange={formik.handleChange}
+                            onBlur={(e) => {
+                              formik.handleBlur(e);
+                              deactivateDateInput();
+                            }}
+                            onFocus={activateDateInput}
+                            type={dateInputType}
+                            invalid={
+                              formik.errors.birthDate &&
+                              formik.touched.birthDate
+                            }
+                            placeholder={
+                              formik.errors.birthDate &&
+                              formik.touched.birthDate
+                                ? formik.errors.birthDate
+                                : t("birthDate")
                             }
                           />
                         </FormGroup>

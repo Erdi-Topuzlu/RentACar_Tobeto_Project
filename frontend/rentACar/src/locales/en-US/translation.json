@@ -193,11 +193,11 @@
   "schemeBrandName":"Brand Name is required",
   "brandName":"Brand Name",
 
-  "schemeIdentfyNumber":"Identfy Number is required",
-  "schemeMin11Char":"Identfy Number must have 11 digits",
+  "schemeIdentifyNumber":"Identify Number is required",
+  "schemeMin11Char":"Identify Number must have 11 digits",
   "schemeUserName":"Username is required",
   "schemeMin5Char":"Username must have at least 5 characters",
-  "identfyNumber":"Identfy Number",
+  "identifyNumber":"Identify Number",
   "userName":"Username",
 
   "_packages":"Packages-EN",

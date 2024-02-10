@@ -23,7 +23,7 @@ public class UpdateUserRequest {
 
     private Double tcNo;
 
-    private String username;
+    private String usernames;
 
     /*@NotBlank(message = Messages.userEmailNotEmpty)
     @Email(message = Messages.invalidEmail)*/
