@@ -42,12 +42,12 @@ const Settings = () => {
   };
 
   const initialValues = {
-    firstName: "" || details.name,
-    lastName: "" || details.surname,
-    tcNo: "" || details.tcNo,
-    username: "" || details.username,
-    image: "" || details.userPhotoUrl,
-    birthdate: "" || details.birthDate,
+    firstName: details.name || "", // use an empty string if details.name is null
+    lastName: details.surname || "",
+    tcNo: details.tcNo || "",
+    username: details.username || "",
+    image: details.userPhotoUrl || "",
+    birthdate: details.birthDate || "",
   };
 
 

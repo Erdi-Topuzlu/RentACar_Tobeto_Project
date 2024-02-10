@@ -41,6 +41,8 @@ import ColorSchemeToggle from "./ColorShemeToggle";
 import { closeSidebar } from "../utils";
 import { Link } from "@mui/joy";
 import { ReactSVG } from "react-svg";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function Toggler({ defaultExpanded = false, renderToggle, children }) {
   const [open, setOpen] = React.useState(defaultExpanded);
@@ -64,10 +66,26 @@ function Toggler({ defaultExpanded = false, renderToggle, children }) {
 }
 
 export default function Sidebar() {
-  const isSelected = (targetPath) => {
-    const location = useLocation();
-    return location.pathname === targetPath;
+  
+  const { details, status, error } = useSelector((state) => state.userDetail);
+  const { t } = useTranslation();
+
+  const location = useLocation();
+
+  const menuItems = [
+    { label: "Dashboard", route: "dashboard" },
+    { label: "Slider", route: "slider" },
+    { label: "Brands", route: "brands" },
+    { label: "Models", route: "models" },
+    { label: "Colors", route: "colors" },
+    { label: "Cars", route: "cars" },
+    { label: "Rentals", route: "rentals" },
+  ];
+
+  const isMenuItemSelected = (route) => {
+    return location.pathname.includes(route);
   };
+  
   return (
     <Sheet
       className="Sidebar"
@@ -121,10 +139,12 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <IconButton variant="soft" color="neutral" size="lg">
-          <CarRentalIcon />
-        </IconButton>
-        <Typography level="title-lg">Pair-1 Rental</Typography>
+        <Link component={RouterLink} to="../home" underline="none">
+          <IconButton variant="soft" color="neutral" size="lg">
+            <CarRentalIcon />
+          </IconButton>
+          <Typography level="title-lg">Pair-1 Rental</Typography>
+        </Link>
         <ColorSchemeToggle sx={{ ml: "auto" }} />
       </Box>
       <Divider />
@@ -141,89 +161,28 @@ export default function Sidebar() {
         }}
       >
         <List
-          size="sm"
-          sx={{
-            gap: 1,
-            "--List-nestedInsetStart": "30px",
-            "--ListItem-radius": (theme) => theme.vars.radius.sm,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/dashboard-mini.svg" />
-              <Link component={RouterLink} to="dashboard" underline="none">
+        size="sm"
+        sx={{
+          gap: 1,
+          "--List-nestedInsetStart": "30px",
+          "--ListItem-radius": (theme) => theme.vars.radius.sm,
+        }}
+      >
+        {menuItems.map((menuItem, index) => (
+          <ListItem key={index}>
+            <ListItemButton selected={isMenuItemSelected(menuItem.route)}
+           
+            >
+              <ReactSVG src={`/src/assets/icons/${menuItem.route}-mini.svg`} />
+              <Link component={RouterLink} to={menuItem.route} underline="none">
                 <ListItemContent>
-                  <Typography level="title-sm">Dashboard</Typography>
+                  <Typography level="title-sm">{menuItem.label}</Typography>
                 </ListItemContent>
               </Link>
             </ListItemButton>
           </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/slider-mini.svg" />
-              <Link component={RouterLink} to="slider" underline="none">
-                <ListItemContent>
-                  <Typography level="title-sm">Slider</Typography>
-                </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/brand-mini.svg" />
-            <Link component={RouterLink} to="brands" underline="none">
-              <ListItemContent>
-                <Typography level="title-sm">Brands</Typography>
-              </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/model-mini.svg" />
-            <Link component={RouterLink} to="models" underline="none">
-              <ListItemContent>
-                <Typography level="title-sm">Models</Typography>
-              </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/color-mini.svg" />
-            <Link component={RouterLink} to="colors" underline="none">
-              <ListItemContent>
-                <Typography level="title-sm">Colors</Typography>
-              </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/car-mini.svg" />
-            <Link component={RouterLink} to="cars" underline="none">
-              <ListItemContent>
-                <Typography level="title-sm">Cars</Typography>
-              </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/key-mini.svg" />
-            <Link component={RouterLink} to="rentals" underline="none">
-              <ListItemContent>
-                <Typography level="title-sm">Rentals</Typography>
-              </ListItemContent>
-              </Link>
-            </ListItemButton>
-          </ListItem>
+        ))}
+      </List>
 
           {/* <ListItem>
             <ListItemButton>
@@ -242,7 +201,7 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem> */}
-        </List>
+      
 
         <List
           size="sm"
@@ -254,14 +213,14 @@ export default function Sidebar() {
             mb: 2,
           }}
         >
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton>
-            <IconButton size="md" variant="plain" color="neutral">
-              <SettingsRoundedIcon />
+              <IconButton size="md" variant="plain" color="neutral">
+                <SettingsRoundedIcon />
               </IconButton>
               Settings
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Box>
       <Divider />
@@ -269,15 +228,17 @@ export default function Sidebar() {
         <Avatar
           variant="outlined"
           size="sm"
-          src="https://t3.ftcdn.net/jpg/05/16/27/58/240_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+          src={details.userPhotoUrl ||
+            "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+          }
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Admin</Typography>
-          <Typography level="body-xs">pair1@test.com</Typography>
+          <Typography level="title-sm">{details.name}</Typography>
+          <Typography level="body-xs">{details.email}</Typography>
         </Box>
-        <IconButton size="md" variant="plain" color="neutral">
+        {/* <IconButton size="md" variant="plain" color="neutral">
           <LogoutRoundedIcon />
-        </IconButton>
+        </IconButton> */}
       </Box>
     </Sheet>
   );

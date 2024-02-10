@@ -99,7 +99,7 @@ const signUp = () => {
                             placeholder={
                               formik.errors.name && formik.touched.name
                                 ? formik.errors.name
-                                : t("firstName")
+                                : t("fName")
                             }
                             invalid={
                               formik.errors.name && formik.touched.name
@@ -124,7 +124,7 @@ const signUp = () => {
                             placeholder={
                               formik.errors.surname && formik.touched.surname
                                 ? formik.errors.surname
-                                : t("lastName")
+                                : t("lName")
                             }
                             invalid={
                               formik.errors.surname && formik.touched.surname
