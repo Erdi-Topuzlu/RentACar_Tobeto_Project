@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddModelRequest {
 
+
     @NotBlank(message = Messages.modelNameNotEmpty)
     @Size(min = 2, message = Messages.modelNameSize)
     private String name;

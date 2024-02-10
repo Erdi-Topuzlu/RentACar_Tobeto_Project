@@ -194,6 +194,7 @@ export default function CarTable() {
       };
 
       try {
+        alert(JSON.stringify(data))
         await axiosInstance.post("api/v1/admin/cars", data);
         toastSuccess("Car Başarıyla Eklendi.");
         setOpen(false);
@@ -688,8 +689,13 @@ export default function CarTable() {
                         }}
                         onBlur={formik.handleBlur}
                       >
+                        <option value="">Select a color</option>
                         {
-                          colors.map((color) => {
+                          
+                          colors.map((color) => 
+                          
+                          {
+                            
                             const colorId = color.id;
                             return (
                               <option key={colorId} value={colorId}>
