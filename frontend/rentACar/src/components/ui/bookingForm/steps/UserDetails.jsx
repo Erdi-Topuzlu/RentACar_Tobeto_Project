@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Form, FormFeedback, FormGroup, Input } from "reactstrap";
+import { Form, FormGroup, Input } from "reactstrap";
 import {  Container,  Grid,Button } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,7 +40,6 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
-    // useEffect'in temizlik fonksiyonu
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };

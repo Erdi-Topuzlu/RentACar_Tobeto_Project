@@ -1,6 +1,5 @@
 import React from "react";
 import Slider from "react-slick";
-
 import "../../styles/testimonial.css";
 import { AnimatedUTD } from "./animation/animateDiv";
 import softwareData from "../../assets/data/softwareData";

@@ -193,24 +193,6 @@ export default function CarList() {
             >
               {t("cars")}
             </th>
-            {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
             <th
               style={{
                 width: "auto",
@@ -267,26 +249,6 @@ export default function CarList() {
                 <Typography level="body-xs">{item.dailyPrice} ₺</Typography>
               </div>
             </ListItemContent>
-            {/* <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Paid: <CheckRoundedIcon />,
-                  Refunded: <AutorenewRoundedIcon />,
-                  Cancelled: <BlockIcon />
-                }[item.status]
-              }
-              color={
-                {
-                  Paid: "success",
-                  Refunded: "neutral",
-                  Cancelled: "danger"
-                }[item.status]
-              }
-            >
-              {item.status}
-            </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton
@@ -568,19 +530,6 @@ export default function CarList() {
                         );
                       })}
                     </select>
-
-                    {/* <label>
-                        <input
-                          id="isAvailable"
-                          name="isAvailable"
-                          type="checkbox"
-                          checked={formik.values.isAvailable}
-                          onChange={(e) => {
-                            formik.setFieldValue("isAvailable", e.target.checked); 
-                          }}
-                        />
-                        Is Available
-                      </label> */}
                   </FormGroup>
                 </div>
 
