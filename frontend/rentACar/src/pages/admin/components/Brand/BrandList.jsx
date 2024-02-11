@@ -68,7 +68,6 @@ export default function BrandList() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const brandValidationSchema = getBrandValidationSchema();
 
   React.useEffect(() => {
     dispatch(fetchAllBrandData());
@@ -83,13 +82,15 @@ export default function BrandList() {
         toastSuccess("Brand Başarıyla Silindi.");
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+
       }
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!brandName) {
+    if (!brandName){
       setOpen(false);
       toastError("Brand Name alanı boş bırakılamaz!");
     } else {
@@ -104,10 +105,15 @@ export default function BrandList() {
         setOpen(false);
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.log(id);
-        console.error("Kayıt hatası:", error);
-      }
-    }
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+        }else{
+          toastError("Bilinmeyen hata")
+        }
+    }}
   };
 
   const formik = useFormik({

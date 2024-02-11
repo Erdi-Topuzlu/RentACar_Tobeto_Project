@@ -27,7 +27,6 @@ public class BrandManager implements BrandService {
     @Override
     public void add(AddBrandRequest request) {
         brandBusinessRulesService.checkIfBrandNameExists(request.getName());
-
         Brand brand = modelMapperService.dtoToEntity().map(request, Brand.class);
         brandRepository.save(brand);
     }
