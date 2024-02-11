@@ -546,8 +546,8 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormLabel>{t("selectBrandAndModel")}</FormLabel>
-                    <FormGroup className="">
+                    {/* <FormLabel>{t("selectBrandAndModel")}</FormLabel> */}
+                    <FormGroup className="d-flex gap-2">
                       <select
                         id="brand"
                         name="brandId"
@@ -567,6 +567,17 @@ export default function CarTable() {
                             setModelId("");
                           }
                         }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                       >
                         <option value="">{t("selectBrand")}</option>
                         {brands.map((brand) => (
@@ -581,6 +592,17 @@ export default function CarTable() {
                         name="modelId"
                         value={modelId}
                         onChange={(e) => setModelId(e.target.value)}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                         disabled={!brandId}
                       >
                         <option value="">{t("selectModel")}</option>
@@ -598,8 +620,8 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormLabel>{t("selectColor")}</FormLabel>
-                    <FormGroup className="">
+                    {/* <FormLabel>{t("selectColor")}</FormLabel> */}
+                    <FormGroup className="d-flex gap-2">
                       <select
                         id="color"
                         name="color"
@@ -614,6 +636,17 @@ export default function CarTable() {
                           setColorId(e.target.value);
                           formik.setFieldValue("colorId", e.target.value);
                         }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                         onBlur={formik.handleBlur}
                       >
                         <option value="">{t("selectColor")}</option>
@@ -627,7 +660,7 @@ export default function CarTable() {
                         })}
                       </select>
 
-                      {/* <label>
+                      {/* <label style={{ display: 'inline-block', marginLeft: '10px' }}>
                         <input
                           id="isAvailable"
                           name="isAvailable"
@@ -636,17 +669,19 @@ export default function CarTable() {
                           onChange={(e) => {
                             formik.setFieldValue("isAvailable", e.target.checked); 
                           }}
+                          style={{ marginRight: '5px' }}
+
                         />
                         Is Available
-                      </label> */}
+                      </label>  */}
                     </FormGroup>
                   </div>
 
                   <div>
-                    <FormLabel htmlFor="fuelType">
+                    {/* <FormLabel htmlFor="fuelType">
                       {t("selectFuelAndGear")}
-                    </FormLabel>
-                    <FormGroup className="">
+                    </FormLabel> */}
+                    <FormGroup className="d-flex gap-2">
                       <select
                         id="fuelType"
                         name="fuelType"
@@ -654,6 +689,17 @@ export default function CarTable() {
                         onChange={(e) => {
                           setFuelType(e.target.value);
                           formik.handleChange(e);
+                        }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
                         }}
                         onBlur={formik.handleBlur}
                         className={
@@ -689,6 +735,17 @@ export default function CarTable() {
                           setGearType(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
                         }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                         onBlur={formik.handleBlur}
                       >
                         <option value="">{t("selectGearType")}</option>
@@ -703,8 +760,8 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
-                    <FormGroup className="">
+                    {/* <FormLabel>{t("selectVehicleAndSeat")}</FormLabel> */}
+                    <FormGroup className="d-flex gap-2">
                       <select
                         id="vehicleType"
                         name="vehicleType"
@@ -719,6 +776,17 @@ export default function CarTable() {
                           // Update the brandName state when the input changes
                           setVehicleType(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
                         }}
                         onBlur={formik.handleBlur}
                       >
@@ -748,6 +816,17 @@ export default function CarTable() {
                           // Update the brandName state when the input changes
                           setSeatType(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
                         }}
                         onBlur={formik.handleBlur}
                       >

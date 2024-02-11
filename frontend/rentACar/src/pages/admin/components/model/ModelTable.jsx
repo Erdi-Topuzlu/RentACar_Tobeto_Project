@@ -30,6 +30,7 @@ import ModelList from "./ModelList";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 
 
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -408,7 +409,7 @@ export default function ModelTable() {
                       />
                     </FormGroup>
                     
-                      <FormLabel>{t("selectBrand")}</FormLabel>
+                      {/* <FormLabel>{t("selectBrand")}</FormLabel> */}
                       <FormGroup className="">
                       <select
                         id="brandId"
@@ -417,6 +418,17 @@ export default function ModelTable() {
                         onChange={(e) => {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
+                        }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
                         }}
                       >
                         <option value="">{t("selectBrand")}</option>

@@ -178,7 +178,7 @@ const CarListing = () => {
             {filteredItems.length === 0 ? (
               <Paper>
                 <Col lg="12" className="text-center p-4">
-                  <h4>{t("Üzgünüz, bu kriterlere uygun bir kiralama opsiyonu bulunmamaktadır")}</h4>
+                  <h4>{t("Uygun bir araç bulunamadı")}</h4>
                 </Col>
               </Paper>
 
