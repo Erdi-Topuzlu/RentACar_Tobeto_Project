@@ -19,7 +19,7 @@ import Dropdown from "@mui/joy/Dropdown";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Grid } from "@mui/joy";
+import { Chip, Grid } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -31,6 +31,7 @@ import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterce
 import RentalList from "./RentalList";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
+import getRentalValidationSchema from "../../../../schemes/rentalScheme";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -66,6 +67,7 @@ export default function RentalTable() {
   const [isEdit, setIsEdit] = React.useState();
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState();
+  const [returnDate, setReturnDate] = React.useState();
   const [carId, setCarId] = React.useState();
   const [userId, setUserId] = React.useState();
   const [extraId, setExtraId] = React.useState();
@@ -92,10 +94,10 @@ export default function RentalTable() {
     dispatch(fetchAllRentals());
     dispatch(fetchAllCarData());
     dispatch(fetchAllUserData());
-    console.log(items)
+    console.log(rentals)
   }, [dispatch]);
 
-  // const rentalValidationSchema = getRentalValidationSchema();
+  const rentalValidationSchema = getRentalValidationSchema();
 
   const handleDelete = async (id) => {
     if (!id) {
@@ -113,20 +115,27 @@ export default function RentalTable() {
   };
 
   const handleUpdate = async (id) => {
-    if (!carName) {
+    if (!startDate) {
       setOpen(false);
-      toastError("Car name alanı boş bırakılamaz!");
+      toastError("Start date alanı boş bırakılamaz!");
     } else {
 
-      const data = {
+      const updatedData = {
         id: id,
-        name: carName,
+        startDate: startDate,
+        endDate: endDate,
+        returnDate: returnDate,
+        endKilometer: null,
+        carId: carId,
+        userId: userId,
+        extraId: extraId
       };
 
       try {
+        alert(JSON.stringify(updatedData))
         await axiosInstance.put(`api/v1/users/rentals/${id}`,
-          data);
-        toastSuccess("Car Başarıyla Güncellendi.");
+          updatedData);
+        toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllRentals());
       } catch (error) {
@@ -140,16 +149,18 @@ export default function RentalTable() {
     initialValues: {
       startDate: "",
       endDate: "",
+      returnDate: "",
       carId: "",
       userId: "",
       extraId: ""
     },
-    //  validationSchema: rentalValidationSchema,
+    validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
 
         startDate: values.startDate,
         endDate: values.endDate,
+        returnDate: null,
         carId: carId,
         userId: userId,
         extraId: extraId
@@ -196,7 +207,7 @@ export default function RentalTable() {
 
           }}
         >
-         {t("addNew")}
+          {t("addNew")}
         </Button>
       </Box>
       <hr />
@@ -254,7 +265,26 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                {t("rentals")}
+                {t("Start Date / End Date")}
+              </th>
+
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("Rental Owner")}
+              </th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("Total Price")}
               </th>
               {/* <th
                 style={{
@@ -265,6 +295,7 @@ export default function RentalTable() {
               >
                 Status
               </th>
+              
               <th
                 style={{
                   width: "auto",
@@ -292,7 +323,7 @@ export default function RentalTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.startDate}/{row.endDate}</Typography>
+                  <Typography level="body-xs">{row.startDate} / {row.returnDate ? row.returnDate : row.endDate}</Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -323,7 +354,28 @@ export default function RentalTable() {
                       {}
                     </Typography>
                   </div>
-                </td> */}
+                </td> */
+                  <td style={{ textAlign: "center" }}>
+                    <Chip
+                      color="primary"
+                      variant="solid"
+                    >
+                      {row.userId?.name} {row.userId?.surname}
+                    </Chip>
+                  </td>
+
+                }
+
+                <td style={{ textAlign: "center" }}>
+                  <Chip
+                    color="success"
+                    variant="solid"
+                  >
+                    {row.totalPrice} ₺
+                  </Chip>
+                </td>
+
+
                 <td style={{ textAlign: "center" }}>
                   <Dropdown>
                     <MenuButton
@@ -342,7 +394,7 @@ export default function RentalTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          setCarName(row.name);
+                          //setCarName(row.name);
                           setOpen(true);
                           setIsEdit(true);
                         }}
@@ -422,15 +474,15 @@ export default function RentalTable() {
                       <Input
                         id="startDate"
                         name="startDate"
-                        value={formik.values.startDate || startDate} 
-                        // className={
-                        //   formik.errors.startDate &&
-                        //   formik.touched.startDate &&
-                        //   "error form-control"
-                        // }
+                        value={formik.values.startDate || startDate}
+                        className={
+                          formik.errors.startDate &&
+                          formik.touched.startDate &&
+                          "error form-control"
+                        }
                         onChange={(e) => {
                           formik.handleChange(e);
-                          setStartDate(e.target.value); 
+                          setStartDate(e.target.value);
                         }}
                         onBlur={(e) => {
                           formik.handleBlur(e);
@@ -438,13 +490,13 @@ export default function RentalTable() {
                         }}
                         onFocus={activateDateInput}
                         type={dateInputType}
-                        // error={formik.errors.startDate && formik.touched.startDate}
-                        // placeholder={
-                        //   formik.errors.startDate && formik.touched.startDate
-                        //     ? formik.errors.startDate
-                        //     : t("startDate")
-                        // }
-                      /> 
+                        error={formik.errors.startDate && formik.touched.startDate}
+                        placeholder={
+                          formik.errors.startDate && formik.touched.startDate
+                            ? formik.errors.startDate
+                            : t("startDate")
+                        }
+                      />
                     </FormGroup>
                   </div>
                   <div>
@@ -454,11 +506,11 @@ export default function RentalTable() {
                         id="endDate"
                         name="endDate"
                         value={formik.values.endDate || endDate}
-                        // className={
-                        //   formik.errors.endDate &&
-                        //   formik.touched.endDate &&
-                        //   "error form-control"
-                        // }
+                        className={
+                          formik.errors.endDate &&
+                          formik.touched.endDate &&
+                          "error form-control"
+                        }
                         onChange={(e) => {
                           setEndDate(e.target.value);
                           formik.handleChange(e);
@@ -469,15 +521,50 @@ export default function RentalTable() {
                         }}
                         onFocus={activateDateInput}
                         type={dateInputType}
-                       // error={formik.errors.endDate && formik.touched.endDate}
-                        // placeholder={
-                        //   formik.errors.endDate && formik.touched.endDate
-                        //     ? formik.errors.endDate
-                        //     : t("endDate")
-                        // }
+                        error={formik.errors.endDate && formik.touched.endDate}
+                        placeholder={
+                          formik.errors.endDate && formik.touched.endDate
+                            ? formik.errors.endDate
+                            : t("endDate")
+                        }
                       />
                     </FormGroup>
                   </div>
+                  {
+                    isEdit &&
+                    <div>
+                      <FormLabel>Return Date</FormLabel>
+                      <FormGroup className="">
+                        <Input
+                          id="returnDate"
+                          name="returnDate"
+                          value={formik.values.returnDate || returnDate}
+                          className={
+                            formik.errors.endDate &&
+                            formik.touched.endDate &&
+                            "error form-control"
+                          }
+                          onChange={(e) => {
+                            setReturnDate(e.target.value);
+                            formik.handleChange(e);
+                          }}
+                          onBlur={(e) => {
+                            formik.handleBlur(e);
+                            deactivateDateInput();
+                          }}
+                          onFocus={activateDateInput}
+                          type={dateInputType}
+                          error={formik.errors.endDate && formik.touched.endDate}
+                          placeholder={
+                            formik.errors.endDate && formik.touched.endDate
+                              ? formik.errors.endDate
+                              : t("endDate")
+                          }
+                        />
+                      </FormGroup>
+                    </div>
+                  }
+
                   <div>
                     {/* <FormLabel>Select a Car</FormLabel> */}
                     <FormGroup className="">
@@ -489,7 +576,7 @@ export default function RentalTable() {
                           const selectedCarId = e.target.value;
                           setCarId(selectedCarId);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
                           appearance: 'none',
                           WebkitAppearance: 'none',
@@ -501,8 +588,9 @@ export default function RentalTable() {
                           width: '50%',
                         }}
                       >
+
                         <option value="">Select Car</option>
-                        {items.map((car) => (
+                        {items.filter(item => item.isAvailable === true).map((car, index) => (
                           <option key={car.id} value={car.id}>
                             {car.modelId?.brandId?.name} - {car.modelId?.name}
                           </option>
@@ -519,7 +607,7 @@ export default function RentalTable() {
                         name="userId"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
-                        style={{ 
+                        style={{
                           textAlign: "center",
                           appearance: 'none',
                           WebkitAppearance: 'none',
@@ -536,7 +624,8 @@ export default function RentalTable() {
                         {users
                           .map((user) => (
                             <option key={user.id} value={user.id}>
-                              {user.name}
+                              {user.name}{user.surname}
+
                             </option>
                           ))}
                       </select>
@@ -554,7 +643,7 @@ export default function RentalTable() {
                           setExtraId(e.target.value);
                           formik.handleChange(e);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
                           appearance: 'none',
                           WebkitAppearance: 'none',
@@ -565,13 +654,17 @@ export default function RentalTable() {
                           borderRadius: '10px',
                           width: '50%',
                         }}
+                        size="sm"
+                        placeholder="Filter by status"
+                        slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
                         onBlur={formik.handleBlur}
                         className={formik.errors.extraId && formik.touched.extraId && "error"}
                       >
+
                         <option value="">Select Extra</option>
-                        <option value="1" key="1">Mini Package</option>
-                        <option value="2" key="2">Medium Package</option>
-                        <option value="3" key="3">Free Package</option>
+                        <option value="1" key="1">Mini Package - 200.00₺</option>
+                        <option value="2" key="2">Medium Package - 350.00₺</option>
+                        <option value="3" key="3">Free Package - 0₺</option>
                       </select>
                     </FormGroup>
                   </div>

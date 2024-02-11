@@ -16,15 +16,16 @@ import java.time.LocalDate;
 public class UpdateRentalRequest {
     private int id;
     @FutureOrPresent(message = Messages.startDateNotBeforeToday) //Biz bunu iş kuralı olarak da yazardık ama yazmadık :)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    //@JsonFormat(pattern = "dd-MM-yyyy")
+    @Nullable
     private LocalDate returnDate;
     @Nullable
     private Integer endKilometer;
-    private double totalPrice;
+    //private double totalPrice;
     @NotNull(message = Messages.carIdNotEmpty)
     @Positive(message = Messages.carIdPositive)
     private int carId;

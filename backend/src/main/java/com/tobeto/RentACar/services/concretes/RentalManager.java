@@ -79,9 +79,9 @@ public class RentalManager implements RentalService {
         } else if (rental.getReturnDate() == null) {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
-        } else if (request.getTotalPrice() > 0) {
+        }/* else if (request.getTotalPrice() > 0) {
             rental.setTotalPrice(request.getTotalPrice());
-        } else {
+        }*/ else {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
         }
