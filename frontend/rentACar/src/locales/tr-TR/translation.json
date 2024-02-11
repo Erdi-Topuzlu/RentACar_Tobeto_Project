@@ -249,6 +249,14 @@
   "colors":"Renkler",
   "rentals":"Kiralamalar",
   "pair-1":"Pair-1 Kiralama",
+  "rentalOwner":"Kiralayan Kişi",
+  "totalPrice":"Toplam Ücret",
+  "updateRental":"Kiralamayı Güncelle",
+  "addRental":"Yeni Kiralama Ekle",
+  "returnDate":"Teslim Tarihi",
+  "selectCar":"Araç Seçiniz",
+  "selectUser":"Kullanıcı Seçiniz",
+  "selectExtra":"Ekstra Hizmet Seçiniz",
 
   "brand":"Marka",
   "model":"Model",
@@ -292,5 +300,8 @@
   "selectFuelType":"Yakıt Türü Seçiniz",
   "selectGearType":"Vites Türü Seçiniz",
   "selectVehicleType":"Araç Tipi Seçiniz",
-  "selectSeatType":"Koltuk Sayısı Seçiniz"
+  "selectSeatType":"Koltuk Sayısı Seçiniz",
+
+  "confirmation":"Onay",
+  "deleteMessage":"Silmek istediğinizden emin misiniz?"  
 }

@@ -19,13 +19,14 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import { Button, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,7 +65,7 @@ export default function CarList() {
   const [open, setOpen] = React.useState(false);
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
-
+  const [openDelete, setOpenDelete] = React.useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -293,10 +294,11 @@ export default function CarList() {
                       </MenuItem>
                       <Divider />
                       <MenuItem
-                        onClick={() => {
-                          setId(item.id);
-                          handleDelete(item.id);
-                        }}
+                       onClick={() => {
+                        setId(item.id);
+                        setName(item.name);
+                        setOpenDelete(true);
+                      }}
                         color="danger"
                       >
                         {t("delete")}
@@ -432,6 +434,38 @@ export default function CarList() {
             </Grid>
           </Sheet>
         </Modal>
+        <Modal open={openDelete}
+        onClose={() => {
+            setId(null);
+            setName(null);
+            setOpenDelete(false);
+          }}
+        sx={{
+          zIndex:11000,
+        }}
+        >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {t("confirmation")}
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <p style={{fontWeight:"bold"}}>{name}</p>{t("deleteMessage")}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDelete(id);
+              setOpenDelete(false)
+            }}>
+              {t("delete")}
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+            {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
     </Box>
   );
 }

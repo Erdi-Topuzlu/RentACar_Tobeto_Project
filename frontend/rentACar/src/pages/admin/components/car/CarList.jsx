@@ -22,10 +22,14 @@ import { useTranslation } from "react-i18next";
 import {
   Button,
   Chip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormLabel,
   Grid,
   Modal,
   ModalClose,
+  ModalDialog,
   Sheet,
   Table,
 } from "@mui/joy";
@@ -37,6 +41,8 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -81,12 +87,14 @@ export default function CarList() {
   const [colorId, setColorId] = React.useState("");
   const [modelId, setModelId] = React.useState("");
   const [brandId, setBrandId] = React.useState("");
+  const [carName, setCarName] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [order, setOrder] = React.useState("");
   const { items, status, error } = useSelector((state) => state.carAllData);
   const { colors } = useSelector((state) => state.colorAllData);
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -278,7 +286,8 @@ export default function CarList() {
                   <MenuItem
                     onClick={() => {
                       setId(item.id);
-                      handleDelete(row.id);
+                      setCarName(item.modelId.brandId?.name + " | " + item.modelId?.name);
+                      setOpenDelete(true);
                     }}
                     color="danger"
                   >
@@ -681,6 +690,38 @@ export default function CarList() {
             </Grid>
           </Grid>
         </Sheet>
+      </Modal>
+      <Modal open={openDelete}
+        onClose={() => {
+            setId(null);
+            setCarName(null);
+            setOpenDelete(false);
+          }}
+        sx={{
+          zIndex:11000,
+        }}
+        >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {t("confirmation")}
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <p style={{fontWeight:"bold"}}>{carName}</p>{t("deleteMessage")}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDelete(id);
+              setOpenDelete(false)
+            }}>
+              {t("delete")}
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+            {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
       </Modal>
     </Box>
   );

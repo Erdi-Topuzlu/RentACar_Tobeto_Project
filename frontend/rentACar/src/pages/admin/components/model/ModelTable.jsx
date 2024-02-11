@@ -17,7 +17,13 @@ import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Grid } from "@mui/joy";
+import {
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalDialog,
+} from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -28,8 +34,7 @@ import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import ModelList from "./ModelList";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-
-
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,11 +69,12 @@ export default function ModelTable() {
   const [isEdit, setIsEdit] = React.useState();
   const [name, setName] = React.useState();
   const [brandId, setBrandId] = React.useState();
+  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
-
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -89,7 +95,6 @@ export default function ModelTable() {
         toastSuccess("Model Başarıyla Silindi.");
         dispatch(fetchAllModelData());
       } catch (error) {
-        alert(error)
         console.error("Kayıt hatası:", error);
       }
     }
@@ -100,10 +105,6 @@ export default function ModelTable() {
       setOpen(false);
       toastError("Model name alanı boş bırakılamaz!");
     } else {
-
-      alert(id)
-
-
       const updatedData = {
         id: id,
         name: name,
@@ -111,15 +112,14 @@ export default function ModelTable() {
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/models/${id}`,
-          updatedData);
+        alert(JSON.stringify(updatedData));
+        await axiosInstance.put(`api/v1/admin/models/${id}`, updatedData);
         toastSuccess("Model Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllModelData());
       } catch (error) {
         console.error("Kayıt hatası:", error);
-
-      };
+      }
     }
   };
 
@@ -132,11 +132,10 @@ export default function ModelTable() {
     onSubmit: async (values, actions) => {
       const data = {
         name: values.modelName,
-        brandId:brandId,
+        brandId: brandId,
       };
 
       try {
-        alert(JSON.stringify(data));
         await axiosInstance.post("api/v1/admin/models/add", data);
         toastSuccess("Model Başarıyla Eklendi.");
         setOpen(false);
@@ -162,18 +161,18 @@ export default function ModelTable() {
         }}
       >
         <Typography level="h2" component="h1">
-        {t("models").toUpperCase()}
+          {t("models").toUpperCase()}
         </Typography>
         <Button
           color="success"
           size="md"
           onClick={() => {
             formik.resetForm();
-            //setName("")
+            setName("");
+            setBrandId("");
             setId(null);
             setOpen(true);
             setIsEdit(false);
-
           }}
         >
           {t("addNew")}
@@ -236,7 +235,7 @@ export default function ModelTable() {
               >
                 {t("modelName")}
               </th>
-               <th
+              <th
                 style={{
                   width: "auto",
                   padding: "12px 6px",
@@ -267,7 +266,6 @@ export default function ModelTable() {
             </tr>
           </thead>
           <tbody>
-           
             {stableSort(models, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
@@ -276,9 +274,9 @@ export default function ModelTable() {
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">{row.name}</Typography>
                 </td>
-                 <td style={{ textAlign: "center" }}>
-                 <Typography level="body-xs">{row.brandId?.name}</Typography>
-                </td> 
+                <td style={{ textAlign: "center" }}>
+                  <Typography level="body-xs">{row.brandId?.name}</Typography>
+                </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <div>
                     <Typography level="body-xs">{}</Typography>
@@ -305,10 +303,11 @@ export default function ModelTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          //setCarName(row.name);
+                          setName(row.name);
+                          setBrandId(row.brandId?.id);
+                          setBrandName(row.brandId?.name);
                           setOpen(true);
                           setIsEdit(true);
-
                         }}
                       >
                         {t("edit")}
@@ -317,7 +316,8 @@ export default function ModelTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          handleDelete(row.id);
+                          setName(row.name);
+                          setOpenDelete(true);
                         }}
                         color="danger"
                       >
@@ -366,9 +366,7 @@ export default function ModelTable() {
               fontWeight="lg"
               mb={1}
             >
-              {
-                isEdit ? t("updateModel") : t("addNewModel")
-              }
+              {isEdit ? t("updateModel") : t("addNewModel")}
             </Typography>
             <hr />
             <Grid
@@ -379,18 +377,17 @@ export default function ModelTable() {
             >
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
-                    <FormLabel>{t("modelName")}</FormLabel>
-                    <div>
+                  <FormLabel>{t("modelName")}</FormLabel>
+                  <div>
                     <FormGroup className="">
                       <Input
                         id="modelName"
                         name="modelName"
                         type="text"
+                        autoFocus
                         value={formik.values.name || name}
                         className={
-                          formik.errors.name &&
-                          formik.touched.name &&
-                          "error"
+                          formik.errors.name && formik.touched.name && "error"
                         }
                         onChange={(e) => {
                           // Update the brandName state when the input changes
@@ -403,14 +400,12 @@ export default function ModelTable() {
                             ? formik.errors.name
                             : t("modelName")
                         }
-                        error={
-                          formik.errors.name && formik.touched.name
-                        }
+                        error={formik.errors.name && formik.touched.name}
                       />
                     </FormGroup>
-                    
-                      {/* <FormLabel>{t("selectBrand")}</FormLabel> */}
-                      <FormGroup className="">
+
+                    {/* <FormLabel>{t("selectBrand")}</FormLabel> */}
+                    <FormGroup className="">
                       <select
                         id="brandId"
                         name="brandId"
@@ -419,55 +414,107 @@ export default function ModelTable() {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                       >
-                        <option value="">{t("selectBrand")}</option>
-                        {brands.map((brand) => (
-                          <option key={brand.id} value={brand.id}>
-                            {brand.name}
+                        {isEdit ? (
+                          // Render the single option in edit mode
+                          <option key={brandId} value={brandId}>
+                            {brandName}
                           </option>
-                        ))}
+                        ) : (
+                          // Render the options for non-edit mode
+                          <>
+                            <option value="">{t("selectBrand")}</option>
+                            {brands.map((brand) => (
+                              <option key={brand.id} value={brand.id}>
+                                {brand.name}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </select>
-                      </FormGroup>
+                    </FormGroup>
+                  </div>
 
-                    </div>
-                    
                   {id ? (
-                    <Button onClick={() => {
-                      handleUpdate(id);
-                    }} className=" form__btn"
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                    >{t("update")}</Button>
+                    <Button
+                      onClick={() => {
+                        handleUpdate(id);
+                      }}
+                      className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("update")}
+                    </Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
                       style={{ backgroundColor: "#673ab7", color: "white" }}
-
                     >
                       {t("add")}
                     </Button>
-                    
                   )}
-                  
                 </Form>
               </Grid>
             </Grid>
           </Sheet>
         </Modal>
+        <Modal
+          open={openDelete}
+          onClose={() => {
+            setId(null);
+            setName(null);
+            setOpenDelete(false);
+          }}
+          sx={{
+            zIndex: 11000,
+          }}
+        >
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}>{name}</p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+          </ModalDialog>
+        </Modal>
       </Sheet>
-      <ModelList/>
+      <ModelList />
     </React.Fragment>
   );
 }

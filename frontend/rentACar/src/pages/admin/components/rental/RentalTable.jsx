@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
@@ -16,10 +15,16 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Chip, Grid } from "@mui/joy";
+import {
+  Chip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalDialog,
+} from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -32,7 +37,7 @@ import RentalList from "./RentalList";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 import getRentalValidationSchema from "../../../../schemes/rentalScheme";
-
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -77,7 +82,7 @@ export default function RentalTable() {
   const { rentals } = useSelector((state) => state.allRentals);
   const { items } = useSelector((state) => state.carAllData);
   const { users } = useSelector((state) => state.userAllData);
-
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const activateDateInput = () => {
     setDateInputType("date");
@@ -94,7 +99,6 @@ export default function RentalTable() {
     dispatch(fetchAllRentals());
     dispatch(fetchAllCarData());
     dispatch(fetchAllUserData());
-    console.log(rentals)
   }, [dispatch]);
 
   const rentalValidationSchema = getRentalValidationSchema();
@@ -108,7 +112,7 @@ export default function RentalTable() {
         toastSuccess("Rental Başarıyla Silindi.");
         dispatch(fetchAllRentals());
       } catch (error) {
-        alert(error)
+        alert(error);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -119,7 +123,6 @@ export default function RentalTable() {
       setOpen(false);
       toastError("Start date alanı boş bırakılamaz!");
     } else {
-
       const updatedData = {
         id: id,
         startDate: startDate,
@@ -128,22 +131,20 @@ export default function RentalTable() {
         endKilometer: null,
         carId: carId,
         userId: userId,
-        extraId: extraId
+        extraId: extraId,
       };
 
       try {
-        alert(JSON.stringify(updatedData))
-        await axiosInstance.put(`api/v1/users/rentals/${id}`,
-          updatedData);
+        alert(JSON.stringify(updatedData));
+        await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
         toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllRentals());
       } catch (error) {
         console.error("Kayıt hatası:", error);
-
-      };
+      }
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -152,22 +153,21 @@ export default function RentalTable() {
       returnDate: "",
       carId: "",
       userId: "",
-      extraId: ""
+      extraId: "",
     },
     validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
-
         startDate: values.startDate,
         endDate: values.endDate,
         returnDate: null,
         carId: carId,
         userId: userId,
-        extraId: extraId
+        extraId: extraId,
       };
 
       try {
-        alert(JSON.stringify(data))
+        alert(JSON.stringify(data));
         await axiosInstance.post("api/v1/users/rentals", data);
         toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);
@@ -204,7 +204,6 @@ export default function RentalTable() {
             setId(null);
             setOpen(true);
             setIsEdit(false);
-
           }}
         >
           {t("addNew")}
@@ -265,7 +264,7 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                {t("Start Date / End Date")}
+                {t("startDate")} / {t("endDate")}
               </th>
 
               <th
@@ -275,7 +274,7 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                {t("Rental Owner")}
+                {t("rentalOwner")}
               </th>
               <th
                 style={{
@@ -284,7 +283,16 @@ export default function RentalTable() {
                   textAlign: "center",
                 }}
               >
-                {t("Total Price")}
+                {t("brand")} | {t("model")}
+              </th>
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("totalPrice")}
               </th>
               {/* <th
                 style={{
@@ -323,7 +331,10 @@ export default function RentalTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.startDate} / {row.returnDate ? row.returnDate : row.endDate}</Typography>
+                  <Typography level="body-xs">
+                    {row.startDate} /{" "}
+                    {row.returnDate ? row.returnDate : row.endDate}
+                  </Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -347,7 +358,8 @@ export default function RentalTable() {
                     {row.id}
                   </Chip>
                 </td> */}
-                {/* <td style={{ textAlign: "center" }}>
+                {
+                  /* <td style={{ textAlign: "center" }}>
                   <div>
                     <Typography level="body-xs">{}</Typography>
                     <Typography level="body-xs">
@@ -356,25 +368,23 @@ export default function RentalTable() {
                   </div>
                 </td> */
                   <td style={{ textAlign: "center" }}>
-                    <Chip
-                      color="primary"
-                      variant="solid"
-                    >
+                    <Chip color="primary" variant="solid">
                       {row.userId?.name} {row.userId?.surname}
                     </Chip>
                   </td>
-
                 }
 
                 <td style={{ textAlign: "center" }}>
-                  <Chip
-                    color="success"
-                    variant="solid"
-                  >
+                  <Typography level="body-xs">
+                  {row.carId?.modelId?.brandId?.name} &bull; {row.carId?.modelId?.name}
+                  </Typography>
+                </td>
+
+                <td style={{ textAlign: "center" }}>
+                  <Chip color="success" variant="solid">
                     {row.totalPrice} ₺
                   </Chip>
                 </td>
-
 
                 <td style={{ textAlign: "center" }}>
                   <Dropdown>
@@ -405,7 +415,13 @@ export default function RentalTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          handleDelete(row.id);
+                          setUserId(row.userId?.name);
+                          setCarId(
+                            row.carId?.modelId?.brandId?.name +
+                              "|" +
+                              row.carId?.modelId?.name
+                          );
+                          setOpenDelete(true);
                         }}
                         color="danger"
                       >
@@ -454,10 +470,7 @@ export default function RentalTable() {
               fontWeight="lg"
               mb={1}
             >
-              {
-                isEdit ? "Update Rental" : "Add New Rental"
-              }
-
+              {isEdit ? t("updateRental") : t("addRental")}
             </Typography>
             <hr />
             <Grid
@@ -469,7 +482,7 @@ export default function RentalTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>Start Date</FormLabel>
+                    <FormLabel>{t("startDate")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="startDate"
@@ -490,7 +503,9 @@ export default function RentalTable() {
                         }}
                         onFocus={activateDateInput}
                         type={dateInputType}
-                        error={formik.errors.startDate && formik.touched.startDate}
+                        error={
+                          formik.errors.startDate && formik.touched.startDate
+                        }
                         placeholder={
                           formik.errors.startDate && formik.touched.startDate
                             ? formik.errors.startDate
@@ -500,7 +515,7 @@ export default function RentalTable() {
                     </FormGroup>
                   </div>
                   <div>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>{t("endDate")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="endDate"
@@ -530,10 +545,9 @@ export default function RentalTable() {
                       />
                     </FormGroup>
                   </div>
-                  {
-                    isEdit &&
+                  {isEdit && (
                     <div>
-                      <FormLabel>Return Date</FormLabel>
+                      <FormLabel>{t("returnDate")}</FormLabel>
                       <FormGroup className="">
                         <Input
                           id="returnDate"
@@ -554,16 +568,18 @@ export default function RentalTable() {
                           }}
                           onFocus={activateDateInput}
                           type={dateInputType}
-                          error={formik.errors.endDate && formik.touched.endDate}
+                          error={
+                            formik.errors.endDate && formik.touched.endDate
+                          }
                           placeholder={
                             formik.errors.endDate && formik.touched.endDate
                               ? formik.errors.endDate
-                              : t("endDate")
+                              : t("returnDate")
                           }
                         />
                       </FormGroup>
                     </div>
-                  }
+                  )}
 
                   <div>
                     {/* <FormLabel>Select a Car</FormLabel> */}
@@ -578,30 +594,30 @@ export default function RentalTable() {
                         }}
                         style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                       >
-
-                        <option value="">Select Car</option>
-                        {items.filter(item => item.isAvailable === true).map((car, index) => (
-                          <option key={car.id} value={car.id}>
-                            {car.modelId?.brandId?.name} - {car.modelId?.name}
-                          </option>
-                        ))}
+                        <option value="">{t("selectCar")}</option>
+                        {items
+                          .filter((item) => item.isAvailable === true)
+                          .map((car, index) => (
+                            <option key={car.id} value={car.id}>
+                              {car.modelId?.brandId?.name} - {car.modelId?.name}
+                            </option>
+                          ))}
                       </select>
                     </FormGroup>
                   </div>
                   <div>
                     {/* <FormLabel>Select a User</FormLabel> */}
                     <FormGroup className="">
-
                       <select
                         id="user"
                         name="userId"
@@ -609,25 +625,22 @@ export default function RentalTable() {
                         onChange={(e) => setUserId(e.target.value)}
                         style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
-
                       >
-                        <option value="">Select User</option>
-                        {users
-                          .map((user) => (
-                            <option key={user.id} value={user.id}>
-                              {user.name}{user.surname}
-
-                            </option>
-                          ))}
+                        <option value="">{t("selectUser")}</option>
+                        {users.map((user) => (
+                          <option key={user.id} value={user.id}>
+                            {user.name}{" "}{user.surname}
+                          </option>
+                        ))}
                       </select>
                     </FormGroup>
                   </div>
@@ -645,40 +658,55 @@ export default function RentalTable() {
                         }}
                         style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         size="sm"
                         placeholder="Filter by status"
-                        slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
+                        slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
                         onBlur={formik.handleBlur}
-                        className={formik.errors.extraId && formik.touched.extraId && "error"}
+                        className={
+                          formik.errors.extraId &&
+                          formik.touched.extraId &&
+                          "error"
+                        }
                       >
-
-                        <option value="">Select Extra</option>
-                        <option value="1" key="1">Mini Package - 200.00₺</option>
-                        <option value="2" key="2">Medium Package - 350.00₺</option>
-                        <option value="3" key="3">Free Package - 0₺</option>
+                        <option value="">{t("selectExtra")}</option>
+                        <option value="1" key="1">
+                          Mini Package - 200.00₺
+                        </option>
+                        <option value="2" key="2">
+                          Medium Package - 350.00₺
+                        </option>
+                        <option value="3" key="3">
+                          Free Package - 0₺
+                        </option>
                       </select>
                     </FormGroup>
                   </div>
 
                   {id ? (
-                    <Button onClick={() => {
-                      handleUpdate(id);
-                    }} className=" form__btn">{t("update")}</Button>
+                    <Button
+                      onClick={() => {
+                        handleUpdate(id);
+                      }}
+                      className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("update")}
+                    </Button>
                   ) : (
                     <Button
                       className=" form__btn"
                       type="submit"
                       disabled={formik.isSubmitting}
-
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
                     >
                       {t("add")}
                     </Button>
@@ -687,6 +715,51 @@ export default function RentalTable() {
               </Grid>
             </Grid>
           </Sheet>
+        </Modal>
+        <Modal
+          open={openDelete}
+          onClose={() => {
+            setId(null);
+            setUserId(null);
+            setCarId(null);
+            setOpenDelete(false);
+          }}
+          sx={{
+            zIndex: 11000,
+          }}
+        >
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}>
+                {userId} - {carId}{" "}
+              </p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+          </ModalDialog>
         </Modal>
       </Sheet>
       <RentalList />

@@ -2,41 +2,20 @@ import * as React from "react";
 import GlobalStyles from "@mui/joy/GlobalStyles";
 import Avatar from "@mui/joy/Avatar";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import Card from "@mui/joy/Card";
-import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
 import IconButton from "@mui/joy/IconButton";
-import Input from "@mui/joy/Input";
-import LinearProgress from "@mui/joy/LinearProgress";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import ListItemButton, { listItemButtonClasses } from "@mui/joy/ListItemButton";
 import ListItemContent from "@mui/joy/ListItemContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import Stack from "@mui/joy/Stack";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
-import QuestionAnswerRoundedIcon from "@mui/icons-material/QuestionAnswerRounded";
-import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
-import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
 import CarRentalIcon from "@mui/icons-material/CarRental";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
-import BusinessIcon from "@mui/icons-material/Business";
-import BurstModeIcon from "@mui/icons-material/BurstMode";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-
+import i18n from "../../../i18n";
+import turkey from "../../../assets/all-images/tr.png";
+import england from "../../../assets/all-images/en.png";
 import ColorSchemeToggle from "./ColorShemeToggle";
 import { closeSidebar } from "../utils";
 import { Link } from "@mui/joy";
@@ -44,6 +23,7 @@ import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toastSuccess } from "../../../service/ToastifyService";
+import { NavDropdown } from "react-bootstrap";
 
 function Toggler({ defaultExpanded = false, renderToggle, children }) {
   const [open, setOpen] = React.useState(defaultExpanded);
@@ -65,6 +45,11 @@ function Toggler({ defaultExpanded = false, renderToggle, children }) {
     </React.Fragment>
   );
 }
+
+const langSelect = (eventKey) => {
+  i18n.changeLanguage(eventKey);
+  localStorage.setItem("lang", eventKey);
+};
 
 export default function Sidebar() {
   
@@ -174,15 +159,43 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <Link component={RouterLink} to="../home" underline="none">
+      <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "space-between" }}>
+  <ColorSchemeToggle />
+  <NavDropdown
+    menuVariant="dark"
+    title={
+      i18n.language === "en" ? (
+        <img width={24} src={england} />
+      ) : i18n.language === "tr" ? (
+        <img width={24} src={turkey} />
+      ) : // Handle other languages if needed
+        null
+    }
+    id="nav-dropdown"
+    onSelect={langSelect}
+  >
+    {i18n.language === "en" ? (
+      <NavDropdown.Item eventKey="tr">
+        <img width={16} src={turkey} /> {t("tr-TR")}
+      </NavDropdown.Item>
+    ) : i18n.language === "tr" ? (
+      <NavDropdown.Item eventKey="en">
+        <img width={16} src={england} /> {t("en-US")}
+      </NavDropdown.Item>
+    ) : // Handle other languages if needed
+      null}
+  </NavDropdown>
+</Box>
+<Divider />
+      <Link component={RouterLink} to="../home" underline="none">
           <IconButton variant="soft" color="neutral" size="lg">
             <CarRentalIcon />
           </IconButton>
           <Typography level="title-lg">{t("pair-1")}</Typography>
         </Link>
-        <ColorSchemeToggle sx={{ ml: "auto" }} />
-      </Box>
+      
+        
+        
       <Divider />
       <Box
         sx={{
@@ -272,6 +285,7 @@ export default function Sidebar() {
           <Typography level="title-sm">{details.name}</Typography>
           <Typography level="body-xs">{details.email}</Typography>
         </Box>
+        
         <IconButton onClick={handleLogout} size="md" variant="plain" color="neutral">
           <LogoutRoundedIcon />
         </IconButton>

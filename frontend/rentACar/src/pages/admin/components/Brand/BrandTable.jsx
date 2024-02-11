@@ -18,11 +18,11 @@ import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import BrandList from "./BrandList";
-import { Grid } from "@mui/joy";
+import { DialogActions, DialogContent, DialogTitle, Grid, ModalDialog } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
@@ -64,6 +64,7 @@ export default function BrandTable() {
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -316,7 +317,8 @@ export default function BrandTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          handleDelete(row.id);
+                          setBrandName(row.name);
+                          setOpenDelete(true);
                         }}
                         color="danger"
                       >
@@ -433,6 +435,38 @@ export default function BrandTable() {
             </Grid>
           </Sheet>
         </Modal>
+        <Modal open={openDelete}
+        onClose={() => {
+            setId(null);
+            setBrandName(null);
+            setOpenDelete(false);
+          }}
+        sx={{
+          zIndex:11000,
+        }}
+        >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {t("confirmation")}
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <p style={{fontWeight:"bold"}}>{brandName}</p>{t("deleteMessage")}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDelete(id);
+              setOpenDelete(false)
+            }}>
+              {t("delete")}
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+            {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
       </Sheet>
       <BrandList />
     </React.Fragment>

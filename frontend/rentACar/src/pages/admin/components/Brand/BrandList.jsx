@@ -19,12 +19,15 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import { Button, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -59,7 +62,12 @@ export default function BrandList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
+<<<<<<< Updated upstream
   const { brands } = useSelector((state) => state.brandAllData);
+=======
+  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
+>>>>>>> Stashed changes
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -241,7 +249,8 @@ export default function BrandList() {
                   <MenuItem
                     onClick={() => {
                       setId(item.id);
-                      handleDelete(item.id);
+                          setBrandName(item.name);
+                          setOpenDelete(true);
                     }}
                     color="danger"
                   >
@@ -356,6 +365,38 @@ export default function BrandList() {
             </Grid>
           </Grid>
         </Sheet>
+      </Modal>
+      <Modal open={openDelete}
+        onClose={() => {
+            setId(null);
+            setBrandName(null);
+            setOpenDelete(false);
+          }}
+        sx={{
+          zIndex:11000,
+        }}
+        >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {t("confirmation")}
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <p style={{fontWeight:"bold"}}>{brandName}</p>{t("deleteMessage")}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDelete(id);
+              setOpenDelete(false)
+            }}>
+              {t("delete")}
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+            {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
       </Modal>
     </Box>
   );
