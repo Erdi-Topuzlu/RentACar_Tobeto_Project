@@ -17,16 +17,18 @@ import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Grid } from "@mui/joy";
+import { DialogActions, DialogContent, DialogTitle, Grid, ModalDialog } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import getColorValidationSchema from "../../../../schemes/colorScheme";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 import ColorList from "./ColorList";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,6 +65,7 @@ export default function ColorTable() {
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { colors, status, error } = useSelector((state) => state.colorAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -321,7 +324,8 @@ export default function ColorTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          handleDelete(row.id);
+                          setColorName(row.name);
+                          setOpenDelete(true);
                         }}
                         color="danger"
                       >
@@ -436,6 +440,38 @@ export default function ColorTable() {
             </Grid>
           </Sheet>
         </Modal>
+        <Modal open={openDelete}
+        onClose={() => {
+            setId(null);
+            setColorName(null);
+            setOpenDelete(false);
+          }}
+        sx={{
+          zIndex:11000,
+        }}
+        >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {t("confirmation")}
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <p style={{fontWeight:"bold"}}>{colorName}</p>{t("deleteMessage")}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="danger" onClick={() => {
+              handleDelete(id);
+              setOpenDelete(false)
+            }}>
+              {t("delete")}
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+            {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
       </Sheet>
       <ColorList />
     </React.Fragment>

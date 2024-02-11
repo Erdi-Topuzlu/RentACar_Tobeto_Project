@@ -20,12 +20,16 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import { Button, Chip, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
-import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
+import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
+import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -54,52 +58,78 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function CarList() {
+export default function RentalList() {
   const [id, setId] = React.useState();
-  const [colorName, setColorName] = React.useState();
+  const [isEdit, setIsEdit] = React.useState();
+  const [startDate, setStartDate] = React.useState();
+  const [endDate, setEndDate] = React.useState();
+  const [returnDate, setReturnDate] = React.useState();
+  const [carId, setCarId] = React.useState();
+  const [userId, setUserId] = React.useState();
+  const [extraId, setExtraId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { colors, status, error } = useSelector((state) => state.colorAllData);
+  const [dateInputType, setDateInputType] = React.useState("text");
+  const { rentals } = useSelector((state) => state.allRentals);
+  const { items } = useSelector((state) => state.carAllData);
+  const { users } = useSelector((state) => state.userAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const activateDateInput = () => {
+    setDateInputType("date");
+  };
+
+  const deactivateDateInput = () => {
+    setDateInputType("text");
+  };
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-
   React.useEffect(() => {
-    dispatch(fetchAllColorData());
+    dispatch(fetchAllRentals());
+    dispatch(fetchAllCarData());
+    dispatch(fetchAllUserData());
   }, [dispatch]);
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Color ID bulunamadı!");
+      toastError("Rental ID bulunamadı!");
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-        toastSuccess("Color Başarıyla Silindi.");
-        dispatch(fetchAllColorData());
+        await axiosInstance.delete(`api/v1/users/rentals/${id}`);
+        toastSuccess("Rental Başarıyla Silindi.");
+        dispatch(fetchAllRentals());
       } catch (error) {
+        alert(error);
         console.error("Kayıt hatası:", error);
       }
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!colorName) {
+    if (!startDate) {
       setOpen(false);
-      toastError("Color Name alanı boş bırakılamaz!");
+      toastError("Start date alanı boş bırakılamaz!");
     } else {
-      const data = {
+      const updatedData = {
         id: id,
-        name: colorName,
+        startDate: startDate,
+        endDate: endDate,
+        returnDate: returnDate,
+        endKilometer: null,
+        carId: carId,
+        userId: userId,
+        extraId: extraId,
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
-        toastSuccess("Color Başarıyla Güncellendi.");
+        alert(JSON.stringify(updatedData));
+        await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
+        toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
-        dispatch(fetchAllColorData());
+        dispatch(fetchAllRentals());
       } catch (error) {
-        console.log(id);
         console.error("Kayıt hatası:", error);
       }
     }
@@ -107,7 +137,12 @@ export default function CarList() {
 
   const formik = useFormik({
     initialValues: {
-      colorName: "",
+      startDate: "",
+      endDate: "",
+      returnDate: "",
+      carId: "",
+      userId: "",
+      extraId: "",
     },
   });
 
@@ -153,7 +188,7 @@ export default function CarList() {
                 textAlign: "center",
               }}
             >
-              Color Name
+              {t("rentalOwner")}
             </th>
             {/* <th
                 style={{
@@ -180,218 +215,452 @@ export default function CarList() {
                 textAlign: "right",
               }}
             >
-              Actions
+              {t("actions")}
             </th>
           </tr>
         </thead>
       </Table>
 
-      {stableSort(colors, getComparator(order, "id")).map((item) => (
+      {stableSort(rentals, getComparator(order, "id")).map((item) => (
         <List
-          key={item.id}
-          size="sm"
-          sx={{
-            "--ListItem-paddingX": 0,
-          }}
-        >
-          <ListItem
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "start",
-            }}
-          >
-            <ListItemContent
-              sx={{ display: "flex", gap: 2, alignItems: "start" }}
-            >
-              <ListItemDecorator>
-                <Avatar size="sm">{item.id}</Avatar>
-              </ListItemDecorator>
-              <div
-                style={{
-                  padding: "6px 60px",
-                }}
-              >
-                <Typography fontWeight={600} gutterBottom>
-                  {item.name}
-                </Typography>
-                {/* <Typography level="body-xs" gutterBottom>
-                  {item.customer.email}
-                </Typography> */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 0.5,
-                    mb: 1,
-                  }}
-                >
-                  {/* <Typography level="body-xs">{item.date}</Typography>
-                  <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{item.id}</Typography> */}
-                </Box>
-              </div>
-            </ListItemContent>
-            {/* <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Paid: <CheckRoundedIcon />,
-                  Refunded: <AutorenewRoundedIcon />,
-                  Cancelled: <BlockIcon />
-                }[item.status]
-              }
-              color={
-                {
-                  Paid: "success",
-                  Refunded: "neutral",
-                  Cancelled: "danger"
-                }[item.status]
-              }
-            >
-              {item.status}
-            </Chip> */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: { variant: "plain", color: "neutral", size: "sm" },
-                  }}
-                >
-                  <MoreHorizRoundedIcon />
-                </MenuButton>
-                <Menu size="sm" sx={{ minWidth: 140 }}>
-                  <MenuItem
-                    onClick={() => {
-                      formik.resetForm();
-                      setId(item.id);
-                      setColorName(item.name);
-                      setOpen(true);
-                    }}
-                  >
-                    Edit
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      handleDelete(item.id);
-                    }}
-                    color="danger"
-                  >
-                    Delete
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
-            </Box>
-          </ListItem>
-          <ListDivider />
-        </List>
-      ))}
-      <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setOpen(false);
-        }}
+        key={item.id}
+        size="sm"
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
+          "--ListItem-paddingX": 0,
         }}
       >
-        <Sheet
-          variant="outlined"
+        <ListItem
           sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "start",
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
+          <ListItemContent
+            sx={{ display: "flex", gap: 2, alignItems: "start" }}
           >
-            Add New Color
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            <ListItemDecorator>
+              <Avatar size="sm">{item.id}</Avatar>
+            </ListItemDecorator>
+            <div
+              style={{
+                padding: "6px 60px",
+              }}
+            ><Typography fontWeight={600} gutterBottom>
+            <Chip color="primary" variant="solid">
+                    {item.userId?.name} {item.userId?.surname}
+                  </Chip>
+                  </Typography>
+              <Typography fontWeight={600} gutterBottom>
+                
+              {item.startDate} /{" "}
+                    {item.returnDate ? item.returnDate : item.endDate}
+              </Typography>
+              
+              <Typography level="body-xs" gutterBottom>
+                {item.carId?.modelId?.brandId?.name} &bull; {item.carId?.modelId?.name}
+              </Typography>
+              <Typography level="body-xs">
+                <Chip
+                  color="success"
+                  variant="solid"
+                >
+                  {item.carId?.dailyPrice} ₺
+                </Chip>                  
+              </Typography>
+            </div>
+          </ListItemContent>
+          {/* <Chip
+            variant="soft"
+            size="sm"
+            startDecorator={
+              {
+                Paid: <CheckRoundedIcon />,
+                Refunded: <AutorenewRoundedIcon />,
+                Cancelled: <BlockIcon />
+              }[item.status]
+            }
+            color={
+              {
+                Paid: "success",
+                Refunded: "neutral",
+                Cancelled: "danger"
+              }[item.status]
+            }
           >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>Color Name</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="colorName"
-                      name="colorName"
-                      type="text"
-                      value={formik.values.colorName || colorName}
-                      className={
-                        formik.errors.colorName &&
-                        formik.touched.colorName &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the colorName state when the input changes
-                        setColorName(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+            {item.status}
+          </Chip> */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+          <Dropdown>
+                    <MenuButton
+                      slots={{ root: IconButton }}
+                      slotProps={{
+                        root: {
+                          variant: "plain",
+                          color: "neutral",
+                          size: "sm",
+                        },
                       }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.colorName && formik.touched.colorName
-                          ? formik.errors.colorName
-                          : t("colorName")
-                      }
-                      error={
-                        formik.errors.colorName && formik.touched.colorName
-                      }
-                    />
-                  </FormGroup>
-                </div>
-                {id ? (
-                  <Button
-                    onClick={() => {
-                      handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
+                    >
+                      <MoreHorizRoundedIcon />
+                    </MenuButton>
+                    <Menu size="sm" sx={{ minWidth: 140 }}>
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          //setCarName(item.name);
+                          setOpen(true);
+                          setIsEdit(true);
+                        }}
+                      >
+                        {t("edit")}
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem
+                        onClick={() => {
+                          setId(item.id);
+                          setUserId(item.userId?.name);
+                          setCarId(
+                            item.carId?.modelId?.brandId?.name +
+                              "|" +
+                              item.carId?.modelId?.name
+                          );
+                          setOpenDelete(true);
+                        }}
+                        color="danger"
+                      >
+                        {t("delete")}
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
+          </Box>
+        </ListItem>
+        <ListDivider />
+      </List>
+      ))}
+      <Modal
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => {
+            formik.resetForm();
+            setId(null);
+            setOpen(false);
+          }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
+          }}
+        >
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
+          >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              {isEdit ? "Update Rental" : "Add New Rental"}
+            </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                  <div>
+                    <FormLabel>Start Date</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="startDate"
+                        name="startDate"
+                        value={formik.values.startDate || startDate}
+                        className={
+                          formik.errors.startDate &&
+                          formik.touched.startDate &&
+                          "error form-control"
+                        }
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          setStartDate(e.target.value);
+                        }}
+                        onBlur={(e) => {
+                          formik.handleBlur(e);
+                          deactivateDateInput();
+                        }}
+                        onFocus={activateDateInput}
+                        type={dateInputType}
+                        error={
+                          formik.errors.startDate && formik.touched.startDate
+                        }
+                        placeholder={
+                          formik.errors.startDate && formik.touched.startDate
+                            ? formik.errors.startDate
+                            : t("startDate")
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+                  <div>
+                    <FormLabel>End Date</FormLabel>
+                    <FormGroup className="">
+                      <Input
+                        id="endDate"
+                        name="endDate"
+                        value={formik.values.endDate || endDate}
+                        className={
+                          formik.errors.endDate &&
+                          formik.touched.endDate &&
+                          "error form-control"
+                        }
+                        onChange={(e) => {
+                          setEndDate(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        onBlur={(e) => {
+                          formik.handleBlur(e);
+                          deactivateDateInput();
+                        }}
+                        onFocus={activateDateInput}
+                        type={dateInputType}
+                        error={formik.errors.endDate && formik.touched.endDate}
+                        placeholder={
+                          formik.errors.endDate && formik.touched.endDate
+                            ? formik.errors.endDate
+                            : t("endDate")
+                        }
+                      />
+                    </FormGroup>
+                  </div>
+                  {isEdit && (
+                    <div>
+                      <FormLabel>Return Date</FormLabel>
+                      <FormGroup className="">
+                        <Input
+                          id="returnDate"
+                          name="returnDate"
+                          value={formik.values.returnDate || returnDate}
+                          className={
+                            formik.errors.endDate &&
+                            formik.touched.endDate &&
+                            "error form-control"
+                          }
+                          onChange={(e) => {
+                            setReturnDate(e.target.value);
+                            formik.handleChange(e);
+                          }}
+                          onBlur={(e) => {
+                            formik.handleBlur(e);
+                            deactivateDateInput();
+                          }}
+                          onFocus={activateDateInput}
+                          type={dateInputType}
+                          error={
+                            formik.errors.endDate && formik.touched.endDate
+                          }
+                          placeholder={
+                            formik.errors.endDate && formik.touched.endDate
+                              ? formik.errors.endDate
+                              : t("endDate")
+                          }
+                        />
+                      </FormGroup>
+                    </div>
+                  )}
+
+                  <div>
+                    {/* <FormLabel>Select a Car</FormLabel> */}
+                    <FormGroup className="">
+                      <select
+                        id="car"
+                        name="carId"
+                        value={carId}
+                        onChange={(e) => {
+                          const selectedCarId = e.target.value;
+                          setCarId(selectedCarId);
+                        }}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
+                        }}
+                      >
+                        <option value="">Select Car</option>
+                        {items
+                          .filter((item) => item.isAvailable === true)
+                          .map((car, index) => (
+                            <option key={car.id} value={car.id}>
+                              {car.modelId?.brandId?.name} - {car.modelId?.name}
+                            </option>
+                          ))}
+                      </select>
+                    </FormGroup>
+                  </div>
+                  <div>
+                    {/* <FormLabel>Select a User</FormLabel> */}
+                    <FormGroup className="">
+                      <select
+                        id="user"
+                        name="userId"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
+                        }}
+                      >
+                        <option value="">Select User</option>
+                        {users.map((user) => (
+                          <option key={user.id} value={user.id}>
+                            {user.name}
+                            {user.surname}
+                          </option>
+                        ))}
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  <div>
+                    {/* <FormLabel htmlFor="fuelType">Select a Extra</FormLabel> */}
+                    <FormGroup className="">
+                      <select
+                        id="extra"
+                        name="extraId"
+                        value={formik.values.extraId || extraId}
+                        onChange={(e) => {
+                          setExtraId(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
+                        }}
+                        size="sm"
+                        placeholder="Filter by status"
+                        slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
+                        onBlur={formik.handleBlur}
+                        className={
+                          formik.errors.extraId &&
+                          formik.touched.extraId &&
+                          "error"
+                        }
+                      >
+                        <option value="">Select Extra</option>
+                        <option value="1" key="1">
+                          Mini Package - 200.00₺
+                        </option>
+                        <option value="2" key="2">
+                          Medium Package - 350.00₺
+                        </option>
+                        <option value="3" key="3">
+                          Free Package - 0₺
+                        </option>
+                      </select>
+                    </FormGroup>
+                  </div>
+
+                  {id ? (
+                    <Button
+                      onClick={() => {
+                        handleUpdate(id);
+                      }}
+                      className=" form__btn"
+                    >
+                      {t("update")}
+                    </Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                    >
+                      {t("add")}
+                    </Button>
+                  )}
+                </Form>
+              </Grid>
             </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+          </Sheet>
+        </Modal>
+        <Modal
+          open={openDelete}
+          onClose={() => {
+            setId(null);
+            setUserId(null);
+            setCarId(null);
+            setOpenDelete(false);
+          }}
+          sx={{
+            zIndex: 11000,
+          }}
+        >
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}>{userId} - {carId} </p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+          </ModalDialog>
+        </Modal>
     </Box>
   );
 }

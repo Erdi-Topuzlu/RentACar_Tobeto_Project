@@ -248,6 +248,14 @@
   "colors":"Colors",
   "rentals":"Rentals",
   "pair-1":"Pair-1 Rental",
+  "rentalOwner":"Rental Owner",
+  "totalPrice":"Total Price",
+  "updateRental":"Update to Rental",
+  "addRental":"Add New Rental",
+  "returnDate":"Return Date",
+  "selectCar":"Select a Car",
+  "selectUser":"Select a User",
+  "selectExtra":"Select a Extra",
   
   "brand":"Brand",
   "model":"Model",
@@ -291,9 +299,9 @@
   "selectFuelType":"Select a Fuel Type",
   "selectGearType":"Select a Gear Type",
   "selectVehicleType":"Select a Vehicle Type",
-  "selectSeatType":"Select a Seat Type"
+  "selectSeatType":"Select a Seat Type",
   
-
-  
+  "confirmation":"Confirmation",
+  "deleteMessage":"Are you sure you want to delete?"  
 
 }
