@@ -42,7 +42,7 @@ const Settings = () => {
     firstName: details.name || "", // use an empty string if details.name is null
     lastName: details.surname || "",
     tcNo: details.tcNo || "",
-    usernames: details.usernames || "",
+    usernames: details.name || "",
     image: details.userPhotoUrl || "",
     // birthdate: details.birthDate || "",
   };
@@ -59,7 +59,7 @@ const Settings = () => {
         password: details.password,
         role: details.role,
         tcNo: values.tcNo || details.tcNo,
-        usernames: values.usernames || details.usernames,
+        usernames: values.firstName || details.name || "",
         birthDate: details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
       };
@@ -191,7 +191,7 @@ const Settings = () => {
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
-                <FormLabel>{t("name")}</FormLabel>
+                <FormLabel>{t("First Name")}</FormLabel>
                 <FormControl
                   sx={{
                     display: { sm: "flex-column", md: "flex-row" },
@@ -250,13 +250,15 @@ const Settings = () => {
                   </FormControl>
 
                   <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                    <FormLabel>{t("identifyNumber")}</FormLabel>
+                    <FormLabel>{t("Identify Number (11 Character)")}</FormLabel>
                     <Input
                       name="tcNo"
                       id="tcNo"
                       className={
                         formik.errors.tcNo && formik.touched.tcNo && "error"
                       }
+                      type="text"
+                      
                       value={values.tcNo}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -266,11 +268,11 @@ const Settings = () => {
                         formik.errors.tcNo && formik.touched.tcNo
                           ? formik.errors.tcNo
                           : t("identifyNumber")
-                      }
+                      }                      
                     />
                   </FormControl>
 
-                  <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                  {/* <FormControl sx={{ display: "flex-column", gap: 1 }}>
                     <FormLabel>{t("Username")}</FormLabel>
                     <Input
                       name="usernames"
@@ -293,7 +295,7 @@ const Settings = () => {
                           : t("Username")
                       }
                     />
-                  </FormControl>
+                  </FormControl> */}
                 </FormControl>
               </Stack>
             </Stack>
@@ -434,7 +436,7 @@ const Settings = () => {
                     />
                   </FormControl>
 
-                  <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                  {/* <FormControl sx={{ display: "flex-column", gap: 1 }}>
                     <FormLabel>{t("Username")}</FormLabel>
                     <Input
                       name="usernames"
@@ -456,7 +458,7 @@ const Settings = () => {
                           : t("Username")
                       }
                     />
-                  </FormControl>
+                  </FormControl> */}
                 </FormControl>
               </Stack>
             </Stack>

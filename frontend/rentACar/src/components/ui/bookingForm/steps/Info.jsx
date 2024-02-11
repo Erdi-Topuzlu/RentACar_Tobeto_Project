@@ -10,7 +10,6 @@ const Info = () => {
   const { t } = useTranslation();
 
   const handleGoToProfileTab = () => {
-    // 'tabIndex' parametresini, Profile sayfasında hangi taba geçmek istediğinize göre ayarlayın
     navigate("/profile", { state: { tabIndex: 1 } });
   };
 

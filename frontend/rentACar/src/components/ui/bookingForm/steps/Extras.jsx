@@ -7,7 +7,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
   const { t } = useTranslation();
 
   const extrasContents = [
-    // Your content here
+    
     {
       header: t("miniPackage"),
       id:1,

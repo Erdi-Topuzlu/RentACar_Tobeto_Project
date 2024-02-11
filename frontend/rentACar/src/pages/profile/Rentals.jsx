@@ -13,8 +13,6 @@ const Rentals = () => {
 const { rentalDetails, status, error } = useSelector(state => state.rentalDetail); 
 const { details} = useSelector((state) => state.userDetail);
 
-console.log(details)
-
 useEffect(() => {  
  dispatch(fetchByUserIdRental(details.id))
 }, [dispatch]);

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import Box from "@mui/joy/Box";
 import Avatar from "@mui/joy/Avatar";
@@ -16,7 +15,6 @@ import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -61,7 +59,7 @@ export default function BrandList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { brands } = useSelector((state) => state.brandAllData);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -158,24 +156,7 @@ export default function BrandList() {
             >
               {t("brandName")}
             </th>
-            {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
+           
             <th
               style={{
                 width: "auto",
@@ -230,32 +211,10 @@ export default function BrandList() {
                     mb: 1,
                   }}
                 >
-                  {/* <Typography level="body-xs">{item.date}</Typography>
-                  <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{item.id}</Typography> */}
                 </Box>
               </div>
             </ListItemContent>
-            {/* <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Paid: <CheckRoundedIcon />,
-                  Refunded: <AutorenewRoundedIcon />,
-                  Cancelled: <BlockIcon />
-                }[item.status]
-              }
-              color={
-                {
-                  Paid: "success",
-                  Refunded: "neutral",
-                  Cancelled: "danger"
-                }[item.status]
-              }
-            >
-              {item.status}
-            </Chip> */}
+           
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton

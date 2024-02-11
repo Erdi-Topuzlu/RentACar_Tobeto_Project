@@ -10,6 +10,7 @@ export const getUserProfileValidationSchema = () => {
     tcNo: yup
       .string()
       .min(11, t("schemeMin11Char"))
+      .max(11, t("schemeMax11Char"))
       .required(t("schemeIdentifyNumber")),
     usernames: yup
       .string()

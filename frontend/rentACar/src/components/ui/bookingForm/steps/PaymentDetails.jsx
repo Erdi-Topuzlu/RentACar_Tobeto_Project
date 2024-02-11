@@ -28,7 +28,6 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
     },
     validationSchema: paymentDetailScheme,
     onSubmit: (values, actions) => {
-      // Handle form submission here
       const data = JSON.stringify(values);
       localStorage.setItem("paymentData", data);
       setActiveStep(activeStep + 1);
@@ -43,9 +42,7 @@ export function PaymentDetails({ steps, activeStep, setActiveStep }) {
     let value = target.value;
 
     if (target.name === "number") {
-      // Remove non-numeric characters
 
-      // Format the credit card number
       value = formatCreditCardNumber(value);
     } else if (target.name === "expiry") {
       value = formatExpirationDate(value);

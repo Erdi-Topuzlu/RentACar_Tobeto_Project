@@ -550,7 +550,6 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    {/* <FormLabel>{t("selectBrandAndModel")}</FormLabel> */}
                     <FormGroup className="d-flex gap-2">
                       <select
                         id="brand"
@@ -624,7 +623,6 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    {/* <FormLabel>{t("selectColor")}</FormLabel> */}
                     <FormGroup className="d-flex gap-2">
                       <select
                         id="color"
@@ -735,9 +733,8 @@ export default function CarTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setGearType(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e); 
                         }}
                         style={{ 
                           textAlign: "center",
@@ -817,9 +814,8 @@ export default function CarTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
                           setSeatType(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e); 
                         }}
                         style={{ 
                           textAlign: "center",
