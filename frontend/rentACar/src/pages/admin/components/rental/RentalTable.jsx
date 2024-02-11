@@ -479,7 +479,7 @@ export default function RentalTable() {
                     </FormGroup>
                   </div>
                   <div>
-                    <FormLabel>Select a Car</FormLabel>
+                    {/* <FormLabel>Select a Car</FormLabel> */}
                     <FormGroup className="">
                       <select
                         id="car"
@@ -489,8 +489,19 @@ export default function RentalTable() {
                           const selectedCarId = e.target.value;
                           setCarId(selectedCarId);
                         }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                       >
-                        <option value="">Car</option>
+                        <option value="">Select Car</option>
                         {items.map((car) => (
                           <option key={car.id} value={car.id}>
                             {car.modelId?.brandId?.name} - {car.modelId?.name}
@@ -500,7 +511,7 @@ export default function RentalTable() {
                     </FormGroup>
                   </div>
                   <div>
-                    <FormLabel>Select a User</FormLabel>
+                    {/* <FormLabel>Select a User</FormLabel> */}
                     <FormGroup className="">
 
                       <select
@@ -508,9 +519,20 @@ export default function RentalTable() {
                         name="userId"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
 
                       >
-                        <option value="">User</option>
+                        <option value="">Select User</option>
                         {users
                           .map((user) => (
                             <option key={user.id} value={user.id}>
@@ -522,7 +544,7 @@ export default function RentalTable() {
                   </div>
 
                   <div>
-                    <FormLabel htmlFor="fuelType">Select a Extra</FormLabel>
+                    {/* <FormLabel htmlFor="fuelType">Select a Extra</FormLabel> */}
                     <FormGroup className="">
                       <select
                         id="extra"
@@ -532,10 +554,21 @@ export default function RentalTable() {
                           setExtraId(e.target.value);
                           formik.handleChange(e);
                         }}
+                        style={{ 
+                          textAlign: "center",
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none',
+                          padding: '7px',
+                          fontSize: '16px',
+                          border: '1px solid #ccc',
+                          borderRadius: '10px',
+                          width: '50%',
+                        }}
                         onBlur={formik.handleBlur}
                         className={formik.errors.extraId && formik.touched.extraId && "error"}
                       >
-                        <option value="">Extra</option>
+                        <option value="">Select Extra</option>
                         <option value="1" key="1">Mini Package</option>
                         <option value="2" key="2">Medium Package</option>
                         <option value="3" key="3">Free Package</option>
