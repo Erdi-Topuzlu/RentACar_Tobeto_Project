@@ -87,6 +87,7 @@ export default function BrandTable() {
       } catch (error) {
         setOpen(false)
         toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllBrandData)
 
       }
     }
@@ -111,8 +112,10 @@ export default function BrandTable() {
         setOpen(false);
         if(error.response.data.message === "VALIDATION.EXCEPTION" ){
           toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllBrandData)
         }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
           toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
         }
@@ -138,8 +141,10 @@ export default function BrandTable() {
         setOpen(false);
         if(error.response.data.message === "VALIDATION.EXCEPTION" ){
           toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllBrandData)
         }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
           toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
         }
