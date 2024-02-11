@@ -459,7 +459,6 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormLabel>{t("selectBrandAndModel")}</FormLabel>
                   <FormGroup className="">
                     <select
                       id="brand"
@@ -480,6 +479,17 @@ export default function CarList() {
                           setModelId("");
                         }
                       }}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectBrand")}</option>
                       {brands.map((brand) => (
@@ -495,6 +505,17 @@ export default function CarList() {
                       value={modelId}
                       onChange={(e) => setModelId(e.target.value)}
                       disabled={!brandId}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectModel")}</option>
                       {models
@@ -511,7 +532,6 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormLabel>{t("selectColor")}</FormLabel>
                   <FormGroup className="">
                     <select
                       id="color"
@@ -528,6 +548,17 @@ export default function CarList() {
                         formik.setFieldValue("colorId", e.target.value);
                       }}
                       onBlur={formik.handleBlur}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectColor")}</option>
                       {colors.map((color) => {
@@ -543,9 +574,6 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormLabel htmlFor="fuelType">
-                    {t("selectFuelAndGear")}
-                  </FormLabel>
                   <FormGroup className="">
                     <select
                       id="fuelType"
@@ -561,6 +589,17 @@ export default function CarList() {
                         formik.touched.fuelType &&
                         "error"
                       }
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectFuelType")}</option>
                       <option value="GASOLINE" key="1">
@@ -590,6 +629,17 @@ export default function CarList() {
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
                       onBlur={formik.handleBlur}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectGearType")}</option>
                       <option value="AUTOMATIC" key="1">
@@ -603,7 +653,6 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
                   <FormGroup className="">
                     <select
                       id="vehicleType"
@@ -621,6 +670,17 @@ export default function CarList() {
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
                       onBlur={formik.handleBlur}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectVehicleType")}</option>
                       <option value="SUV" key="1">
@@ -650,6 +710,17 @@ export default function CarList() {
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
                       onBlur={formik.handleBlur}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
                     >
                       <option value="">{t("selectSeatType")}</option>
                       <option value="TWO" key="1">

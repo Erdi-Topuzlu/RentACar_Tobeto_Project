@@ -17,7 +17,14 @@ import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Chip, DialogActions, DialogContent, DialogTitle, Grid, ModalDialog } from "@mui/joy";
+import {
+  Chip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalDialog,
+} from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -30,7 +37,7 @@ import CarList from "./CarList";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -83,7 +90,6 @@ export default function CarTable() {
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
-  
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -144,16 +150,16 @@ export default function CarTable() {
 
   const formik = useFormik({
     initialValues: {
-      kilometer: "",
-      plate: "",
-      year: "",
-      dailyPrice: "",
-      fuelType: "",
-      gearType: "",
-      vehicleType: "",
-      seatType: "",
-      colorId: "",
-      modelId: "",
+      kilometer: kilometer || "",
+      plate: plate || "",
+      year: year || "",
+      dailyPrice: dailyPrice || "",
+      fuelType: fuelType || "",
+      gearType: gearType || "",
+      vehicleType: vehicleType || "",
+      seatType: seatType || "",
+      colorId: colorId || "",
+      modelId: modelId || "",
       isAvailable: "",
     },
 
@@ -178,7 +184,7 @@ export default function CarTable() {
         toastSuccess("Car Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllCarData());
-        formik.resetForm();
+        actions.resetForm();
       } catch (error) {
         console.error("Kayıt hatası:", error.response.data);
       }
@@ -294,7 +300,6 @@ export default function CarTable() {
               </th>
 
               <th
-
                 style={{
                   width: "auto",
                   padding: "12px 6px",
@@ -335,19 +340,13 @@ export default function CarTable() {
                 </td>
 
                 <td style={{ textAlign: "center" }}>
-                  <Chip
-                    color="primary"
-                    variant="solid"
-                  >
+                  <Chip color="primary" variant="solid">
                     {row.plate}
                   </Chip>
                 </td>
 
                 <td style={{ textAlign: "center" }}>
-                <Chip
-                    color="success"
-                    variant="solid"
-                  >
+                  <Chip color="success" variant="solid">
                     {row.dailyPrice} ₺
                   </Chip>
                 </td>
@@ -370,7 +369,6 @@ export default function CarTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          //setCarName(row.name);
                           setOpen(true);
                           setIsEdit(true);
                         }}
@@ -381,7 +379,11 @@ export default function CarTable() {
                       <MenuItem
                         onClick={() => {
                           setId(row.id);
-                          setCarName(row.modelId.brandId?.name +" | " +row.modelId?.name);
+                          setCarName(
+                            row.modelId.brandId?.name +
+                              " | " +
+                              row.modelId?.name
+                          );
                           setOpenDelete(true);
                         }}
                         color="danger"
@@ -449,7 +451,7 @@ export default function CarTable() {
                         id="kilometer"
                         name="kilometer"
                         type="text"
-                        value={formik.values.kilometer || kilometer}
+                        value={formik.values.kilometer}
                         className={
                           formik.errors.kilometer &&
                           formik.touched.kilometer &&
@@ -479,7 +481,7 @@ export default function CarTable() {
                         id="plate"
                         name="plate"
                         type="text"
-                        value={formik.values.plate || plate}
+                        value={formik.values.plate}
                         className={
                           formik.errors.plate && formik.touched.plate && "error"
                         }
@@ -505,7 +507,7 @@ export default function CarTable() {
                         id="year"
                         name="year"
                         type="text"
-                        value={formik.values.year || year}
+                        value={formik.values.year}
                         className={
                           formik.errors.year && formik.touched.year && "error"
                         }
@@ -531,7 +533,7 @@ export default function CarTable() {
                         id="dailyPrice"
                         name="dailyPrice"
                         type="text"
-                        value={formik.values.dailyPrice || dailyPrice}
+                        value={formik.values.dailyPrice}
                         className={
                           formik.errors.dailyPrice &&
                           formik.touched.dailyPrice &&
@@ -559,7 +561,7 @@ export default function CarTable() {
                       <select
                         id="brand"
                         name="brandId"
-                        value={brandId}
+                        value={formik.values.brandId}
                         onChange={(e) => {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
@@ -575,16 +577,16 @@ export default function CarTable() {
                             setModelId("");
                           }
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                       >
                         <option value="">{t("selectBrand")}</option>
@@ -598,18 +600,18 @@ export default function CarTable() {
                       <select
                         id="model"
                         name="modelId"
-                        value={modelId}
+                        value={formik.values.modelId}
                         onChange={(e) => setModelId(e.target.value)}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         disabled={!brandId}
                       >
@@ -628,7 +630,7 @@ export default function CarTable() {
                   </div>
 
                   <div>
-                    <FormGroup className="d-flex gap-2">
+                    <FormGroup className="">
                       <select
                         id="color"
                         name="color"
@@ -643,18 +645,18 @@ export default function CarTable() {
                           setColorId(e.target.value);
                           formik.setFieldValue("colorId", e.target.value);
                         }}
-                        style={{ 
-                          textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
-                        }}
                         onBlur={formik.handleBlur}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
+                        }}
                       >
                         <option value="">{t("selectColor")}</option>
                         {colors.map((color) => {
@@ -666,21 +668,6 @@ export default function CarTable() {
                           );
                         })}
                       </select>
-
-                      {/* <label style={{ display: 'inline-block', marginLeft: '10px' }}>
-                        <input
-                          id="isAvailable"
-                          name="isAvailable"
-                          type="checkbox"
-                          checked={formik.values.isAvailable}
-                          onChange={(e) => {
-                            formik.setFieldValue("isAvailable", e.target.checked); 
-                          }}
-                          style={{ marginRight: '5px' }}
-
-                        />
-                        Is Available
-                      </label>  */}
                     </FormGroup>
                   </div>
 
@@ -692,21 +679,21 @@ export default function CarTable() {
                       <select
                         id="fuelType"
                         name="fuelType"
-                        value={formik.values.fuelType || fuelType}
+                        value={formik.values.fuelType}
                         onChange={(e) => {
                           setFuelType(e.target.value);
                           formik.handleChange(e);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         onBlur={formik.handleBlur}
                         className={
@@ -731,7 +718,7 @@ export default function CarTable() {
                         id="gearType"
                         name="gearType"
                         type="text"
-                        value={formik.values.gearType || gearType}
+                        value={formik.values.gearType}
                         className={
                           formik.errors.gearType &&
                           formik.touched.gearType &&
@@ -739,18 +726,18 @@ export default function CarTable() {
                         }
                         onChange={(e) => {
                           setGearType(e.target.value);
-                          formik.handleChange(e); 
+                          formik.handleChange(e);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         onBlur={formik.handleBlur}
                       >
@@ -772,7 +759,7 @@ export default function CarTable() {
                         id="vehicleType"
                         name="vehicleType"
                         type="text"
-                        value={formik.values.vehicleType || vehicleType}
+                        value={formik.values.vehicleType}
                         className={
                           formik.errors.vehicleType &&
                           formik.touched.vehicleType &&
@@ -783,16 +770,16 @@ export default function CarTable() {
                           setVehicleType(e.target.value);
                           formik.handleChange(e); // Invoke Formik's handleChange as well
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         onBlur={formik.handleBlur}
                       >
@@ -812,7 +799,7 @@ export default function CarTable() {
                         id="seatType"
                         name="seatType"
                         type="text"
-                        value={formik.values.seatType || seatType}
+                        value={formik.values.seatType}
                         className={
                           formik.errors.seatType &&
                           formik.touched.seatType &&
@@ -820,18 +807,18 @@ export default function CarTable() {
                         }
                         onChange={(e) => {
                           setSeatType(e.target.value);
-                          formik.handleChange(e); 
+                          formik.handleChange(e);
                         }}
-                        style={{ 
+                        style={{
                           textAlign: "center",
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none',
-                          padding: '7px',
-                          fontSize: '16px',
-                          border: '1px solid #ccc',
-                          borderRadius: '10px',
-                          width: '50%',
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
                         }}
                         onBlur={formik.handleBlur}
                       >
@@ -875,38 +862,48 @@ export default function CarTable() {
             </Grid>
           </Sheet>
         </Modal>
-        <Modal open={openDelete}
-        onClose={() => {
+        <Modal
+          open={openDelete}
+          onClose={() => {
             setId(null);
             setCarName(null);
             setOpenDelete(false);
           }}
-        sx={{
-          zIndex:11000,
-        }}
+          sx={{
+            zIndex: 11000,
+          }}
         >
-        <ModalDialog variant="outlined" role="alertdialog">
-          <DialogTitle>
-            <WarningRoundedIcon />
-            {t("confirmation")}
-          </DialogTitle>
-          <Divider />
-          <DialogContent>
-            <p style={{fontWeight:"bold"}}>{carName}</p>{t("deleteMessage")}
-          </DialogContent>
-          <DialogActions>
-            <Button variant="solid" color="danger" onClick={() => {
-              handleDelete(id);
-              setOpenDelete(false)
-            }}>
-              {t("delete")}
-            </Button>
-            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
-            {t("cancel")}
-            </Button>
-          </DialogActions>
-        </ModalDialog>
-      </Modal>
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}>{carName}</p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+          </ModalDialog>
+        </Modal>
       </Sheet>
       <CarList />
     </React.Fragment>
