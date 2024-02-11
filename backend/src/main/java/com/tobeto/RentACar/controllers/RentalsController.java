@@ -45,7 +45,7 @@ public class RentalsController {
         rentalService.add(request);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void update(@RequestBody @Valid UpdateRentalRequest request) {
         rentalService.update(request);
     }

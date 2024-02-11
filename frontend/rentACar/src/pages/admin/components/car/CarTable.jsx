@@ -290,6 +290,7 @@ export default function CarTable() {
               </th>
 
               <th
+
                 style={{
                   width: "auto",
                   padding: "12px 6px",
@@ -339,9 +340,12 @@ export default function CarTable() {
                 </td>
 
                 <td style={{ textAlign: "center" }}>
-                  <div>
-                    <Typography level="body-xs">{row.dailyPrice} ₺</Typography>
-                  </div>
+                <Chip
+                    color="success"
+                    variant="solid"
+                  >
+                    {row.dailyPrice} ₺
+                  </Chip>
                 </td>
 
                 <td style={{ textAlign: "center" }}>

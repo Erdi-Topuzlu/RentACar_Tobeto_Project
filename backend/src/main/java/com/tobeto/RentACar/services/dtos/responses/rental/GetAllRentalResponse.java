@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllRentalResponse {
+    private int id;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
     @JsonFormat(pattern = "dd-MM-yyyy")
