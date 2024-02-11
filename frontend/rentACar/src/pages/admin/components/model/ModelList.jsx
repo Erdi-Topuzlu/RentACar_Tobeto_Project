@@ -60,7 +60,8 @@ export default function CarList() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState();
   const [name, setName] = React.useState();
-  const [brandId, setBrandId] = React.useState();
+  const [brandId, setBrandId] = React.useState();  
+  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { models } = useSelector((state) => state.modelAllData);
@@ -284,10 +285,11 @@ export default function CarList() {
                       <MenuItem
                         onClick={() => {
                           setId(item.id);
-                          //setCarName(row.name);
+                          setName(item.name);
+                          setBrandId(item.brandId?.id);
+                          setBrandName(item.brandId?.name);
                           setOpen(true);
                           setIsEdit(true);
-
                         }}
                       >
                         {t("edit")}
@@ -398,15 +400,36 @@ export default function CarList() {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
                         }}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          MozAppearance: "none",
+                          padding: "7px",
+                          fontSize: "16px",
+                          border: "1px solid #ccc",
+                          borderRadius: "10px",
+                          width: "50%",
+                        }}
                       >
-                        <option value="">{t("selectBrand")}</option>
-                        {brands.map((brand) => (
-                          <option key={brand.id} value={brand.id}>
-                            {brand.name}
+                         {isEdit ? (
+                          // Render the single option in edit mode
+                          <option key={brandId} value={brandId}>
+                            {brandName}
                           </option>
-                        ))}
+                        ) : (
+                          // Render the options for non-edit mode
+                          <>
+                            <option value="">{t("selectBrand")}</option>
+                            {brands.map((brand) => (
+                              <option key={brand.id} value={brand.id}>
+                                {brand.name}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </select>
-                      </FormGroup>
+                    </FormGroup>
 
                     </div>
                     
