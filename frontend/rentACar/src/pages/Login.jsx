@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 import { AnimatedLTR } from "../components/ui/animation/animateDiv";
 import { ReactSVG } from "react-svg";
+import { toastError } from "../service/ToastifyService";
 
 const Login = () => {
   const token = localStorage.getItem("access_token");
@@ -48,7 +49,7 @@ const Login = () => {
         navigate("/home");
         window.location.reload();
       } catch (error) {
-        console.error("Giriş hatası:", error.response.data);
+        toastError(error.response.data.message);
       } finally {
         actions.setSubmitting(false);
       }

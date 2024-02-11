@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Configuration
@@ -19,13 +22,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ProblemDetails handleBusinessException(BusinessException businessException){
-        ProblemDetails problemDetails = new ProblemDetails();
-        problemDetails.setMessage(businessException.getMessage());
-
-        return problemDetails;
+    public Map<String, Object> handleBusinessException(BusinessException businessException){
+        Map<String, Object> response = new HashMap<>();
+        response.put("type", "BUSINESS.EXCEPTION");
+        response.put("message", businessException.getMessage());
+        return response;
     }
 
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "SQL Integrity Constraint Violation");
+        response.put("message", ex.getMessage());
+        return response;
+    }
 
 
     @ExceptionHandler
@@ -66,4 +78,5 @@ public class GlobalExceptionHandler {
         problemDetails.setMessage("E-Mail and password do not match!");
         return problemDetails;
     }
+
 }

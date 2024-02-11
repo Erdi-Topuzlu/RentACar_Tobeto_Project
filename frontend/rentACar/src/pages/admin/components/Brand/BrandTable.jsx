@@ -63,7 +63,7 @@ export default function BrandTable() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { brands} = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -77,6 +77,7 @@ export default function BrandTable() {
 
   const handleDelete = async (id) => {
     if (!id) {
+      setOpen(false)
       toastError("Brand ID bulunamadı!");
     } else {
       try {
@@ -84,13 +85,15 @@ export default function BrandTable() {
         toastSuccess("Brand Başarıyla Silindi.");
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+
       }
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!brandName) {
+    if (!brandName){
       setOpen(false);
       toastError("Brand Name alanı boş bırakılamaz!");
     } else {
@@ -105,9 +108,15 @@ export default function BrandTable() {
         setOpen(false);
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
-    }
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+        }else{
+          toastError("Bilinmeyen hata")
+        }
+    }}
   };
 
   const formik = useFormik({
@@ -121,13 +130,20 @@ export default function BrandTable() {
       };
       try {
         await axiosInstance.post("api/v1/admin/brands", data);
-
         toastSuccess("Brand Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllBrandData());
         formik.resetForm();
       } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+        }else{
+          toastError("Bilinmeyen hata")
+        }
+
       }
     },
   });
