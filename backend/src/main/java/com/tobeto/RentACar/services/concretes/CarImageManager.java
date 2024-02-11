@@ -1,15 +1,12 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
-import com.tobeto.RentACar.entities.concretes.car.Car;
+import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
 import com.tobeto.RentACar.entities.concretes.carImage.CarImage;
 import com.tobeto.RentACar.repositories.CarImageRepository;
-import com.tobeto.RentACar.rules.carImage.CarImageBusinessRulesService;
 import com.tobeto.RentACar.services.abstracts.CarImageService;
-import com.tobeto.RentACar.services.abstracts.CarService;
 import com.tobeto.RentACar.services.dtos.requests.carImage.AddCarImageRequest;
 import com.tobeto.RentACar.services.dtos.requests.carImage.DeleteCarImageRequest;
-import com.tobeto.RentACar.services.dtos.requests.carImage.UpdateCarImageRequest;
 import com.tobeto.RentACar.services.dtos.responses.carImage.GetAllCarImageResponse;
 import com.tobeto.RentACar.services.dtos.responses.carImage.GetByIdCarImageResponse;
 import lombok.AllArgsConstructor;
@@ -35,24 +32,6 @@ public class CarImageManager implements CarImageService {
 
     private final CarImageRepository carImageRepository;
     private final ModelMapperService modelMapperService;
-    private final CarImageBusinessRulesService carImageBusinessRulesService;
-    private final CarService carService;
-
-
-//    @Override
-//    public void add(AddCarImageRequest request) {
-//        carImageBusinessRulesService.checkIfCarIdExists(request.getCarId());
-//        CarImage carImage = modelMapperService.dtoToEntity().map(request, CarImage.class);
-//        carImageRepository.save(carImage);
-//    }
-
-//    @Override
-//    public void update(UpdateCarImageRequest request) {
-//        carImageBusinessRulesService.checkIfByIdExists(request.getId());
-//        carImageBusinessRulesService.checkIfCarIdExists(request.getCarId());
-//        CarImage carImage = modelMapperService.dtoToEntity().map(request, CarImage.class);
-//        carImageRepository.save(carImage);
-//    }
 
     @Override
     public DeleteCarImageRequest delete(int id) {
@@ -76,19 +55,14 @@ public class CarImageManager implements CarImageService {
         return response;
     }
 
-
     @Override
-    public String addCarImageUrl(Integer carId, MultipartFile[] file) {
-//        var carImage = getById(id);
+    public String addCarImageUrl(Integer carId, MultipartFile file) {
+        String carImageUrl = photoFunction.apply(UUID.randomUUID().toString(), file);
         var carsImages = new AddCarImageRequest();
-        String carImageUrl = null;
-        for (MultipartFile multipartFile : file) {
-            carImageUrl = photoFunction.apply(UUID.randomUUID().toString(), multipartFile);
-            carsImages.setImgPath(carImageUrl);
-            carsImages.setCarId(carId);
-            var responseCarImage = modelMapperService.dtoToEntity().map(carsImages, CarImage.class);
-            carImageRepository.save(responseCarImage);
-        }
+        carsImages.setImgPath(carImageUrl);
+        carsImages.setCarId(carId);
+        var responseCarImage = modelMapperService.dtoToEntity().map(carsImages, CarImage.class);
+        carImageRepository.save(responseCarImage);
         return carImageUrl;
     }
 
@@ -96,7 +70,7 @@ public class CarImageManager implements CarImageService {
     public String updateCarImageUrl(Integer id, MultipartFile file) {
         var carImage = getById(id);
         var responseCarImage = modelMapperService.entityToDto().map(carImage, CarImage.class);
-        String carImageUrl = photoFunction.apply(responseCarImage.getId(), file);
+        String carImageUrl = photoFunction.apply(UUID.randomUUID().toString(), file);
         responseCarImage.setImgPath(carImageUrl);
         carImageRepository.save(responseCarImage);
         return carImageUrl;
@@ -122,7 +96,7 @@ public class CarImageManager implements CarImageService {
                     .path("/api/v1/carImage/" + fileName)
                     .toUriString();
         } catch (Exception e) {
-            throw new RuntimeException("Unable to save Image");
+            throw new BusinessException("Unable to save Image");
         }
     };
 }

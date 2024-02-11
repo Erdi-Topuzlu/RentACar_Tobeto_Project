@@ -1,18 +1,10 @@
 package com.tobeto.RentACar.controllers;
 
 import com.tobeto.RentACar.services.abstracts.CarImageService;
-import com.tobeto.RentACar.services.dtos.requests.carImage.AddCarImageRequest;
 import com.tobeto.RentACar.services.dtos.requests.carImage.DeleteCarImageRequest;
-import com.tobeto.RentACar.services.dtos.requests.carImage.UpdateCarImageRequest;
-import com.tobeto.RentACar.services.dtos.requests.rental.AddRentalRequest;
-import com.tobeto.RentACar.services.dtos.requests.rental.DeleteRentalRequest;
-import com.tobeto.RentACar.services.dtos.requests.rental.UpdateRentalRequest;
 import com.tobeto.RentACar.services.dtos.responses.carImage.GetAllCarImageResponse;
 import com.tobeto.RentACar.services.dtos.responses.carImage.GetByIdCarImageResponse;
-import com.tobeto.RentACar.services.dtos.responses.rental.GetAllRentalResponse;
-import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +35,9 @@ public class CarImagesController {
     }
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestParam("carId") Integer carId, @RequestParam("file") MultipartFile[] file) {
-        return ResponseEntity.ok().body(carImageService.addCarImageUrl(carId, file));
+    public ResponseEntity<String> add(@RequestParam("carId") Integer carId, @RequestParam("file") MultipartFile files) {
+        var imageUrls = carImageService.addCarImageUrl(carId, files);
+        return ResponseEntity.ok(imageUrls);
     }
 
     @PutMapping

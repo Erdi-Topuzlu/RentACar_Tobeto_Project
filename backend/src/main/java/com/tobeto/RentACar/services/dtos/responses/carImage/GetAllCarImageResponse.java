@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllCarImageResponse {
+    private Integer id;
     private String imgPath;
     @JsonIgnore
     GetByIdCarResponse carId;

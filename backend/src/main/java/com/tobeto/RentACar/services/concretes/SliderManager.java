@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -33,20 +34,6 @@ public class SliderManager implements SliderService {
     private final SliderRepository sliderRepository;
     private final ModelMapperService modelMapperService;
     private final SliderBusinessRulesService sliderBusinessRulesService;
-
-
-    @Override
-    public void add(AddSliderRequest request) {
-        Slider slider = modelMapperService.dtoToEntity().map(request, Slider.class);
-        sliderRepository.save(slider);
-    }
-
-    @Override
-    public void update(UpdateSliderRequest request) {
-        sliderBusinessRulesService.checkIfByIdExists(request.getId());
-        Slider slider = modelMapperService.dtoToEntity().map(request, Slider.class);
-        sliderRepository.save(slider);
-    }
 
     @Override
     public DeleteSliderRequest delete(int id) {
@@ -71,10 +58,18 @@ public class SliderManager implements SliderService {
     }
 
     @Override
-    public String uploadSliderPhotoUrl(Integer id,MultipartFile file) {
-        var slider = getById(id);
-        var responseSlider = modelMapperService.entityToDto().map(slider, Slider.class);
-        String sliderImageUrl = photoFunction.apply(responseSlider.getId(), file);
+    public String addSliderPhoto(AddSliderRequest sliderRequest, MultipartFile file) {
+        var responseSlider = modelMapperService.entityToDto().map(sliderRequest, Slider.class);
+        String sliderImageUrl = photoFunction.apply(UUID.randomUUID().toString(), file);
+        responseSlider.setImgPath(sliderImageUrl);
+        sliderRepository.save(responseSlider);
+        return sliderImageUrl;
+    }
+
+    @Override
+    public String updateSliderPhoto(UpdateSliderRequest sliderRequest, MultipartFile file) {
+        var responseSlider = modelMapperService.entityToDto().map(sliderRequest, Slider.class);
+        String sliderImageUrl = photoFunction.apply(UUID.randomUUID().toString(), file);
         responseSlider.setImgPath(sliderImageUrl);
         sliderRepository.save(responseSlider);
         return sliderImageUrl;
@@ -87,7 +82,7 @@ public class SliderManager implements SliderService {
                 .orElse(".png");
     }
 
-    private final BiFunction<Integer, MultipartFile, String> photoFunction = (id, image) -> {
+    private final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
         String fileName = id + fileExtension().apply(image.getOriginalFilename());
         try {
             Path fileStorageLocation = Paths.get(SLIDER_PHOTO_DIRECTORY).toAbsolutePath().normalize();
@@ -97,7 +92,7 @@ public class SliderManager implements SliderService {
             Files.copy(image.getInputStream(), fileStorageLocation.resolve(fileName), REPLACE_EXISTING);
             return ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/v1/admin/slider/" + fileName)
+                    .path("/api/v1/sliderImage/" + fileName)
                     .toUriString();
         } catch (Exception e) {
             throw new RuntimeException("Unable to save Image");
