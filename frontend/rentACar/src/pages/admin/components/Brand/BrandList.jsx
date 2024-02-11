@@ -62,12 +62,8 @@ export default function BrandList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-<<<<<<< Updated upstream
   const { brands } = useSelector((state) => state.brandAllData);
-=======
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
->>>>>>> Stashed changes
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
