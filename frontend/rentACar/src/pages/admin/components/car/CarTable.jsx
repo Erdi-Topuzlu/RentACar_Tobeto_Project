@@ -17,7 +17,7 @@ import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { Grid  } from "@mui/joy";
+import { Chip, Grid } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
@@ -297,7 +297,7 @@ export default function CarTable() {
                 }}
               >
                 {t("dailyPriceCar")}
-              </th>         
+              </th>
 
               <th
                 style={{
@@ -313,7 +313,6 @@ export default function CarTable() {
           <tbody>
             {stableSort(items, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
-
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
@@ -330,7 +329,14 @@ export default function CarTable() {
                   </Typography>
                 </td>
 
-                <td style={{ textAlign: "center" }}>{row.plate}</td>
+                <td style={{ textAlign: "center" }}>
+                  <Chip
+                    color="primary"
+                    variant="solid"
+                  >
+                    {row.plate}
+                  </Chip>
+                </td>
 
                 <td style={{ textAlign: "center" }}>
                   <div>
@@ -442,7 +448,7 @@ export default function CarTable() {
                         }
                         onChange={(e) => {
                           setKilometer(e.target.value);
-                          formik.handleChange(e); 
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={

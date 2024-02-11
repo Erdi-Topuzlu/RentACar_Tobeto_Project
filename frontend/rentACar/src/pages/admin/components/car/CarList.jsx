@@ -19,7 +19,16 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import {
+  Button,
+  Chip,
+  FormLabel,
+  Grid,
+  Modal,
+  ModalClose,
+  Sheet,
+  Table,
+} from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
@@ -28,8 +37,6 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -84,14 +91,12 @@ export default function CarList() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-
   React.useEffect(() => {
     dispatch(fetchAllCarData());
     dispatch(fetchAllColorData());
     dispatch(fetchAllModelData());
     dispatch(fetchAllBrandData());
   }, [dispatch]);
-
 
   const handleDelete = async (id) => {
     if (!id) {
@@ -246,14 +251,20 @@ export default function CarList() {
                 }}
               >
                 <Typography fontWeight={600} gutterBottom>
-                {item.modelId?.brandId?.name} | {item.modelId?.name}
+                  {item.modelId?.brandId?.name} | {item.modelId?.name}
                 </Typography>
                 <Typography level="body-xs" gutterBottom>
-                {item.year} &bull; {item.colorId.name}
+                  {item.year} &bull; {item.colorId.name}
                 </Typography>
-                <Typography level="body-xs">{item.plate}</Typography>
+                <Typography level="body-xs">
+                  <Chip
+                    color="primary"
+                    variant="solid"
+                  >
+                    {item.plate}
+                  </Chip>                  
+                </Typography>
                 <Typography level="body-xs">{item.dailyPrice} ₺</Typography>
-                
               </div>
             </ListItemContent>
             {/* <Chip
@@ -277,288 +288,288 @@ export default function CarList() {
               {item.status}
             </Chip> */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-            <Dropdown>
-                    <MenuButton
-                      slots={{ root: IconButton }}
-                      slotProps={{
-                        root: {
-                          variant: "plain",
-                          color: "neutral",
-                          size: "sm",
-                        },
-                      }}
-                    >
-                      <MoreHorizRoundedIcon />
-                    </MenuButton>
-                    <Menu size="sm" sx={{ minWidth: 140 }}>
-                      <MenuItem
-                        onClick={() => {
-                          setId(item.id);
-                          //setCarName(row.name);
-                          setOpen(true);
-                          setIsEdit(true);
-                        }}
-                      >
-                        {t("edit")}
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem
-                        onClick={() => {
-                          setId(item.id);
-                          handleDelete(row.id);
-                        }}
-                        color="danger"
-                      >
-                        {t("delete")}
-                      </MenuItem>
-                    </Menu>
-                  </Dropdown>
+              <Dropdown>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{
+                    root: {
+                      variant: "plain",
+                      color: "neutral",
+                      size: "sm",
+                    },
+                  }}
+                >
+                  <MoreHorizRoundedIcon />
+                </MenuButton>
+                <Menu size="sm" sx={{ minWidth: 140 }}>
+                  <MenuItem
+                    onClick={() => {
+                      setId(item.id);
+                      //setCarName(row.name);
+                      setOpen(true);
+                      setIsEdit(true);
+                    }}
+                  >
+                    {t("edit")}
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                    onClick={() => {
+                      setId(item.id);
+                      handleDelete(row.id);
+                    }}
+                    color="danger"
+                  >
+                    {t("delete")}
+                  </MenuItem>
+                </Menu>
+              </Dropdown>
             </Box>
           </ListItem>
           <ListDivider />
         </List>
       ))}
       <Modal
-          aria-labelledby="modal-title"
-          aria-describedby="modal-desc"
-          open={open}
-          onClose={() => {
-            formik.resetForm();
-            setId(null);
-            setOpen(false);
-          }}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => {
+          formik.resetForm();
+          setId(null);
+          setOpen(false);
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 10001,
+        }}
+      >
+        <Sheet
+          variant="outlined"
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 10001,
+            width: 500,
+            borderRadius: "md",
+            p: 3,
+            boxShadow: "lg",
           }}
         >
-          <Sheet
-            variant="outlined"
-            sx={{
-              width: 500,
-              borderRadius: "md",
-              p: 3,
-              boxShadow: "lg",
-            }}
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            textAlign={"center"}
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
           >
-            <ModalClose variant="plain" sx={{ m: 1 }} />
-            <Typography
-              textAlign={"center"}
-              component="h2"
-              id="modal-title"
-              level="h4"
-              textColor="inherit"
-              fontWeight="lg"
-              mb={1}
-            >
-              {!isEdit ? t("addNewCar") : t("updateCar")}
-            </Typography>
-            <hr />
-            <Grid
-              textAlign={"center"}
-              container
-              rowSpacing={1}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              <Grid xs={12}>
-                <Form onSubmit={formik.handleSubmit}>
-                  <div>
-                    <FormLabel>{t("kilometer")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="kilometer"
-                        name="kilometer"
-                        type="text"
-                        value={formik.values.kilometer || kilometer}
-                        className={
-                          formik.errors.kilometer &&
-                          formik.touched.kilometer &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          setKilometer(e.target.value);
-                          formik.handleChange(e); 
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.kilometer && formik.touched.kilometer
-                            ? formik.errors.kilometer
-                            : t("kilometer")
-                        }
-                        error={
-                          formik.errors.kilometer && formik.touched.kilometer
-                        }
-                      />
-                    </FormGroup>
-                  </div>
+            {!isEdit ? t("addNewCar") : t("updateCar")}
+          </Typography>
+          <hr />
+          <Grid
+            textAlign={"center"}
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid xs={12}>
+              <Form onSubmit={formik.handleSubmit}>
+                <div>
+                  <FormLabel>{t("kilometer")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="kilometer"
+                      name="kilometer"
+                      type="text"
+                      value={formik.values.kilometer || kilometer}
+                      className={
+                        formik.errors.kilometer &&
+                        formik.touched.kilometer &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        setKilometer(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.kilometer && formik.touched.kilometer
+                          ? formik.errors.kilometer
+                          : t("kilometer")
+                      }
+                      error={
+                        formik.errors.kilometer && formik.touched.kilometer
+                      }
+                    />
+                  </FormGroup>
+                </div>
 
-                  <div>
-                    <FormLabel>{t("plate")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="plate"
-                        name="plate"
-                        type="text"
-                        value={formik.values.plate || plate}
-                        className={
-                          formik.errors.plate && formik.touched.plate && "error"
-                        }
-                        onChange={(e) => {
-                          setPlate(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.plate && formik.touched.plate
-                            ? formik.errors.plate
-                            : t("plate")
-                        }
-                        error={formik.errors.plate && formik.touched.plate}
-                      />
-                    </FormGroup>
-                  </div>
+                <div>
+                  <FormLabel>{t("plate")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="plate"
+                      name="plate"
+                      type="text"
+                      value={formik.values.plate || plate}
+                      className={
+                        formik.errors.plate && formik.touched.plate && "error"
+                      }
+                      onChange={(e) => {
+                        setPlate(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.plate && formik.touched.plate
+                          ? formik.errors.plate
+                          : t("plate")
+                      }
+                      error={formik.errors.plate && formik.touched.plate}
+                    />
+                  </FormGroup>
+                </div>
 
-                  <div>
-                    <FormLabel>{t("year")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="year"
-                        name="year"
-                        type="text"
-                        value={formik.values.year || year}
-                        className={
-                          formik.errors.year && formik.touched.year && "error"
-                        }
-                        onChange={(e) => {
-                          setYear(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.year && formik.touched.year
-                            ? formik.errors.year
-                            : t("year")
-                        }
-                        error={formik.errors.year && formik.touched.year}
-                      />
-                    </FormGroup>
-                  </div>
+                <div>
+                  <FormLabel>{t("year")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="year"
+                      name="year"
+                      type="text"
+                      value={formik.values.year || year}
+                      className={
+                        formik.errors.year && formik.touched.year && "error"
+                      }
+                      onChange={(e) => {
+                        setYear(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.year && formik.touched.year
+                          ? formik.errors.year
+                          : t("year")
+                      }
+                      error={formik.errors.year && formik.touched.year}
+                    />
+                  </FormGroup>
+                </div>
 
-                  <div>
-                    <FormLabel>{t("dailyPriceCar")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="dailyPrice"
-                        name="dailyPrice"
-                        type="text"
-                        value={formik.values.dailyPrice || dailyPrice}
-                        className={
-                          formik.errors.dailyPrice &&
-                          formik.touched.dailyPrice &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          setDailyPrice(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.dailyPrice && formik.touched.dailyPrice
-                            ? formik.errors.dailyPrice
-                            : t("dailyPriceCar")
-                        }
-                        error={
-                          formik.errors.dailyPrice && formik.touched.dailyPrice
-                        }
-                      />
-                    </FormGroup>
-                  </div>
+                <div>
+                  <FormLabel>{t("dailyPriceCar")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="dailyPrice"
+                      name="dailyPrice"
+                      type="text"
+                      value={formik.values.dailyPrice || dailyPrice}
+                      className={
+                        formik.errors.dailyPrice &&
+                        formik.touched.dailyPrice &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        setDailyPrice(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.dailyPrice && formik.touched.dailyPrice
+                          ? formik.errors.dailyPrice
+                          : t("dailyPriceCar")
+                      }
+                      error={
+                        formik.errors.dailyPrice && formik.touched.dailyPrice
+                      }
+                    />
+                  </FormGroup>
+                </div>
 
-                  <div>
-                    <FormLabel>{t("selectBrandAndModel")}</FormLabel>
-                    <FormGroup className="">
-                      <select
-                        id="brand"
-                        name="brandId"
-                        value={brandId}
-                        onChange={(e) => {
-                          const selectedBrandId = e.target.value;
-                          setBrandId(selectedBrandId);
+                <div>
+                  <FormLabel>{t("selectBrandAndModel")}</FormLabel>
+                  <FormGroup className="">
+                    <select
+                      id="brand"
+                      name="brandId"
+                      value={brandId}
+                      onChange={(e) => {
+                        const selectedBrandId = e.target.value;
+                        setBrandId(selectedBrandId);
 
-                          const selectedBrandModels = models.filter(
-                            (model) =>
-                              model.brandId.id === parseInt(selectedBrandId)
-                          );
+                        const selectedBrandModels = models.filter(
+                          (model) =>
+                            model.brandId.id === parseInt(selectedBrandId)
+                        );
 
-                          if (selectedBrandModels.length > 0) {
-                            setModelId(selectedBrandModels[0].id);
-                          } else {
-                            setModelId("");
-                          }
-                        }}
-                      >
-                        <option value="">{t("selectBrand")}</option>
-                        {brands.map((brand) => (
-                          <option key={brand.id} value={brand.id}>
-                            {brand.name}
+                        if (selectedBrandModels.length > 0) {
+                          setModelId(selectedBrandModels[0].id);
+                        } else {
+                          setModelId("");
+                        }
+                      }}
+                    >
+                      <option value="">{t("selectBrand")}</option>
+                      {brands.map((brand) => (
+                        <option key={brand.id} value={brand.id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    <select
+                      id="model"
+                      name="modelId"
+                      value={modelId}
+                      onChange={(e) => setModelId(e.target.value)}
+                      disabled={!brandId}
+                    >
+                      <option value="">{t("selectModel")}</option>
+                      {models
+                        .filter(
+                          (model) => model.brandId.id === parseInt(brandId)
+                        )
+                        .map((model) => (
+                          <option key={model.id} value={model.id}>
+                            {model.name}
                           </option>
                         ))}
-                      </select>
+                    </select>
+                  </FormGroup>
+                </div>
 
-                      <select
-                        id="model"
-                        name="modelId"
-                        value={modelId}
-                        onChange={(e) => setModelId(e.target.value)}
-                        disabled={!brandId}
-                      >
-                        <option value="">{t("selectModel")}</option>
-                        {models
-                          .filter(
-                            (model) => model.brandId.id === parseInt(brandId)
-                          )
-                          .map((model) => (
-                            <option key={model.id} value={model.id}>
-                              {model.name}
-                            </option>
-                          ))}
-                      </select>
-                    </FormGroup>
-                  </div>
+                <div>
+                  <FormLabel>{t("selectColor")}</FormLabel>
+                  <FormGroup className="">
+                    <select
+                      id="color"
+                      name="color"
+                      type="text"
+                      value={formik.values.colorId}
+                      className={
+                        formik.errors.colorId &&
+                        formik.touched.colorId &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        setColorId(e.target.value);
+                        formik.setFieldValue("colorId", e.target.value);
+                      }}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="">{t("selectColor")}</option>
+                      {colors.map((color) => {
+                        const colorId = color.id;
+                        return (
+                          <option key={colorId} value={colorId}>
+                            {color.name}
+                          </option>
+                        );
+                      })}
+                    </select>
 
-                  <div>
-                    <FormLabel>{t("selectColor")}</FormLabel>
-                    <FormGroup className="">
-                      <select
-                        id="color"
-                        name="color"
-                        type="text"
-                        value={formik.values.colorId}
-                        className={
-                          formik.errors.colorId &&
-                          formik.touched.colorId &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          setColorId(e.target.value);
-                          formik.setFieldValue("colorId", e.target.value);
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        <option value="">{t("selectColor")}</option>
-                        {colors.map((color) => {
-                          const colorId = color.id;
-                          return (
-                            <option key={colorId} value={colorId}>
-                              {color.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-
-                      {/* <label>
+                    {/* <label>
                         <input
                           id="isAvailable"
                           name="isAvailable"
@@ -570,158 +581,158 @@ export default function CarList() {
                         />
                         Is Available
                       </label> */}
-                    </FormGroup>
-                  </div>
+                  </FormGroup>
+                </div>
 
-                  <div>
-                    <FormLabel htmlFor="fuelType">
-                      {t("selectFuelAndGear")}
-                    </FormLabel>
-                    <FormGroup className="">
-                      <select
-                        id="fuelType"
-                        name="fuelType"
-                        value={formik.values.fuelType || fuelType}
-                        onChange={(e) => {
-                          setFuelType(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        onBlur={formik.handleBlur}
-                        className={
-                          formik.errors.fuelType &&
-                          formik.touched.fuelType &&
-                          "error"
-                        }
-                      >
-                        <option value="">{t("selectFuelType")}</option>
-                        <option value="GASOLINE" key="1">
-                          Gasoline
-                        </option>
-                        <option value="DIESEL" key="2">
-                          Diesel
-                        </option>
-                        <option value="HYBRID" key="3">
-                          Hybrid
-                        </option>
-                      </select>
-
-                      <select
-                        id="gearType"
-                        name="gearType"
-                        type="text"
-                        value={formik.values.gearType || gearType}
-                        className={
-                          formik.errors.gearType &&
-                          formik.touched.gearType &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setGearType(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        <option value="">{t("selectGearType")}</option>
-                        <option value="AUTOMATIC" key="1">
-                          Automatic
-                        </option>
-                        <option value="MANUAL" key="2">
-                          Manual
-                        </option>
-                      </select>
-                    </FormGroup>
-                  </div>
-
-                  <div>
-                    <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
-                    <FormGroup className="">
-                      <select
-                        id="vehicleType"
-                        name="vehicleType"
-                        type="text"
-                        value={formik.values.vehicleType || vehicleType}
-                        className={
-                          formik.errors.vehicleType &&
-                          formik.touched.vehicleType &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setVehicleType(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        <option value="">{t("selectVehicleType")}</option>
-                        <option value="SUV" key="1">
-                          SUV
-                        </option>
-                        <option value="SEDAN" key="2">
-                          Sedan
-                        </option>
-                        <option value="HB" key="3">
-                          Hatchback
-                        </option>
-                      </select>
-
-                      <select
-                        id="seatType"
-                        name="seatType"
-                        type="text"
-                        value={formik.values.seatType || seatType}
-                        className={
-                          formik.errors.seatType &&
-                          formik.touched.seatType &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setSeatType(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        <option value="">{t("selectSeatType")}</option>
-                        <option value="TWO" key="1">
-                          2
-                        </option>
-                        <option value="FIVE" key="2">
-                          5
-                        </option>
-                        <option value="SEVEN" key="3">
-                          7
-                        </option>
-                      </select>
-                    </FormGroup>
-                  </div>
-
-                  {id ? (
-                    <Button
-                      onClick={() => {
-                        setIsEdit(true);
-                        handleUpdate(id);
+                <div>
+                  <FormLabel htmlFor="fuelType">
+                    {t("selectFuelAndGear")}
+                  </FormLabel>
+                  <FormGroup className="">
+                    <select
+                      id="fuelType"
+                      name="fuelType"
+                      value={formik.values.fuelType || fuelType}
+                      onChange={(e) => {
+                        setFuelType(e.target.value);
+                        formik.handleChange(e);
                       }}
-                      className=" form__btn"
-                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                      onBlur={formik.handleBlur}
+                      className={
+                        formik.errors.fuelType &&
+                        formik.touched.fuelType &&
+                        "error"
+                      }
                     >
-                      {t("update")}
-                    </Button>
-                  ) : (
-                    <Button
-                      className=" form__btn"
-                      type="submit"
-                      disabled={formik.isSubmitting}
-                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                      <option value="">{t("selectFuelType")}</option>
+                      <option value="GASOLINE" key="1">
+                        Gasoline
+                      </option>
+                      <option value="DIESEL" key="2">
+                        Diesel
+                      </option>
+                      <option value="HYBRID" key="3">
+                        Hybrid
+                      </option>
+                    </select>
+
+                    <select
+                      id="gearType"
+                      name="gearType"
+                      type="text"
+                      value={formik.values.gearType || gearType}
+                      className={
+                        formik.errors.gearType &&
+                        formik.touched.gearType &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the brandName state when the input changes
+                        setGearType(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
                     >
-                      {t("add")}
-                    </Button>
-                  )}
-                </Form>
-              </Grid>
+                      <option value="">{t("selectGearType")}</option>
+                      <option value="AUTOMATIC" key="1">
+                        Automatic
+                      </option>
+                      <option value="MANUAL" key="2">
+                        Manual
+                      </option>
+                    </select>
+                  </FormGroup>
+                </div>
+
+                <div>
+                  <FormLabel>{t("selectVehicleAndSeat")}</FormLabel>
+                  <FormGroup className="">
+                    <select
+                      id="vehicleType"
+                      name="vehicleType"
+                      type="text"
+                      value={formik.values.vehicleType || vehicleType}
+                      className={
+                        formik.errors.vehicleType &&
+                        formik.touched.vehicleType &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the brandName state when the input changes
+                        setVehicleType(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="">{t("selectVehicleType")}</option>
+                      <option value="SUV" key="1">
+                        SUV
+                      </option>
+                      <option value="SEDAN" key="2">
+                        Sedan
+                      </option>
+                      <option value="HB" key="3">
+                        Hatchback
+                      </option>
+                    </select>
+
+                    <select
+                      id="seatType"
+                      name="seatType"
+                      type="text"
+                      value={formik.values.seatType || seatType}
+                      className={
+                        formik.errors.seatType &&
+                        formik.touched.seatType &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the brandName state when the input changes
+                        setSeatType(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="">{t("selectSeatType")}</option>
+                      <option value="TWO" key="1">
+                        2
+                      </option>
+                      <option value="FIVE" key="2">
+                        5
+                      </option>
+                      <option value="SEVEN" key="3">
+                        7
+                      </option>
+                    </select>
+                  </FormGroup>
+                </div>
+
+                {id ? (
+                  <Button
+                    onClick={() => {
+                      setIsEdit(true);
+                      handleUpdate(id);
+                    }}
+                    className=" form__btn"
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                  >
+                    {t("update")}
+                  </Button>
+                ) : (
+                  <Button
+                    className=" form__btn"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                  >
+                    {t("add")}
+                  </Button>
+                )}
+              </Form>
             </Grid>
-          </Sheet>
-        </Modal>
+          </Grid>
+        </Sheet>
+      </Modal>
     </Box>
   );
 }
