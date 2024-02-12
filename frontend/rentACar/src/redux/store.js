@@ -13,6 +13,7 @@ import colorDataSlice from "./slices/admin/colorDataSlice";
 import modelByIdDataSlice from "./slices/admin/modelByIdDataSlice";
 import modelDataSlice from "./slices/admin/modelDataSlice";
 import userAllDataSlice from "./slices/admin/userAllDataSlice";
+import sliderDataSlice from "./slices/admin/sliderDataSlice";
 
 
 
@@ -28,6 +29,7 @@ export const store = configureStore({
         rentalDetail: rentalDetailSlice,
         allRentals: allRentalsSlice,
         brandAllData: brandDataSlice,
+        sliderAllData: sliderDataSlice,
         brandById: brandByIdDataSlice,
         colorAllData: colorDataSlice,
         colorById: colorByIdDataSlice,
