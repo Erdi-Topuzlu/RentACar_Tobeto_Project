@@ -25,6 +25,7 @@ import {
   DialogTitle,
   Grid,
   ModalDialog,
+  styled,
 } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
@@ -34,9 +35,10 @@ import getBrandValidationSchema from "../../../../schemes/brandScheme";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import fetchAllSliderData from "../../../../redux/actions/admin/fetchAllSliderData";
+
 import Loading from "../../../../components/ui/Loading";
-import { motion } from "framer-motion";
+import SvgIcon from "@mui/joy/SvgIcon";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,99 +71,112 @@ function stableSort(array, comparator) {
 export default function SliderTable() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState(false);
-  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { sliders, status, error } = useSelector((state) => state.sliderAllData);
+  const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState(null);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  React.useEffect(() => {
-    dispatch(fetchAllBrandData());
-  }, [dispatch]);
-
   const brandValidationSchema = getBrandValidationSchema();
 
-  const handleDelete = async (id) => {
-    if (!id) {
-      setOpen(false);
-      toastError("Brand ID bulunamadı!");
-    } else {
-      try {
-        await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-        toastSuccess("Brand Başarıyla Silindi.");
-        dispatch(fetchAllBrandData());
-      } catch (error) {
-        setOpen(false);
-        toastError("Silinirken bir hata oluştu!");
-        dispatch(fetchAllBrandData);
-      }
-    }
-  };
+  const VisuallyHiddenInput = styled("input")`
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    width: 1px;
+  `;
 
-  const handleUpdate = async (id) => {
-    if (!brandName) {
-      setOpen(false);
-      toastError("Brand Name alanı boş bırakılamaz!");
-    } else {
-      const data = {
-        id: id,
-        name: brandName,
+  React.useEffect(() => {
+    dispatch(fetchAllSliderData());
+  }, [dispatch]);
+
+  const handleImageChange = async (event) => {
+    setOpen(false);
+    const file = event.target.files[0];
+    const slider ={
+      title :"erdi",
+      description:"topuzlu",
+      buttonLabelName:"Erditpzl",
+    }
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    formData.append("sliderRequest", slider);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        setSelectedImage(e.target.result);
+
+        try {
+          const response = await axiosInstance.post(
+            "/api/v1/admin/slider",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const updatedImageUrl = response.data;
+            setSelectedImage(updatedImageUrl);
+            console.log(updatedImageUrl); 
+          } else {
+           
+          }
+        } catch (error) {
+          console.error(error);
+        }
       };
 
-      try {
-        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
-        toastSuccess("Brand Başarıyla Güncellendi.");
-        setOpen(false);
-        dispatch(fetchAllBrandData());
-      } catch (error) {
-        setOpen(false);
-        if (error.response.data.message === "VALIDATION.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-          dispatch(fetchAllBrandData);
-        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.message));
-          dispatch(fetchAllBrandData);
-        } else {
-          toastError("Bilinmeyen hata");
-          dispatch(fetchAllBrandData());
-        }
-      }
+      reader.readAsDataURL(file);
+      toastSuccess("Uploaded Photo");
     }
   };
-
-  const formik = useFormik({
-    initialValues: {
-      sliderName: "",
-    },
-    validationSchema: brandValidationSchema,
-    onSubmit: async (values, actions) => {
-      const data = {
-        name: values.sliderName,
-      };
-      try {
-        await axiosInstance.post("api/v1/admin/brands", data);
-        toastSuccess("Brand Başarıyla Eklendi.");
-        setOpen(false);
-        dispatch(fetchAllBrandData());
-        formik.resetForm();
-      } catch (error) {
-        setOpen(false);
-        if (error.response.data.message === "VALIDATION.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-          dispatch(fetchAllBrandData);
-        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.message));
-          dispatch(fetchAllBrandData);
-        } else {
-          toastError("Bilinmeyen hata");
-          dispatch(fetchAllBrandData());
-        }
-      }
-    },
-  });
+  
+  // const formik = useFormik({
+  //   initialValues: {
+  //     sliderTitle: "",
+  //     sliderDesc: "",
+  //     sliderBtnLabel: "",
+  //   },
+  //   validationSchema: brandValidationSchema,
+  //   onSubmit: async (values, actions) => {
+  //     const data = {
+  //       name: values.sliderName,
+  //     };
+  //     try {
+  //       await axiosInstance.post("api/v1/admin/slider", data);
+  //       toastSuccess("Slider Başarıyla Eklendi.");
+  //       setOpen(false);
+  //       dispatch(fetchAllSliderData());
+  //       formik.resetForm();
+  //     } catch (error) {
+  //       setOpen(false);
+  //       if (error.response.data.message === "VALIDATION.EXCEPTION") {
+  //         toastError(JSON.stringify(error.response.data.validationErrors.name));
+  //         dispatch(fetchAllSliderData);
+  //       } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+  //         toastError(JSON.stringify(error.response.data.message));
+  //         dispatch(fetchAllSliderData);
+  //       } else {
+  //         toastError("Bilinmeyen hata");
+  //         dispatch(fetchAllSliderData());
+  //       }
+  //     }
+  //   },
+  // });
 
   return (
     <React.Fragment>
@@ -183,8 +198,7 @@ export default function SliderTable() {
           color="success"
           size="md"
           onClick={() => {
-            formik.resetForm();
-            setBrandName("");
+            //formik.resetForm();
             setId(null);
             setOpen(true);
             setIsEdit(false);
@@ -254,33 +268,33 @@ export default function SliderTable() {
                   {t("Slider")}
                 </th>
                 <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("title")}
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("desc")}
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("btnLbl")}
-              </th>
-              {/*
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("title")}
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("desc")}
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("btnLbl")}
+                </th>
+                {/*
               <th
                 style={{
                   width: "auto",
@@ -349,9 +363,9 @@ export default function SliderTable() {
                       <Menu size="sm" sx={{ minWidth: 140 }}>
                         <MenuItem
                           onClick={() => {
-                            formik.resetForm();
+                            //formik.resetForm();
                             setId(row.id);
-                            setBrandName(row.name);
+                            //setBrandName(row.name);
                             setOpen(true);
                             setIsEdit(true);
                           }}
@@ -362,7 +376,7 @@ export default function SliderTable() {
                         <MenuItem
                           onClick={() => {
                             setId(row.id);
-                            setBrandName(row.name);
+                            //setBrandName(row.name);
                             setOpenDelete(true);
                           }}
                           color="danger"
@@ -383,7 +397,7 @@ export default function SliderTable() {
           aria-describedby="modal-desc"
           open={open}
           onClose={() => {
-            formik.resetForm();
+            //formik.resetForm();
             setId(null);
             setOpen(false);
           }}
@@ -423,18 +437,48 @@ export default function SliderTable() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid xs={12}>
-                <Form onSubmit={formik.handleSubmit}>
+                <Form>
                   <div>
-                    <FormLabel>{t("sliderName")}</FormLabel>
-                    <FormGroup className="">
+                    
+                    <FormGroup>
+                    <Button
+                        component="label"
+                        role={undefined}
+                        tabIndex={-1}
+                        variant="outlined"
+                        color="neutral"
+                        startDecorator={
+                          <SvgIcon>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                              />
+                            </svg>
+                          </SvgIcon>
+                        }
+                      >
+                        Upload a Slide
+                        <VisuallyHiddenInput onChange={handleImageChange} type="file" accept="image/*" id="image-upload" />
+                      </Button>
+                    </FormGroup>
+                    {/* <FormGroup className="">
+                    <FormLabel>{t("sliderTitle")}</FormLabel>
                       <Input
-                        id="sliderName"
-                        name="sliderName"
+                        id="sliderTitle"
+                        name="sliderTitle"
                         type="text"
-                        value={formik.values.sliderName || ""}
+                        value={formik.values.sliderTitle || ""}
                         className={
-                          formik.errors.sliderName &&
-                          formik.touched.sliderName &&
+                          formik.errors.sliderTitle &&
+                          formik.touched.sliderTitle &&
                           "error"
                         }
                         onChange={(e) => {
@@ -444,15 +488,71 @@ export default function SliderTable() {
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
-                          formik.errors.sliderName && formik.touched.sliderName
-                            ? formik.errors.sliderName
-                            : t("sliderName")
+                          formik.errors.sliderTitle && formik.touched.sliderTitle
+                            ? formik.errors.sliderTitle
+                            : t("sliderTitle")
                         }
                         error={
-                          formik.errors.brandName && formik.touched.brandName
+                          formik.errors.sliderTitle && formik.touched.sliderTitle
                         }
                       />
                     </FormGroup>
+                    <FormGroup className="">
+                    <FormLabel>{t("sliderDesc")}</FormLabel>
+                      <Input
+                        id="sliderDesc"
+                        name="sliderDesc"
+                        type="text"
+                        value={formik.values.sliderDesc || ""}
+                        className={
+                          formik.errors.sliderDesc &&
+                          formik.touched.sliderDesc &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setBrandName(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.sliderDesc && formik.touched.sliderDesc
+                            ? formik.errors.sliderDesc
+                            : t("sliderDesc")
+                        }
+                        error={
+                          formik.errors.sliderDesc && formik.touched.sliderDesc
+                        }
+                      />
+                    </FormGroup>
+                    <FormGroup className="">
+                    <FormLabel>{t("sliderBtnLabel")}</FormLabel>
+                      <Input
+                        id="sliderBtnLabel"
+                        name="sliderBtnLabel"
+                        type="text"
+                        value={formik.values.sliderBtnLabel || ""}
+                        className={
+                          formik.errors.sliderBtnLabel &&
+                          formik.touched.sliderBtnLabel &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          // Update the brandName state when the input changes
+                          setBrandName(e.target.value);
+                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.sliderBtnLabel && formik.touched.sliderBtnLabel
+                            ? formik.errors.sliderBtnLabel
+                            : t("sliderBtnLabel")
+                        }
+                        error={
+                          formik.errors.sliderBtnLabel && formik.touched.sliderBtnLabel
+                        }
+                      />
+                    </FormGroup> */}
                   </div>
                   {id ? (
                     <Button
@@ -469,7 +569,7 @@ export default function SliderTable() {
                       className=" form__btn"
                       type="submit"
                       style={{ backgroundColor: "#673ab7", color: "white" }}
-                      disabled={formik.isSubmitting}
+                      //disabled={formik.isSubmitting}
                     >
                       {t("add")}
                     </Button>
@@ -497,7 +597,7 @@ export default function SliderTable() {
             </DialogTitle>
             <Divider />
             <DialogContent>
-              <p style={{ fontWeight: "bold" }}>{brandName}</p>
+              <p style={{ fontWeight: "bold" }}>123213</p>
               {t("deleteMessage")}
             </DialogContent>
             <DialogActions>
