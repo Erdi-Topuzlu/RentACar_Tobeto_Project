@@ -19,7 +19,7 @@ public class EndDateTriggerCreationService {
 
     private void createUpdateCarAvailabilityFunction() {
         String updateFunctionSQL =
-                "CREATE OR REPLACE FUNCTION update_car_availability_trigger()\n" +
+                "CREATE OR REPLACE FUNCTION check_end_date()\n" +
                         "RETURNS TRIGGER AS\n" +
                         "$$\n" +
                         "BEGIN\n" +
