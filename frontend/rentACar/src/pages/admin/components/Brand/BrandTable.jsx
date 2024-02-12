@@ -28,6 +28,7 @@ import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,7 +64,7 @@ export default function BrandTable() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands} = useSelector((state) => state.brandAllData);
+  const { brands, status, error} = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -153,6 +154,7 @@ export default function BrandTable() {
     },
   });
 
+  
   return (
     <React.Fragment>
       <Box
@@ -270,7 +272,8 @@ export default function BrandTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(brands, getComparator(order, "id")).map((row) => (
+            {status === "LOADING" ? <p>Loading..</p> :
+            stableSort(brands, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>

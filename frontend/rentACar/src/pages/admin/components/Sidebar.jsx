@@ -20,7 +20,7 @@ import ColorSchemeToggle from "./ColorShemeToggle";
 import { closeSidebar } from "../utils";
 import { Link } from "@mui/joy";
 import { ReactSVG } from "react-svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toastSuccess } from "../../../service/ToastifyService";
 import { NavDropdown } from "react-bootstrap";
@@ -85,7 +85,8 @@ export default function Sidebar() {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setShowUi(true);
-        navigate("/login");
+        window.location.reload();
+        //navigate("/login");
       }
     } catch (error) {
       console.error("Çıkış işlemi sırasında bir hata oluştu:", error);
@@ -106,6 +107,13 @@ export default function Sidebar() {
   const isMenuItemSelected = (route) => {
     return location.pathname.includes(route);
   };
+
+  if (status === "LOADING") {
+    return <Loading />;
+  } else if (status === "FAIL") {
+    return <ErrorPage errorMessage={error} />;
+  }
+
   
   return (
     <Sheet

@@ -1,13 +1,13 @@
 import { toast } from "react-toastify";
 
 const toastConfig = {
-    autoClose: 1500,
+    autoClose: 2500,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "light"
+    theme: "dark"
 };
 
 export function toastInfo(message) {

@@ -1,11 +1,9 @@
 import React from "react";
-
 import CommonSection from "../components/ui/CommonSection";
 import Helmet from "../components/Helmet";
 import AboutSection from "../components/ui/AboutSection";
 import { Container, Row, Col } from "reactstrap";
 import BecomeDriverSection from "../components/ui/BecomeDriverSection";
-
 import driveImg from "../assets/all-images/drive.jpg";
 import OurMembers from "../components/ui/OurMembers";
 import "../styles/about.css";

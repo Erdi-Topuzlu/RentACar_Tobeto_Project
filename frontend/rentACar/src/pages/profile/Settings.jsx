@@ -31,15 +31,8 @@ const Settings = () => {
   const userProfileScheme = getUserProfileValidationSchema();
 
 
-  if (status === "LOADING") {
-    return <Loading />;
-  }else if (status === "FAIL"){
-    return <ErrorPage errorMessage={error} />
-  }
-
-
   const initialValues = {
-    firstName: details.name || "", // use an empty string if details.name is null
+    firstName: details.name || "",
     lastName: details.surname || "",
     tcNo: details.tcNo || "",
     usernames: details.name || "",
@@ -108,9 +101,9 @@ const Settings = () => {
           if (response.status === 200) {
             const updatedImageUrl = response.data;
             setSelectedImage(updatedImageUrl);
-            console.log(updatedImageUrl); // "https://example.com/profile_photo.jpg"
+            console.log(updatedImageUrl); 
           } else {
-            // Hata oluştuğunda yapılacak işlemleri burada belirtebilirsiniz
+           
           }
         } catch (error) {
           console.error(error);
@@ -121,6 +114,13 @@ const Settings = () => {
       toastSuccess("Uploaded Photo");
     }
   };
+  
+  if (status === "LOADING") {
+    return <Loading />;
+  }else if (status === "FAIL"){
+    return <ErrorPage errorMessage={error} />
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <Stack
@@ -209,9 +209,7 @@ const Settings = () => {
                       }
                       value={values.firstName}
                       onChange={(e) => {
-                        // Update the brandName state when the input changes
-
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                        formik.handleChange(e); 
                       }}
                       onBlur={formik.handleBlur}
                       error={
@@ -296,6 +294,7 @@ const Settings = () => {
                       }
                     />
                   </FormControl> */}
+
                 </FormControl>
               </Stack>
             </Stack>

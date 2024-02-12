@@ -38,6 +38,7 @@ import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 import getRentalValidationSchema from "../../../../schemes/rentalScheme";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -79,7 +80,7 @@ export default function RentalTable() {
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const [dateInputType, setDateInputType] = React.useState("text");
-  const { rentals } = useSelector((state) => state.allRentals);
+  const { rentals,status,error } = useSelector((state) => state.allRentals);
   const { items } = useSelector((state) => state.carAllData);
   const { users } = useSelector((state) => state.userAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -178,6 +179,13 @@ export default function RentalTable() {
       }
     },
   });
+
+  // if (status === "LOADING") {
+  //   return <Loading />;
+  // } else if (status === "FAIL") {
+  //   return <ErrorPage errorMessage={error} />;
+  // }
+
 
   return (
     <React.Fragment>
@@ -325,7 +333,8 @@ export default function RentalTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(rentals, getComparator(order, "id")).map((row) => (
+            {status === "LOADING" ? <p>Loading..</p> :
+            stableSort(rentals, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>

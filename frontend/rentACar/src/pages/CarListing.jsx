@@ -39,11 +39,7 @@ const CarListing = () => {
     setVehicleType(e.target.value);
   };
 
-  if (status === "LOADING") {
-    return <Loading />;
-  }else if (status === "FAIL"){
-    return <ErrorPage errorMessage={error} />
-  }
+ 
 
   let filteredItems = [...items];
 
@@ -83,6 +79,12 @@ const CarListing = () => {
     filteredItems.sort((a, b) => a.dailyPrice - b.dailyPrice);
   } else if (sortType === "high") {
     filteredItems.sort((a, b) => b.dailyPrice - a.dailyPrice);
+  }
+
+  if (status === "LOADING") {
+    return <Loading />;
+  }else if (status === "FAIL"){
+    return <ErrorPage errorMessage={error} />
   }
 
   return (

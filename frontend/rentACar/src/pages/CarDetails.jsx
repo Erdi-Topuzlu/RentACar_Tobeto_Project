@@ -29,21 +29,17 @@ const CarDetails = () => {
   const { t } = useTranslation();
   const token = localStorage.getItem("access_token");
 
-  // console.log("detail",details)
-
-
   useEffect(() => {
     dispatch(fetchCarDetailData(id));
   }, [dispatch]);
+
+  localStorage.setItem("carData", JSON.stringify(details))
 
   if (status === "LOADING") {
     return <Loading />;
   }else if (status === "FAIL"){
     return <ErrorPage errorMessage={error} />
   }
-
-  localStorage.setItem("carData", JSON.stringify(details))
-
 
   return (
     <Helmet

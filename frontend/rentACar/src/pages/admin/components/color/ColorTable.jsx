@@ -28,6 +28,7 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import ColorList from "./ColorList";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import Loading from "../../../../components/ui/Loading";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -139,6 +140,9 @@ export default function ColorTable() {
       }
     },
   });
+
+ 
+
 
   return (
     <React.Fragment>
@@ -257,7 +261,8 @@ export default function ColorTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(colors, getComparator(order, "id")).map((row) => (
+            {status === "LOADING" ? <p>Loading..</p> :
+            stableSort(colors, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
