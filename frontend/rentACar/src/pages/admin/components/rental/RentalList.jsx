@@ -29,6 +29,7 @@ import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -232,8 +233,9 @@ export default function RentalList() {
           </tr>
         </thead>
       </Table>
-
-      {stableSort(rentals, getComparator(order, "id")).map((item) => (
+      {status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(rentals, getComparator(order, "id")).map((item) => (
         <List
         key={item.id}
         size="sm"
@@ -348,8 +350,8 @@ export default function RentalList() {
           </Box>
         </ListItem>
         <ListDivider />
-      </List>
-      ))}
+        </List>
+      )))}
       <Modal
           aria-labelledby="modal-title"
           aria-describedby="modal-desc"

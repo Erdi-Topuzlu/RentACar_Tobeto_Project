@@ -31,7 +31,6 @@ import { useFormik } from "formik";
 // import getRentalValidationSchema from "../../../../schemes//rentalScheme";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
-import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import RentalList from "./RentalList";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
@@ -39,6 +38,8 @@ import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 import getRentalValidationSchema from "../../../../schemes/rentalScheme";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import fetchCarDetailData from "../../../../redux/actions/fetchCarDetailData";
+import fetchAllRental from "../../../../redux/actions/fetchAllRentals";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -99,7 +100,7 @@ export default function RentalTable() {
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    dispatch(fetchAllRentals());
+    dispatch(fetchAllRental());
     dispatch(fetchAllCarData());
     dispatch(fetchAllUserData());
   }, [dispatch]);
@@ -111,17 +112,14 @@ export default function RentalTable() {
       toastError("Rental ID bulunamadı!");
     } else {
       try {
-        // alert(JSON.stringify(carDetails))
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
         toastSuccess("Rental Başarıyla Silindi.");
-        {JSON.stringify(carDetails),isAvailable="true"}
-        dispatch(fetchAllRentals());
+        dispatch(fetchAllRental());
 
       } catch (error) {
         setOpen(false)
-        alert(error.response.data)
-        //toastError("Önce bağlı veriler silinmeli!")
-        dispatch(fetchAllRentals());
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllRental());
 
       }
     }
@@ -147,18 +145,18 @@ export default function RentalTable() {
         await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
         toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
-        dispatch(fetchAllRentals());
+        dispatch(fetchAllRental());
       }catch (error) {
         setOpen(false);
         if(error.response.data.message === "VALIDATION.EXCEPTION" ){
           toastError(JSON.stringify(error.response.data.validationErrors.startDate))
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
           toastError(JSON.stringify(error.response.data.message))
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }else{
           toastError("Bilinmeyen hata")
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }
     }
     }
@@ -188,19 +186,19 @@ export default function RentalTable() {
         await axiosInstance.post("api/v1/users/rentals", data);
         toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);
-        dispatch(fetchAllRentals());
+        dispatch(fetchAllRental());
         formik.resetForm();
       }catch (error) {
         setOpen(false);
         if(error.response.data.message === "VALIDATION.EXCEPTION" ){
           toastError(JSON.stringify(error.response.data.validationErrors.startDate))
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
           toastError(JSON.stringify(error.response.data.message))
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }else{
           toastError("Bilinmeyen hata")
-          dispatch(fetchAllRentals());
+          dispatch(fetchAllRental());
         }
 
       }
@@ -256,7 +254,9 @@ export default function RentalTable() {
           overflow: "auto",
           minHeight: 0,
         }}
-      >
+      >{status === "LOADING" ? (
+        <Loading />
+      ) : (
         <Table
           aria-labelledby="tableTitle"
           stickyHeader
@@ -360,8 +360,7 @@ export default function RentalTable() {
             </tr>
           </thead>
           <tbody>
-            {status === "LOADING" ? <p>Loading..</p> :
-            stableSort(rentals, getComparator(order, "id")).map((row) => (
+            {stableSort(rentals, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -470,9 +469,10 @@ export default function RentalTable() {
                   </Dropdown>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+             ))}
+             </tbody>
+           </Table>
+         )}
 
         <Modal
           aria-labelledby="modal-title"
