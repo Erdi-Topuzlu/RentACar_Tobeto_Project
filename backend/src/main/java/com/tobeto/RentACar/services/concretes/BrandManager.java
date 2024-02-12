@@ -11,17 +11,21 @@ import com.tobeto.RentACar.services.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.RentACar.services.dtos.responses.brand.GetByIdBrandResponse;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Data
 public class BrandManager implements BrandService {
 
     private final BrandRepository brandRepository;
     private final ModelMapperService modelMapperService;
-    private final BrandBusinessRulesService brandBusinessRulesService;
+   private final BrandBusinessRulesService brandBusinessRulesService;
+
+
 
 
     @Override
