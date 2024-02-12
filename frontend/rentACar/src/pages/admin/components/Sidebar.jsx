@@ -51,6 +51,8 @@ const langSelect = (eventKey) => {
   localStorage.setItem("lang", eventKey);
 };
 
+
+
 export default function Sidebar() {
   
   const { details, status, error } = useSelector((state) => state.userDetail);

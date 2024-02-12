@@ -28,7 +28,7 @@ import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import getModelValidationSchema from "../../../../schemes/modelScheme";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
@@ -89,6 +89,7 @@ export default function ModelTable() {
 
   const handleDelete = async (id) => {
     if (!id) {
+      setOpen(false)
       toastError("Model ID bulunamadı!");
     } else {
       try {
@@ -96,7 +97,10 @@ export default function ModelTable() {
         toastSuccess("Model Başarıyla Silindi.");
         dispatch(fetchAllModelData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllModelData());
+
       }
     }
   };
@@ -113,14 +117,23 @@ export default function ModelTable() {
       };
 
       try {
-        alert(JSON.stringify(updatedData));
         await axiosInstance.put(`api/v1/admin/models/${id}`, updatedData);
         toastSuccess("Model Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllModelData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllModelData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllModelData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllModelData());
+        }
+    }
     }
   };
 
@@ -143,9 +156,18 @@ export default function ModelTable() {
         dispatch(fetchAllModelData());
         formik.resetForm();
       } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
-      }
-    },
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllModelData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllModelData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllModelData());
+        }
+      }}
   });
 
 
@@ -240,7 +262,7 @@ export default function ModelTable() {
               >
                 {t("modelName")}
               </th>
-              <th
+              {/* <th
                 style={{
                   width: "auto",
                   padding: "12px 6px",
@@ -248,7 +270,7 @@ export default function ModelTable() {
                 }}
               >
                 {t("brandName")}
-              </th>
+              </th> */}
               {/*
               <th
                 style={{
@@ -279,9 +301,9 @@ export default function ModelTable() {
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">{row.name}</Typography>
                 </td>
-                <td style={{ textAlign: "center" }}>
+                {/* <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">{row.brandId?.name}</Typography>
-                </td>
+                </td> */}
                 {/* <td style={{ textAlign: "center" }}>
                   <div>
                     <Typography level="body-xs">{}</Typography>
