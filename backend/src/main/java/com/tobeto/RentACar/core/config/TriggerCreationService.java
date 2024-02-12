@@ -20,8 +20,6 @@ public class TriggerCreationService {
     public void createTriggers() {
         createUpdateCarAvailabilityFunction();
         createRentalAddedTrigger();
-        /*createEndDateCarAvailabilityFunction();
-        createEndDateFinishTrigger();*/
     }
 
     private void createUpdateCarAvailabilityFunction() {
@@ -55,42 +53,6 @@ public class TriggerCreationService {
             jdbcTemplate.execute(createTriggerSQL);
         }
     }
-
-    /*@Scheduled(fixedRate = 10000)
-    private void createEndDateCarAvailabilityFunction() {
-        String updateFunctionSQL1 =
-                "CREATE OR REPLACE FUNCTION end_date_availability_trigger()\n" +
-                        "RETURNS TRIGGER AS\n" +
-                        "$$\n" +
-                        "BEGIN\n" +
-                        "    IF NEW.end_date < CURRENT_DATE THEN\n" +
-                        "        UPDATE public.cars\n" +
-                        "        SET is_available = true\n" +
-                        "        WHERE id = NEW.car_id;\n" +
-                        "    END IF;\n" +
-                        "    RETURN NEW;\n" +
-                        "END;\n" +
-                        "$$\n" +
-                        "LANGUAGE plpgsql;";
-
-        jdbcTemplate.execute(updateFunctionSQL1);
-    }
-
-    @Scheduled(fixedRate = 10000)
-    private void createEndDateFinishTrigger() {
-        String triggerName = "end_date_finish_trigger";
-
-        // Önce tetikleyici var mı kontrol et
-        if (!triggerExists(triggerName)) {
-            String createTriggerSQL1 =
-                    "CREATE TRIGGER " + triggerName + "\n" +
-                            "AFTER INSERT ON public.rentals\n" +
-                            "FOR EACH ROW\n" +
-                            "EXECUTE FUNCTION end_date_availability_trigger();";
-
-            jdbcTemplate.execute(createTriggerSQL1);
-        }
-    }*/
 
     private boolean triggerExists(String triggerName) {
         String checkTriggerSQL =

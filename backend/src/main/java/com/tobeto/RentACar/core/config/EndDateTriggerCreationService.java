@@ -8,28 +8,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DeleteTriggerCreationService {
+public class EndDateTriggerCreationService {
 
     private final JdbcTemplate jdbcTemplate;
-
     @PostConstruct
     public void createTriggers() {
         createUpdateCarAvailabilityFunction();
-        createRentalDeletedTrigger();
+        createEndDateAvailabilityTrigger();
     }
 
     private void createUpdateCarAvailabilityFunction() {
         String updateFunctionSQL =
-                "CREATE OR REPLACE FUNCTION delete_car_availability_trigger()\n" +
+                "CREATE OR REPLACE FUNCTION update_car_availability_trigger()\n" +
                         "RETURNS TRIGGER AS\n" +
                         "$$\n" +
                         "BEGIN\n" +
-                        "    CASE TG_OP\n" +
-                        "        WHEN 'DELETE' THEN\n" +
-                        "            UPDATE public.cars\n" +
-                        "            SET is_available = true\n" +
-                        "            WHERE id = OLD.car_id;\n" +
-                        "    END CASE;\n" +
+                        "    UPDATE public.cars\n" +
+                        "    SET is_available = false\n" +
+                        "    WHERE id = NEW.car_id;\n" +
                         "    RETURN NEW;\n" +
                         "END;\n" +
                         "$$\n" +
@@ -38,15 +34,16 @@ public class DeleteTriggerCreationService {
         jdbcTemplate.execute(updateFunctionSQL);
     }
 
-    private void createRentalDeletedTrigger() {
-        String triggerName = "rental_deleted_trigger";
+    private void createEndDateAvailabilityTrigger() {
+        String triggerName = "end_date_availability_trigger";
 
         if (!triggerExists(triggerName)) {
             String createTriggerSQL =
                     "CREATE TRIGGER " + triggerName + "\n" +
-                            "AFTER DELETE ON public.rentals\n" +
+                            "AFTER UPDATE ON public.rentals\n" +
                             "FOR EACH ROW\n" +
-                            "EXECUTE FUNCTION delete_car_availability_trigger();";
+                            "WHEN (NEW.end_date IS NOT NULL)\n" +
+                            "EXECUTE PROCEDURE check_end_date();";
 
             jdbcTemplate.execute(createTriggerSQL);
         }
@@ -62,4 +59,5 @@ public class DeleteTriggerCreationService {
 
         return jdbcTemplate.queryForObject(checkTriggerSQL, Boolean.class, triggerName);
     }
+
 }
