@@ -9,6 +9,12 @@ import lombok.Data;
 @Table(name = "car_images")
 @Data
 public class CarImage extends BaseEntity {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @Column(name = "img_path")
     private String imgPath;
 
