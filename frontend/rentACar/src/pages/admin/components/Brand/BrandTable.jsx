@@ -119,6 +119,7 @@ export default function BrandTable() {
           dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
+          dispatch(fetchAllBrandData());
         }
     }}
   };
@@ -148,6 +149,7 @@ export default function BrandTable() {
           dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
+          dispatch(fetchAllBrandData());
         }
 
       }

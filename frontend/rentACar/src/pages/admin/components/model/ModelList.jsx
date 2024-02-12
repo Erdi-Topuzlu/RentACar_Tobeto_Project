@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Button, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
@@ -79,6 +79,7 @@ export default function CarList() {
 
   const handleDelete = async (id) => {
     if (!id) {
+      setOpen(false)
       toastError("Model ID bulunamadı!");
     } else {
       try {
@@ -86,8 +87,10 @@ export default function CarList() {
         toastSuccess("Model Başarıyla Silindi.");
         dispatch(fetchAllModelData());
       } catch (error) {
-        alert(error)
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllModelData());
+
       }
     }
   };
@@ -97,10 +100,6 @@ export default function CarList() {
       setOpen(false);
       toastError("Model name alanı boş bırakılamaz!");
     } else {
-
-      alert(id)
-
-
       const updatedData = {
         id: id,
         name: name,
@@ -108,15 +107,23 @@ export default function CarList() {
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/models/${id}`,
-          updatedData);
+        await axiosInstance.put(`api/v1/admin/models/${id}`, updatedData);
         toastSuccess("Model Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllModelData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-
-      };
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllModelData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllModelData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllModelData());
+        }
+    }
     }
   };
 

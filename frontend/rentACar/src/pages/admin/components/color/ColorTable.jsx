@@ -86,8 +86,9 @@ export default function ColorTable() {
         toastSuccess("Color Başarıyla Silindi.");
         dispatch(fetchAllColorData());
       } catch (error) {
-        alert(error)
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllColorData)
       }
     }
   };
@@ -109,10 +110,19 @@ export default function ColorTable() {
         toastSuccess("Color Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllColorData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-
-      };
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllColorData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllColorData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllColorData());
+        }
+    }
     }
   }
 
@@ -135,10 +145,19 @@ export default function ColorTable() {
         setOpen(false);
         dispatch(fetchAllColorData());
         formik.resetForm();
-      } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
-      }
-    },
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllColorData)
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllColorData)
+        }else{
+          alert("Bilinmeyen hata")
+          dispatch(fetchAllColorData)
+        }
+    }}
   });
 
  

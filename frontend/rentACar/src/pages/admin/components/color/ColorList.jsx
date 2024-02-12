@@ -94,8 +94,9 @@ export default function ColorList() {
         toastSuccess("Color Başarıyla Silindi.");
         dispatch(fetchAllColorData());
       } catch (error) {
-        alert(error);
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllColorData)
       }
     }
   };
@@ -105,21 +106,33 @@ export default function ColorList() {
       setOpen(false);
       toastError("Color Name alanı boş bırakılamaz!");
     } else {
+
       const data = {
         id: id,
         name: colorName,
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/colors/${id}`, data);
+        await axiosInstance.put(`api/v1/admin/colors/${id}`,
+          data);
         toastSuccess("Color Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllColorData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllColorData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllColorData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllColorData());
+        }
     }
-  };
+    }
+  }
 
   const formik = useFormik({
     initialValues: {
