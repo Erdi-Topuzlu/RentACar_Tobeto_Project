@@ -4,7 +4,7 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import { useSelector } from "react-redux";
-import { Container, Form } from "reactstrap";
+import { Container } from "reactstrap";
 import ErrorPage from "../../components/ui/ErrorPage";
 import Loading from "../../components/ui/Loading";
 import Helmet from "../../components/Helmet";
@@ -23,14 +23,11 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
-    // Eğer location.state'te tabIndex varsa, bu değeri kullanabilirsiniz
     const tabIndex = location.state?.tabIndex;
 
     if (tabIndex !== undefined) {
       console.log("Gelen tabIndex:", tabIndex);
       setActiveTab(tabIndex);
-      // Burada istediğiniz işlemleri gerçekleştirebilirsiniz
-      // Örneğin, belirtilen taba geçiş işlemleri veya başka bir şey
     }
   }, [location.state]);
 

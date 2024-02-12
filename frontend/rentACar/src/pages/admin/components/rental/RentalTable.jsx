@@ -29,7 +29,7 @@ import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 // import getRentalValidationSchema from "../../../../schemes//rentalScheme";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllRentals from "../../../../redux/actions/fetchAllRentals";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
@@ -38,6 +38,7 @@ import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 import getRentalValidationSchema from "../../../../schemes/rentalScheme";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import fetchCarDetailData from "../../../../redux/actions/fetchCarDetailData";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,7 +67,6 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-
 export default function RentalTable() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState();
@@ -74,13 +74,16 @@ export default function RentalTable() {
   const [endDate, setEndDate] = React.useState();
   const [returnDate, setReturnDate] = React.useState();
   const [carId, setCarId] = React.useState();
+  const [updCarId, setUpdCarId] = React.useState();
   const [userId, setUserId] = React.useState();
   const [extraId, setExtraId] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
+  const [carDetails, setCarDetails] = React.useState();
   const [dateInputType, setDateInputType] = React.useState("text");
-  const { rentals } = useSelector((state) => state.allRentals);
+  const { rentals,status,error } = useSelector((state) => state.allRentals);
   const { items } = useSelector((state) => state.carAllData);
+  const { details } = useSelector((state) => state.carDetail);
   const { users } = useSelector((state) => state.userAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
@@ -108,12 +111,18 @@ export default function RentalTable() {
       toastError("Rental ID bulunamadı!");
     } else {
       try {
+        // alert(JSON.stringify(carDetails))
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
         toastSuccess("Rental Başarıyla Silindi.");
+        {JSON.stringify(carDetails),isAvailable="true"}
         dispatch(fetchAllRentals());
+
       } catch (error) {
-        alert(error);
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        alert(error.response.data)
+        //toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllRentals());
+
       }
     }
   };
@@ -135,14 +144,23 @@ export default function RentalTable() {
       };
 
       try {
-        alert(JSON.stringify(updatedData));
         await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
         toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllRentals());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.startDate))
+          dispatch(fetchAllRentals());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllRentals());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllRentals());
+        }
+    }
     }
   };
 
@@ -167,17 +185,34 @@ export default function RentalTable() {
       };
 
       try {
-        alert(JSON.stringify(data));
         await axiosInstance.post("api/v1/users/rentals", data);
         toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllRentals());
         formik.resetForm();
-      } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.startDate))
+          dispatch(fetchAllRentals());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllRentals());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllRentals());
+        }
+
       }
     },
   });
+
+  // if (status === "LOADING") {
+  //   return <Loading />;
+  // } else if (status === "FAIL") {
+  //   return <ErrorPage errorMessage={error} />;
+  // }
+
 
   return (
     <React.Fragment>
@@ -325,7 +360,8 @@ export default function RentalTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(rentals, getComparator(order, "id")).map((row) => (
+            {status === "LOADING" ? <p>Loading..</p> :
+            stableSort(rentals, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -422,6 +458,9 @@ export default function RentalTable() {
                               row.carId?.modelId?.name
                           );
                           setOpenDelete(true);
+                          setUpdCarId(row.carId?.id)
+                          setCarDetails(row.carId)
+                         
                         }}
                         color="danger"
                       >
@@ -613,6 +652,7 @@ export default function RentalTable() {
                             </option>
                           ))}
                       </select>
+                      
                     </FormGroup>
                   </div>
                   <div>

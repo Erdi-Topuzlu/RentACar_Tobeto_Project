@@ -28,6 +28,7 @@ import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,7 +64,7 @@ export default function BrandTable() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands} = useSelector((state) => state.brandAllData);
+  const { brands, status, error} = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -118,6 +119,7 @@ export default function BrandTable() {
           dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
+          dispatch(fetchAllBrandData());
         }
     }}
   };
@@ -147,12 +149,14 @@ export default function BrandTable() {
           dispatch(fetchAllBrandData)
         }else{
           toastError("Bilinmeyen hata")
+          dispatch(fetchAllBrandData());
         }
 
       }
     },
   });
 
+  
   return (
     <React.Fragment>
       <Box
@@ -196,6 +200,9 @@ export default function BrandTable() {
           minHeight: 0,
         }}
       >
+        {status === "LOADING" ? (
+        <Loading />
+      ) : (
         <Table
           aria-labelledby="tableTitle"
           stickyHeader
@@ -350,8 +357,9 @@ export default function BrandTable() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"

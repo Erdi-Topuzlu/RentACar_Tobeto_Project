@@ -6,7 +6,7 @@ export const getCarValidationSchema = () => {
 
   return yup.object().shape({
     kilometer: yup
-      .number()
+      .string()
       .required(t("schemeCarKilometer")),
       plate: yup
       .string()

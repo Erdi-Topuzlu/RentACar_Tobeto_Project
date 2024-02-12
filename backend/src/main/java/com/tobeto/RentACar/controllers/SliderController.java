@@ -7,7 +7,6 @@ import com.tobeto.RentACar.services.dtos.requests.slider.UpdateSliderRequest;
 import com.tobeto.RentACar.services.dtos.responses.slider.GetAllSliderResponse;
 import com.tobeto.RentACar.services.dtos.responses.slider.GetByIdSliderResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,18 +37,13 @@ public class SliderController {
         return sliderService.delete(id);
     }
 
-    @PostMapping
-    public void add(@RequestBody @Valid AddSliderRequest request) {
-        sliderService.add(request);
+    @PostMapping()
+    public void add(@RequestPart MultipartFile file, @RequestPart AddSliderRequest sliderRequest) {
+        sliderService.addSliderPhoto(sliderRequest, file);
     }
 
     @PatchMapping
-    public void update(@RequestBody @Valid UpdateSliderRequest request) {
-        sliderService.update(request);
-    }
-
-    @PutMapping
-    public ResponseEntity<String> uploadSliderPhoto(@RequestParam("id") Integer id, @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok().body(sliderService.uploadSliderPhotoUrl(id, file));
+    public ResponseEntity<String> uploadSliderPhoto(@RequestPart MultipartFile file, @RequestPart UpdateSliderRequest sliderRequest) {
+        return ResponseEntity.ok().body(sliderService.updateSliderPhoto(sliderRequest, file));
     }
 }

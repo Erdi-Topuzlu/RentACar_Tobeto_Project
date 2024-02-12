@@ -28,6 +28,7 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import ColorList from "./ColorList";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import Loading from "../../../../components/ui/Loading";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -85,8 +86,9 @@ export default function ColorTable() {
         toastSuccess("Color Başarıyla Silindi.");
         dispatch(fetchAllColorData());
       } catch (error) {
-        alert(error)
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllColorData)
       }
     }
   };
@@ -108,10 +110,19 @@ export default function ColorTable() {
         toastSuccess("Color Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllColorData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-
-      };
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllColorData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllColorData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllColorData());
+        }
+    }
     }
   }
 
@@ -134,11 +145,23 @@ export default function ColorTable() {
         setOpen(false);
         dispatch(fetchAllColorData());
         formik.resetForm();
-      } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
-      }
-    },
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllColorData)
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllColorData)
+        }else{
+          alert("Bilinmeyen hata")
+          dispatch(fetchAllColorData)
+        }
+    }}
   });
+
+ 
+
 
   return (
     <React.Fragment>
@@ -183,7 +206,10 @@ export default function ColorTable() {
           minHeight: 0,
         }}
       >
-        <Table
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
+          <Table
           aria-labelledby="tableTitle"
           stickyHeader
           hoverRow
@@ -336,8 +362,9 @@ export default function ColorTable() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"

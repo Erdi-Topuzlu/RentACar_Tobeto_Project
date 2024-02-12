@@ -10,16 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface SliderService {
-    void add(AddSliderRequest request);
-
-    void update(UpdateSliderRequest request);
-
     DeleteSliderRequest delete(int id);
 
     List<GetAllSliderResponse> getAll();
 
     GetByIdSliderResponse getById(int id);
 
-    String uploadSliderPhotoUrl(Integer id, MultipartFile file);
+    String addSliderPhoto(AddSliderRequest sliderRequest, MultipartFile file);
+
+    String updateSliderPhoto(UpdateSliderRequest sliderRequest, MultipartFile file);
 
 }

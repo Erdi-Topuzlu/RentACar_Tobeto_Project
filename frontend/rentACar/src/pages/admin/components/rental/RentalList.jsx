@@ -101,8 +101,10 @@ export default function RentalList() {
         toastSuccess("Rental Başarıyla Silindi.");
         dispatch(fetchAllRentals());
       } catch (error) {
-        alert(error);
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllRentals());
+
       }
     }
   };
@@ -124,14 +126,23 @@ export default function RentalList() {
       };
 
       try {
-        alert(JSON.stringify(updatedData));
         await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
         toastSuccess("Rental Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllRentals());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.startDate))
+          dispatch(fetchAllRentals());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllRentals());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllRentals());
+        }
+    }
     }
   };
 
@@ -145,6 +156,7 @@ export default function RentalList() {
       extraId: "",
     },
   });
+
 
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>

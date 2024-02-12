@@ -4,7 +4,7 @@ public record Messages() {
 
     //Brand Messages
     public static final String brandNameNotEmpty = "Brand Name cannot be empty!";
-    public static final String brandNameSize = "Brand Name must consist of at least 2 letters!";
+    public static final String brandNameSize = "Brand Name must consist of at least 2 character!";
 
 
     //Car Messages

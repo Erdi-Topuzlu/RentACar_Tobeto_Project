@@ -22,11 +22,12 @@ import { useTranslation } from "react-i18next";
 import { Button, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, Table } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,7 +65,7 @@ export default function CarList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { models } = useSelector((state) => state.modelAllData);
+  const { models, status, error } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ export default function CarList() {
 
   const handleDelete = async (id) => {
     if (!id) {
+      setOpen(false)
       toastError("Model ID bulunamadı!");
     } else {
       try {
@@ -85,8 +87,10 @@ export default function CarList() {
         toastSuccess("Model Başarıyla Silindi.");
         dispatch(fetchAllModelData());
       } catch (error) {
-        alert(error)
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllModelData());
+
       }
     }
   };
@@ -96,10 +100,6 @@ export default function CarList() {
       setOpen(false);
       toastError("Model name alanı boş bırakılamaz!");
     } else {
-
-      alert(id)
-
-
       const updatedData = {
         id: id,
         name: name,
@@ -107,21 +107,30 @@ export default function CarList() {
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/models/${id}`,
-          updatedData);
+        await axiosInstance.put(`api/v1/admin/models/${id}`, updatedData);
         toastSuccess("Model Başarıyla Güncellendi.");
         setOpen(false);
         dispatch(fetchAllModelData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-
-      };
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllModelData());
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllModelData());
+        }else{
+          toastError("Bilinmeyen hata")
+          dispatch(fetchAllModelData());
+        }
+    }
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      colorName: "",
+      name: "",
+      brandId: "",
     },
   });
 
@@ -199,8 +208,9 @@ export default function CarList() {
           </tr>
         </thead>
       </Table>
-
-      {stableSort(models, getComparator(order, "id")).map((item) => (
+      {status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(models, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -310,8 +320,8 @@ export default function CarList() {
             </Box>
           </ListItem>
           <ListDivider />
-        </List>
-      ))}
+          </List>
+      )))}
       <Modal
           aria-labelledby="modal-title"
           aria-describedby="modal-desc"

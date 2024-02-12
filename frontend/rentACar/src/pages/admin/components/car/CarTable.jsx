@@ -29,7 +29,7 @@ import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import getCarValidationSchema from "../../../../schemes/carScheme";
-import { toastSuccess } from "../../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
@@ -38,6 +38,7 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -98,7 +99,7 @@ export default function CarTable() {
     dispatch(fetchAllCarData());
     dispatch(fetchAllColorData());
     dispatch(fetchAllModelData());
-    dispatch(fetchAllBrandData()); // Ensure modelId is treated as string
+    dispatch(fetchAllBrandData());
   }, [dispatch]);
 
   const carValidationSchema = getCarValidationSchema();
@@ -112,7 +113,10 @@ export default function CarTable() {
         toastSuccess("Car Başarıyla Silindi.");
         dispatch(fetchAllCarData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false)
+        toastError("Önce bağlı veriler silinmeli!")
+        dispatch(fetchAllCarData())
+
       }
     }
   };
@@ -143,8 +147,17 @@ export default function CarTable() {
         setOpen(false);
         dispatch(fetchAllCarData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllCarData())
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllCarData())
+        }else{
+          toastError("Bilinmeyen hata")
+        }
+    }
     }
   };
 
@@ -186,8 +199,17 @@ export default function CarTable() {
         dispatch(fetchAllCarData());
         actions.resetForm();
       } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
-      }
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllCarData())
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+          dispatch(fetchAllCarData())
+        }else{
+          toastError("Bilinmeyen hata")
+        }
+    }
     },
   });
 
@@ -212,8 +234,18 @@ export default function CarTable() {
           size="md"
           onClick={() => {
             formik.resetForm();
-            //setCarName("");
             setId(null);
+            setKilometer(null);
+            setPlate(null);
+            setYear(null);
+            setDailyPrice(null);
+            setBrandId(null);
+            setModelId(null);
+            setColorId(null);
+            setFuelType(null);
+            setGearType(null);
+            setVehicleType(null);
+            setSeatType(null);
             setOpen(true);
             setIsEdit(false);
           }}
@@ -234,169 +266,185 @@ export default function CarTable() {
           minHeight: 0,
         }}
       >
-        <Table
-          aria-labelledby="tableTitle"
-          stickyHeader
-          hoverRow
-          sx={{
-            "--TableCell-headBackground":
-              "var(--joy-palette-background-level1)",
-            "--Table-headerUnderlineThickness": "1px",
-            "--TableRow-hoverBackground":
-              "var(--joy-palette-background-level1)",
-            "--TableCell-paddingY": "4px",
-            "--TableCell-paddingX": "8px",
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: "40px", padding: "12px 12px" }}>
-                <Link
-                  underline="none"
-                  color="primary"
-                  component="button"
-                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-                  fontWeight="lg"
-                  endDecorator={<ArrowDropDownIcon />}
-                  sx={{
-                    "& svg": {
-                      transition: "0.2s",
-                      transform:
-                        order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
-                    },
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
+          <Table
+            aria-labelledby="tableTitle"
+            stickyHeader
+            hoverRow
+            sx={{
+              "--TableCell-headBackground":
+                "var(--joy-palette-background-level1)",
+              "--Table-headerUnderlineThickness": "1px",
+              "--TableRow-hoverBackground":
+                "var(--joy-palette-background-level1)",
+              "--TableCell-paddingY": "4px",
+              "--TableCell-paddingX": "8px",
+            }}
+          >
+            <thead>
+              <tr>
+                <th style={{ width: "40px", padding: "12px 12px" }}>
+                  <Link
+                    underline="none"
+                    color="primary"
+                    component="button"
+                    onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                    fontWeight="lg"
+                    endDecorator={<ArrowDropDownIcon />}
+                    sx={{
+                      "& svg": {
+                        transition: "0.2s",
+                        transform:
+                          order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
+                      },
+                    }}
+                  >
+                    ID
+                  </Link>
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
                   }}
                 >
-                  ID
-                </Link>
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("brand")} | {t("model")}
-              </th>
+                  {t("brand")} | {t("model")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("year")} | {t("color")}
-              </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("year")} | {t("color")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("plate")}
-              </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("plate")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("dailyPriceCar")}
-              </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("dailyPriceCar")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {stableSort(items, getComparator(order, "id")).map((row) => (
-              <tr key={row.id}>
-                <td style={{ padding: "0px 12px" }}>
-                  <Typography level="body-xs">{row.id}</Typography>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">
-                    {row.modelId?.brandId?.name} | {row.modelId?.name}
-                  </Typography>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">
-                    {row.year} | {row.colorId.name}
-                  </Typography>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Chip color="primary" variant="solid">
-                    {row.plate}
-                  </Chip>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Chip color="success" variant="solid">
-                    {row.dailyPrice} ₺
-                  </Chip>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Dropdown>
-                    <MenuButton
-                      slots={{ root: IconButton }}
-                      slotProps={{
-                        root: {
-                          variant: "plain",
-                          color: "neutral",
-                          size: "sm",
-                        },
-                      }}
-                    >
-                      <MoreHorizRoundedIcon />
-                    </MenuButton>
-                    <Menu size="sm" sx={{ minWidth: 140 }}>
-                      <MenuItem
-                        onClick={() => {
-                          setId(row.id);
-                          setOpen(true);
-                          setIsEdit(true);
-                        }}
-                      >
-                        {t("edit")}
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem
-                        onClick={() => {
-                          setId(row.id);
-                          setCarName(
-                            row.modelId.brandId?.name +
-                              " | " +
-                              row.modelId?.name
-                          );
-                          setOpenDelete(true);
-                        }}
-                        color="danger"
-                      >
-                        {t("delete")}
-                      </MenuItem>
-                    </Menu>
-                  </Dropdown>
-                </td>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("actions")}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+
+            <tbody>
+              {stableSort(items, getComparator(order, "id")).map((row) => (
+                <tr key={row?.id}>
+                  <td style={{ padding: "0px 12px" }}>
+                    <Typography level="body-xs">{row?.id}</Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">
+                      {row?.modelId?.brandId?.name} | {row?.modelId?.name}
+                    </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">
+                      {row?.year} | {row?.colorId?.name}
+                    </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Chip color="primary" variant="solid">
+                      {row?.plate}
+                    </Chip>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Chip color="success" variant="solid">
+                      {row?.dailyPrice} ₺
+                    </Chip>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Dropdown>
+                      <MenuButton
+                        slots={{ root: IconButton }}
+                        slotProps={{
+                          root: {
+                            variant: "plain",
+                            color: "neutral",
+                            size: "sm",
+                          },
+                        }}
+                      >
+                        <MoreHorizRoundedIcon />
+                      </MenuButton>
+                      <Menu size="sm" sx={{ minWidth: 140 }}>
+                        <MenuItem
+                          onClick={() => {
+                            setId(row?.id);
+                            setKilometer(row?.kilometer);
+                            setPlate(row?.plate);
+                            setYear(row?.year);
+                            setDailyPrice(row?.dailyPrice);
+                            setBrandId(row?.modelId?.brandId?.id);
+                            setModelId(row?.modelId?.id);
+                            setColorId(row?.colorId?.id);
+                            setFuelType(row?.fuelType);
+                            setGearType(row?.gearType);
+                            setVehicleType(row?.vehicleType);
+                            setSeatType(row?.seatType);
+                            setOpen(true);
+                            setIsEdit(true);
+                          }}
+                        >
+                          {t("edit")}
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem
+                          onClick={() => {
+                            setId(row?.id);
+                            setCarName(
+                              row?.modelId?.brandId?.name +
+                                " | " +
+                                row?.modelId?.name
+                            );
+                            setOpenDelete(true);
+                          }}
+                          color="danger"
+                        >
+                          {t("delete")}
+                        </MenuItem>
+                      </Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"
@@ -405,6 +453,17 @@ export default function CarTable() {
           onClose={() => {
             formik.resetForm();
             setId(null);
+            setKilometer(null);
+            setPlate(null);
+            setYear(null);
+            setDailyPrice(null);
+            setBrandId(null);
+            setModelId(null);
+            setColorId(null);
+            setFuelType(null);
+            setGearType(null);
+            setVehicleType(null);
+            setSeatType(null);
             setOpen(false);
           }}
           sx={{
@@ -451,7 +510,7 @@ export default function CarTable() {
                         id="kilometer"
                         name="kilometer"
                         type="text"
-                        value={formik.values.kilometer}
+                        value={formik.values.kilometer || kilometer}
                         className={
                           formik.errors.kilometer &&
                           formik.touched.kilometer &&
@@ -481,7 +540,7 @@ export default function CarTable() {
                         id="plate"
                         name="plate"
                         type="text"
-                        value={formik.values.plate}
+                        value={formik.values.plate || plate}
                         className={
                           formik.errors.plate && formik.touched.plate && "error"
                         }
@@ -507,7 +566,7 @@ export default function CarTable() {
                         id="year"
                         name="year"
                         type="text"
-                        value={formik.values.year}
+                        value={formik.values.year || year}
                         className={
                           formik.errors.year && formik.touched.year && "error"
                         }
@@ -533,7 +592,7 @@ export default function CarTable() {
                         id="dailyPrice"
                         name="dailyPrice"
                         type="text"
-                        value={formik.values.dailyPrice}
+                        value={formik.values.dailyPrice || dailyPrice}
                         className={
                           formik.errors.dailyPrice &&
                           formik.touched.dailyPrice &&
@@ -561,7 +620,7 @@ export default function CarTable() {
                       <select
                         id="brand"
                         name="brandId"
-                        value={formik.values.brandId}
+                        value={formik.values.brandId || brandId}
                         onChange={(e) => {
                           const selectedBrandId = e.target.value;
                           setBrandId(selectedBrandId);
@@ -600,7 +659,7 @@ export default function CarTable() {
                       <select
                         id="model"
                         name="modelId"
-                        value={formik.values.modelId}
+                        value={formik.values.modelId || modelId}
                         onChange={(e) => setModelId(e.target.value)}
                         style={{
                           textAlign: "center",
@@ -635,7 +694,7 @@ export default function CarTable() {
                         id="color"
                         name="color"
                         type="text"
-                        value={formik.values.colorId}
+                        value={formik.values.colorId || colorId}
                         className={
                           formik.errors.colorId &&
                           formik.touched.colorId &&
@@ -658,7 +717,7 @@ export default function CarTable() {
                           width: "50%",
                         }}
                       >
-                        <option value="">{t("selectColor")}</option>
+                        <option value="null">{t("selectColor")}</option>
                         {colors.map((color) => {
                           const colorId = color.id;
                           return (
@@ -679,7 +738,7 @@ export default function CarTable() {
                       <select
                         id="fuelType"
                         name="fuelType"
-                        value={formik.values.fuelType}
+                        value={formik.values.fuelType || fuelType}
                         onChange={(e) => {
                           setFuelType(e.target.value);
                           formik.handleChange(e);
@@ -718,7 +777,7 @@ export default function CarTable() {
                         id="gearType"
                         name="gearType"
                         type="text"
-                        value={formik.values.gearType}
+                        value={formik.values.gearType || gearType}
                         className={
                           formik.errors.gearType &&
                           formik.touched.gearType &&
@@ -759,7 +818,7 @@ export default function CarTable() {
                         id="vehicleType"
                         name="vehicleType"
                         type="text"
-                        value={formik.values.vehicleType}
+                        value={formik.values.vehicleType || vehicleType}
                         className={
                           formik.errors.vehicleType &&
                           formik.touched.vehicleType &&
@@ -799,7 +858,7 @@ export default function CarTable() {
                         id="seatType"
                         name="seatType"
                         type="text"
-                        value={formik.values.seatType}
+                        value={formik.values.seatType || seatType}
                         className={
                           formik.errors.seatType &&
                           formik.touched.seatType &&

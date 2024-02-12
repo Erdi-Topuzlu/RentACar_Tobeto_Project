@@ -8,8 +8,10 @@ import {
   Button,
   FormGroup,
   FormFeedback,
+  Toast,
 } from "reactstrap";
 import "../styles/form.css";
+import { toastError, toastSuccess } from "../service/ToastifyService";
 import Helmet from "../components/Helmet";
 import getSignUpValidationSchema from "../schemes/signUpScheme";
 import { useFormik } from "formik";
@@ -64,6 +66,7 @@ const signUp = () => {
 
         navigate("/login");
         // window.location.reload();
+        toastSuccess("Kayıt başarılı.");
       } catch (error) {
         console.error("Kayıt hatası:", response.error.data);
       } finally {
