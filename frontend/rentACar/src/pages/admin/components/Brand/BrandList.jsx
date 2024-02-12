@@ -26,6 +26,7 @@ import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import Loading from "../../../../components/ui/Loading";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -62,7 +63,7 @@ export default function BrandList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands } = useSelector((state) => state.brandAllData);
+  const { brands, status, error } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -182,8 +183,9 @@ export default function BrandList() {
           </tr>
         </thead>
       </Table>
-
-      {stableSort(brands, getComparator(order, "id")).map((item) => (
+      {status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(brands, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -266,8 +268,8 @@ export default function BrandList() {
             </Box>
           </ListItem>
           <ListDivider />
-        </List>
-      ))}
+          </List>
+      )))}
       <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"

@@ -22,7 +22,7 @@ import { Link } from "@mui/joy";
 import { ReactSVG } from "react-svg";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { toastSuccess } from "../../../service/ToastifyService";
+import { toastError, toastSuccess } from "../../../service/ToastifyService";
 import { NavDropdown } from "react-bootstrap";
 
 function Toggler({ defaultExpanded = false, renderToggle, children }) {

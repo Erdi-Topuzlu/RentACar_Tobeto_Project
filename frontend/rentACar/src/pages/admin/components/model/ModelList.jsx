@@ -27,6 +27,7 @@ import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,7 +65,7 @@ export default function CarList() {
   const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { models } = useSelector((state) => state.modelAllData);
+  const { models, status, error } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
   const dispatch = useDispatch();
@@ -121,7 +122,8 @@ export default function CarList() {
 
   const formik = useFormik({
     initialValues: {
-      colorName: "",
+      name: "",
+      brandId: "",
     },
   });
 
@@ -199,8 +201,9 @@ export default function CarList() {
           </tr>
         </thead>
       </Table>
-
-      {stableSort(models, getComparator(order, "id")).map((item) => (
+      {status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(models, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -310,8 +313,8 @@ export default function CarList() {
             </Box>
           </ListItem>
           <ListDivider />
-        </List>
-      ))}
+          </List>
+      )))}
       <Modal
           aria-labelledby="modal-title"
           aria-describedby="modal-desc"
