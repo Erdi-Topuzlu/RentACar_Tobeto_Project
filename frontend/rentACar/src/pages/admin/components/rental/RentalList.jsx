@@ -146,6 +146,7 @@ export default function RentalList() {
     },
   });
 
+
   return (
     <Box sx={{ display: { xs: "block", sm: "none" } }}>
       <Table

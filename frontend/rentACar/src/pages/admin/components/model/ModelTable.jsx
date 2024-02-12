@@ -35,6 +35,7 @@ import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterce
 import ModelList from "./ModelList";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -73,7 +74,7 @@ export default function ModelTable() {
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const { models } = useSelector((state) => state.modelAllData);
+  const { models, status, error} = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
 
   const dispatch = useDispatch();
@@ -146,6 +147,7 @@ export default function ModelTable() {
       }
     },
   });
+
 
   return (
     <React.Fragment>
@@ -266,7 +268,8 @@ export default function ModelTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(models, getComparator(order, "id")).map((row) => (
+            {status === "LOADING" ? <p>Loading..</p> :
+            stableSort(models, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>

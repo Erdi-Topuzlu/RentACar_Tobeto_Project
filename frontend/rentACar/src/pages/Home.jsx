@@ -14,7 +14,6 @@ import Software from "../components/ui/Software";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllCarData from "../redux/actions/fetchAllCarData";
 import { useTranslation } from "react-i18next";
-import { AnimatedUTD } from "../components/ui/animation/animateDiv";
 import Loading from "../components/ui/Loading";
 import ErrorPage from "../components/ui/ErrorPage";
 

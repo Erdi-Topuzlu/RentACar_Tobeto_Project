@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Form, FormGroup, Input, FormFeedback, Button, Label } from "reactstrap";
+import { Container, Row, Col, Form, FormGroup, Input, Button } from "reactstrap";
 import Helmet from "../components/Helmet";
 import "../styles/form.css";
 import { useFormik } from "formik";
@@ -20,9 +19,7 @@ const ForgotPassword = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: (values,actions) => {
-      alert(JSON.stringify(values, null, 2));
       actions.resetForm();
-
     },
   });
 

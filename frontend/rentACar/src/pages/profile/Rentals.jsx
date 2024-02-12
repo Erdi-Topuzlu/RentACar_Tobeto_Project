@@ -19,23 +19,21 @@ useEffect(() => {
 
 console.log("kişisel rentals",rentalDetails)
 
-if (status === "LOADING") {
- return <Loading />;
-}
-if (status === "FAIL") {
- return <ErrorPage errorMessage={error} />;
-}
-  return (
-    <Accordion defaultActiveKey="0">
-       {rentalDetails.length > 0 ? 
-   [...rentalDetails].reverse().map((rental, i)=>(
-  
-  <Accordion.Item key={i} eventKey={i}> 
+
+        if (status === "LOADING") {
+        return <Loading />;
+           }
+        if (status === "FAIL") {
+        return <ErrorPage errorMessage={error} />;
+        }
+
+        return (
+        <Accordion defaultActiveKey="0">
+        {rentalDetails.length > 0 ? 
+        [...rentalDetails].reverse().map((rental, i)=>(
+        <Accordion.Item key={i} eventKey={i}> 
 
 
-
-      
-       
         <Accordion.Header><h5><span style={{fontWeight:"bold"}}>{rental.carId.modelId.brandId.name} {rental.carId.modelId.name}</span></h5></Accordion.Header>
         <Accordion.Body>
           <h3>Details & Invoice</h3>

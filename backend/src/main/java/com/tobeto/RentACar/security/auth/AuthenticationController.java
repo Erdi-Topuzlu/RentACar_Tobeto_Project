@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.security.auth;
 
+import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.security.services.LogoutService;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
@@ -21,9 +22,11 @@ import java.io.IOException;
 @Tag(name = "Authentication Controller", description = "Authentication Endpoints")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserBusinessRulesService userBusinessRulesService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterUserRequest request) {
+        userBusinessRulesService.checkIfByEmailExists(request.getEmail());
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
