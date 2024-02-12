@@ -18,16 +18,25 @@ import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import SliderList from "./SliderList";
-import { Grid } from "@mui/joy";
+import {
+  AspectRatio,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalDialog,
+} from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import getBrandValidationSchema from "../../../../schemes/brandScheme";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
+import Loading from "../../../../components/ui/Loading";
+import { motion } from "framer-motion";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,13 +69,11 @@ function stableSort(array, comparator) {
 export default function SliderTable() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState(false);
-  const [sliderTitle, setSliderTitle] = React.useState();
-  const [sliderDesc, setSliderDesc] = React.useState();
-  const [sliderBtn, setSliderBtn] = React.useState();
-  const [sliderImg, setSliderImg] = React.useState();  
+  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -79,6 +86,7 @@ export default function SliderTable() {
 
   const handleDelete = async (id) => {
     if (!id) {
+      setOpen(false);
       toastError("Brand ID bulunamadı!");
     } else {
       try {
@@ -86,7 +94,9 @@ export default function SliderTable() {
         toastSuccess("Brand Başarıyla Silindi.");
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false);
+        toastError("Silinirken bir hata oluştu!");
+        dispatch(fetchAllBrandData);
       }
     }
   };
@@ -107,29 +117,48 @@ export default function SliderTable() {
         setOpen(false);
         dispatch(fetchAllBrandData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        setOpen(false);
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllBrandData);
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+          toastError(JSON.stringify(error.response.data.message));
+          dispatch(fetchAllBrandData);
+        } else {
+          toastError("Bilinmeyen hata");
+          dispatch(fetchAllBrandData());
+        }
       }
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+      sliderName: "",
     },
     validationSchema: brandValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
-        name: values.brandName,
+        name: values.sliderName,
       };
       try {
         await axiosInstance.post("api/v1/admin/brands", data);
-
         toastSuccess("Brand Başarıyla Eklendi.");
         setOpen(false);
         dispatch(fetchAllBrandData());
         formik.resetForm();
       } catch (error) {
-        console.error("Kayıt hatası:", error.response.data);
+        setOpen(false);
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+          dispatch(fetchAllBrandData);
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+          toastError(JSON.stringify(error.response.data.message));
+          dispatch(fetchAllBrandData);
+        } else {
+          toastError("Bilinmeyen hata");
+          dispatch(fetchAllBrandData());
+        }
       }
     },
   });
@@ -148,7 +177,7 @@ export default function SliderTable() {
         }}
       >
         <Typography level="h2" component="h1">
-        {t("brands").toUpperCase()}
+          {t("slider").toUpperCase()}
         </Typography>
         <Button
           color="success"
@@ -177,40 +206,61 @@ export default function SliderTable() {
           minHeight: 0,
         }}
       >
-        <Table
-          aria-labelledby="tableTitle"
-          stickyHeader
-          hoverRow
-          sx={{
-            "--TableCell-headBackground":
-              "var(--joy-palette-background-level1)",
-            "--Table-headerUnderlineThickness": "1px",
-            "--TableRow-hoverBackground":
-              "var(--joy-palette-background-level1)",
-            "--TableCell-paddingY": "4px",
-            "--TableCell-paddingX": "8px",
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: "40px", padding: "12px 12px" }}>
-                <Link
-                  underline="none"
-                  color="primary"
-                  component="button"
-                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-                  fontWeight="lg"
-                  endDecorator={<ArrowDropDownIcon />}
-                  sx={{
-                    "& svg": {
-                      transition: "0.2s",
-                      transform:
-                        order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
-                    },
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
+          <Table
+            aria-labelledby="tableTitle"
+            stickyHeader
+            hoverRow
+            sx={{
+              "--TableCell-headBackground":
+                "var(--joy-palette-background-level1)",
+              "--Table-headerUnderlineThickness": "1px",
+              "--TableRow-hoverBackground":
+                "var(--joy-palette-background-level1)",
+              "--TableCell-paddingY": "4px",
+              "--TableCell-paddingX": "8px",
+            }}
+          >
+            <thead>
+              <tr>
+                <th style={{ width: "40px", padding: "12px 12px" }}>
+                  <Link
+                    underline="none"
+                    color="primary"
+                    component="button"
+                    onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                    fontWeight="lg"
+                    endDecorator={<ArrowDropDownIcon />}
+                    sx={{
+                      "& svg": {
+                        transition: "0.2s",
+                        transform:
+                          order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
+                      },
+                    }}
+                  >
+                    ID
+                  </Link>
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
                   }}
                 >
-                  ID
-                </Link>
+                  {t("Slider")}
+                </th>
+                <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("title")}
               </th>
               <th
                 style={{
@@ -219,17 +269,18 @@ export default function SliderTable() {
                   textAlign: "center",
                 }}
               >
-                {t("brandName")}
+                {t("desc")}
               </th>
-              {/* <th
+              <th
                 style={{
                   width: "auto",
                   padding: "12px 6px",
                   textAlign: "center",
                 }}
               >
-                Status
+                {t("btnLbl")}
               </th>
+              {/*
               <th
                 style={{
                   width: "auto",
@@ -239,49 +290,41 @@ export default function SliderTable() {
               >
                 Customer
               </th> */}
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {stableSort(brands, getComparator(order, "id")).map((row) => (
-              <tr key={row.id}>
-                <td style={{ padding: "0px 12px" }}>
-                  <Typography level="body-xs">{row.id}</Typography>
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.name}</Typography>
-                </td>
-                {/* <td style={{ textAlign: "center" }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.id]
-                    }
-                    color={
-                      {
-                        Paid: "success",
-                        Refunded: "neutral",
-                        Cancelled: "danger",
-                      }[row.id]
-                    }
-                  >
-                    {row.id}
-                  </Chip>
-                </td> */}
-                {/* <td style={{ textAlign: "center" }}>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("actions")}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {stableSort(brands, getComparator(order, "id")).map((row) => (
+                <tr key={row.id}>
+                  <td style={{ padding: "0px 12px" }}>
+                    <Typography level="body-xs">{row.id}</Typography>
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <img
+                      style={{ height: "100px", width: "200px" }}
+                      src={"https://placehold.co/600x400"}
+                    />
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">title1</Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">desc1</Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">btnLbl1</Typography>
+                  </td>
+                  {/* <td style={{ textAlign: "center" }}>
                   <div>
                     <Typography level="body-xs">{}</Typography>
                     <Typography level="body-xs">
@@ -289,49 +332,51 @@ export default function SliderTable() {
                     </Typography>
                   </div>
                 </td> */}
-                <td style={{ textAlign: "center" }}>
-                  <Dropdown>
-                    <MenuButton
-                      slots={{ root: IconButton }}
-                      slotProps={{
-                        root: {
-                          variant: "plain",
-                          color: "neutral",
-                          size: "sm",
-                        },
-                      }}
-                    >
-                      <MoreHorizRoundedIcon />
-                    </MenuButton>
-                    <Menu size="sm" sx={{ minWidth: 140 }}>
-                      <MenuItem
-                        onClick={() => {
-                          formik.resetForm();
-                          setId(row.id);
-                          setBrandName(row.name);
-                          setOpen(true);
-                          setIsEdit(true);
+                  <td style={{ textAlign: "center" }}>
+                    <Dropdown>
+                      <MenuButton
+                        slots={{ root: IconButton }}
+                        slotProps={{
+                          root: {
+                            variant: "plain",
+                            color: "neutral",
+                            size: "sm",
+                          },
                         }}
                       >
-                        {t("edit")}
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem
-                        onClick={() => {
-                          setId(row.id);
-                          handleDelete(row.id);
-                        }}
-                        color="danger"
-                      >
-                        {t("delete")}
-                      </MenuItem>
-                    </Menu>
-                  </Dropdown>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+                        <MoreHorizRoundedIcon />
+                      </MenuButton>
+                      <Menu size="sm" sx={{ minWidth: 140 }}>
+                        <MenuItem
+                          onClick={() => {
+                            formik.resetForm();
+                            setId(row.id);
+                            setBrandName(row.name);
+                            setOpen(true);
+                            setIsEdit(true);
+                          }}
+                        >
+                          {t("edit")}
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem
+                          onClick={() => {
+                            setId(row.id);
+                            setBrandName(row.name);
+                            setOpenDelete(true);
+                          }}
+                          color="danger"
+                        >
+                          {t("delete")}
+                        </MenuItem>
+                      </Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"
@@ -368,9 +413,7 @@ export default function SliderTable() {
               fontWeight="lg"
               mb={1}
             >
-              {
-                isEdit ? t("updateBrand"): t("addNewBrand")
-              }
+              {isEdit ? t("updateSlider") : t("addNewSlider")}
             </Typography>
             <hr />
             <Grid
@@ -382,16 +425,16 @@ export default function SliderTable() {
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
-                    <FormLabel>{t("brandName")}</FormLabel>
+                    <FormLabel>{t("sliderName")}</FormLabel>
                     <FormGroup className="">
                       <Input
-                        id="brandName"
-                        name="brandName"
+                        id="sliderName"
+                        name="sliderName"
                         type="text"
-                        value={formik.values.brandName || brandName}
+                        value={formik.values.sliderName || ""}
                         className={
-                          formik.errors.brandName &&
-                          formik.touched.brandName &&
+                          formik.errors.sliderName &&
+                          formik.touched.sliderName &&
                           "error"
                         }
                         onChange={(e) => {
@@ -401,9 +444,9 @@ export default function SliderTable() {
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
-                          formik.errors.brandName && formik.touched.brandName
-                            ? formik.errors.brandName
-                            : t("brandName")
+                          formik.errors.sliderName && formik.touched.sliderName
+                            ? formik.errors.sliderName
+                            : t("sliderName")
                         }
                         error={
                           formik.errors.brandName && formik.touched.brandName
@@ -435,6 +478,48 @@ export default function SliderTable() {
               </Grid>
             </Grid>
           </Sheet>
+        </Modal>
+        <Modal
+          open={openDelete}
+          onClose={() => {
+            setId(null);
+            setBrandName(null);
+            setOpenDelete(false);
+          }}
+          sx={{
+            zIndex: 11000,
+          }}
+        >
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}>{brandName}</p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+          </ModalDialog>
         </Modal>
       </Sheet>
       <SliderList />
