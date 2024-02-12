@@ -187,7 +187,10 @@ export default function ColorTable() {
           minHeight: 0,
         }}
       >
-        <Table
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
+          <Table
           aria-labelledby="tableTitle"
           stickyHeader
           hoverRow
@@ -261,8 +264,7 @@ export default function ColorTable() {
             </tr>
           </thead>
           <tbody>
-            {status === "LOADING" ? <p>Loading..</p> :
-            stableSort(colors, getComparator(order, "id")).map((row) => (
+            {stableSort(colors, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -341,8 +343,9 @@ export default function ColorTable() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"

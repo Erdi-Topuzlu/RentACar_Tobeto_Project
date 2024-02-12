@@ -193,6 +193,9 @@ export default function ModelTable() {
           minHeight: 0,
         }}
       >
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
         <Table
           aria-labelledby="tableTitle"
           stickyHeader
@@ -268,8 +271,7 @@ export default function ModelTable() {
             </tr>
           </thead>
           <tbody>
-            {status === "LOADING" ? <p>Loading..</p> :
-            stableSort(models, getComparator(order, "id")).map((row) => (
+            {stableSort(models, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -330,9 +332,10 @@ export default function ModelTable() {
                   </Dropdown>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+           ))}
+           </tbody>
+         </Table>
+       )}
 
         <Modal
           aria-labelledby="modal-title"
@@ -340,6 +343,8 @@ export default function ModelTable() {
           open={open}
           onClose={() => {
             formik.resetForm();
+            setName("");
+            setBrandId("");
             setId(null);
             setOpen(false);
           }}

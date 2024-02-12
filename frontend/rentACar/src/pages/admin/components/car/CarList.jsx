@@ -41,8 +41,8 @@ import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
 import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import Loading from "../../../../components/ui/Loading";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -153,7 +153,17 @@ export default function CarList() {
 
   const formik = useFormik({
     initialValues: {
-      colorName: "",
+      kilometer: kilometer || "",
+      plate: plate || "",
+      year: year || "",
+      dailyPrice: dailyPrice || "",
+      fuelType: fuelType || "",
+      gearType: gearType || "",
+      vehicleType: vehicleType || "",
+      seatType: seatType || "",
+      colorId: colorId || "",
+      modelId: modelId || "",
+      isAvailable: "",
     },
   });
 
@@ -213,8 +223,9 @@ export default function CarList() {
           </tr>
         </thead>
       </Table>
-
-      {stableSort(items, getComparator(order, "id")).map((item) => (
+      {status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(items, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -247,12 +258,9 @@ export default function CarList() {
                   {item.year} &bull; {item.colorId.name}
                 </Typography>
                 <Typography level="body-xs">
-                  <Chip
-                    color="primary"
-                    variant="solid"
-                  >
+                  <Chip color="primary" variant="solid">
                     {item.plate}
-                  </Chip>                  
+                  </Chip>
                 </Typography>
                 <Typography level="body-xs">{item.dailyPrice} ₺</Typography>
               </div>
@@ -275,7 +283,17 @@ export default function CarList() {
                   <MenuItem
                     onClick={() => {
                       setId(item.id);
-                      //setCarName(row.name);
+                      setKilometer(item?.kilometer);
+                      setPlate(item?.plate);
+                      setYear(item?.year);
+                      setDailyPrice(item?.dailyPrice);
+                      setBrandId(item?.modelId?.brandId?.id);
+                      setModelId(item?.modelId?.id);
+                      setColorId(item?.colorId?.id);
+                      setFuelType(item?.fuelType);
+                      setGearType(item?.gearType);
+                      setVehicleType(item?.vehicleType);
+                      setSeatType(item?.seatType);
                       setOpen(true);
                       setIsEdit(true);
                     }}
@@ -286,7 +304,9 @@ export default function CarList() {
                   <MenuItem
                     onClick={() => {
                       setId(item.id);
-                      setCarName(item.modelId.brandId?.name + " | " + item.modelId?.name);
+                      setCarName(
+                        item.modelId.brandId?.name + " | " + item.modelId?.name
+                      );
                       setOpenDelete(true);
                     }}
                     color="danger"
@@ -299,7 +319,7 @@ export default function CarList() {
           </ListItem>
           <ListDivider />
         </List>
-      ))}
+      )))}
       <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"
@@ -307,6 +327,17 @@ export default function CarList() {
         onClose={() => {
           formik.resetForm();
           setId(null);
+          setKilometer(null);
+          setPlate(null);
+          setYear(null);
+          setDailyPrice(null);
+          setBrandId(null);
+          setModelId(null);
+          setColorId(null);
+          setFuelType(null);
+          setGearType(null);
+          setVehicleType(null);
+          setSeatType(null);
           setOpen(false);
         }}
         sx={{
@@ -459,11 +490,11 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormGroup className="">
+                  <FormGroup className="d-flex gap-2">
                     <select
                       id="brand"
                       name="brandId"
-                      value={brandId}
+                      value={formik.values.brandId || brandId}
                       onChange={(e) => {
                         const selectedBrandId = e.target.value;
                         setBrandId(selectedBrandId);
@@ -502,9 +533,8 @@ export default function CarList() {
                     <select
                       id="model"
                       name="modelId"
-                      value={modelId}
+                      value={formik.values.modelId || modelId}
                       onChange={(e) => setModelId(e.target.value)}
-                      disabled={!brandId}
                       style={{
                         textAlign: "center",
                         appearance: "none",
@@ -516,6 +546,7 @@ export default function CarList() {
                         borderRadius: "10px",
                         width: "50%",
                       }}
+                      disabled={!brandId}
                     >
                       <option value="">{t("selectModel")}</option>
                       {models
@@ -537,7 +568,7 @@ export default function CarList() {
                       id="color"
                       name="color"
                       type="text"
-                      value={formik.values.colorId}
+                      value={formik.values.colorId || colorId}
                       className={
                         formik.errors.colorId &&
                         formik.touched.colorId &&
@@ -574,7 +605,10 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormGroup className="">
+                  {/* <FormLabel htmlFor="fuelType">
+                      {t("selectFuelAndGear")}
+                    </FormLabel> */}
+                  <FormGroup className="d-flex gap-2">
                     <select
                       id="fuelType"
                       name="fuelType"
@@ -583,12 +617,6 @@ export default function CarList() {
                         setFuelType(e.target.value);
                         formik.handleChange(e);
                       }}
-                      onBlur={formik.handleBlur}
-                      className={
-                        formik.errors.fuelType &&
-                        formik.touched.fuelType &&
-                        "error"
-                      }
                       style={{
                         textAlign: "center",
                         appearance: "none",
@@ -600,6 +628,12 @@ export default function CarList() {
                         borderRadius: "10px",
                         width: "50%",
                       }}
+                      onBlur={formik.handleBlur}
+                      className={
+                        formik.errors.fuelType &&
+                        formik.touched.fuelType &&
+                        "error"
+                      }
                     >
                       <option value="">{t("selectFuelType")}</option>
                       <option value="GASOLINE" key="1">
@@ -624,11 +658,9 @@ export default function CarList() {
                         "error"
                       }
                       onChange={(e) => {
-                        // Update the brandName state when the input changes
                         setGearType(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                        formik.handleChange(e);
                       }}
-                      onBlur={formik.handleBlur}
                       style={{
                         textAlign: "center",
                         appearance: "none",
@@ -640,6 +672,7 @@ export default function CarList() {
                         borderRadius: "10px",
                         width: "50%",
                       }}
+                      onBlur={formik.handleBlur}
                     >
                       <option value="">{t("selectGearType")}</option>
                       <option value="AUTOMATIC" key="1">
@@ -653,7 +686,8 @@ export default function CarList() {
                 </div>
 
                 <div>
-                  <FormGroup className="">
+                  {/* <FormLabel>{t("selectVehicleAndSeat")}</FormLabel> */}
+                  <FormGroup className="d-flex gap-2">
                     <select
                       id="vehicleType"
                       name="vehicleType"
@@ -669,7 +703,6 @@ export default function CarList() {
                         setVehicleType(e.target.value);
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
-                      onBlur={formik.handleBlur}
                       style={{
                         textAlign: "center",
                         appearance: "none",
@@ -681,6 +714,7 @@ export default function CarList() {
                         borderRadius: "10px",
                         width: "50%",
                       }}
+                      onBlur={formik.handleBlur}
                     >
                       <option value="">{t("selectVehicleType")}</option>
                       <option value="SUV" key="1">
@@ -705,11 +739,9 @@ export default function CarList() {
                         "error"
                       }
                       onChange={(e) => {
-                        // Update the brandName state when the input changes
                         setSeatType(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                        formik.handleChange(e);
                       }}
-                      onBlur={formik.handleBlur}
                       style={{
                         textAlign: "center",
                         appearance: "none",
@@ -721,6 +753,7 @@ export default function CarList() {
                         borderRadius: "10px",
                         width: "50%",
                       }}
+                      onBlur={formik.handleBlur}
                     >
                       <option value="">{t("selectSeatType")}</option>
                       <option value="TWO" key="1">
@@ -762,16 +795,18 @@ export default function CarList() {
           </Grid>
         </Sheet>
       </Modal>
-      <Modal open={openDelete}
+
+      <Modal
+        open={openDelete}
         onClose={() => {
-            setId(null);
-            setCarName(null);
-            setOpenDelete(false);
-          }}
-        sx={{
-          zIndex:11000,
+          setId(null);
+          setCarName(null);
+          setOpenDelete(false);
         }}
-        >
+        sx={{
+          zIndex: 11000,
+        }}
+      >
         <ModalDialog variant="outlined" role="alertdialog">
           <DialogTitle>
             <WarningRoundedIcon />
@@ -779,17 +814,26 @@ export default function CarList() {
           </DialogTitle>
           <Divider />
           <DialogContent>
-            <p style={{fontWeight:"bold"}}>{carName}</p>{t("deleteMessage")}
+            <p style={{ fontWeight: "bold" }}>{carName}</p>
+            {t("deleteMessage")}
           </DialogContent>
           <DialogActions>
-            <Button variant="solid" color="danger" onClick={() => {
-              handleDelete(id);
-              setOpenDelete(false)
-            }}>
+            <Button
+              variant="solid"
+              color="danger"
+              onClick={() => {
+                handleDelete(id);
+                setOpenDelete(false);
+              }}
+            >
               {t("delete")}
             </Button>
-            <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
-            {t("cancel")}
+            <Button
+              variant="plain"
+              color="neutral"
+              onClick={() => setOpenDelete(false)}
+            >
+              {t("cancel")}
             </Button>
           </DialogActions>
         </ModalDialog>

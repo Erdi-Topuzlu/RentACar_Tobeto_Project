@@ -38,6 +38,9 @@ import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
 import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
+import Loading from "../../../../components/ui/Loading";
+
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -197,9 +200,9 @@ export default function ColorList() {
             </th>
           </tr>
         </thead>
-      </Table>
-
-      {stableSort(colors, getComparator(order, "id")).map((item) => (
+      </Table>{status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(colors, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -307,8 +310,8 @@ export default function ColorList() {
             </Box>
           </ListItem>
           <ListDivider />
-        </List>
-      ))}
+          </List>
+      )))}
       <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"

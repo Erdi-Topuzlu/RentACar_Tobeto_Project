@@ -38,7 +38,7 @@ public class CarManager implements CarService {
     public void update(int id,UpdateCarRequest request) {
         //Business Rules
         carBusinessRulesService.checkIfByIdExists(request.getId());
-        carBusinessRulesService.checkIfPlateNameExists(request.getPlate());
+        //carBusinessRulesService.checkIfPlateNameExists(request.getPlate());
         carBusinessRulesService.checkIfColorIdExists(request.getColorId());
         carBusinessRulesService.checkIfModelIdExists(request.getModelId());
 

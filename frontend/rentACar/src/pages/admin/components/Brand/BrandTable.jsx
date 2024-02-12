@@ -198,6 +198,9 @@ export default function BrandTable() {
           minHeight: 0,
         }}
       >
+        {status === "LOADING" ? (
+        <Loading />
+      ) : (
         <Table
           aria-labelledby="tableTitle"
           stickyHeader
@@ -272,8 +275,7 @@ export default function BrandTable() {
             </tr>
           </thead>
           <tbody>
-            {status === "LOADING" ? <p>Loading..</p> :
-            stableSort(brands, getComparator(order, "id")).map((row) => (
+            {stableSort(brands, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
                 <td style={{ padding: "0px 12px" }}>
                   <Typography level="body-xs">{row.id}</Typography>
@@ -353,8 +355,9 @@ export default function BrandTable() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"
