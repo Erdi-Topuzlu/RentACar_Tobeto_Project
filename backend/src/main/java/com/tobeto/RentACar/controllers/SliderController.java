@@ -8,6 +8,7 @@ import com.tobeto.RentACar.services.dtos.responses.slider.GetAllSliderResponse;
 import com.tobeto.RentACar.services.dtos.responses.slider.GetByIdSliderResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,7 @@ public class SliderController {
 
     private final SliderService sliderService;
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<GetAllSliderResponse> getAll() {
         return sliderService.getAll();
     }
@@ -37,7 +38,7 @@ public class SliderController {
         return sliderService.delete(id);
     }
 
-    @PostMapping()
+    @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public void add(@RequestPart MultipartFile file, @RequestPart AddSliderRequest sliderRequest) {
         sliderService.addSliderPhoto(sliderRequest, file);
     }

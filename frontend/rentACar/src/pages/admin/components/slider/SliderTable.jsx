@@ -73,7 +73,9 @@ export default function SliderTable() {
   const [isEdit, setIsEdit] = React.useState(false);
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { sliders, status, error } = useSelector((state) => state.sliderAllData);
+  const { sliders, status, error } = useSelector(
+    (state) => state.sliderAllData
+  );
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState(null);
@@ -102,14 +104,27 @@ export default function SliderTable() {
   const handleImageChange = async (event) => {
     setOpen(false);
     const file = event.target.files[0];
-    const slider ={
-      title :"erdi",
-      description:"topuzlu",
-      buttonLabelName:"Erditpzl",
-    }
+    const slider = {
+      title: "halil",
+      description: "krkn",
+      buttonLabelName: "dsadasdad",
+    };
     const formData = new FormData();
     formData.append("file", file, file.name);
-    formData.append("sliderRequest", slider);
+    formData.append(
+      "sliderRequest",
+      new Blob([JSON.stringify(slider)], {
+        type: "application/json",
+      })
+    );
+
+    const { access_token } = localStorage.getItem("access_token");
+
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${access_token}`,
+    };
 
     if (file) {
       const reader = new FileReader();
@@ -122,18 +137,15 @@ export default function SliderTable() {
             "/api/v1/admin/slider",
             formData,
             {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
+              headers: headers,
             }
           );
 
           if (response.status === 200) {
             const updatedImageUrl = response.data;
             setSelectedImage(updatedImageUrl);
-            console.log(updatedImageUrl); 
+            console.log(updatedImageUrl);
           } else {
-           
           }
         } catch (error) {
           console.error(error);
@@ -144,7 +156,7 @@ export default function SliderTable() {
       toastSuccess("Uploaded Photo");
     }
   };
-  
+
   // const formik = useFormik({
   //   initialValues: {
   //     sliderTitle: "",
@@ -439,9 +451,8 @@ export default function SliderTable() {
               <Grid xs={12}>
                 <Form>
                   <div>
-                    
                     <FormGroup>
-                    <Button
+                      <Button
                         component="label"
                         role={undefined}
                         tabIndex={-1}
@@ -466,7 +477,12 @@ export default function SliderTable() {
                         }
                       >
                         Upload a Slide
-                        <VisuallyHiddenInput onChange={handleImageChange} type="file" accept="image/*" id="image-upload" />
+                        <VisuallyHiddenInput
+                          onChange={handleImageChange}
+                          type="file"
+                          accept="image/*"
+                          id="image-upload"
+                        />
                       </Button>
                     </FormGroup>
                     {/* <FormGroup className="">
