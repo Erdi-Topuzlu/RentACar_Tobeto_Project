@@ -42,6 +42,7 @@ import CarTable from "./pages/admin/components/car/CarTable.jsx";
 import RentalTable from "./pages/admin/components/rental/RentalTable.jsx";
 import ModelTable from "./pages/admin/components/model/ModelTable.jsx";
 import SliderTable from "./pages/admin/components/slider/SliderTable.jsx";
+import CarImagesTable from "./pages/admin/components/car-images/CarImagesTable.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -77,6 +78,7 @@ const router = createBrowserRouter(
           <Route path="brands" element={<BrandTable />} />
           <Route path="colors" element={<ColorTable/>} />
           <Route path="cars" element={<CarTable/>} />
+          <Route path="carImages" element={<CarImagesTable/>} />
           <Route path="rentals" element={<RentalTable/>} />
           <Route path="models" element={<ModelTable/>} />
         </Route>
