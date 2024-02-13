@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.rules.model;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.BrandRepository;
 import com.tobeto.RentACar.repositories.ModelRepository;
 import com.tobeto.RentACar.services.abstracts.BrandService;
@@ -16,21 +17,21 @@ public class ModelBusinessRulesManager implements ModelBusinessRulesService {
     @Override
     public void checkIfNameExists(String name) {
         if (modelRepository.existsByName(name)){
-            throw new BusinessException("Name already exists!");
+            throw new BusinessException(Messages.modelNameAlreadyExists);
         }
     }
 
     @Override
     public void checkIfBrandIdExists(int id) {
         if (!brandService.existsById(id)){
-            throw new BusinessException("BrandId is Not Found!");
+            throw new BusinessException(Messages.brandIdNotFound);
         }
     }
 
     @Override
     public void checkIfByIdExists(int id) {
         if (!modelRepository.existsById(id)) {
-            throw new BusinessException("Model Id  Not Found!");
+            throw new BusinessException(Messages.modelIdNotFound);
         }
     }
 }

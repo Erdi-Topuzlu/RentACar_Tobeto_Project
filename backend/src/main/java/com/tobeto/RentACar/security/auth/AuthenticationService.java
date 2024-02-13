@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.security.config.jwt.JwtService;
 import com.tobeto.RentACar.security.repository.TokenRepository;
 import com.tobeto.RentACar.security.services.token.Token;
@@ -123,7 +124,7 @@ public class AuthenticationService {
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith(bearer)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, Messages.unAuth);
             return;
         }
 
@@ -131,7 +132,7 @@ public class AuthenticationService {
         userEmail = jwtService.extractUsername(refreshToken);
 
         if (userEmail != null) {
-            var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found!"));
+            var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException(Messages.userNotFound));
 
             if (jwtService.isTokenValidate(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user, user);

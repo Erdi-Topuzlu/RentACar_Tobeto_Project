@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +36,7 @@ public class LogoutService implements LogoutHandler {
 
         String jwtToken = authHeader.substring(7);
 
-        var storedToken = tokenService.findByToken(jwtToken).orElseThrow(() -> new RuntimeException("Token not found"));
+        var storedToken = tokenService.findByToken(jwtToken).orElseThrow(() -> new RuntimeException(Messages.tokenNotFound));
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);

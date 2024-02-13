@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,7 +97,7 @@ public class CarImageManager implements CarImageService {
                     .path("/api/v1/carImage/" + fileName)
                     .toUriString();
         } catch (Exception e) {
-            throw new BusinessException("Unable to save Image");
+            throw new BusinessException(Messages.unableToSaveImg);
         }
     };
 }

@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.rules.user;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,14 @@ public class UserBusinessRulesManager implements UserBusinessRulesService {
     @Override
     public void checkIfByEmailExists(String email) {
         if (userRepository.existsByEmail(email)){
-            throw new BusinessException("E-mail Already Exist ! ");
+            throw new BusinessException(Messages.emailAlreadyExist);
         }
     }
 
     @Override
     public void checkIfByIdExists(int id) {
         if (!userRepository.existsById(id)) {
-            throw new BusinessException("User Id Not Found ! ");
+            throw new BusinessException(Messages.userIdNotFound);
 
         }
     }
