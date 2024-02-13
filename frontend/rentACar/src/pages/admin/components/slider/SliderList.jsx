@@ -11,22 +11,21 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListDivider from "@mui/joy/ListDivider";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
-import { Button, FormLabel, Grid, Modal, ModalClose, Sheet, Table } from "@mui/joy";
+import { Button, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, Modal, ModalClose, ModalDialog, Sheet, SvgIcon, Table, styled } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
-import getBrandValidationSchema from "../../../../schemes/brandScheme";
+import getSliderValidationSchema from "../../../../schemes/sliderScheme";
+import fetchAllSliderData from "../../../../redux/actions/admin/fetchAllSliderData";
+import Loading from "../../../../components/ui/Loading";
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -58,59 +57,58 @@ function stableSort(array, comparator) {
 export default function SliderList() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState(false);
-  const [brandName, setBrandName] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { brands, status, error } = useSelector((state) => state.brandAllData);
+  const { sliders, status, error } = useSelector(
+    (state) => state.sliderAllData
+  );
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const [eventFile, setEventFile] = React.useState(null);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const brandValidationSchema = getBrandValidationSchema();
+  const sliderValidationSchema = getSliderValidationSchema();
+
+  const VisuallyHiddenInput = styled("input")`
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    width: 1px;
+  `;
 
   React.useEffect(() => {
-    dispatch(fetchAllBrandData());
+    dispatch(fetchAllSliderData());
   }, [dispatch]);
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Brand ID bulunamadı!");
-    } else {
-      try {
-        await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-        toastSuccess("Brand Başarıyla Silindi.");
-        dispatch(fetchAllBrandData());
-      } catch (error) {
-        console.error("Kayıt hatası:", error);
-      }
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    if (!brandName) {
       setOpen(false);
-      toastError("Brand Name alanı boş bırakılamaz!");
+      toastError("Slider ID bulunamadı!");
     } else {
-      const data = {
-        id: id,
-        name: brandName,
-      };
-
       try {
-        await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
-        toastSuccess("Brand Başarıyla Güncellendi.");
-        setOpen(false);
-        dispatch(fetchAllBrandData());
+        await axiosInstance.delete(`api/v1/admin/slider/${id}`);
+        toastSuccess("Slider Başarıyla Silindi.");
+        dispatch(fetchAllSliderData());
+        setId(null);
       } catch (error) {
-        console.log(id);
-        console.error("Kayıt hatası:", error);
+        setOpen(false);
+        toastError("Bilinmeyen Hata");
+        dispatch(fetchAllSliderData());
       }
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+      sliderTitle: "",
+      sliderDesc: "",
+      sliderBtn: t("details"),
     },
   });
 
@@ -156,26 +154,9 @@ export default function SliderList() {
                 textAlign: "center",
               }}
             >
-              {t("brandName")}
+              {t("slider")}
             </th>
-            {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
+           
             <th
               style={{
                 width: "auto",
@@ -187,9 +168,9 @@ export default function SliderList() {
             </th>
           </tr>
         </thead>
-      </Table>
-
-      {stableSort(brands, getComparator(order, "id")).map((item) => (
+      </Table>{status === "LOADING" ? (
+          <Loading />
+        ) : (stableSort(sliders, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -211,193 +192,287 @@ export default function SliderList() {
                 <Avatar size="sm">{item.id}</Avatar>
               </ListItemDecorator>
               <div
+                style={{width:"100px"}}
+              >
+              <img
+                      style={{
+                        height: "100px",
+                        width: "100%",
+                        objectFit: "cover",
+                      }}
+                      src={item.imgPath}
+                    />
+                    </div>
+              <div
                 style={{
                   padding: "6px 60px",
                 }}
               >
                 <Typography fontWeight={600} gutterBottom>
-                  {item.name}
+                  {item.title}
                 </Typography>
-                {/* <Typography level="body-xs" gutterBottom>
-                  {item.customer.email}
-                </Typography> */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 0.5,
-                    mb: 1,
-                  }}
-                >
-                  {/* <Typography level="body-xs">{item.date}</Typography>
-                  <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{item.id}</Typography> */}
-                </Box>
+                <Typography level="body-xs" gutterBottom>
+                {item.description}
+              </Typography>
+              <Typography level="body-xs" gutterBottom>
+                {item.buttonLabelName}
+              </Typography>
               </div>
             </ListItemContent>
-            {/* <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Paid: <CheckRoundedIcon />,
-                  Refunded: <AutorenewRoundedIcon />,
-                  Cancelled: <BlockIcon />
-                }[item.status]
-              }
-              color={
-                {
-                  Paid: "success",
-                  Refunded: "neutral",
-                  Cancelled: "danger"
-                }[item.status]
-              }
-            >
-              {item.status}
-            </Chip> */}
+           
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: { variant: "plain", color: "neutral", size: "sm" },
-                  }}
-                >
-                  <MoreHorizRoundedIcon />
-                </MenuButton>
-                <Menu size="sm" sx={{ minWidth: 140 }}>
-                  <MenuItem
-                    onClick={() => {
-                      formik.resetForm();
-                      setId(item.id);
-                      setBrandName(item.name);
-                      setOpen(true);
-                      setIsEdit(true);
-                    }}
-                  >
-                    {t("edit")}
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      handleDelete(item.id);
-                    }}
-                    color="danger"
-                  >
-                    {t("delete")}
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
+            <IconButton
+                      onClick={() => {
+                        setId(item.id);
+                        setOpenDelete(true);
+                      }}
+                      variant="plain"
+                    >
+                      <DeleteOutlineRoundedIcon />
+                    </IconButton>
             </Box>
           </ListItem>
           <ListDivider />
-        </List>
-      ))}
+          </List>
+      )))}
+      
       <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setOpen(false);
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
-        }}
-      >
-        <Sheet
-          variant="outlined"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+          open={open}
+          onClose={() => {
+            setId(null);
+            setOpen(false);
+          }}
           sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10001,
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
+          <Sheet
+            variant="outlined"
+            sx={{
+              width: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "lg",
+            }}
           >
-            {
-                isEdit ? t("updateBrand"): t("addNewBrand")
-              }
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>{t("brandName")}</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="brandName"
-                      name="brandName"
-                      type="text"
-                      value={formik.values.brandName || brandName}
-                      className={
-                        formik.errors.brandName &&
-                        formik.touched.brandName &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the brandName state when the input changes
-                        setBrandName(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <Typography
+              textAlign={"center"}
+              component="h2"
+              id="modal-title"
+              level="h4"
+              textColor="inherit"
+              fontWeight="lg"
+              mb={1}
+            >
+              {isEdit ? t("updateSlider") : t("addNewSlider")}
+            </Typography>
+            <hr />
+            <Grid
+              textAlign={"center"}
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid xs={12}>
+                <Form onSubmit={formik.handleSubmit}>
+                  <div>
+                    <FormGroup>
+                      <FormLabel>{t("sliderTitle")}</FormLabel>
+                      <Input
+                        id="sliderTitle"
+                        name="sliderTitle"
+                        type="text"
+                        value={formik.values.sliderTitle}
+                        className={
+                          formik.errors.sliderTitle &&
+                          formik.touched.sliderTitle &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          formik.handleChange(e); 
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.sliderTitle &&
+                          formik.touched.sliderTitle
+                            ? formik.errors.sliderTitle
+                            : t("sliderTitle")
+                        }
+                        error={
+                          formik.errors.sliderTitle &&
+                          formik.touched.sliderTitle
+                        }
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>{t("sliderDesc")}</FormLabel>
+                      <Input
+                        id="sliderDesc"
+                        name="sliderDesc"
+                        type="text"
+                        value={formik.values.sliderDesc}
+                        className={
+                          formik.errors.sliderDesc &&
+                          formik.touched.sliderDesc &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.sliderDesc && formik.touched.sliderDesc
+                            ? formik.errors.sliderDesc
+                            : t("sliderDesc")
+                        }
+                        error={
+                          formik.errors.sliderDesc && formik.touched.sliderDesc
+                        }
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>{t("sliderBtnLbl")}</FormLabel>
+                      <Input
+                        id="sliderBtn"
+                        name="sliderBtn"
+                        type="text"
+                        value={formik.values.sliderBtn}
+                        className={
+                          formik.errors.sliderBtn &&
+                          formik.touched.sliderBtn &&
+                          "error"
+                        }
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                        }}
+                        onBlur={formik.handleBlur}
+                        placeholder={
+                          formik.errors.sliderBtn && formik.touched.sliderBtn
+                            ? formik.errors.sliderBtn
+                            : t("sliderBtn")
+                        }
+                        error={
+                          formik.errors.sliderBtn && formik.touched.sliderBtn
+                        }
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <p style={{ fontWeight: "600" }}>{t("sliderFile")}</p>
+                      <Button
+                        component="label"
+                        role={undefined}
+                        tabIndex={-1}
+                        variant="outlined"
+                        color="neutral"
+                        startDecorator={
+                          <SvgIcon>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                              />
+                            </svg>
+                          </SvgIcon>
+                        }
+                      >
+                        Upload a Slide
+                        <VisuallyHiddenInput
+                          onChange={(e) => {
+                            setEventFile(e.target.files[0]);
+                          }}
+                          type="file"
+                          accept="image/*"
+                          id="image-upload"
+                        />
+                      </Button>
+                    </FormGroup>
+                  </div>
+                  {id ? (
+                    <Button
+                      onClick={() => {
+                        handleUpdate(id);
                       }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.brandName && formik.touched.brandName
-                          ? formik.errors.brandName
-                          : t("brandName")
-                      }
-                      error={
-                        formik.errors.brandName && formik.touched.brandName
-                      }
-                    />
-                  </FormGroup>
-                </div>
-                {id ? (
-                  <Button
-                    onClick={() => {
-                      handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
+                      className=" form__btn"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                    >
+                      {t("update")}
+                    </Button>
+                  ) : (
+                    <Button
+                      className=" form__btn"
+                      type="submit"
+                      style={{ backgroundColor: "#673ab7", color: "white" }}
+                      disabled={formik.isSubmitting}
+                    >
+                      {t("add")}
+                    </Button>
+                  )}
+                </Form>
+              </Grid>
             </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+          </Sheet>
+        </Modal>
+
+        <Modal
+          open={openDelete}
+          onClose={() => {
+            setId(null);
+            //setBrandName(null);
+            setOpenDelete(false);
+          }}
+          sx={{
+            zIndex: 11000,
+          }}
+        >
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              {t("confirmation")}
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              <p style={{ fontWeight: "bold" }}></p>
+              {t("deleteMessage")}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
+                {t("cancel")}
+              </Button>
+            </DialogActions>
+            </ModalDialog>
+        </Modal>
+
     </Box>
   );
 }
