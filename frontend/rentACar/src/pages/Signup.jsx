@@ -66,9 +66,9 @@ const signUp = () => {
 
         navigate("/login");
         // window.location.reload();
-        toastSuccess("Kayıt başarılı.");
+        toastSuccess(t("successRegistration"));
       } catch (error) {
-        console.error("Kayıt hatası:", response.error.data);
+        console.error(t("registrationError"), response.error.data);
       } finally {
         actions.setSubmitting(false);
       }

@@ -101,7 +101,7 @@ const Contact = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         type="text"
-                        placeholder="E-mail"
+                        placeholder={t("email")}
                         invalid={formik.errors.email && formik.touched.email}
                       />
                       {formik.errors.email && formik.touched.email && (
@@ -167,7 +167,7 @@ const Contact = () => {
                   </div>
 
                   <div className=" d-flex align-items-center gap-2">
-                    <h6 className="mb-0 fs-6">Email : </h6>
+                    <h6 className="mb-0 fs-6">{t("email")} </h6>
                     <p className="section__description mb-0">pair1@gmail.com</p>
                   </div>
 

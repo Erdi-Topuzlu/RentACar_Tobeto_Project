@@ -115,7 +115,7 @@ const FindCarResult = () => {
             <Col lg="12" className="mb-5 text-center">
               {filteredItems.length > 0 && (
                 <Container>
-                  <h4 className="section__title">{t('filter')}</h4>
+                  <h4 className="section__title">{t("filter")}</h4>
                   <hr />
                   <Row className="mt-4">
                     <Col lg="4" md="4" sm="6" className="mb-3">
@@ -200,13 +200,13 @@ const FindCarResult = () => {
             {filteredItems.length === 0 ? (
               <Paper>
                 <Col lg="12" className="text-center p-4">
-                  <h4>{t("Üzgünüz, şu anda bu marka/model'e ait uygun bir kiralama opsiyonu yoktur ")}</h4>
+                  <h4>{t("noAvailableRentOption")}</h4>
                   <Link to={"/home"}>
                     <button
                       style={{ color: "white" }}
                       className=" w-50 car__item-btn car__btn-details link mt-4"
                     >
-                      {t("Aramaya geri dön")}
+                      {t("keepSearch")}
                     </button>
                   </Link>
                 </Col>

@@ -16,7 +16,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
         t("miniDesc"),
         t("miniPackage"),
       ],
-      buttonLabel: "Add Package",
+      buttonLabel: t("addPackage"),
       outline: false,
     },
     {
@@ -29,7 +29,7 @@ const Extras = ({ steps, activeStep, setActiveStep }) => {
         t("supplementary"),
         t("personalAccident"),
       ],
-      buttonLabel: "Add Package",
+      buttonLabel: t("addPackage"),
       outline: false,
     },
   ];

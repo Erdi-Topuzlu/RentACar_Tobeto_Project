@@ -12,13 +12,13 @@ const RedirectLogin = () => {
         <Col lg="12" md="12">
           <AnimatedUTD direction="up">
             <div className="contact__info text-center mt-4 p-4">
-              <h3 className="fw-bold mb-4">To rent this car</h3>
+              <h3 className="fw-bold mb-4">{t("rentThisCar")}</h3>
               <Link to={`/login`}>
                 <button
                   style={{ color: "white" }}
                   className=" w-25 car__item-btn car__btn-rent link"
                 >
-                  Login
+                  {t("login")}
                 </button>
               </Link>
               <span className="m-4"></span>
@@ -27,7 +27,7 @@ const RedirectLogin = () => {
                   style={{ color: "white" }}
                   className=" w-25 car__item-btn car__btn-details"
                 >
-                  Sign up
+                  {t("signup")}
                 </button>
               </Link>
 

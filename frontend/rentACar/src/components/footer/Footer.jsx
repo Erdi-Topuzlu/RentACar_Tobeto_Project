@@ -51,7 +51,7 @@ function Footer() {
               </h1>
             </div>
             <p className="footer__logo-content">
-            "Every Journey with Pair-1, a Safe and Joyful Adventure!"
+            {t("pair1Slogan")}
             </p>
           </Col>
 
@@ -85,7 +85,7 @@ function Footer() {
               <h5 className="footer__link-title">{t("news")}</h5>
               <p className="footer__logo-content" color="#ffffff">{t("subscribe")}</p>
               <div className="newsletter">
-                <input type="email" placeholder="Email" />
+                <input type="email" placeholder={t("email")} />
                 <span>
                   <i className="ri-send-plane-line"></i>
                 </span>

@@ -2,19 +2,23 @@ import React from "react";
 import masterCard from "../../assets/all-images/master-card.jpg";
 import paypal from "../../assets/all-images/paypal.jpg";
 import "../../styles/payment-method.css";
+import { useTranslation } from "react-i18next";
+
+
 
 const PaymentMethod = () => {
+  const { t } = useTranslation();
   return (
     <>
       <div className="payment">
         <label htmlFor="" className="d-flex align-items-center gap-2">
-          <input type="radio" /> Direct Bank Transfer
+          <input type="radio" /> {t("paymentDirect")}
         </label>
       </div>
 
       <div className="payment mt-3">
         <label htmlFor="" className="d-flex align-items-center gap-2">
-          <input type="radio" /> Cheque Payment
+          <input type="radio" /> {t("paymentCheque")}
         </label>
       </div>
 
@@ -35,7 +39,7 @@ const PaymentMethod = () => {
         <img src={paypal} alt="" />
       </div>
       <div className="payment text-end mt-5">
-        <button>Reserve Now</button>
+        <button>{t("reserveNow")}</button>
       </div>
     </>
   );

@@ -76,10 +76,10 @@ export default function Sidebar() {
       if (response.ok) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        toastSuccess("Çıkış işlemi başarılı.");
+        toastSuccess(t("logoutSuccess"));
         navigate("/home");
       } else {
-        toastError("Çıkış işlemi başarısız.");
+        toastError(t("logoutFailed"));
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setShowUi(true);
@@ -87,7 +87,7 @@ export default function Sidebar() {
         //navigate("/login");
       }
     } catch (error) {
-      console.error("Çıkış işlemi sırasında bir hata oluştu:", error);
+      console.error(t("logoutFailed"), error);
     }
   };
 
@@ -251,7 +251,7 @@ export default function Sidebar() {
                       src={`/src/assets/icons/images-mini.svg`}
                     />
                   <ListItemContent>
-                    <Typography level="title-sm">Images</Typography>
+                    <Typography level="title-sm">{t("images")}</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? "rotate(180deg)" : "none" }}
@@ -272,7 +272,7 @@ export default function Sidebar() {
                     >
                       <ListItemContent>
                         <Typography level="title-sm">
-                          {t("carImages")}
+                          {t("carImg")}
                         </Typography>
                       </ListItemContent>
                     </Link>

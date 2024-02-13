@@ -79,15 +79,15 @@ export default function ColorTable() {
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Color ID bulunamadı!");
+      toastError(t("colorIdNotFound"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/colors/${id}`);
-        toastSuccess("Color Başarıyla Silindi.");
+        toastSuccess(t("colorSuccessDelete"));
         dispatch(fetchAllColorData());
       } catch (error) {
         setOpen(false)
-        toastError("Önce bağlı veriler silinmeli!")
+        toastError(t("connectedDataDelete"))
         dispatch(fetchAllColorData)
       }
     }
@@ -96,7 +96,7 @@ export default function ColorTable() {
   const handleUpdate = async (id) => {
     if (!colorName) {
       setOpen(false);
-      toastError("Color Name alanı boş bırakılamaz!");
+      toastError(t("schemeColorName"));
     } else {
 
       const data = {
@@ -107,7 +107,7 @@ export default function ColorTable() {
       try {
         await axiosInstance.put(`api/v1/admin/colors/${id}`,
           data);
-        toastSuccess("Color Başarıyla Güncellendi.");
+        toastSuccess(t("colorSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllColorData());
       }catch (error) {
@@ -119,7 +119,7 @@ export default function ColorTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllColorData());
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
           dispatch(fetchAllColorData());
         }
     }
@@ -141,7 +141,7 @@ export default function ColorTable() {
 
       try {
         await axiosInstance.post("api/v1/admin/colors", data);
-        toastSuccess("Color Başarıyla Eklendi.");
+        toastSuccess(t("colorSuccessAdded"));
         setOpen(false);
         dispatch(fetchAllColorData());
         formik.resetForm();
@@ -154,7 +154,7 @@ export default function ColorTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllColorData)
         }else{
-          alert("Bilinmeyen hata")
+          alert(t("unknownError"))
           dispatch(fetchAllColorData)
         }
     }}

@@ -22,6 +22,7 @@
   "contact": "Contact",
   "search": "Search",
   "reset":"Reset Password",
+  "user":"User",
 
   "_footer": "FOOTER-EN",
   "privacy": "Privacy Policy",
@@ -83,7 +84,10 @@
   "pickupDesc": "Enhance the flexibility of your journey with our car rental project's multiple pick-up points service. Whether for business or leisure, pick up your vehicle from the location most convenient for you. Increase the convenience of your plans; reserve your car now and enjoy the freedom!",
   "airport": "Airport Transfer",
   "airportDesc": "Enhance your journey with our airport transfer service. Reach your desired destination directly from the airport with our modern vehicles and professional drivers. Make a reservation now for a seamless start and enjoy your travel to the fullest!",
-
+  "pair1Slogan":"Every Journey with Pair-1, a Safe and Joyful Adventure!",
+  "noAvailableRentOption":"Sorry, there are currently no available rental options for this brand/model",
+  "keepSearch":"Keep searching",
+  
   "_hotOffers": "HOT OFFERS-EN",
   "comeWith": "Come With",
   "hotOffers": "Hot Offers",
@@ -132,6 +136,7 @@
   "seatType":"Capacity  : ",
   "vehicleType":"Vehicle Type : ",
   "filter":"Filter",
+  "filterStatus":"Filter by status",
 
   "_formInputs":"Booking FORM INPUTS-EN",
   "bookingInfo": "Booking Information",
@@ -150,6 +155,8 @@
   "dropoffAddress":"Drop-off Address",
   "startDate":"Start Date",
   "endDate":"End Date",
+
+  "detailandinvoice":"Details & Invoice",
 
   "_Schemes":"Schemes-EN",
   "schemeName":"Name is required",
@@ -171,6 +178,7 @@
   "cardFullName":"Full Name",
   "cardMonthandYear":"MM/YY",
   "schemeCardNumber":"Card Number is required",
+  "schemeCardName":"Card name is required",
   "schemeInvalidCardNumber":"Invalid Card Number format",
   "schemeExpiry":"Expiry Date is required",
   "schemeCvv":"CVC is required",
@@ -193,19 +201,35 @@
   "schemeBrandName":"Brand Name is required",
   "brandName":"Brand Name",
 
+  "schemeModelName":"Model Name is required",
+
+  "schemeCarKilometer":"Car kilometer is required",
+  "schemeCarPlate":"Please enter license plate in valid format",
+  "schemeCarYear":"Please enter valid year",
+  "schemeCarDailyPrice":"Daily price is required",
+  "schemeCarFuelType":"Select fuel type",
+  "schemeCarGearType":"Select gear type",
+  "schemeCarVehicleType":"Select vehicle type",
+  "schemeCarSeatType":"Select seat type",
+
+
+
+
   "schemeIdentifyNumber":"Identify Number is required",
   "schemeMin11Char":"Identify Number must have 11 digits",
   "schemeUserName":"Username is required",
   "schemeMin5Char":"Username must have at least 5 characters",
   "identifyNumber":"Identify Number",
+  "identifyNumberMust":"Identify Number (11 Character)",
   "userName":"Username",
+  "customerName":"Customer Full Name",
   
   "schemeColorName":"Color Name is required",
 
   "_packages":"Packages-EN",
+  "freePackage":"Free Package",
   "miniPackage":"Super Mini Coverage",
   "miniDesc":"Wheel, Windscreen, Headlight & Taillight and Side Mirror Coverage",
-
   "mediumPackage":"Medium Coverage",
   "supplementary":"Supplementary Liability Coverage",
   "personalAccident":"Personal Accident Assurance",
@@ -220,9 +244,13 @@
   "rentalDays":"Rental Dates : ",
   "days":"Days",
   "totalAmount":"Total Amount : ",
+  "totalAmount2":"Total Amount",
 
   
   "completedRental":"Your rental process has been completed successfully",
+  "previousRentalNotFound":"No previous rental information found!",
+  "terminateRental":"Are you sure you want to terminate the rental?",
+  "endedRental":"Rental terminated",
   "myRentals":"My Rentals",
   "month":"Mo",
 
@@ -233,6 +261,11 @@
   "personalInfoDesc":"Customize your profile information",
   "save":"Save",
   "cancel":"Cancel",
+  "error":"Error",
+  "unknownError":"Unknown Error",
+  "registrationError":"Registration error",
+  "loading":"Loading",
+  "confirm2":"Confirm",
 
   "_changePassword":"Change Password - EN",
   "changePassword":"Change Password",
@@ -240,6 +273,10 @@
   "oldPassword":"Old Password",
   "newPassword":"New Password",
   "newConfirmPassword":"New Confirm Password",
+  "passwordUpdated":"Password successfully updated.",
+  "correctPassword":"Please make sure that you have entered your password correctly.",
+  "updateError":"Update error",
+  "updateSuccess":"Update Process Successful.",
 
   "dashboard":"Dashboard",
   "slider":"Slider",
@@ -247,6 +284,8 @@
   "models":"Models",
   "colors":"Colors",
   "rentals":"Rentals",
+  "images":"Images",
+  "carImg":"Car Images",
   "pair-1":"Pair-1 Rental",
   "rentalOwner":"Rental Owner",
   "totalPrice":"Total Price",
@@ -256,9 +295,16 @@
   "selectCar":"Select a Car",
   "selectUser":"Select a User",
   "selectExtra":"Select a Extra",
+  "rentThisCar":"Rent this car!",
+  "rentPerDay":"For Rent $70 Per Day",
+  "discount":"Reserve Now and Get 50% Off",
+  "pair1RentService":"Pair-1 Rental Service -",
+  "endedRental2":"End the Rental",
+  
   
   "brand":"Brand",
   "model":"Model",
+  
 
   "add":"Add",
   "update":"Update",
@@ -266,19 +312,56 @@
   "delete":"Delete",
   "actions":"Actions",
   "addNew":"Add New",
+  "action":"Action",
+
+  "addPackage":"Add Package",
 
   "addNewBrand":"Add New Brand",
   "updateBrand":"Update to Brand",
+  "notFoundBrandId":"Brand Id not found",
+  "brandSuccessDelete":"Brand successfully deleted",
+  "brandSuccessUpdate":"Brand succesfully updated",
+  "brandSuccessAdded":"Brand successfully added",
+  "connectedDataDelete":"Connected data must be deleted first!",
 
   "modelName":"Model Name",
   "addNewModel":"Add New Model",
   "updateModel":"Update to Model",
   "selectBrand":"Select a Brand",
+  "modelIdNotFound":"Model Id not found",
+  "modelSuccessDelete":"Model successfully deleted",
+  "modelSuccessUpdate":"Model successfully updated",
+  "modelSuccessAdded":"Model successfully added",
 
   "colorName":"Color Name",
-  "color":"Color",
+  "color":"Color",  
   "addNewColor":"Add New Color",
   "updateColor":"Update to Color",
+  "colorIdNotFound":"Color Id not found",
+  "colorSuccessDelete":"Color successfully deleted",
+  "colorSuccessUpdate":"Color successfully updated",
+  "colorSuccessAdded":"Color successfully added",
+
+  "updatedPhoto":"Updated Photo",
+  "uploadedPhoto":"Uploaded Photo",
+  "updatedSlider":"Slider updated",
+  "addNewSlider":"Add new slider",
+  "uploadSlider":"Upload Slider",
+  "title":"Title",
+  "desc":"Description",
+
+
+  "carIdNotFound":"CarId not found",
+  "carSuccessDelete":"Car successfully deleted",
+  "carSuccessUpdate":"Car successfully updated",
+  "carSuccessAdded":"Car successfully added",
+
+  "rentalIdNotFound":"RentalId not found",
+  "rentalSuccessDelete":"Rental successfully deleted",
+  "rentalSeuccessUpdate":"Rental successfully updated",
+  "rentalSuccessAdded":"Rental successfully added",
+
+
 
   "addNewCar":"Add New Car",
   "updateCar":"Update to Car",
@@ -302,6 +385,21 @@
   "selectSeatType":"Select a Seat Type",
   
   "confirmation":"Confirmation",
-  "deleteMessage":"Are you sure you want to delete?"  
+  "deleteMessage":"Are you sure you want to delete?",
+
+  "logoutSuccess":"Logout is successful!",
+  "logoutFailed":"Logout is failed",
+
+  "paymentDirect":"Direct Bank Transfer",
+  "paymentCheque":"Cheque Payment",
+
+  "reserveNow":"Reserve Now!",
+
+  "noSuitableCar":"No suitable vehicle was found!",
+
+  "successRegistration":"Registration was successful.",
+
+  "noRefreshToken":"No refresh token."
+
 
 }

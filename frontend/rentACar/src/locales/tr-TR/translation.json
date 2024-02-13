@@ -21,6 +21,7 @@
   "contact": "İletişim",
   "search": "Ara",
   "reset": "Şifreyi Sıfırla",
+  "user":"Kullanıcı",
 
   "_footer": "FOOTER-TR",
   "privacy": "Gizlilik Politikası",
@@ -82,7 +83,10 @@
   "pickupDesc": "Araç kiralama projemizde sunulan birden fazla teslim alma noktası hizmeti ile seyahatinizi daha esnek ve pratik hale getirin. İster iş ister tatil için olsun, size en uygun olan noktadan aracınızı teslim alın. Planlarınıza uygunluğu artırın, aracınızı şimdi rezerve edin ve özgürlüğün keyfini çıkarın!",
   "airport": "Havaalanı Transferiyle Konforlu Yolculuklar!",
   "airportDesc": "Havaalanı transfer servisimiz ile seyahatinize konfor katın. Modern araçlarımız ve profesyonel sürücülerimizle havaalanından direkt olarak istediğiniz noktaya ulaşın. Sorunsuz bir başlangıç için şimdi rezervasyon yapın ve seyahatinizin keyfini çıkarın!",
-
+  "pair1Slogan":"Pair-1'le yapılan her yolculuk, güvenilir ve eğlencelir bir macera!",
+  "noAvailableRentOption":"Üzgünüz, şu anda bu marka/model'e ait uygun bir kiralama opsiyonu yoktur",
+  "keepSearch":"Aramaya devam edin",
+  
   "_hotOffers": "HOT OFFERS-TR",
   "comeWith": "Size Özel",
   "hotOffers": "Teklifler",
@@ -131,6 +135,7 @@
   "seatType":"Koltuk : ",
   "vehicleType":"Araç Tipi : ",
   "filter":"Filtre",
+  "filterStatus":"Duruma göre filtrele",
 
   "_formInputs":"Booking FORM INPUTS-TR",
   "bookingInfo": "Kiralama Bilgileri",
@@ -152,6 +157,7 @@
   "dropoffAddress":"Teslimat Adresi",
   "startDate":"Başlangıç Tarihi",
   "endDate":"Bitiş Tarihi",
+  "detailandinvoice":"Detaylar & Fatura",
 
   "_Schemes":"Schemes-TR",
   "schemeName":"İsim gereklidir",
@@ -173,6 +179,7 @@
   "cardFullName":"Ad Soyad",
   "cardMonthandYear":"AA/YY",
   "schemeCardNumber":"Kart Numarası gereklidir",  
+  "schemeCardName":"Kart ismi gereklidir",
   "schemeInvalidCardNumber":"Geçersiz Kart Numarası",
   "schemeExpiry":"Son kullanma tarihi gereklidir",
   "schemeCvv":"CVC gereklidir",
@@ -195,19 +202,32 @@
   "schemeBrandName":"Marka ismi gereklidir",
   "brandName":"Marka İsmi",
 
+  "schemeModelName":"Model ismi gereklidir",
+
+  "schemeCarKilometer":"Araç kilometresi gereklidir",
+  "schemeCarPlate":"Lütfen geçerli formatta plaka giriniz",
+  "schemeCarYear":"Lütfen geçerli yıl giriniz",
+  "schemeCarDailyPrice":"Günlük ücret gereklidir",
+  "schemeCarFuelType":"Yakıt türünü seçiniz",
+  "schemeCarGearType":"Vites türünü seçiniz",
+  "schemeCarVehicleType":"Araç türünü seçiniz",
+  "schemeCarSeatType":"Koltuk sayısını seçiniz",
+
   "schemeIdentifyNumber":"Kimlik Numarası gereklidir",
   "schemeMin11Char":"Kimlik Numarası 11 basamaklı olmalıdır",
   "schemeUserName":"Kullanıcı Adı gereklidir",
   "schemeMin5Char":"Kullanıcı Adı en az 5 karakter olmalıdır",
   "identifyNumber":"Kimlik Numarası",
+  "identifyNumberMust":"Kimlik Numarası (11 Karakter)",
   "userName":"Kullanıcı Adı",
+  "customerName":"Müşterinin Adı Soyadı",
 
   "schemeColorName":"Renk İsmi gereklidir",
 
   "_packages":"Packages-TR",
+  "freePackage":"Ücretsiz Paket",
   "miniPackage":"Süper Mini Kapsamlı",
   "miniDesc":"Tekerlek, Ön Cam, Far ve Arka Lamba ve Yan Ayna Kapsamı",
-
   "mediumPackage":"Orta Kapsamlı",
   "supplementary":"Tamamlayıcı Sorumluluk Teminatı",
   "personalAccident":"Ferdi Kaza Güvencesi",
@@ -222,8 +242,12 @@
   "rentalDays":"Kiralama Tarihleri : ",
   "days":"Gün",
   "totalAmount":"Toplam Tutar : ",
+  "totalAmount2":"Toplam Tutar",
 
   "completedRental":"Kiralama İşleminiz Başarıyla Tamamlanmıştır",
+  "endedRental":"Kiralama işlemi sonlandırıldı",
+  "previousRentalNotFound":"Geçmiş kiralama bilgisi bulunamadı!",
+  "terminateRental":"Araç kiralamayı sonlandırmak istediğinize emin misiniz?",
   "myRentals":"Kiramalarım",
   "month":"Ay",
 
@@ -234,6 +258,11 @@
   "personalInfoDesc":"Kişisel bilgilerinizi özelleştirin",
   "save":"Kaydet",
   "cancel":"Vazgeç",
+  "error":"Hata",
+  "unknownError":"Bilinmeyen Hata",
+  "registrationError":"Kayıt hatası",
+  "loading":"Yükleniyor",
+  "confirm2":"Onayla",
 
   "_changePassword":"Change Password - TR",
   "changePassword":"Şifre Değiştir",
@@ -241,6 +270,10 @@
   "oldPassword":"Eski Şifre",
   "newPassword":"Yeni Şifre",
   "newConfirmPassword":"Yeni Şifre Onayı",
+  "passwordUpdated":"Şifre başarılı bir şekilde güncellendi.",
+  "correctPassword":"Lütfen şifrenizi doğru girdiğinizden emin olun.",
+  "updateError":"Güncelleme hatası",
+  "updateSuccess":"Güncelleme İşlemi Başarılı.",
 
   "dashboard":"Kontrol Paneli",
   "slider":"Slider",
@@ -248,6 +281,8 @@
   "models":"Modeller",
   "colors":"Renkler",
   "rentals":"Kiralamalar",
+  "images":"Fotoğraflar",
+  "carImg":"Araç Fotoğrafları",
   "pair-1":"Pair-1 Kiralama",
   "rentalOwner":"Kiralayan Kişi",
   "totalPrice":"Toplam Ücret",
@@ -257,6 +292,11 @@
   "selectCar":"Araç Seçiniz",
   "selectUser":"Kullanıcı Seçiniz",
   "selectExtra":"Ekstra Hizmet Seçiniz",
+  "rentThisCar":"Aracı kirala!",
+  "rentPerDay":"Günlük Kiralama 70₺",
+  "discount":"Hemen Kirala, %50 İndirimden Yararlan",
+  "pair1RentService":"Pair-1 Araç Kiralama Servisi -",
+  "endedRental2":"Kiralamayı sonlandır",
 
   "brand":"Marka",
   "model":"Model",
@@ -267,19 +307,53 @@
   "delete":"Sil",
   "actions":"Eylemler",
   "addNew":"Yeni Ekle",
+  "action":"Eylem",
+
+  "addPackage":"Paket Ekle",
 
   "addNewBrand":"Yeni Marka Ekle",
   "updateBrand":"Markayı Güncelle",
+  "notFoundBrandId":"Markanın id'si bulunamadı",
+  "brandSuccessDelete":"Marka başarıyla silindi",
+  "brandSuccessUpdate":"Marka başarıyla güncellendi",
+  "brandSuccessAdded":"Marka başarıyla eklendi",
+  "connectedDataDelete":"Önce bağlı veriler silinmeli!",
 
   "modelName":"Model İsmi",
   "addNewModel":"Yeni Model Ekle",
   "updateModel":"Modeli Güncelle",
   "selectBrand":"Marka Seçiniz",
+  "modelIdNotFound":"Model id'si bulunamadı",
+  "modelSuccessDelete":"Model başarıyla silindi",
+  "modelSuccessUpdate":"Model başarıyla güncellendi",
+  "modelSuccessAdded":"Model başarıyla eklendi",
 
   "colorName":"Renk İsmi",
-  "color":"Renk",
+  "color":"Renk",  
   "addNewColor":"Yeni Renk Ekle",
   "updateColor":"Rengi Güncelle",
+  "colorIdNotFound":"Renk id'si bulunamadı",
+  "colorSuccessDelete":"Renk başarıyla silindi",
+  "colorSuccessUpdate":"Renk başarıyla güncellendi",
+  "colorSuccessAdded":"Renk başarıyla eklendi",
+
+  "updatedPhoto":"Fotoğraf Güncellendi",
+  "uploadedPhoto":"Fotoğraf Yüklendi",
+  "updatedSlider":"Slider güncellendi",
+  "addNewSlider":"Yeni slider ekle",
+  "uploadSlider":"Slider Yükle",
+  "title":"Başlık",
+  "desc":"Açıklama",
+
+  "carIdNotFound":"Araç id'si bulunaması",
+  "carSuccessDelete":"Araç başarıyla silindi",
+  "carSuccessUpdate":"Araç başarıyla güncellendi",
+  "carSuccessAdded":"Araç başarıyla eklendi",
+
+  "rentalIdNotFound":"Kiralama id'si bulunamadı",
+  "rentalSuccessDelete":"Kiralama başarıyla silindi",
+  "rentalSeuccessUpdate":"Kiralama başarıyla güncellendi",
+  "rentalSuccessAdded":"Kiralama başarıyla eklendi",
 
   "addNewCar":"Yeni Araba Ekle",
   "updateCar":"Aracı Güncelle",
@@ -303,5 +377,22 @@
   "selectSeatType":"Koltuk Sayısı Seçiniz",
 
   "confirmation":"Onay",
-  "deleteMessage":"Silmek istediğinizden emin misiniz?"  
+  "deleteMessage":"Silmek istediğinizden emin misiniz?",
+
+
+  "logoutSuccess":"Çıkış işlemi başarılı!",
+  "logoutFailed":"Çıkış işlemi başarısız.",
+
+  "paymentDirect":"Doğrudan Banka Havalesi",
+  "paymentCheque":"Çekle ödeme",
+
+  "reserveNow":"Hemen Kirala!",
+
+  "noSuitableCar":"Uygun bir araç bulunamadı!",
+
+  "successRegistration":"Kayıt işlemi başarıyla gerçekleşti.",
+
+  "noRefreshToken":"Refresh token bulunamadı."
+
+
 }

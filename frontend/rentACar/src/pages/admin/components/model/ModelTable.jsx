@@ -94,11 +94,11 @@ export default function ModelTable() {
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/models/${id}`);
-        toastSuccess("Model Başarıyla Silindi.");
+        toastSuccess(t("modelIdNotFound"));
         dispatch(fetchAllModelData());
       } catch (error) {
         setOpen(false)
-        toastError("Önce bağlı veriler silinmeli!")
+        toastError(t("connectedDataDelete"))
         dispatch(fetchAllModelData());
 
       }
@@ -108,7 +108,7 @@ export default function ModelTable() {
   const handleUpdate = async (id) => {
     if (!name) {
       setOpen(false);
-      toastError("Model name alanı boş bırakılamaz!");
+      toastError(t("schemeModelName"));
     } else {
       const updatedData = {
         id: id,
@@ -118,7 +118,7 @@ export default function ModelTable() {
 
       try {
         await axiosInstance.put(`api/v1/admin/models/${id}`, updatedData);
-        toastSuccess("Model Başarıyla Güncellendi.");
+        toastSuccess(t("modelSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllModelData());
       }catch (error) {
@@ -130,7 +130,7 @@ export default function ModelTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllModelData());
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
           dispatch(fetchAllModelData());
         }
     }
@@ -151,7 +151,7 @@ export default function ModelTable() {
 
       try {
         await axiosInstance.post("api/v1/admin/models/add", data);
-        toastSuccess("Model Başarıyla Eklendi.");
+        toastSuccess(t("modelSuccessAdded"));
         setOpen(false);
         dispatch(fetchAllModelData());
         formik.resetForm();
@@ -164,7 +164,7 @@ export default function ModelTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllModelData());
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
           dispatch(fetchAllModelData());
         }
       }}

@@ -110,11 +110,11 @@ export default function CarImagesTable() {
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
-        toastSuccess("Car Başarıyla Silindi.");
+        toastSuccess(t("carSuccessDelete"));
         dispatch(fetchAllCarData());
       } catch (error) {
         setOpen(false)
-        toastError("Önce bağlı veriler silinmeli!")
+        toastError(t("connectedDataDelete"))
         dispatch(fetchAllCarData())
 
       }
@@ -124,7 +124,7 @@ export default function CarImagesTable() {
   const handleUpdate = async (id) => {
     if (!kilometer) {
       setOpen(false);
-      toastError("Kilometer alanı boş bırakılamaz!");
+      toastError(t("schemeCarKilometer"));
     } else {
       const updatedData = {
         id: id,
@@ -143,7 +143,7 @@ export default function CarImagesTable() {
 
       try {
         await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
-        toastSuccess("Car Başarıyla Güncellendi.");
+        toastSuccess(t("carSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllCarData());
       } catch (error) {
@@ -155,7 +155,7 @@ export default function CarImagesTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllCarData())
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
         }
     }
     }
@@ -194,7 +194,7 @@ export default function CarImagesTable() {
 
       try {
         await axiosInstance.post("api/v1/admin/cars", data);
-        toastSuccess("Car Başarıyla Eklendi.");
+        toastSuccess(t("carSuccessAdded"));
         setOpen(false);
         dispatch(fetchAllCarData());
         actions.resetForm();
@@ -207,7 +207,7 @@ export default function CarImagesTable() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllCarData())
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
         }
     }
     },

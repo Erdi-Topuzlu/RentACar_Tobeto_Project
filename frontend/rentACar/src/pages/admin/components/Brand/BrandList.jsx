@@ -76,15 +76,15 @@ export default function BrandList() {
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Brand ID bulunamadı!");
+      toastError(t("notFoundBrandId"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/brands/${id}`);
-        toastSuccess("Brand Başarıyla Silindi.");
+        toastSuccess(t("brandSuccessDelete"));
         dispatch(fetchAllBrandData());
       } catch (error) {
         setOpen(false)
-        toastError("Önce bağlı veriler silinmeli!")
+        toastError(t("connectedDataDelete"))
         dispatch(fetchAllBrandData)
 
       }
@@ -94,7 +94,7 @@ export default function BrandList() {
   const handleUpdate = async (id) => {
     if (!brandName){
       setOpen(false);
-      toastError("Brand Name alanı boş bırakılamaz!");
+      toastError(t("schemeBrandName"));
     } else {
       const data = {
         id: id,
@@ -103,7 +103,7 @@ export default function BrandList() {
 
       try {
         await axiosInstance.put(`api/v1/admin/brands/${id}`, data);
-        toastSuccess("Brand Başarıyla Güncellendi.");
+        toastSuccess(t("brandSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllBrandData());
       } catch (error) {
@@ -115,7 +115,7 @@ export default function BrandList() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllBrandData)
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
         }
     }}
   };

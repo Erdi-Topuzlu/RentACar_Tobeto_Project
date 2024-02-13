@@ -15,7 +15,7 @@ axiosInstance.interceptors.request.use(
 
       return config;
     } catch (error) {
-      //console.error("Request interceptor error:", error);
+
       throw error; 
     }
   },
@@ -24,6 +24,9 @@ axiosInstance.interceptors.request.use(
   }
 );
 axiosInstance.interceptors.response.use(
+
+  
+
   (response) => {
     return response;
   },
@@ -66,7 +69,7 @@ axiosInstance.interceptors.response.use(
           }
           return axiosInstance(originalRequest);
         } else {
-          throw new Error("Refresh token yok");
+          throw new Error("noRefreshToken");
         }
       } catch (refreshError) {
         // Refresh token hatası
