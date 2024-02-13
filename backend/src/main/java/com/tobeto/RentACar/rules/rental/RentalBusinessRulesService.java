@@ -8,6 +8,6 @@ public interface RentalBusinessRulesService {
     void checkIfUserIdExists(int id);
     void checkMaxRentTime(LocalDate startDate, LocalDate endDate);
     void checkIfByIdExists(int id);
-    void checkIfReturnDateBeforeStartDate (LocalDate returnDate, LocalDate startDate);
+    //void checkIfReturnDateBeforeStartDate (LocalDate returnDate, LocalDate startDate);
 
 }

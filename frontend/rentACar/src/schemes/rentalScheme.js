@@ -7,21 +7,26 @@ export const getRentalValidationSchema = () => {
 
   return yup.object().shape({
     startDate: yup
-      .date()
-      .typeError(t("startDateMustBeDate")) // Eğer girilen değer bir tarih değilse hata mesajı
-      .required(t("schemeRentalStartDate"))
-      .nullable(), // null değerlerin kabul edilmesi için
+    .date()
+    .required(t("schemeStartDate"))
+    .test("is-after-today", t("schemeInvalidStartDate"), (value) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const selectedDate = new Date(value);
+      return selectedDate >= today;
+    }),
+
     endDate: yup
-      .date()
-      .typeError(t("endDateMustBeDate")) // Eğer girilen değer bir tarih değilse hata mesajı
-      .required(t("schemeRentalEndDate"))
-      .nullable(), // null değerlerin kabul edilmesi için
+    .date()
+    .min(yup.ref("startDate"), t("schemeInvalidEndDate"))
+    .required(t("schemeEndDate")),
+
     // returnDate: yup
-    //   .date()
-    //   .typeError(t("endDateMustBeDate")) // Eğer girilen değer bir tarih değilse hata mesajı
-    //   .required(t("schemeRentalreturnDate"))
-    //   .nullable(), // null değerlerin kabul edilmesi için
-  });
+
+    // .date()
+    // .min(yup.ref("startDate"), t("schemeInvalidEndDate"))
+
+    })
 };
 
 export default getRentalValidationSchema;
