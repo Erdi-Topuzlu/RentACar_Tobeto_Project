@@ -5,30 +5,6 @@
   height: 650px;
 }
 
-.slider__item-01 {
-  background: linear-gradient(rgb(103, 58, 183, 0.1), rgb(103, 58, 183, 0.3)),
-    url("../assets/all-images/slider-img/slider-1.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.slider__item-02 {
-  background: linear-gradient(rgb(103, 58, 183, 0.1), rgb(103, 58, 183, 0.3)),
-    url("../assets/all-images/slider-img/slider-2.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.slider__item-03 {
-  background: linear-gradient(rgb(103, 58, 183, 0.1), rgb(103, 58, 183, 0.3)),
-    url("../assets/all-images/slider-img/slider-3.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .hero__slider {
   overflow: hidden;
 }
