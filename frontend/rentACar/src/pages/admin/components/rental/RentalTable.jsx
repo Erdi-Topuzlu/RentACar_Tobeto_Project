@@ -164,13 +164,15 @@ export default function RentalTable() {
 
   const formik = useFormik({
     initialValues: {
-      startDate: "",
-      endDate: "",
-      returnDate: "",
-      carId: "",
-      userId: "",
-      extraId: "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      returnDate: returnDate ||"",
+      carId: carId || "",
+      userId: userId || "",
+      extraId: extraId || "",
     },
+
+    
     validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
@@ -440,8 +442,13 @@ export default function RentalTable() {
                     <Menu size="sm" sx={{ minWidth: 140 }}>
                       <MenuItem
                         onClick={() => {
-                          setId(row.id);
-                          //setCarName(row.name);
+                          setId(row?.id);
+                          setStartDate(row?.startDate);
+                          setEndDate(row?.endDate);
+                          setReturnDate(row?.returnDate)
+                          setCarId(row?.carId?.id);
+                          setExtraId(row.extraId.id);
+                          setUserId(row.userId.id);
                           setOpen(true);
                           setIsEdit(true);
                         }}
@@ -483,6 +490,12 @@ export default function RentalTable() {
           onClose={() => {
             formik.resetForm();
             setId(null);
+            setCarId(null);
+            setUserId(null);
+            setStartDate(null);
+            setEndDate(null);
+            setReturnDate(null);
+            setExtraId(null);
             setOpen(false);
           }}
           sx={{
@@ -628,7 +641,7 @@ export default function RentalTable() {
                       <select
                         id="car"
                         name="carId"
-                        value={carId}
+                        value={formik.values.carId || carId}
                         onChange={(e) => {
                           const selectedCarId = e.target.value;
                           setCarId(selectedCarId);

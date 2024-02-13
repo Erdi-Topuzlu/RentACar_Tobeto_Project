@@ -68,6 +68,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
     const data = {
       startDate: userData?.pickupDate,
       endDate: userData?.dropoffDate,
+      isFinished:"false",
       carId: id,
       userId: usersId,
       extraId: extraId
