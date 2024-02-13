@@ -1,7 +1,29 @@
 #DATABASE Connection spring.main.allow-circular-references
 spring:
-  main:
-    allow-circular-references: true
+  ###### Email Properties ######
+  #smtp mail properties
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rentacartobeto@gmail.com
+    password: "tupu oavl qdgi mpbf"
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          write-timeout: 10000
+          connection-timeout: 10000
+          timeout: 10000
+          auth: true
+          starttls:
+            enable: true
+            required: true
+#          ssl:
+#            trust: smtp.gmail.com
+#            port: 587
+    verify:
+      host: http://localhost:8080
   datasource:
     url: jdbc:postgresql://localhost:5432/rentacar
     username: postgres
@@ -9,7 +31,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -34,4 +56,6 @@ jwt:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+
 

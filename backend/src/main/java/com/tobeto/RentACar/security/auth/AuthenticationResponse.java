@@ -21,6 +21,9 @@ public class AuthenticationResponse {
     @JsonProperty("role")
     private String role;
 
+    @JsonProperty("is_enabled")
+    private Boolean isEnabled;
+
     @JsonProperty("access_token")
     private String accessToken;
 
