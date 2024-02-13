@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import fetchAllSliderData from "../../redux/actions/admin/fetchAllSliderData";
 
 const HeroSlider = () => {
-<<<<<<< Updated upstream
+
   const { sliders, status, error } = useSelector(
     (state) => state.sliderAllData
   );
@@ -19,11 +19,10 @@ const HeroSlider = () => {
   }, [dispatch]);
 
   console.log(sliders);
-=======
+
 
   const { t } = useTranslation();
 
->>>>>>> Stashed changes
   const settings = {
     fade: true,
     speed: 2000,
@@ -37,7 +36,6 @@ const HeroSlider = () => {
 
   
   return (
-<<<<<<< Updated upstream
     <>
       
         <Slider {...settings} className="hero__slider">
@@ -87,44 +85,6 @@ const HeroSlider = () => {
                 </button>
               </div>
             </Container>
-=======
-    <Slider {...settings} className="hero__slider">
-      <div className="slider__item slider__item-01 mt0">
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">{t("rentPerDay")}</h4>
-            <h1 className="text-light mb-4">{t("discount")}</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t("details")}</Link>
-            </button>
-          </div>
-        </Container>
-      </div>
-
-      <div className="slider__item slider__item-02 mt0">
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">{t("rentPerDay")}</h4>
-            <h1 className="text-light mb-4">{t("discount")}</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t("details")}</Link>
-            </button>
-          </div>
-        </Container>
-      </div>
-
-      <div className="slider__item slider__item-03 mt0">
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">{t("rentPerDay")}</h4>
-            <h1 className="text-light mb-4">{t("discount")}</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t("details")}</Link>
-            </button>
->>>>>>> Stashed changes
           </div>
            ))}
         </Slider>
