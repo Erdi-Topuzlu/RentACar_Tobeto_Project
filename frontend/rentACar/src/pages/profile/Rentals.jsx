@@ -128,6 +128,8 @@ const Rentals = () => {
 
   };
 
+ 
+
   const handleCancel = () => {
     setShowConfirmation(false);
   };
@@ -165,14 +167,14 @@ const Rentals = () => {
                     <td>{rental.startDate} / {rental.endDate}</td>
                     <td>{details.name} {details.surname}</td>
                     <td>{rental.extraId.extraName}</td>
-                    <td style={{ fontWeight: "bold" }}>{rental.totalPrice} ₺</td>
+                    <td style={{ fontWeight: "bold" }}>{rental.totalPrice == 0 ? <span style={{ fontWeight: "normal",color:"red" }}>Kiralama iptal edildi</span> : rental.totalPrice + "₺" }</td>
                     <td style={{ fontWeight: "bold", textAlign: "center" }}>
                       <Button
                         onClick={() => handleClick(rental)}
                         className='bg-primary'
                         disabled={rental?.isFinished}
                       >
-                        Kiralamayı sonlandır
+                      {today < formatDate(rental?.startDate) ? "Kiralama'yı İptal Et" : "Kiralama'yı Sonlandır"}
                       </Button>
                     </td>
                   </tr>
