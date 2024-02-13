@@ -41,8 +41,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/confirm-account")
-    public ResponseEntity<String> confirmAccount(@RequestParam("token") String confirmationToken) {
-        Boolean isSuccess = authenticationService.verifyConfirmationToken(confirmationToken);
+    public ResponseEntity<String> confirmAccount(@RequestParam("token") String token) {
+        Boolean isSuccess = authenticationService.verifyConfirmationToken(token);
         return ResponseEntity.ok("Account confirmed successfully!" + " Success:" + isSuccess);
     }
 

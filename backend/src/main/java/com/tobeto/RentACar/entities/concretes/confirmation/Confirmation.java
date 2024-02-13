@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Table(name = "confirmations")
 public class Confirmation {

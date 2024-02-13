@@ -61,7 +61,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user, user);
         saveUserToken(savedUser, jwtToken);
 
-        var confirmation = new Confirmation(user);
+        var confirmation = new Confirmation(savedUser);
         confirmationService.save(confirmation);
 
         // Send Email to User with Confirmation Token
@@ -86,9 +86,7 @@ public class AuthenticationService {
         var user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
         user.setIsEnabled(true);
         userRepository.save(user);
-
         return Boolean.TRUE;
-
     }
 
     public AuthenticationResponse login(LoginUserRequest request) {
