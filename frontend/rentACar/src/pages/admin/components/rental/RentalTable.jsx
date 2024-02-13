@@ -84,7 +84,6 @@ export default function RentalTable() {
   const [dateInputType, setDateInputType] = React.useState("text");
   const { rentals, status, error } = useSelector((state) => state.allRentals);
   const { items } = useSelector((state) => state.carAllData);
-  const { details } = useSelector((state) => state.carDetail);
   const { users } = useSelector((state) => state.userAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
@@ -115,12 +114,10 @@ export default function RentalTable() {
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
         toastSuccess(t("rentalSuccessDelete"));
         dispatch(fetchAllRental());
-
       } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
+        setOpen(false);
+        toastError(t("connectedDataDelete"));
         dispatch(fetchAllRental());
-
       }
     }
   };
@@ -149,13 +146,15 @@ export default function RentalTable() {
       } catch (error) {
         setOpen(false);
         if (error.response.data.message === "VALIDATION.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.validationErrors.startDate))
+          toastError(
+            JSON.stringify(error.response.data.validationErrors.startDate)
+          );
           dispatch(fetchAllRental());
         } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.message))
+          toastError(JSON.stringify(error.response.data.message));
           dispatch(fetchAllRental());
-        }else{
-          toastError("Bilinmeyen hata")
+        } else {
+          toastError("Bilinmeyen hata");
           dispatch(fetchAllRental());
         }
       }
@@ -164,14 +163,13 @@ export default function RentalTable() {
 
   const formik = useFormik({
     initialValues: {
-      startDate: startDate || "",
-      endDate: endDate || "",
-      returnDate: returnDate || "",
-      carId: carId || "",
-      userId: userId || "",
-      extraId: extraId || "",
+      startDate: "",
+      endDate: "",
+      returnDate: "",
+      carId: "",
+      userId: "",
+      extraId: "",
     },
-
 
     validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
@@ -195,26 +193,20 @@ export default function RentalTable() {
       } catch (error) {
         setOpen(false);
         if (error.response.data.message === "VALIDATION.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.validationErrors.startDate))
+          toastError(
+            JSON.stringify(error.response.data.validationErrors.startDate)
+          );
           dispatch(fetchAllRental());
         } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
-          toastError(JSON.stringify(error.response.data.message))
+          toastError(JSON.stringify(error.response.data.message));
           dispatch(fetchAllRental());
-        }else{
-          toastError("Bilinmeyen hata")
+        } else {
+          toastError("Bilinmeyen hata");
           dispatch(fetchAllRental());
         }
-
       }
     },
   });
-
-  // if (status === "LOADING") {
-  //   return <Loading />;
-  // } else if (status === "FAIL") {
-  //   return <ErrorPage errorMessage={error} />;
-  // }
-
 
   return (
     <React.Fragment>
@@ -258,253 +250,217 @@ export default function RentalTable() {
           overflow: "auto",
           minHeight: 0,
         }}
-      >{status === "LOADING" ? (
-        <Loading />
-      ) : (
-        <Table
-          aria-labelledby="tableTitle"
-          stickyHeader
-          hoverRow
-          sx={{
-            "--TableCell-headBackground":
-              "var(--joy-palette-background-level1)",
-            "--Table-headerUnderlineThickness": "1px",
-            "--TableRow-hoverBackground":
-              "var(--joy-palette-background-level1)",
-            "--TableCell-paddingY": "4px",
-            "--TableCell-paddingX": "8px",
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ width: "40px", padding: "12px 12px" }}>
-                <Link
-                  underline="none"
-                  color="primary"
-                  component="button"
-                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-                  fontWeight="lg"
-                  endDecorator={<ArrowDropDownIcon />}
-                  sx={{
-                    "& svg": {
-                      transition: "0.2s",
-                      transform:
-                        order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
-                    },
+      >
+        {status === "LOADING" ? (
+          <Loading />
+        ) : (
+          <Table
+            aria-labelledby="tableTitle"
+            stickyHeader
+            hoverRow
+            sx={{
+              "--TableCell-headBackground":
+                "var(--joy-palette-background-level1)",
+              "--Table-headerUnderlineThickness": "1px",
+              "--TableRow-hoverBackground":
+                "var(--joy-palette-background-level1)",
+              "--TableCell-paddingY": "4px",
+              "--TableCell-paddingX": "8px",
+            }}
+          >
+            <thead>
+              <tr>
+                <th style={{ width: "40px", padding: "12px 12px" }}>
+                  <Link
+                    underline="none"
+                    color="primary"
+                    component="button"
+                    onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                    fontWeight="lg"
+                    endDecorator={<ArrowDropDownIcon />}
+                    sx={{
+                      "& svg": {
+                        transition: "0.2s",
+                        transform:
+                          order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
+                      },
+                    }}
+                  >
+                    ID
+                  </Link>
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
                   }}
                 >
-                  ID
-                </Link>
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("startDate")} / {t("endDate")}
-              </th>
+                  {t("startDate")} / {t("endDate")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("rentalOwner")}
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("brand")} | {t("model")}
-              </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("rentalOwner")}
+                </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("brand")} | {t("model")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("Status")}
-              </th>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("Status")}
+                </th>
 
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("totalPrice")}
-              </th>
-              {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                {t("actions")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {stableSort(rentals, getComparator(order, "id")).map((row) => (
-              <tr key={row.id}>
-                <td style={{ padding: "0px 12px" }}>
-                  <Typography level="body-xs">{row.id}</Typography>
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">
-                    <span style={{fontWeight:"bold", fontSize:"14px"}}>
-                    {row.startDate} /{" "}
-                    {row.returnDate ? row.returnDate : row.endDate}
-                    </span>
-                   
-                  </Typography>
-                </td>
-                {/* <td style={{ textAlign: "center" }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.id]
-                    }
-                    color={
-                      {
-                        Paid: "success",
-                        Refunded: "neutral",
-                        Cancelled: "danger",
-                      }[row.id]
-                    }
-                  >
-                    {row.id}
-                  </Chip>
-                </td> */}
-                {
-                  /* <td style={{ textAlign: "center" }}>
-                  <div>
-                    <Typography level="body-xs">{}</Typography>
-                    <Typography level="body-xs">
-                      {}
-                    </Typography>
-                  </div>
-                </td> */
-                  <td style={{ textAlign: "center" }}>
-                     <span style={{fontWeight:"bold"}}>{row.userId?.name} {row.userId?.surname}</span> 
-                  </td>
-                }
-
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">
-                   <span style={{fontWeight:"bold", fontSize:"14px"}}>{row.carId?.modelId?.brandId?.name} &bull; {row.carId?.modelId?.name}</span>
-                  </Typography>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">
-                    <Chip color="warning" variant="solid">
-                      {row?.returnDate && row?.isFinished && row?.totalPrice === 0 ? "İptal Edildi" :
-                        (row?.returnDate && row?.isFinished && row?.totalPrice !== 0 ? "Sonlandırıldı" :
-                          (!row?.returnDate ? "Devam Ediyor" : ""))}
-                    </Chip>
-                  </Typography>
-
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Chip color="success" variant="solid">
-                    {row.totalPrice} ₺
-                  </Chip>
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  <Dropdown>
-                    <MenuButton
-                      slots={{ root: IconButton }}
-                      slotProps={{
-                        root: {
-                          variant: "plain",
-                          color: "neutral",
-                          size: "sm",
-                        },
-                      }}
-                    >
-                      <MoreHorizRoundedIcon />
-                    </MenuButton>
-                    <Menu size="sm" sx={{ minWidth: 140 }}>
-                      <MenuItem
-                        onClick={() => {
-                          setId(row?.id);
-                          setStartDate(row?.startDate);
-                          setEndDate(row?.endDate);
-                          setReturnDate(row?.returnDate)
-                          setCarId(row?.carId?.id);
-                          setExtraId(row.extraId.id);
-                          setUserId(row.userId.id);
-                          setOpen(true);
-                          setIsEdit(true);
-                        }}
-                      >
-                        {t("edit")}
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem
-                        onClick={() => {
-                          setId(row.id);
-                          setUserId(row.userId?.name);
-                          setCarId(
-                            row.carId?.modelId?.brandId?.name +
-                            "|" +
-                            row.carId?.modelId?.name
-                          );
-                          setOpenDelete(true);
-                          setUpdCarId(row.carId?.id)
-                          setCarDetails(row.carId)
-
-                        }}
-                        color="danger"
-                      >
-                        {t("delete")}
-                      </MenuItem>
-                    </Menu>
-                  </Dropdown>
-                </td>
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("totalPrice")}
+                </th>
+                
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  {t("actions")}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+            </thead>
+            <tbody>
+              {stableSort(rentals, getComparator(order, "id")).map((row) => (
+                <tr key={row.id}>
+                  
+                  <td style={{ padding: "0px 12px" }}>
+                    <Typography level="body-xs">{row.id}</Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">
+                      <span style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {row.startDate} /{" "}
+                        {row.returnDate ? row.returnDate : row.endDate}
+                      </span>
+                    </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <span style={{ fontWeight: "bold" }}>
+                      {row.userId?.name} {row.userId?.surname}
+                    </span>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">
+                      <span style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {row.carId?.modelId?.brandId?.name} &bull;{" "}
+                        {row.carId?.modelId?.name}
+                      </span>
+                    </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Typography level="body-xs">
+                      <Chip color="warning" variant="solid">
+                        {row?.returnDate &&
+                        row?.isFinished &&
+                        row?.totalPrice === 0
+                          ? "İptal Edildi"
+                          : row?.returnDate &&
+                            row?.isFinished &&
+                            row?.totalPrice !== 0
+                          ? "Sonlandırıldı"
+                          : !row?.returnDate
+                          ? "Devam Ediyor"
+                          : ""}
+                      </Chip>
+                    </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Chip color="success" variant="solid">
+                      {row.totalPrice} ₺
+                    </Chip>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Dropdown>
+                      <MenuButton
+                        slots={{ root: IconButton }}
+                        slotProps={{
+                          root: {
+                            variant: "plain",
+                            color: "neutral",
+                            size: "sm",
+                          },
+                        }}
+                      >
+                        <MoreHorizRoundedIcon />
+                      </MenuButton>
+                      <Menu size="sm" sx={{ minWidth: 140 }}>
+                        <MenuItem
+                          onClick={() => {
+                            setId(row?.id);
+                            setStartDate(row?.startDate);
+                            setEndDate(row?.endDate);
+                            setReturnDate(row?.returnDate);
+                            setCarId(row?.carId?.id);
+                            setExtraId(row.extraId.id);
+                            setUserId(row.userId.id);
+                            setOpen(true);
+                            setIsEdit(true);
+                          }}
+                        >
+                          {t("edit")}
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem
+                          onClick={() => {
+                            setId(row.id);
+                            setUserId(row.userId?.name);
+                            setCarId(
+                              row.carId?.modelId?.brandId?.name +
+                                "|" +
+                                row.carId?.modelId?.name
+                            );
+                            setOpenDelete(true);
+                            setUpdCarId(row.carId?.id);
+                            setCarDetails(row.carId);
+                          }}
+                          color="danger"
+                        >
+                          {t("delete")}
+                        </MenuItem>
+                      </Menu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
 
         <Modal
           aria-labelledby="modal-title"
@@ -620,7 +576,6 @@ export default function RentalTable() {
                   </FormGroup>
                   {isEdit && (
                     <>
-
                       <FormLabel>{t("returnDate")}</FormLabel>
                       <FormGroup className="">
                         <Input
@@ -678,26 +633,24 @@ export default function RentalTable() {
                       }}
                     >
                       <option value="">{t("selectCar")}</option>
-                      {isEdit ?
-                        items
-                          .filter((item) => item.isAvailable === false)
-                          .map((car, index) => (
-                            <option key={car.id} value={car.id}>
-                              {car.modelId?.brandId?.name} - {car.modelId?.name}
-                            </option>
-                          )) :
-
-                        items
-                          .filter((item) => item.isAvailable === true)
-                          .map((car, index) => (
-                            <option key={car.id} value={car.id}>
-                              {car.modelId?.brandId?.name} - {car.modelId?.name}
-                            </option>
-                          ))
-
-                      }
+                      {isEdit
+                        ? items
+                            .filter((item) => item.isAvailable === false)
+                            .map((car, index) => (
+                              <option key={car.id} value={car.id}>
+                                {car.modelId?.brandId?.name} -{" "}
+                                {car.modelId?.name}
+                              </option>
+                            ))
+                        : items
+                            .filter((item) => item.isAvailable === true)
+                            .map((car, index) => (
+                              <option key={car.id} value={car.id}>
+                                {car.modelId?.brandId?.name} -{" "}
+                                {car.modelId?.name}
+                              </option>
+                            ))}
                     </select>
-
                   </FormGroup>
                   {/* <FormLabel>Select a User</FormLabel> */}
                   <FormGroup className="">
@@ -721,57 +674,55 @@ export default function RentalTable() {
                       <option value="">{t("selectUser")}</option>
                       {users.map((user) => (
                         <option key={user.id} value={user.id}>
-                          {user.name}{" "}{user.surname}
+                          {user.name} {user.surname}
                         </option>
                       ))}
                     </select>
                   </FormGroup>
 
-                  <div>
-                    {/* <FormLabel htmlFor="fuelType">Select a Extra</FormLabel> */}
-                    <FormGroup className="">
-                      <select
-                        id="extra"
-                        name="extraId"
-                        value={formik.values.extraId || extraId}
-                        onChange={(e) => {
-                          setExtraId(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        style={{
-                          textAlign: "center",
-                          appearance: "none",
-                          WebkitAppearance: "none",
-                          MozAppearance: "none",
-                          padding: "7px",
-                          fontSize: "16px",
-                          border: "1px solid #ccc",
-                          borderRadius: "10px",
-                          width: "50%",
-                        }}
-                        size="sm"
-                        placeholder="Filter by status"
-                        slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
-                        onBlur={formik.handleBlur}
-                        className={
-                          formik.errors.extraId &&
-                          formik.touched.extraId &&
-                          "error"
-                        }
-                      >
-                        <option value="">{t("selectExtra")}</option>
-                        <option value="1" key="1">
-                          Mini Package - 200.00₺
-                        </option>
-                        <option value="2" key="2">
-                          Medium Package - 350.00₺
-                        </option>
-                        <option value="3" key="3">
-                          Free Package - 0₺
-                        </option>
-                      </select>
-                    </FormGroup>
-                  </div>
+                  {/* <FormLabel htmlFor="fuelType">Select a Extra</FormLabel> */}
+                  <FormGroup className="">
+                    <select
+                      id="extra"
+                      name="extraId"
+                      value={formik.values.extraId || extraId}
+                      onChange={(e) => {
+                        setExtraId(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
+                      size="sm"
+                      placeholder="Filter by status"
+                      slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
+                      onBlur={formik.handleBlur}
+                      className={
+                        formik.errors.extraId &&
+                        formik.touched.extraId &&
+                        "error"
+                      }
+                    >
+                      <option value="">{t("selectExtra")}</option>
+                      <option value="1" key="1">
+                        Mini Package - 200.00₺
+                      </option>
+                      <option value="2" key="2">
+                        Medium Package - 350.00₺
+                      </option>
+                      <option value="3" key="3">
+                        Free Package - 0₺
+                      </option>
+                    </select>
+                  </FormGroup>
 
                   {id ? (
                     <Button

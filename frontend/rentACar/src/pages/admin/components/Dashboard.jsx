@@ -25,7 +25,7 @@ export default function Dashboard() {
         }}
       >
         <Typography level="h2" component="h1">
-        {t("dashboard").toUpperCase} 
+        {t("dashboard").toUpperCase()} 
         </Typography>
         
       </Box>

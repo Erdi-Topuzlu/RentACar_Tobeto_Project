@@ -11,15 +11,9 @@ import Table from "@mui/joy/Table";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import SliderList from "./SliderList";
 import {
-  AspectRatio,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -39,6 +33,8 @@ import fetchAllSliderData from "../../../../redux/actions/admin/fetchAllSliderDa
 import Loading from "../../../../components/ui/Loading";
 import SvgIcon from "@mui/joy/SvgIcon";
 import getSliderValidationSchema from "../../../../schemes/sliderScheme";
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -696,7 +692,7 @@ export default function SliderTable() {
                 {t("cancel")}
               </Button>
             </DialogActions>
-          </ModalDialog>
+            </ModalDialog>
         </Modal>
       </Sheet>
       <SliderList />
