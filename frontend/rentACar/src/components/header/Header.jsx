@@ -171,7 +171,7 @@ function Header() {
         }
       );
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      alert("Location info is not allowed by this browser.");
     }
   };
 

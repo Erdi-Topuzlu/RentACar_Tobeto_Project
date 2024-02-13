@@ -289,7 +289,7 @@ export default function ColorTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.name}</Typography>
+                  <Typography level="body-xs"><span style={{fontWeight:"bold", fontSize:"16px"}}>{row.name}</span></Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <Chip
