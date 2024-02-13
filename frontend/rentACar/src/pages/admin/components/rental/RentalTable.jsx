@@ -177,12 +177,14 @@ export default function RentalTable() {
         startDate: values.startDate,
         endDate: values.endDate,
         returnDate: null,
+        isFinished: "false",
         carId: carId,
         userId: userId,
         extraId: extraId,
       };
 
       try {
+        alert(startDate);
         await axiosInstance.post("api/v1/users/rentals", data);
         toastSuccess("Rental Başarıyla Eklendi.");
         setOpen(false);

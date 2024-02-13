@@ -26,6 +26,8 @@ public class UpdateRentalRequest {
     @Nullable
     private Integer endKilometer;
     //private double totalPrice;
+    private Boolean isFinished;
+
     @NotNull(message = Messages.carIdNotEmpty)
     @Positive(message = Messages.carIdPositive)
     private int carId;

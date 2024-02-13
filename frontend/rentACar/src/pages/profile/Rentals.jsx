@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useDispatch, useSelector } from 'react-redux';
 import fetchByUserIdRental from '../../redux/actions/fetchByUserIdRental';
@@ -7,59 +7,130 @@ import ErrorPage from '../../components/ui/ErrorPage';
 import { Paper } from "@mui/material";
 import { Table } from 'react-bootstrap';
 import { Button } from 'reactstrap';
+import { toastError, toastSuccess } from '../../service/ToastifyService';
+import axiosInstance from '../../redux/utilities/interceptors/axiosInterceptors';
 
 const Rentals = () => {
   const dispatch = useDispatch();
-  
 
   const { rentalDetails, status, error } = useSelector(state => state.rentalDetail);
   const { details } = useSelector((state) => state.userDetail);
-  const [isActive,setIsActive] = useState()
+
+  const [selectedRental, setSelectedRental] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+
+  const formatToday = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  const formatDate = (tarih) => {
+    const [gun, ay, yil] = tarih.split('-');
+    return `${yil}-${ay}-${gun}`;
+  }
+
+  const today = formatToday();
+
+
 
   useEffect(() => {
-    dispatch(fetchByUserIdRental(details.id))
+    dispatch(fetchByUserIdRental(details.id));
   }, [dispatch]);
 
-  console.log("kişisel rentals", rentalDetails)
+  const handleSubmit = async () => {
+    const updatedDataRental = {
+      id: selectedRental.id,
+      startDate: selectedRental?.startDate,
+      endDate: selectedRental?.endDate,
+      returnDate: today,
+      isFinished: "true",
+      endKilometer: null,
+      carId: selectedRental.carId,
+      userId: selectedRental.userId,
+      extraId: selectedRental.extraId,
+    };
 
-  function formatToday() {
-    // Bugünün tarihini temsil eden bir Date nesnesi oluşturun
-    const today = new Date();
-  
-    // Gün, ay ve yıl bilgilerini alın
-    const day = String(today.getDate()).padStart(2, '0'); // Günü alır ve gerekirse 0 ile başlar
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Ayı alır (0 - 11 arasında) ve gerekirse 0 ile başlar
-    const year = today.getFullYear(); // Yılı alır
-  
-    // Tarihi istenen formatta birleştirin (gg-aa-yyyy)
-    const formattedToday = `${day}-${month}-${year}`;
-  
-    return formattedToday;
+    const updatedDataCar = {
+      id: selectedRental.carId,
+      kilometer: selectedRental.kilometer,
+      plate: selectedRental.plate,
+      year: selectedRental.year,
+      dailyPrice: selectedRental.dailyPrice,
+      fuelType: selectedRental.fuelType,
+      gearType: selectedRental.gearType,
+      vehicleType: selectedRental.vehicleType,
+      seatType: selectedRental.seatType,
+      isAvailable: "true",
+      modelId: selectedRental.modelId,
+      colorId: selectedRental.colorId,
+    };
+
+    console.log(updatedDataCar, updatedDataRental)
+
+    try {
+      await axiosInstance.put(`api/v1/users/rentals/${selectedRental.id}`, updatedDataRental);
+      toastSuccess("Kiralama işlemi sonlandırıldı");
+
+      await axiosInstance.put(`api/v1/admin/cars/${selectedRental.carId}`, updatedDataCar);
+    } catch (error) {
+      if (error.response.data.message === "VALIDATION.EXCEPTION") {
+        toastError(JSON.stringify(error.response.data.validationErrors.startDate));
+      } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+        toastError(JSON.stringify(error.response.data.message));
+      } else {
+        toastError("Bilinmeyen hata");
+      }
+    } finally {
+      dispatch(fetchByUserIdRental(details.id));
+    }
   }
 
-  const bugununTarihi = formatToday();
-  
-  const handleClick = () => {
-    console.log("teslim başarılı")
-  }
+  const handleClick = (rental) => {
+    if (rental.startDate && rental.endDate != "NaN-NaN-NaN") {
+      const formattedRental = {
+        id: rental?.id,
+        startDate: formatDate(rental?.startDate),
+        endDate: formatDate(rental?.endDate),
+        carId: rental?.carId?.id,
+        userId: rental?.userId?.id,
+        extraId: rental?.extraId?.id,
+        isFinished: rental?.isFinished,
+        // car için
+        isAvailable: rental?.carId?.isAvailable,
+        kilometer: rental?.carId?.kilometer,
+        plate: rental?.carId?.plate,
+        year: rental?.carId?.year,
+        dailyPrice: rental?.carId?.dailyPrice,
+        fuelType: rental?.carId?.fuelType,
+        gearType: rental?.carId?.gearType,
+        vehicleType: rental?.carId?.vehicleType,
+        seatType: rental?.carId?.seatType,
+        colorId: rental?.carId?.colorId?.id,
+        modelId: rental?.carId?.modelId?.id
+      };
+      setSelectedRental(formattedRental);
+      setShowConfirmation(true);
+      //console.log(selectedRental)
+    } else {
+      console.error("Invalid rental start or end date.");
+    }
+  };
 
-  function tarihKarsilastir(endDate, today) {
-    // Gelen tarihlerin string formatını Date nesnesine dönüştürüyoruz
-    const [endGun, endAy, endYil] = endDate.split("-").map(Number);
-    const [todayGun, todayAy, todayYil] = today.split("-").map(Number);
+  const handleConfirm = () => {
+    setShowConfirmation(false);
+    handleSubmit();
+    // window.location.reload();
+    dispatch(fetchByUserIdRental(details.id));
 
-    // Tarihlerin gün, ay ve yıl olarak karşılaştırılması
-    const esitMi =  (endYil > todayYil) ||
-    (endYil === todayYil && endAy > todayAy) ||
-    (endYil === todayYil && endAy === todayAy && endGun >= todayGun);
+  };
 
-    return esitMi;
-}
-
-
-
-  
-
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
 
   if (status === "LOADING") {
     return <Loading />;
@@ -72,11 +143,10 @@ const Rentals = () => {
     <Accordion defaultActiveKey="0">
       {rentalDetails.length > 0 ?
         [...rentalDetails].reverse().map((rental, i) => (
-         
           <Accordion.Item key={i} eventKey={i}>
-
-
-            <Accordion.Header><h5><span style={{ fontWeight: "bold" }}>{rental.carId.modelId.brandId.name} {rental.carId.modelId.name}</span></h5></Accordion.Header>
+            <Accordion.Header>
+              <h5><span style={{ fontWeight: "bold" }}>{rental.carId.modelId.brandId.name} {rental.carId.modelId.name}</span></h5>
+            </Accordion.Header>
             <Accordion.Body>
               <h3>Details & Invoice</h3>
               <hr />
@@ -87,7 +157,7 @@ const Rentals = () => {
                     <th>Customer Full Name</th>
                     <th>Extras</th>
                     <th>Total Amount</th>
-                    <th style={{ fontWeight: "bold", textAlign:"center" }}>Action</th>
+                    <th style={{ fontWeight: "bold", textAlign: "center" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -95,24 +165,38 @@ const Rentals = () => {
                     <td>{rental.startDate} / {rental.endDate}</td>
                     <td>{details.name} {details.surname}</td>
                     <td>{rental.extraId.extraName}</td>
-                    <td style={{ fontWeight: "bold" }}>{rental.totalPrice}₺</td>
-                    <td style={{ fontWeight: "bold", textAlign:"center" }}>{tarihKarsilastir(bugununTarihi,rental.endDate) ? <Button onClick={handleClick} className='bg-success'>Aracı teslim et</Button> : <Button disabled={true} onClick={handleClick} className='bg-secondary'>Aracı teslim et</Button>}</td>
+                    <td style={{ fontWeight: "bold" }}>{rental.totalPrice} ₺</td>
+                    <td style={{ fontWeight: "bold", textAlign: "center" }}>
+                      <Button
+                        onClick={() => handleClick(rental)}
+                        className='bg-primary'
+                        disabled={rental?.isFinished}
+                      >
+                        Kiralamayı sonlandır
+                      </Button>
+                    </td>
                   </tr>
-
-
                 </tbody>
               </Table>
             </Accordion.Body>
           </Accordion.Item>
-
         )) : <Paper>
           <h2 className='p-4 font-bold mt-4'>Geçmiş kiralama bilgisi bulunamadı!</h2>
         </Paper>
       }
+
+      {/* Onay */}
+      {showConfirmation && (
+        <div className="confirmation-dialog">
+          <div className="message">Kiralamayı sonlandırmak istediğinize emin misiniz?</div>
+          <div className="actions">
+            <Button onClick={handleConfirm} className="btn-confirm">Onayla</Button>
+            <Button onClick={handleCancel} className="btn-cancel">Vazgeç</Button>
+          </div>
+        </div>
+      )}
     </Accordion>
+  );
+};
 
-  )
-
-}
-
-export default Rentals
+export default Rentals;
