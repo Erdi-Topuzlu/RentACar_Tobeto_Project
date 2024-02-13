@@ -2,7 +2,10 @@ package com.tobeto.RentACar.services.concretes;
 
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.BrandRepository;
+import com.tobeto.RentACar.rules.brand.BrandBusinessRulesManager;
 import com.tobeto.RentACar.rules.brand.BrandBusinessRulesService;
 import com.tobeto.RentACar.services.dtos.requests.brand.AddBrandRequest;
 import com.tobeto.RentACar.services.dtos.requests.brand.UpdateBrandRequest;
@@ -14,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class BrandManagerTest {
@@ -25,7 +28,7 @@ class BrandManagerTest {
     @Mock
     private ModelMapperService mockModelMapperService;
     @Mock
-    private BrandBusinessRulesService mockBrandBusinessRulesService;
+    private BrandBusinessRulesService brandBusinessRulesService;
 
 
     @BeforeEach
@@ -33,68 +36,65 @@ class BrandManagerTest {
 
         MockitoAnnotations.openMocks(this);
 
-        mockBrandBusinessRulesService = Mockito.mock(BrandBusinessRulesService.class);
-
-        brandManager = new BrandManager(brandRepository, mockModelMapperService, mockBrandBusinessRulesService);
+        brandManager = new BrandManager(brandRepository, mockModelMapperService,brandBusinessRulesService);
 
     }
 
     @AfterEach
     void tearDown(){}
 
+
     @Test
-    void brandWithSameIdShouldNotExist(){
+    void brandWithSameIdShouldThrowBusinessException(){
 
         UpdateBrandRequest updateBrandRequest = new UpdateBrandRequest();
         updateBrandRequest.setId(1);
 
-        Mockito.when(brandRepository.existsById(updateBrandRequest.getId())).thenReturn(true);
+        Mockito.when(brandRepository.existsById(1)).thenReturn(true);
         assertThrows(RuntimeException.class, () -> {
             brandManager.update(updateBrandRequest);
         });
     }
 
     @Test
-    void brandWithSameNameShouldNotExist(){
+    void brandWithSameNameShouldThrowBusinessException(){
+        Mockito.doThrow(new BusinessException(Messages.brandNameAlreadyExist))
+                .when(brandBusinessRulesService)
+                .checkIfBrandNameExists(Mockito.anyString());
+
 
         AddBrandRequest addBrandRequest = new AddBrandRequest();
-        addBrandRequest.setName("BMW");
+        addBrandRequest.setName("Tesla");
 
-        Mockito.when(brandRepository.existsByName(addBrandRequest.getName()))
+        Mockito.when(brandRepository.existsByName("Tesla"))
                 .thenReturn(true);
 
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(BusinessException.class, () -> {
             brandManager.add(addBrandRequest);
         });
 
-        /*UpdateBrandRequest updateBrandRequest =new UpdateBrandRequest();
-        updateBrandRequest.setName("BMW");
 
-        Mockito.when(brandRepository.existsByName(updateBrandRequest.getName()))
+        UpdateBrandRequest updateBrandRequest =new UpdateBrandRequest();
+        updateBrandRequest.setName("Tesla");
+
+        Mockito.when(brandRepository.existsByName("Tesla"))
                 .thenReturn(true);
 
-        assertThrows(RuntimeException.class, () ->{
+        assertThrows(BusinessException.class, () ->{
             brandManager.update(updateBrandRequest);
-        });*/
+        });
 
 
     }
 
     @Test
-    void successfull() {
-        MockitoAnnotations.openMocks(this);
-        mockModelMapperService = Mockito.mock(ModelMapperService.class);
-
-        Mockito.when(mockModelMapperService.dtoToEntity())
-                .thenReturn(new ModelMapper());
-
-        brandManager = new BrandManager(brandRepository, mockModelMapperService, mockBrandBusinessRulesService);
-
+    void addBrandSuccessfully() {
+        Mockito.when(mockModelMapperService.dtoToEntity()).thenReturn(new ModelMapper());
         AddBrandRequest addBrandRequest = new AddBrandRequest();
         addBrandRequest.setName("BMW");
 
         brandManager.add(addBrandRequest);
-        assert true;
+
     }
 
 }

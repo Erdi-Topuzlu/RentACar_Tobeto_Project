@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
@@ -125,7 +126,7 @@ public class UserManager implements UserService {
 //                    .path(fileName)
                     .toUriString();
         } catch (Exception e) {
-            throw new RuntimeException("Unable to save Image");
+            throw new RuntimeException(Messages.unableToSaveImg);
         }
     };
 
@@ -137,17 +138,17 @@ public class UserManager implements UserService {
 
         // check if the current password is not correct
         if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
-            throw new IllegalStateException("Current password is not correct");
+            throw new IllegalStateException(Messages.currentPswNotCorrect);
         }
 
         // check if the new password and confirm password are not the same
         if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
-            throw new IllegalStateException("New password and confirm password are not the same");
+            throw new IllegalStateException(Messages.newAndConfirmPswNotSame);
         }
 
         // check if the new password is the same as the current password
         if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), user.getPassword())) {
-            throw new IllegalStateException("New password cannot be the same as the current password");
+            throw new IllegalStateException(Messages.newAndCurrentPswNotSame);
         }
 
         // change the password

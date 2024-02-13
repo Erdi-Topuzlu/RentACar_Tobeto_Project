@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.entities.concretes.slider.Slider;
 import com.tobeto.RentACar.repositories.SliderRepository;
 import com.tobeto.RentACar.rules.slider.SliderBusinessRulesService;
@@ -95,7 +96,7 @@ public class SliderManager implements SliderService {
                     .path("/api/v1/sliderImage/" + fileName)
                     .toUriString();
         } catch (Exception e) {
-            throw new RuntimeException("Unable to save Image");
+            throw new RuntimeException(Messages.unableToSaveImg);
         }
     };
 }

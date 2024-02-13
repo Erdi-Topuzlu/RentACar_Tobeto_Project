@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.security.controllers;
 
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.security.services.LogoutService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,6 @@ public class LogoutController {
     @PostMapping
     public ResponseEntity<String> logout() {
         logoutService.logout();
-        return ResponseEntity.ok("Çıkış başarılı!");
+        return ResponseEntity.ok(Messages.logoutSuccess);
     }
 }

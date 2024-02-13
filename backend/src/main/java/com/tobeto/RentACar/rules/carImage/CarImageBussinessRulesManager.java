@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.rules.carImage;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.CarImageRepository;
 import com.tobeto.RentACar.services.abstracts.CarService;
 import lombok.AllArgsConstructor;
@@ -14,14 +15,14 @@ public class CarImageBussinessRulesManager implements CarImageBusinessRulesServi
     @Override
     public void checkIfCarIdExists(int id) {
         if (!carService.existsById(id)) {
-            throw new BusinessException("CarId is Not Found!");
+            throw new BusinessException(Messages.carIdNotFound);
         }
     }
 
     @Override
     public void checkIfByIdExists(int id) {
         if (!carImageRepository.existsById(id)) {
-            throw new BusinessException("Car Image Id Not Found !");
+            throw new BusinessException(Messages.carImgIdNotFound);
         }
     }
 }

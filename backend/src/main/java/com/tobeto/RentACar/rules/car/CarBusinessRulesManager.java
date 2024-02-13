@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.rules.car;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.CarRepository;
 import com.tobeto.RentACar.services.abstracts.ColorService;
 import com.tobeto.RentACar.services.abstracts.ModelService;
@@ -17,28 +18,28 @@ public class CarBusinessRulesManager implements CarBusinessRulesService {
     @Override
     public void checkIfPlateNameExists(String plate) {
         if (carRepository.existsByPlate(plate)) {
-            throw new BusinessException("Plate already exists!");
+            throw new BusinessException(Messages.plateAlreadyExists);
         }
     }
 
     @Override
     public void checkIfColorIdExists(int id) {
         if (!colorService.existsById(id)) {
-            throw new BusinessException("ColorId is Not Found!");
+            throw new BusinessException(Messages.colorIdNotFound);
         }
     }
 
     @Override
     public void checkIfModelIdExists(int id) {
         if (!modelService.existsById(id)) {
-            throw new BusinessException("ModelId is Not Found!");
+            throw new BusinessException(Messages.modelIdNotFound);
         }
     }
 
     @Override
     public void checkIfByIdExists(int id) {
         if (!carRepository.existsById(id)) {
-            throw new BusinessException("carId is Not Found!");
+            throw new BusinessException(Messages.carIdNotFound);
 
         }
     }

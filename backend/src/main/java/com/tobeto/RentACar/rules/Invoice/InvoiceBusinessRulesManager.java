@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.rules.Invoice;
 
 import com.tobeto.RentACar.core.utilities.exceptions.BusinessException;
+import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.repositories.InvoiceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class InvoiceBusinessRulesManager implements InvoiceBusinessRulesService 
     @Override
     public void checkIfByIdExists(int id) {
         if (!invoiceRepository.existsById(id)) {
-            throw new BusinessException("Invoice Id Not Found !");
+            throw new BusinessException(Messages.invoiceIdNotFound);
         }
     }
 }
