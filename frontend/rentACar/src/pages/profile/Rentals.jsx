@@ -9,15 +9,34 @@ import { Table } from 'react-bootstrap';
 import { Button } from 'reactstrap';
 import { toastError, toastSuccess } from '../../service/ToastifyService';
 import axiosInstance from '../../redux/utilities/interceptors/axiosInterceptors';
+import { DialogActions, DialogContent, DialogTitle, Divider, Modal, ModalDialog } from '@mui/joy';
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+import { useTranslation } from 'react-i18next';
+
+
+
+
+
+
+
+
 
 const Rentals = () => {
-  const dispatch = useDispatch();
-
   const { rentalDetails, status, error } = useSelector(state => state.rentalDetail);
   const { details } = useSelector((state) => state.userDetail);
 
+
+  const { t } = useTranslation();
+
+
+  const dispatch = useDispatch();
+
+
+
   const [selectedRental, setSelectedRental] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [cancel, setCancel] = useState();
+  const [finished, setFinished] = useState();
+  const [openDelete, setOpenDelete] = useState(false);
 
 
   const formatToday = () => {
@@ -113,25 +132,17 @@ const Rentals = () => {
         modelId: rental?.carId?.modelId?.id
       };
       setSelectedRental(formattedRental);
-      setShowConfirmation(true);
-      //console.log(selectedRental)
+      setOpenDelete(true);
+
     } else {
       console.error("Invalid rental start or end date.");
     }
   };
 
   const handleConfirm = () => {
-    setShowConfirmation(false);
     handleSubmit();
-    // window.location.reload();
     dispatch(fetchByUserIdRental(details.id));
 
-  };
-
- 
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
   };
 
   if (status === "LOADING") {
@@ -155,7 +166,7 @@ const Rentals = () => {
               <Table striped bordered hover>
                 <thead>
                   <tr>
-                    <th>Start Date / End Date</th>
+                    <th>{rental.returnDate ? t("StartDateReturnDate") : t("StartDateEndDate")}</th>
                     <th>Customer Full Name</th>
                     <th>Extras</th>
                     <th>Total Amount</th>
@@ -164,18 +175,51 @@ const Rentals = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{rental.startDate} / {rental.endDate}</td>
+                    <td>{rental.startDate} / {rental.returnDate ? rental.returnDate : rental.endDate}</td>
                     <td>{details.name} {details.surname}</td>
                     <td>{rental.extraId.extraName}</td>
-                    <td style={{ fontWeight: "bold" }}>{rental.totalPrice == 0 ? <span style={{ fontWeight: "normal",color:"red" }}>Kiralama iptal edildi</span> : rental.totalPrice + "₺" }</td>
+                    <td style={{ fontWeight: "bold" }}>
+                      {rental?.returnDate && rental?.startDate && formatDate(rental.returnDate) < formatDate(rental.startDate) ? (
+                        <span style={{ fontWeight: "normal", color: "red" }}>
+                          {rental.returnDate} Tarihinde kiralamadan vazgeçildi, faturaya yansıyacak tutar: 0₺
+                        </span>
+                      ) : (
+                        `${rental.totalPrice}₺`
+                      )}
+                    </td>
                     <td style={{ fontWeight: "bold", textAlign: "center" }}>
-                      <Button
-                        onClick={() => handleClick(rental)}
-                        className='bg-primary'
-                        disabled={rental?.isFinished}
-                      >
-                      {today < formatDate(rental?.startDate) ? "Kiralama'yı İptal Et" : "Kiralama'yı Sonlandır"}
-                      </Button>
+                      {today < formatDate(rental?.startDate) ?
+                        <Button
+                          onClick={() => {
+                            setFinished(false)
+                            setCancel(true)
+                            handleClick(rental)
+                          }
+                          }
+                          className='bg-primary'
+                          disabled={rental?.isFinished}
+                        >
+                          {!rental.returnDate ? "Kiralamayı İptal Et" : "Kiralama iptal edildi"}
+
+                        </Button> :
+
+                        <Button
+                          onClick={() => {
+                            setCancel(false)
+                            setFinished(true)
+                            handleClick(rental)
+                          }
+                          }
+                          className='bg-primary'
+                          disabled={rental?.isFinished}
+                        >
+                         
+                          {!rental.returnDate ? "Kiralamayı sonlandır" : "Kiralama sonlandırıldı" }
+                        </Button>
+
+
+                      }
+
                     </td>
                   </tr>
                 </tbody>
@@ -188,17 +232,65 @@ const Rentals = () => {
       }
 
       {/* Onay */}
-      {showConfirmation && (
-        <div className="confirmation-dialog">
-          <div className="message">Kiralamayı sonlandırmak istediğinize emin misiniz?</div>
-          <div className="actions">
-            <Button onClick={handleConfirm} className="btn-confirm">Onayla</Button>
-            <Button onClick={handleCancel} className="btn-cancel">Vazgeç</Button>
-          </div>
-        </div>
-      )}
+
+      <Modal
+        open={openDelete}
+        onClose={() => {
+          setOpenDelete(false);
+          setFinished(false)
+          setCancel(false)
+        }}
+        sx={{
+          zIndex: 11000,
+
+        }}
+      >
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            {cancel ?
+              t("cancelMessageTitle") :
+              t("finishMessageTitle")
+            }
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            {
+              cancel &&
+              <p>{t("infoMessageCancel")}</p>
+            }
+
+            {finished &&
+              <p>{t("infoMessageFinish")}</p>
+            }
+
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="solid"
+              color="success"
+              onClick={() => {
+                handleConfirm();
+                setOpenDelete(false);
+              }}
+            >
+              {t("submit")}
+            </Button>
+            <Button
+              variant="plain"
+              color="neutral"
+              onClick={() =>
+                setOpenDelete(false)}
+            >
+              {t("cancel")}
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
     </Accordion>
+
   );
 };
+
 
 export default Rentals;

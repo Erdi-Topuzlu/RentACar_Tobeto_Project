@@ -24,8 +24,8 @@ const AboutSection = ({ aboutClass }) => {
               {/* Sol taraftan gelen içerik */}
 
               <div className="about__section-content">
-                <h4 className="section__subtitle">{t("aboutUs")}</h4>
                 <h2 className="section__title">{t("welcome")}</h2>
+                <h4 className="section__subtitle">{t("aboutUs")}</h4>
                 <p className="section__description">{t("aboutUsDesc1")}</p>
                 <p className="section__description">{t("aboutUsDesc2")}</p>
 

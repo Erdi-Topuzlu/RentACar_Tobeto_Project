@@ -98,6 +98,7 @@ const ChangePassword = () => {
                         formik.touched.oldPassword &&
                         "error"
                       }
+                      type="password"
                       value={formik.values.oldPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -122,6 +123,8 @@ const ChangePassword = () => {
                         formik.touched.newPassword &&
                         "error"
                       }
+                      type="password"
+
                       value={formik.values.newPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -145,6 +148,8 @@ const ChangePassword = () => {
                         formik.touched.newConfirmPassword &&
                         "error"
                       }
+                      type="password"
+
                       value={formik.values.newConfirmPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}

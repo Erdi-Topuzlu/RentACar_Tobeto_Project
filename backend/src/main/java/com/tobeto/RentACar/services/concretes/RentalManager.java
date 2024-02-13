@@ -51,6 +51,8 @@ public class RentalManager implements RentalService {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
 
+        } else if (rental.getReturnDate().equals(rental.getStartDate())) {
+            rental.setTotalPrice(carId.getDailyPrice());
         } else {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
@@ -63,11 +65,9 @@ public class RentalManager implements RentalService {
     public void update(UpdateRentalRequest request) {
         rentalBusinessRulesService.checkIfByIdExists(request.getId());
         rentalBusinessRulesService.checkIfEndDateBeforeStartDate(request.getEndDate(), request.getStartDate());
-       // rentalBusinessRulesService.checkIfReturnDateBeforeStartDate(request.getReturnDate(), request.getStartDate());
         rentalBusinessRulesService.checkIfCarIdExists(request.getCarId());
         rentalBusinessRulesService.checkIfUserIdExists(request.getUserId());
         rentalBusinessRulesService.checkMaxRentTime(request.getEndDate(), request.getStartDate());
-
 
         Rental rental = modelMapperService.dtoToEntity().map(request, Rental.class);
         GetByIdCarResponse carId = carService.getById(request.getCarId());
@@ -80,18 +80,15 @@ public class RentalManager implements RentalService {
         } else if (rental.getReturnDate() == null) {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
-
-        }else if (rental.getReturnDate() != null && rental.getReturnDate().isBefore(rental.getStartDate())) {
+        } else if (rental.getReturnDate().isBefore(rental.getStartDate())) {
             rental.setTotalPrice(0.0);
 
-            /* else if (request.getTotalPrice() > 0) {
-            rental.setTotalPrice(request.getTotalPrice());
-            }*/
-        }else {
+        } else if (rental.getReturnDate().equals(rental.getStartDate())) {
+            rental.setTotalPrice(carId.getDailyPrice());
+        } else {
             Double totalPrice = (ChronoUnit.DAYS.between(rental.getStartDate(), rental.getReturnDate()) * carId.getDailyPrice()) + extraId.getExtraPrice();
             rental.setTotalPrice(totalPrice);
         }
-
 
         rentalRepository.save(rental);
     }

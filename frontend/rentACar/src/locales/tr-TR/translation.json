@@ -21,7 +21,6 @@
   "contact": "İletişim",
   "search": "Ara",
   "reset": "Şifreyi Sıfırla",
-  "user":"Kullanıcı",
 
   "_footer": "FOOTER-TR",
   "privacy": "Gizlilik Politikası",
@@ -105,7 +104,7 @@
 
   "_aboutUs": "ABOUT US-TR",
   "aboutUs": "Hakkımızda",
-  "welcome": "Pair-1 Kiralamaya Hoşgeldiniz",
+  "welcome": "Pair-1 Rent a Car'a Hoşgeldiniz",
   "aboutUsDesc1": "Rent-A-Car Projesi, modern web teknolojileri kullanılarak geliştirilen bir araç kiralama platformudur. Bu proje, kullanıcı dostu bir arayüz, güçlü bir back-end altyapısı ve güvenilir bir veritabanı kullanarak kullanıcılara kapsamlı bir araç kiralama deneyimi sunmayı hedeflemektedir.",
   "aboutUsDesc2": "Projemiz, 4 kişilik bir ekip tarafından titizlikle geliştirilmiştir. Her bir geliştirici, kendi uzmanlık alanında katkıda bulunarak, proje sürecinde etkileşimli ve yenilikçi bir kullanıcı deneyimi oluşturmayı amaçlamıştır.",
   "aboutUsItem1": "Kullanıcı Dostu Arayüz",
@@ -245,9 +244,6 @@
   "totalAmount2":"Toplam Tutar",
 
   "completedRental":"Kiralama İşleminiz Başarıyla Tamamlanmıştır",
-  "endedRental":"Kiralama işlemi sonlandırıldı",
-  "previousRentalNotFound":"Geçmiş kiralama bilgisi bulunamadı!",
-  "terminateRental":"Araç kiralamayı sonlandırmak istediğinize emin misiniz?",
   "myRentals":"Kiramalarım",
   "month":"Ay",
 
@@ -307,9 +303,6 @@
   "delete":"Sil",
   "actions":"Eylemler",
   "addNew":"Yeni Ekle",
-  "action":"Eylem",
-
-  "addPackage":"Paket Ekle",
 
   "addNewBrand":"Yeni Marka Ekle",
   "updateBrand":"Markayı Güncelle",
@@ -377,22 +370,5 @@
   "selectSeatType":"Koltuk Sayısı Seçiniz",
 
   "confirmation":"Onay",
-  "deleteMessage":"Silmek istediğinizden emin misiniz?",
-
-
-  "logoutSuccess":"Çıkış işlemi başarılı!",
-  "logoutFailed":"Çıkış işlemi başarısız.",
-
-  "paymentDirect":"Doğrudan Banka Havalesi",
-  "paymentCheque":"Çekle ödeme",
-
-  "reserveNow":"Hemen Kirala!",
-
-  "noSuitableCar":"Uygun bir araç bulunamadı!",
-
-  "successRegistration":"Kayıt işlemi başarıyla gerçekleşti.",
-
-  "noRefreshToken":"Refresh token bulunamadı."
-
-
+  "deleteMessage":"Silmek istediğinizden emin misiniz?"  
 }

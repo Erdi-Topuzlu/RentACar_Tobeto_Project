@@ -22,7 +22,6 @@
   "contact": "Contact",
   "search": "Search",
   "reset":"Reset Password",
-  "user":"User",
 
   "_footer": "FOOTER-EN",
   "privacy": "Privacy Policy",
@@ -261,11 +260,6 @@
   "personalInfoDesc":"Customize your profile information",
   "save":"Save",
   "cancel":"Cancel",
-  "error":"Error",
-  "unknownError":"Unknown Error",
-  "registrationError":"Registration error",
-  "loading":"Loading",
-  "confirm2":"Confirm",
 
   "_changePassword":"Change Password - EN",
   "changePassword":"Change Password",
@@ -312,9 +306,6 @@
   "delete":"Delete",
   "actions":"Actions",
   "addNew":"Add New",
-  "action":"Action",
-
-  "addPackage":"Add Package",
 
   "addNewBrand":"Add New Brand",
   "updateBrand":"Update to Brand",
@@ -385,21 +376,6 @@
   "selectSeatType":"Select a Seat Type",
   
   "confirmation":"Confirmation",
-  "deleteMessage":"Are you sure you want to delete?",
-
-  "logoutSuccess":"Logout is successful!",
-  "logoutFailed":"Logout is failed",
-
-  "paymentDirect":"Direct Bank Transfer",
-  "paymentCheque":"Cheque Payment",
-
-  "reserveNow":"Reserve Now!",
-
-  "noSuitableCar":"No suitable vehicle was found!",
-
-  "successRegistration":"Registration was successful.",
-
-  "noRefreshToken":"No refresh token."
-
+  "deleteMessage":"Are you sure you want to delete?"  
 
 }

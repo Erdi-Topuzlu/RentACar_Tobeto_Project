@@ -82,7 +82,7 @@ export default function RentalTable() {
   const [open, setOpen] = React.useState(false);
   const [carDetails, setCarDetails] = React.useState();
   const [dateInputType, setDateInputType] = React.useState("text");
-  const { rentals,status,error } = useSelector((state) => state.allRentals);
+  const { rentals, status, error } = useSelector((state) => state.allRentals);
   const { items } = useSelector((state) => state.carAllData);
   const { details } = useSelector((state) => state.carDetail);
   const { users } = useSelector((state) => state.userAllData);
@@ -146,19 +146,19 @@ export default function RentalTable() {
         toastSuccess(t("rentalSeuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllRental());
-      }catch (error) {
+      } catch (error) {
         setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.validationErrors.startDate))
           dispatch(fetchAllRental());
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllRental());
         }else{
-          toastError(t("unknownError"))
+          toastError("Bilinmeyen hata")
           dispatch(fetchAllRental());
         }
-    }
+      }
     }
   };
 
@@ -166,13 +166,13 @@ export default function RentalTable() {
     initialValues: {
       startDate: startDate || "",
       endDate: endDate || "",
-      returnDate: returnDate ||"",
+      returnDate: returnDate || "",
       carId: carId || "",
       userId: userId || "",
       extraId: extraId || "",
     },
 
-    
+
     validationSchema: rentalValidationSchema,
     onSubmit: async (values, actions) => {
       const data = {
@@ -192,16 +192,16 @@ export default function RentalTable() {
         setOpen(false);
         dispatch(fetchAllRental());
         formik.resetForm();
-      }catch (error) {
+      } catch (error) {
         setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.validationErrors.startDate))
           dispatch(fetchAllRental());
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllRental());
         }else{
-          toastError(t("unknownError"))
+          toastError("Bilinmeyen hata")
           dispatch(fetchAllRental());
         }
 
@@ -324,6 +324,17 @@ export default function RentalTable() {
               >
                 {t("brand")} | {t("model")}
               </th>
+
+              <th
+                style={{
+                  width: "auto",
+                  padding: "12px 6px",
+                  textAlign: "center",
+                }}
+              >
+                {t("Status")}
+              </th>
+
               <th
                 style={{
                   width: "auto",
@@ -371,8 +382,11 @@ export default function RentalTable() {
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">
+                    <span style={{fontWeight:"bold", fontSize:"14px"}}>
                     {row.startDate} /{" "}
                     {row.returnDate ? row.returnDate : row.endDate}
+                    </span>
+                   
                   </Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
@@ -407,16 +421,25 @@ export default function RentalTable() {
                   </div>
                 </td> */
                   <td style={{ textAlign: "center" }}>
-                    <Chip color="primary" variant="solid">
-                      {row.userId?.name} {row.userId?.surname}
-                    </Chip>
+                     <span style={{fontWeight:"bold"}}>{row.userId?.name} {row.userId?.surname}</span> 
                   </td>
                 }
 
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs">
-                  {row.carId?.modelId?.brandId?.name} &bull; {row.carId?.modelId?.name}
+                   <span style={{fontWeight:"bold", fontSize:"14px"}}>{row.carId?.modelId?.brandId?.name} &bull; {row.carId?.modelId?.name}</span>
                   </Typography>
+                </td>
+
+                <td style={{ textAlign: "center" }}>
+                  <Typography level="body-xs">
+                    <Chip color="warning" variant="solid">
+                      {row?.returnDate && row?.isFinished && row?.totalPrice === 0 ? "İptal Edildi" :
+                        (row?.returnDate && row?.isFinished && row?.totalPrice !== 0 ? "Sonlandırıldı" :
+                          (!row?.returnDate ? "Devam Ediyor" : ""))}
+                    </Chip>
+                  </Typography>
+
                 </td>
 
                 <td style={{ textAlign: "center" }}>
@@ -462,13 +485,13 @@ export default function RentalTable() {
                           setUserId(row.userId?.name);
                           setCarId(
                             row.carId?.modelId?.brandId?.name +
-                              "|" +
-                              row.carId?.modelId?.name
+                            "|" +
+                            row.carId?.modelId?.name
                           );
                           setOpenDelete(true);
                           setUpdCarId(row.carId?.id)
                           setCarDetails(row.carId)
-                         
+
                         }}
                         color="danger"
                       >
@@ -478,10 +501,10 @@ export default function RentalTable() {
                   </Dropdown>
                 </td>
               </tr>
-             ))}
-             </tbody>
-           </Table>
-         )}
+            ))}
+          </tbody>
+        </Table>
+      )}
 
         <Modal
           aria-labelledby="modal-title"
@@ -535,72 +558,69 @@ export default function RentalTable() {
             >
               <Grid xs={12}>
                 <Form onSubmit={formik.handleSubmit}>
-                  <div>
-                    <FormLabel>{t("startDate")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="startDate"
-                        name="startDate"
-                        value={formik.values.startDate || startDate}
-                        className={
-                          formik.errors.startDate &&
-                          formik.touched.startDate &&
-                          "error form-control"
-                        }
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          setStartDate(e.target.value);
-                        }}
-                        onBlur={(e) => {
-                          formik.handleBlur(e);
-                          deactivateDateInput();
-                        }}
-                        onFocus={activateDateInput}
-                        type={dateInputType}
-                        error={
-                          formik.errors.startDate && formik.touched.startDate
-                        }
-                        placeholder={
-                          formik.errors.startDate && formik.touched.startDate
-                            ? formik.errors.startDate
-                            : t("startDate")
-                        }
-                      />
-                    </FormGroup>
-                  </div>
-                  <div>
-                    <FormLabel>{t("endDate")}</FormLabel>
-                    <FormGroup className="">
-                      <Input
-                        id="endDate"
-                        name="endDate"
-                        value={formik.values.endDate || endDate}
-                        className={
-                          formik.errors.endDate &&
-                          formik.touched.endDate &&
-                          "error form-control"
-                        }
-                        onChange={(e) => {
-                          setEndDate(e.target.value);
-                          formik.handleChange(e);
-                        }}
-                        onBlur={(e) => {
-                          formik.handleBlur(e);
-                          deactivateDateInput();
-                        }}
-                        onFocus={activateDateInput}
-                        type={dateInputType}
-                        error={formik.errors.endDate && formik.touched.endDate}
-                        placeholder={
-                          formik.errors.endDate && formik.touched.endDate
-                            ? formik.errors.endDate
-                            : t("endDate")
-                        }
-                      />
-                    </FormGroup>
-                  </div>
+                  <FormLabel>{t("startDate")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="startDate"
+                      name="startDate"
+                      value={formik.values.startDate || startDate}
+                      className={
+                        formik.errors.startDate &&
+                        formik.touched.startDate &&
+                        "error form-control"
+                      }
+                      onChange={(e) => {
+                        formik.handleChange(e);
+                        setStartDate(e.target.value);
+                      }}
+                      onBlur={(e) => {
+                        formik.handleBlur(e);
+                        deactivateDateInput();
+                      }}
+                      onFocus={activateDateInput}
+                      type={dateInputType}
+                      error={
+                        formik.errors.startDate && formik.touched.startDate
+                      }
+                      placeholder={
+                        formik.errors.startDate && formik.touched.startDate
+                          ? formik.errors.startDate
+                          : t("startDate")
+                      }
+                    />
+                  </FormGroup>
+                  <FormLabel>{t("endDate")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="endDate"
+                      name="endDate"
+                      value={formik.values.endDate || endDate}
+                      className={
+                        formik.errors.endDate &&
+                        formik.touched.endDate &&
+                        "error form-control"
+                      }
+                      onChange={(e) => {
+                        setEndDate(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      onBlur={(e) => {
+                        formik.handleBlur(e);
+                        deactivateDateInput();
+                      }}
+                      onFocus={activateDateInput}
+                      type={dateInputType}
+                      error={formik.errors.endDate && formik.touched.endDate}
+                      placeholder={
+                        formik.errors.endDate && formik.touched.endDate
+                          ? formik.errors.endDate
+                          : t("endDate")
+                      }
+                    />
+                  </FormGroup>
                   {isEdit && (
-                    <div>
+                    <>
+
                       <FormLabel>{t("returnDate")}</FormLabel>
                       <FormGroup className="">
                         <Input
@@ -632,73 +652,80 @@ export default function RentalTable() {
                           }
                         />
                       </FormGroup>
-                    </div>
+                    </>
                   )}
 
-                  <div>
-                    {/* <FormLabel>Select a Car</FormLabel> */}
-                    <FormGroup className="">
-                      <select
-                        id="car"
-                        name="carId"
-                        value={formik.values.carId || carId}
-                        onChange={(e) => {
-                          const selectedCarId = e.target.value;
-                          setCarId(selectedCarId);
-                        }}
-                        style={{
-                          textAlign: "center",
-                          appearance: "none",
-                          WebkitAppearance: "none",
-                          MozAppearance: "none",
-                          padding: "7px",
-                          fontSize: "16px",
-                          border: "1px solid #ccc",
-                          borderRadius: "10px",
-                          width: "50%",
-                        }}
-                      >
-                        <option value="">{t("selectCar")}</option>
-                        {items
+                  {/* <FormLabel>Select a Car</FormLabel> */}
+                  <FormGroup className="">
+                    <select
+                      id="car"
+                      name="carId"
+                      value={formik.values.carId || carId}
+                      onChange={(e) => {
+                        const selectedCarId = e.target.value;
+                        setCarId(selectedCarId);
+                      }}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
+                    >
+                      <option value="">{t("selectCar")}</option>
+                      {isEdit ?
+                        items
+                          .filter((item) => item.isAvailable === false)
+                          .map((car, index) => (
+                            <option key={car.id} value={car.id}>
+                              {car.modelId?.brandId?.name} - {car.modelId?.name}
+                            </option>
+                          )) :
+
+                        items
                           .filter((item) => item.isAvailable === true)
                           .map((car, index) => (
                             <option key={car.id} value={car.id}>
                               {car.modelId?.brandId?.name} - {car.modelId?.name}
                             </option>
-                          ))}
-                      </select>
-                      
-                    </FormGroup>
-                  </div>
-                  <div>
-                    {/* <FormLabel>Select a User</FormLabel> */}
-                    <FormGroup className="">
-                      <select
-                        id="user"
-                        name="userId"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
-                        style={{
-                          textAlign: "center",
-                          appearance: "none",
-                          WebkitAppearance: "none",
-                          MozAppearance: "none",
-                          padding: "7px",
-                          fontSize: "16px",
-                          border: "1px solid #ccc",
-                          borderRadius: "10px",
-                          width: "50%",
-                        }}
-                      >
-                        <option value="">{t("selectUser")}</option>
-                        {users.map((user) => (
-                          <option key={user.id} value={user.id}>
-                            {user.name}{" "}{user.surname}
-                          </option>
-                        ))}
-                      </select>
-                    </FormGroup>
-                  </div>
+                          ))
+
+                      }
+                    </select>
+
+                  </FormGroup>
+                  {/* <FormLabel>Select a User</FormLabel> */}
+                  <FormGroup className="">
+                    <select
+                      id="user"
+                      name="userId"
+                      value={formik.values.userId || userId}
+                      onChange={(e) => setUserId(e.target.value)}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
+                    >
+                      <option value="">{t("selectUser")}</option>
+                      {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.name}{" "}{user.surname}
+                        </option>
+                      ))}
+                    </select>
+                  </FormGroup>
 
                   <div>
                     {/* <FormLabel htmlFor="fuelType">Select a Extra</FormLabel> */}
@@ -723,7 +750,7 @@ export default function RentalTable() {
                           width: "50%",
                         }}
                         size="sm"
-                        placeholder={t("filterStatus")}
+                        placeholder="Filter by status"
                         slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
                         onBlur={formik.handleBlur}
                         className={
@@ -734,13 +761,13 @@ export default function RentalTable() {
                       >
                         <option value="">{t("selectExtra")}</option>
                         <option value="1" key="1">
-                          {t("miniPackage")} - 200.00₺
+                          Mini Package - 200.00₺
                         </option>
                         <option value="2" key="2">
-                        {t("mediumPackage")} - 350.00₺
+                          Medium Package - 350.00₺
                         </option>
                         <option value="3" key="3">
-                        {t("freePackage")} - 0₺
+                          Free Package - 0₺
                         </option>
                       </select>
                     </FormGroup>

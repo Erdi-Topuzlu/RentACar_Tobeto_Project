@@ -26,7 +26,7 @@ const CarItem = ({ item }) => {
         <div className="car__item-content mt-4 text-center">
           <h5 className="campaign__title">
             {item.modelId?.brandId?.name}
-            {" / "}
+            {" "}
             {item.modelId?.name}
           </h5>
           <h6 className="rent__price mt-2">

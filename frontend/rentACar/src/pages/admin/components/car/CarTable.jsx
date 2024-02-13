@@ -331,6 +331,16 @@ export default function CarTable() {
                     textAlign: "center",
                   }}
                 >
+                  {t("status")}
+                </th>
+
+                <th
+                  style={{
+                    width: "auto",
+                    padding: "12px 6px",
+                    textAlign: "center",
+                  }}
+                >
                   {t("plate")}
                 </th>
 
@@ -373,6 +383,12 @@ export default function CarTable() {
                     <Typography level="body-xs">
                       {row?.year} | {row?.colorId?.name}
                     </Typography>
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    <Chip color="warning" variant="solid">
+                      {row?.isAvailable ? "Uygun" : "Kiralık" }
+                    </Chip>
                   </td>
 
                   <td style={{ textAlign: "center" }}>
