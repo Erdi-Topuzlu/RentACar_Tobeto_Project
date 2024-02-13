@@ -78,7 +78,6 @@ export default function SliderTable() {
     (state) => state.sliderAllData
   );
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [selectedImage, setSelectedImage] = React.useState(null);
   const [eventFile, setEventFile] = React.useState(null);
 
   const dispatch = useDispatch();
@@ -156,7 +155,7 @@ export default function SliderTable() {
         const reader = new FileReader();
 
         reader.onload = async (e) => {
-          setSelectedImage(e.target.result);
+         
 
           try {
             const response = await axiosInstance.post(
@@ -168,8 +167,6 @@ export default function SliderTable() {
             );
 
             if (response.status === 200) {
-              const updatedImageUrl = response.data;
-              setSelectedImage(updatedImageUrl);
               toastSuccess("Uploaded Photo");
               dispatch(fetchAllSliderData());
             } else {
@@ -177,7 +174,7 @@ export default function SliderTable() {
               dispatch(fetchAllBrandData());
             }
           } catch (error) {
-            console.error(error);
+            toastError("Bilinmeyen hata",error.response.data);
           }
         };
 
