@@ -95,15 +95,15 @@ export default function RentalList() {
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Rental ID bulunamadı!");
+      toastError(t("rentalIdNotFound"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
-        toastSuccess("Rental Başarıyla Silindi.");
+        toastSuccess(t("rentalSuccessDelete"));
         dispatch(fetchAllRentals());
       } catch (error) {
         setOpen(false)
-        toastError("Önce bağlı veriler silinmeli!")
+        toastError(t("connectedDataDelete"))
         dispatch(fetchAllRentals());
 
       }
@@ -113,7 +113,7 @@ export default function RentalList() {
   const handleUpdate = async (id) => {
     if (!startDate) {
       setOpen(false);
-      toastError("Start date alanı boş bırakılamaz!");
+      toastError(t("schemeStartDate"));
     } else {
       const updatedData = {
         id: id,
@@ -128,7 +128,7 @@ export default function RentalList() {
 
       try {
         await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
-        toastSuccess("Rental Başarıyla Güncellendi.");
+        toastSuccess(t("rentalSeuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllRentals());
       }catch (error) {
@@ -140,7 +140,7 @@ export default function RentalList() {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllRentals());
         }else{
-          toastError("Bilinmeyen hata")
+          toastError(t("unknownError"))
           dispatch(fetchAllRentals());
         }
     }
@@ -526,7 +526,7 @@ export default function RentalList() {
                           width: "50%",
                         }}
                       >
-                        <option value="">Select Car</option>
+                        <option value="">{t("selectCar")}</option>
                         {items
                           .filter((item) => item.isAvailable === true)
                           .map((car, index) => (
@@ -557,7 +557,7 @@ export default function RentalList() {
                           width: "50%",
                         }}
                       >
-                        <option value="">Select User</option>
+                        <option value="">{t("selectUser")}</option>
                         {users.map((user) => (
                           <option key={user.id} value={user.id}>
                             {user.name}
@@ -591,7 +591,7 @@ export default function RentalList() {
                           width: "50%",
                         }}
                         size="sm"
-                        placeholder="Filter by status"
+                        placeholder={t("filterStatus")}
                         slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
                         onBlur={formik.handleBlur}
                         className={
@@ -600,15 +600,15 @@ export default function RentalList() {
                           "error"
                         }
                       >
-                        <option value="">Select Extra</option>
+                        <option value="">{t("selectExtra")}</option>
                         <option value="1" key="1">
-                          Mini Package - 200.00₺
+                        {t("miniPackage")} - 200.00₺
                         </option>
                         <option value="2" key="2">
-                          Medium Package - 350.00₺
+                        {t("mediumPackage")} - 350.00₺
                         </option>
                         <option value="3" key="3">
-                          Free Package - 0₺
+                        {t("freePackage")} - 0₺
                         </option>
                       </select>
                     </FormGroup>

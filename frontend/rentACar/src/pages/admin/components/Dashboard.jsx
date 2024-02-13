@@ -6,8 +6,10 @@ import Typography from "@mui/joy/Typography";
 import { ReactSVG } from "react-svg";
 import { Card, CardActions, Grid } from "@mui/joy";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -23,7 +25,7 @@ export default function Dashboard() {
         }}
       >
         <Typography level="h2" component="h1">
-        DASHBOARD 
+        {t("dashboard").toUpperCase} 
         </Typography>
         
       </Box>
@@ -45,7 +47,7 @@ export default function Dashboard() {
             
               <ReactSVG src="/src/assets/icons/slider.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Slider</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("slider")}</Button>
           </Card>
           </Link>
         </Grid>
@@ -64,7 +66,7 @@ export default function Dashboard() {
             >
               <ReactSVG src="/src/assets/icons/brand-dashboard.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Brands</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("brands")}</Button>
           </Card>
           </Link>
         </Grid>
@@ -83,7 +85,7 @@ export default function Dashboard() {
             >
               <ReactSVG src="/src/assets/icons/model-dashboard.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Models</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("models")}</Button>
           </Card>
           </Link>
         </Grid>
@@ -102,7 +104,7 @@ export default function Dashboard() {
             >
               <ReactSVG src="/src/assets/icons/color-dashboard.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Colors</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("colors")}</Button>
           </Card>
           </Link>
         </Grid>
@@ -121,7 +123,7 @@ export default function Dashboard() {
             >
               <ReactSVG src="/src/assets/icons/car-dashboard.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Cars</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("cars")}</Button>
           </Card>
           </Link>
         </Grid>
@@ -140,7 +142,7 @@ export default function Dashboard() {
             >
               <ReactSVG src="/src/assets/icons/key.svg" />
             </CardActions>
-            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">Rentals</Button>
+            <Button style={{ backgroundColor: "#673ab7", color: "white" }} size="md">{t("rentals")}</Button>
           </Card>
           </Link>
         </Grid>

@@ -25,7 +25,7 @@ const OUR__MEMBERS = [
     name: "Nida KASAP",
     experience: "Tobeto JAVA-1A @Pair-1",
     gitUrl: "https://github.com/nidosh",
-    linkedinUrl: "#",
+    linkedinUrl: "https://www.linkedin.com/in/nidaksp",
     imgUrl: "https://avatars.githubusercontent.com/u/145642334?v=4",
   },
 

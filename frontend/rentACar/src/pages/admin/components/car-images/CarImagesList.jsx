@@ -108,14 +108,14 @@ export default function CarImagesList() {
 
   const handleDelete = async (id) => {
     if (!id) {
-      toastError("Car ID bulunamadı!");
+      toastError(t("carIdNotFound"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
-        toastSuccess("Car Başarıyla Silindi.");
+        toastSuccess(t("carSuccessDelete"));
         dispatch(fetchAllCarData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        console.error(t("registrationError"), error);
       }
     }
   };
@@ -123,7 +123,7 @@ export default function CarImagesList() {
   const handleUpdate = async (id) => {
     if (!kilometer) {
       setOpen(false);
-      toastError("Kilometer alanı boş bırakılamaz!");
+      toastError(t("schemeCarKilometer"));
     } else {
       const updatedData = {
         id: id,
@@ -142,11 +142,11 @@ export default function CarImagesList() {
 
       try {
         await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
-        toastSuccess("Car Başarıyla Güncellendi.");
+        toastSuccess(t("carSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllCarData());
       } catch (error) {
-        console.error("Kayıt hatası:", error);
+        console.error(t("registrationError"), error);
       }
     }
   };
@@ -637,13 +637,13 @@ export default function CarImagesList() {
                     >
                       <option value="">{t("selectFuelType")}</option>
                       <option value="GASOLINE" key="1">
-                        Gasoline
+                      {t("gasoline")}
                       </option>
                       <option value="DIESEL" key="2">
-                        Diesel
+                      {t("diesel")}
                       </option>
                       <option value="HYBRID" key="3">
-                        Hybrid
+                      {t("hybrid")}
                       </option>
                     </select>
 
@@ -676,10 +676,10 @@ export default function CarImagesList() {
                     >
                       <option value="">{t("selectGearType")}</option>
                       <option value="AUTOMATIC" key="1">
-                        Automatic
+                      {t("automatic")}
                       </option>
                       <option value="MANUAL" key="2">
-                        Manual
+                      {t("manual")}
                       </option>
                     </select>
                   </FormGroup>
@@ -718,13 +718,13 @@ export default function CarImagesList() {
                     >
                       <option value="">{t("selectVehicleType")}</option>
                       <option value="SUV" key="1">
-                        SUV
+                      {t("suv")}
                       </option>
                       <option value="SEDAN" key="2">
-                        Sedan
+                      {t("sedan")}
                       </option>
                       <option value="HB" key="3">
-                        Hatchback
+                      {t("hatchback")}
                       </option>
                     </select>
 

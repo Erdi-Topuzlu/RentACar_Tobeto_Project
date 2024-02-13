@@ -43,13 +43,13 @@ const ChangePassword = () => {
           updatedData
         );
         if (response.status === 200) {
-          toastSuccess("Şifre Başarılı Bir Şekilde Güncellendi.");
+          toastSuccess(t(passwordUpdated));
         }
         if(response.status === 403) {
-          toastWarning("Lütfen Şifrenizi Doğru Girdiğinizden Emin Olunuz.")
+          toastWarning(t(correctPassword));
         }
       } catch (error) {
-        console.error("Güncelleme hatası hatası:", error.response.data);
+        console.error(t(updateError), error.response.data);
       } finally {
         actions.setSubmitting(false);
       }

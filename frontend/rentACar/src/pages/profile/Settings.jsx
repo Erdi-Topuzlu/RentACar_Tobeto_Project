@@ -64,10 +64,10 @@ const Settings = () => {
         );
         if (response.status === 200) {
           dispatch(fetchUserData(id));
-          toastSuccess("Güncelleme İşlemi Başarılı.");
+          toastSuccess(t("updateSuccess"));
         }
       } catch (error) {
-        console.error("Güncelleme hatası hatası:", error.response.data);
+        console.error(t("updateError"), error.response.data);
       } finally {
         actions.setSubmitting(false);
       }
@@ -111,7 +111,7 @@ const Settings = () => {
       };
 
       reader.readAsDataURL(file);
-      toastSuccess("Uploaded Photo");
+      toastSuccess(t("updatedPhoto"));
     }
   };
   
@@ -248,7 +248,7 @@ const Settings = () => {
                   </FormControl>
 
                   <FormControl sx={{ display: "flex-column", gap: 1 }}>
-                    <FormLabel>{t("Identify Number (11 Character)")}</FormLabel>
+                    <FormLabel>{t("identifyNumberMust")}</FormLabel>
                     <Input
                       name="tcNo"
                       id="tcNo"
@@ -430,7 +430,7 @@ const Settings = () => {
                       placeholder={
                         formik.errors.tcNo && formik.touched.tcNo
                           ? formik.errors.tcNo
-                          : t("tcNo")
+                          : t("identifyNumber")
                       }
                     />
                   </FormControl>

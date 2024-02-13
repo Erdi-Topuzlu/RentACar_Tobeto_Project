@@ -27,7 +27,7 @@ const FindCarForm = () => {
 
   const handleFindCar = () => {
     if (!selectedBrand && !selectedModel) {
-      toastWarning("Lütfen bir marka ve model seçiniz.");
+      toastWarning(t("selectBrandAndModel"));
     } else {
       localStorage.setItem("selectedBrand", selectedBrand);
       localStorage.setItem("selectedModel", selectedModel);
@@ -45,7 +45,7 @@ const FindCarForm = () => {
             value={selectedBrand}
             onChange={handleBrandChange}
           >
-            <option value="">{t("Brand")}</option>
+            <option value="">{t("brands")}</option>
             {items.map((car, i) => {
               const brandName = car.modelId?.brandId?.name;
               if (!selectBrands.includes(brandName)) {
@@ -70,7 +70,7 @@ const FindCarForm = () => {
             onChange={handleModelChange}
             disabled={!selectedBrand}
           >
-            <option value="">{t("Model")}</option>
+            <option value="">{t("models")}</option>
             {items
               .filter((car) => car.modelId.brandId.name === selectedBrand)
               .map((car, index) => {

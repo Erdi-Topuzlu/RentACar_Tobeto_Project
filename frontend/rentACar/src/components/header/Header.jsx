@@ -109,12 +109,12 @@ function Header() {
 
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        toastSuccess("Çıkış işlemi başarılı.");
+        toastSuccess(t("logoutSuccess"));
         setShowUi(true);
         navigate("/login");
       } else {
 
-        toastError("Çıkış işlemi başarısız.")
+        toastError(t("logoutFailed"))
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setShowUi(true);

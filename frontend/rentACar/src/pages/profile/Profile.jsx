@@ -26,7 +26,6 @@ export default function Profile() {
     const tabIndex = location.state?.tabIndex;
 
     if (tabIndex !== undefined) {
-      console.log("Gelen tabIndex:", tabIndex);
       setActiveTab(tabIndex);
     }
   }, [location.state]);
@@ -55,7 +54,7 @@ export default function Profile() {
           <Box sx={{ px: { xs: 2, md: 6 } }}>
             <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
               {t("welcomeProfile")}
-              {details.name ? details.name : "User"}
+              {details.name ? details.name : t("user")}
             </Typography>
           </Box>
           <Tabs

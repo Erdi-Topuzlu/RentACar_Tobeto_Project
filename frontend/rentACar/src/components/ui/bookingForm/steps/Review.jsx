@@ -378,7 +378,7 @@ const Review = ({ steps, activeStep, setActiveStep }) => {
             style={{ backgroundColor: "#673ab7", color: "white" }}
             onClick={handleSubmit}
           >
-            {t("Rent this car ")}
+            {t("rentThisCar")}
           </Button>
         </Grid>
       </div>
