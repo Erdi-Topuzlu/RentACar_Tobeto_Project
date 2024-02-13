@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { toastError, toastSuccess } from "../../../service/ToastifyService";
 import { NavDropdown } from "react-bootstrap";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 function Toggler({ defaultExpanded = false, renderToggle, children }) {
   const [open, setOpen] = React.useState(defaultExpanded);
@@ -51,13 +52,10 @@ const langSelect = (eventKey) => {
   localStorage.setItem("lang", eventKey);
 };
 
-
-
 export default function Sidebar() {
-  
   const { details, status, error } = useSelector((state) => state.userDetail);
   const { t } = useTranslation();
-  
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -76,14 +74,12 @@ export default function Sidebar() {
       });
 
       if (response.ok) {
-
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         toastSuccess("Çıkış işlemi başarılı.");
         navigate("/home");
       } else {
-
-        toastError("Çıkış işlemi başarısız.")
+        toastError("Çıkış işlemi başarısız.");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         setShowUi(true);
@@ -95,10 +91,8 @@ export default function Sidebar() {
     }
   };
 
-
   const menuItems = [
     { label: t("dashboard"), route: "dashboard" },
-    { label: t("slider"), route: "slider" },
     { label: t("brands"), route: "brands" },
     { label: t("models"), route: "models" },
     { label: t("colors"), route: "colors" },
@@ -116,7 +110,6 @@ export default function Sidebar() {
     return <ErrorPage errorMessage={error} />;
   }
 
-  
   return (
     <Sheet
       className="Sidebar"
@@ -169,43 +162,48 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "space-between" }}>
-  <ColorSchemeToggle />
-  <NavDropdown
-    menuVariant="dark"
-    title={
-      i18n.language === "en" ? (
-        <img width={24} src={england} />
-      ) : i18n.language === "tr" ? (
-        <img width={24} src={turkey} />
-      ) : // Handle other languages if needed
-        null
-    }
-    id="nav-dropdown"
-    onSelect={langSelect}
-  >
-    {i18n.language === "en" ? (
-      <NavDropdown.Item eventKey="tr">
-        <img width={16} src={turkey} /> {t("tr-TR")}
-      </NavDropdown.Item>
-    ) : i18n.language === "tr" ? (
-      <NavDropdown.Item eventKey="en">
-        <img width={16} src={england} /> {t("en-US")}
-      </NavDropdown.Item>
-    ) : // Handle other languages if needed
-      null}
-  </NavDropdown>
-</Box>
-<Divider />
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <ColorSchemeToggle />
+        <NavDropdown
+          menuVariant="dark"
+          title={
+            i18n.language === "en" ? (
+              <img width={24} src={england} />
+            ) : i18n.language === "tr" ? (
+              <img width={24} src={turkey} />
+            ) : // Handle other languages if needed
+            null
+          }
+          id="nav-dropdown"
+          onSelect={langSelect}
+        >
+          {i18n.language === "en" ? (
+            <NavDropdown.Item eventKey="tr">
+              <img width={16} src={turkey} /> {t("tr-TR")}
+            </NavDropdown.Item>
+          ) : i18n.language === "tr" ? (
+            <NavDropdown.Item eventKey="en">
+              <img width={16} src={england} /> {t("en-US")}
+            </NavDropdown.Item>
+          ) : // Handle other languages if needed
+          null}
+        </NavDropdown>
+      </Box>
+      <Divider />
       <Link component={RouterLink} to="../home" underline="none">
-          <IconButton variant="soft" color="neutral" size="lg">
-            <CarRentalIcon />
-          </IconButton>
-          <Typography level="title-lg">{t("pair-1")}</Typography>
-        </Link>
-      
-        
-        
+        <IconButton variant="soft" color="neutral" size="lg">
+          <CarRentalIcon />
+        </IconButton>
+        <Typography level="title-lg">{t("pair-1")}</Typography>
+      </Link>
+
       <Divider />
       <Box
         sx={{
@@ -220,30 +218,90 @@ export default function Sidebar() {
         }}
       >
         <List
-        size="sm"
-        sx={{
-          gap: 1,
-          "--List-nestedInsetStart": "30px",
-          "--ListItem-radius": (theme) => theme.vars.radius.sm,
-        }}
-      >
-        {menuItems.map((menuItem, index) => (
-          <ListItem key={index}>
-            <ListItemButton selected={isMenuItemSelected(menuItem.route)}
-           
+          size="sm"
+          sx={{
+            gap: 1,
+            "--List-nestedInsetStart": "30px",
+            "--ListItem-radius": (theme) => theme.vars.radius.sm,
+          }}
+        >
+          {menuItems.map((menuItem, index) => (
+            <ListItem key={index}>
+              <ListItemButton selected={isMenuItemSelected(menuItem.route)}>
+                <ReactSVG
+                  src={`/src/assets/icons/${menuItem.route}-mini.svg`}
+                />
+                <Link
+                  component={RouterLink}
+                  to={menuItem.route}
+                  underline="none"
+                >
+                  <ListItemContent>
+                    <Typography level="title-sm">{menuItem.label}</Typography>
+                  </ListItemContent>
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          ))}
+          <ListItem nested>
+            <Toggler
+              renderToggle={({ open, setOpen }) => (
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <ReactSVG
+                      src={`/src/assets/icons/images-mini.svg`}
+                    />
+                  <ListItemContent>
+                    <Typography level="title-sm">Images</Typography>
+                  </ListItemContent>
+                  <KeyboardArrowDownIcon
+                    sx={{ transform: open ? "rotate(180deg)" : "none" }}
+                  />
+                </ListItemButton>
+              )}
             >
-              <ReactSVG src={`/src/assets/icons/${menuItem.route}-mini.svg`} />
-              <Link component={RouterLink} to={menuItem.route} underline="none">
-                <ListItemContent>
-                  <Typography level="title-sm">{menuItem.label}</Typography>
-                </ListItemContent>
-              </Link>
-            </ListItemButton>
+              <List sx={{ gap: 0.5 }}>
+                <ListItem sx={{ mt: 0.5 }}>
+                <ListItemButton selected={isMenuItemSelected("car-images")}>
+                    <ReactSVG
+                      src={`/src/assets/icons/car-images-mini.svg`}
+                    />
+                    <Link
+                      component={RouterLink}
+                      to={"cars"}
+                      underline="none"
+                    >
+                      <ListItemContent>
+                        <Typography level="title-sm">
+                          {t("carImages")}
+                        </Typography>
+                      </ListItemContent>
+                    </Link>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton selected={isMenuItemSelected("slider")}>
+                    <ReactSVG
+                      src={`/src/assets/icons/slider-mini.svg`}
+                    />
+                    <Link
+                      component={RouterLink}
+                      to={"slider"}
+                      underline="none"
+                    >
+                      <ListItemContent>
+                        <Typography level="title-sm">
+                          {t("slider")}
+                        </Typography>
+                      </ListItemContent>
+                    </Link>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Toggler>
           </ListItem>
-        ))}
-      </List>
+        </List>
 
-          {/* <ListItem>
+        {/* <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/bill-mini.svg" />
               <ListItemContent>
@@ -252,7 +310,7 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem> */}
 
-          {/* <ListItem>
+        {/* <ListItem>
             <ListItemButton>
             <ReactSVG src="/src/assets/icons/user-mini.svg" />
               <ListItemContent>
@@ -260,7 +318,6 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem> */}
-      
 
         <List
           size="sm"
@@ -287,7 +344,8 @@ export default function Sidebar() {
         <Avatar
           variant="outlined"
           size="sm"
-          src={details.userPhotoUrl ||
+          src={
+            details.userPhotoUrl ||
             "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
           }
         />
@@ -295,8 +353,13 @@ export default function Sidebar() {
           <Typography level="title-sm">{details.name}</Typography>
           <Typography level="body-xs">{details.email}</Typography>
         </Box>
-        
-        <IconButton onClick={handleLogout} size="md" variant="plain" color="neutral">
+
+        <IconButton
+          onClick={handleLogout}
+          size="md"
+          variant="plain"
+          color="neutral"
+        >
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
