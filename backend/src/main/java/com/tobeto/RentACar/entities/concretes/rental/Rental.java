@@ -36,6 +36,9 @@ public class Rental extends BaseEntity {
     @Column(name = "total_price")
     private Double totalPrice;
 
+    @Column(name = "is_finished")
+    private Boolean isFinished=false;
+
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;

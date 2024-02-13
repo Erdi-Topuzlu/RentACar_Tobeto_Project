@@ -26,6 +26,7 @@ public class GetAllRentalResponse {
     private int startKilometer;
     private Integer endKilometer;
     private double totalPrice;
+    private Boolean isFinished;
     GetByIdCarResponse carId;
     GetByIdUserResponse userId;
     GetByIdExtrasResponse extraId;

@@ -20,6 +20,7 @@ public class AddRentalRequest {
     private LocalDate startDate;
     //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
+    private Boolean isFinished;
 
     @NotNull(message = Messages.carIdNotEmpty)
     @Positive(message = Messages.carIdPositive)
