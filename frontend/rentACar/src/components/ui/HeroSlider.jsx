@@ -7,18 +7,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllSliderData from "../../redux/actions/admin/fetchAllSliderData";
 
-
 const HeroSlider = () => {
-
-  const { sliders, status, error } = useSelector((state) => state.sliderAllData);
+  const { sliders, status, error } = useSelector(
+    (state) => state.sliderAllData
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAllSliderData());
   }, [dispatch]);
 
-
-  console.log(sliders)
+  console.log(sliders);
   const settings = {
     fade: true,
     speed: 2000,
@@ -33,48 +32,58 @@ const HeroSlider = () => {
   const { t } = useTranslation();
   return (
     <>
-    {/* { sliders.map((slider) => ( */}
-    <Slider {...settings} className="hero__slider">
-      {/* <div className="slider__item slider__item-01 mt0" key={slider.id}>
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">{slider.title}</h4>
-            <h1 className="text-light mb-4">{slider.description}</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{slider.buttonLabelName}</Link>
-            </button>
+      
+        <Slider {...settings} className="hero__slider">
+        {sliders.map((slider, i) => (
+          <div
+          key={slider.id}
+            className="slider__item mt0"
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(rgb(103, 58, 183, 0.1), rgb(103, 58, 183, 0.3))",
+                zIndex: 1,
+              }}
+            ></div>
+            <img
+              style={{
+                width: "100%",
+                height: "650px",
+                objectFit: "cover",
+                display: "block",
+                zIndex: 0,
+              }}
+              src={slider.imgPath}
+              alt="Slider Image"
+            />
+            <Container
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 2,
+              }}
+            >
+              <div className="slider__content">
+                <h4 className="text-light mb-3">{slider.title}</h4>
+                <h1 className="text-light mb-4">{slider.description}</h1>
+                <button className="btn reserve__btn mt-4">
+                  <Link to="/cars">{slider.buttonLabelName}</Link>
+                </button>
+              </div>
+            </Container>
           </div>
-        </Container>
-      </div> */}
-
-      <div className="slider__item slider__item-02 mt0">
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">For Rent $70 Per Day</h4>
-            <h1 className="text-light mb-4">Reserve Now and Get 50% Off</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t("details")}</Link>
-            </button>
-          </div>
-        </Container>
-      </div>
-
-      <div className="slider__item slider__item-03 mt0">
-        <Container>
-          <div className="slider__content ">
-            <h4 className="text-light mb-3">For Rent $70 Per Day</h4>
-            <h1 className="text-light mb-4">Reserve Now and Get 50% Off</h1>
-
-            <button className="btn reserve__btn mt-4">
-              <Link to="/cars">{t("details")}</Link>
-            </button>
-          </div>
-        </Container>
-      </div>
-    </Slider>
-    {/* ))} */}
+           ))}
+        </Slider>
+     
     </>
   );
 };

@@ -88,7 +88,7 @@ export default function BrandTable() {
       } catch (error) {
         setOpen(false)
         toastError("Önce bağlı veriler silinmeli!")
-        dispatch(fetchAllBrandData)
+        dispatch(fetchAllBrandData())
 
       }
     }
