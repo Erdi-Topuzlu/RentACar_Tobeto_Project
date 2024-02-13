@@ -18,7 +18,6 @@ import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import SliderList from "./SliderList";
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import {
   AspectRatio,
   DialogActions,
