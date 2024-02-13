@@ -149,12 +149,12 @@ export default function RentalList() {
 
   const formik = useFormik({
     initialValues: {
-      startDate: "",
-      endDate: "",
-      returnDate: "",
-      carId: "",
-      userId: "",
-      extraId: "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      returnDate: returnDate ||"",
+      carId: carId || "",
+      userId: userId || "",
+      extraId: extraId || "",
     },
   });
 
@@ -321,8 +321,13 @@ export default function RentalList() {
                     <Menu size="sm" sx={{ minWidth: 140 }}>
                       <MenuItem
                         onClick={() => {
-                          setId(item.id);
-                          //setCarName(item.name);
+                          setId(item?.id);
+                          setStartDate(item?.startDate);
+                          setEndDate(item?.endDate);
+                          setReturnDate(item?.returnDate)
+                          setCarId(item?.carId?.id);
+                          setExtraId(item.extraId.id);
+                          setUserId(item.userId.id);
                           setOpen(true);
                           setIsEdit(true);
                         }}
@@ -471,8 +476,8 @@ export default function RentalList() {
                           name="returnDate"
                           value={formik.values.returnDate || returnDate}
                           className={
-                            formik.errors.endDate &&
-                            formik.touched.endDate &&
+                            formik.errors.returnDate &&
+                            formik.touched.returnDate &&
                             "error form-control"
                           }
                           onChange={(e) => {
@@ -486,12 +491,12 @@ export default function RentalList() {
                           onFocus={activateDateInput}
                           type={dateInputType}
                           error={
-                            formik.errors.endDate && formik.touched.endDate
+                            formik.errors.returnDate && formik.touched.returnDate
                           }
                           placeholder={
-                            formik.errors.endDate && formik.touched.endDate
-                              ? formik.errors.endDate
-                              : t("endDate")
+                            formik.errors.returnDate && formik.touched.returnDate
+                              ? formik.errors.returnDate
+                              : t("returnDate")
                           }
                         />
                       </FormGroup>
