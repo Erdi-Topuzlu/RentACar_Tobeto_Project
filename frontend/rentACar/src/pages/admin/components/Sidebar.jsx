@@ -267,7 +267,7 @@ export default function Sidebar() {
                     />
                     <Link
                       component={RouterLink}
-                      to={"cars"}
+                      to={"carImages"}
                       underline="none"
                     >
                       <ListItemContent>

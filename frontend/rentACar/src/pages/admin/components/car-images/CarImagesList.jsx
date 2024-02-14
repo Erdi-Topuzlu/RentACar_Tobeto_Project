@@ -153,16 +153,16 @@ export default function CarImagesList() {
 
   const formik = useFormik({
     initialValues: {
-      kilometer: kilometer || "",
-      plate: plate || "",
-      year: year || "",
-      dailyPrice: dailyPrice || "",
-      fuelType: fuelType || "",
-      gearType: gearType || "",
-      vehicleType: vehicleType || "",
-      seatType: seatType || "",
-      colorId: colorId || "",
-      modelId: modelId || "",
+      kilometer: "",
+      plate: "",
+      year: "",
+      dailyPrice: "",
+      fuelType: "",
+      gearType: "",
+      vehicleType: "",
+      seatType: "",
+      colorId: "",
+      modelId: "",
       isAvailable: "",
     },
   });
@@ -637,7 +637,7 @@ export default function CarImagesList() {
                     >
                       <option value="">{t("selectFuelType")}</option>
                       <option value="GASOLINE" key="1">
-                      {t("gasoline")}
+                        {t("gasoline")}
                       </option>
                       <option value="DIESEL" key="2">
                       {t("diesel")}
