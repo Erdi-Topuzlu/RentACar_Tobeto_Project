@@ -60,7 +60,8 @@ function stableSort(array, comparator) {
 export default function CampaignsTable() {
     const [id, setId] = React.useState();
     const [isEdit, setIsEdit] = React.useState(false);
-    const [campaignsName, setCampaignsName] = React.useState();
+    const [campaignsDescription, setCampaignsDescription] = React.useState();
+    const [campaignsTitle, setCampaignsTitle] = React.useState();
     const [order, setOrder] = React.useState("desc");
     const [open, setOpen] = React.useState(false);
     const { campaigns, status, error } = useSelector((state) => state.campaignsAllData);
@@ -96,13 +97,15 @@ export default function CampaignsTable() {
     };
 
     const handleUpdate = async (id) => {
-        if (!campaignsName) {
+        if (!campaignsDescription) {
             setOpen(false);
-            toastError(t("schemeCampaignsName"));
+            toastError(t("schemeCampaignsDescription"));
         } else {
             const data = {
                 id: id,
-                name: campaignsName,
+                title: campaignsTitle,
+                description: campaignsDescription,
+                imgPath:null
             };
 
             try {
@@ -128,12 +131,16 @@ export default function CampaignsTable() {
 
     const formik = useFormik({
         initialValues: {
-            campaignsName: "",
+            campaignsDescription: "",
+            campaignsTitle: "",
         },
         //validationSchema: brandValidationSchema,
         onSubmit: async (values, actions) => {
             const data = {
-                name: values.campaignsName,
+                description: values.campaignsDescription,
+                title: values.campaignsTitle,
+                imgPath:null
+
             };
             try {
                 await axiosInstance.post("api/v1/admin/campaigns", data);
@@ -180,7 +187,8 @@ export default function CampaignsTable() {
                     size="md"
                     onClick={() => {
                         formik.resetForm();
-                        setCampaignsName("");
+                        setCampaignsDescription("");
+                        setCampaignsTitle("");
                         setId(null);
                         setOpen(true);
                         setIsEdit(false);
@@ -247,7 +255,7 @@ export default function CampaignsTable() {
                                         textAlign: "center",
                                     }}
                                 >
-                                    {t("campaignsName")}
+                                    {t("campaignsTitle")}
                                 </th>
                                 {/* <th
                 style={{
@@ -285,7 +293,7 @@ export default function CampaignsTable() {
                                         <Typography level="body-xs">{row.id}</Typography>
                                     </td>
                                     <td style={{ textAlign: "center" }}>
-                                        <Typography level="body-xs"><span style={{ fontWeight: "bold", fontSize: "16px" }}>{row.name}</span></Typography>
+                                        <Typography level="body-xs"><span style={{ fontWeight: "bold", fontSize: "16px" }}>{row.title}</span></Typography>
                                     </td>
                                     {/* <td style={{ textAlign: "center" }}>
                   <Chip
@@ -336,7 +344,8 @@ export default function CampaignsTable() {
                                                     onClick={() => {
                                                         formik.resetForm();
                                                         setId(row.id);
-                                                        setCampaignsName(row.name);
+                                                        setCampaignsDescription(row.description);
+                                                        setCampaignsTitle(row.title);
                                                         setOpen(true);
                                                         setIsEdit(true);
                                                     }}
@@ -347,7 +356,7 @@ export default function CampaignsTable() {
                                                 <MenuItem
                                                     onClick={() => {
                                                         setId(row.id);
-                                                        setCampaignsName(row.name);
+                                                        setCampaignsDescription(row.title);
                                                         setOpenDelete(true);
                                                     }}
                                                     color="danger"
@@ -412,31 +421,61 @@ export default function CampaignsTable() {
                             <Grid xs={12}>
                                 <Form onSubmit={formik.handleSubmit}>
                                     <div>
-                                        <FormLabel>{t("campaignsName")}</FormLabel>
+                                        <FormLabel>{t("campaignsTitle")}</FormLabel>
                                         <FormGroup className="">
                                             <Input
-                                                id="campaignsName"
-                                                name="campaignsName"
+                                                id="campaignsTitle"
+                                                name="campaignsTitle"
                                                 type="text"
-                                                value={formik.values.campaignsName || campaignsName}
+                                                value={formik.values.campaignsTitle || campaignsTitle}
                                                 className={
-                                                    formik.errors.campaignsName &&
-                                                    formik.touched.campaignsName &&
+                                                    formik.errors.campaignsTitle &&
+                                                    formik.touched.campaignsTitle &&
                                                     "error"
                                                 }
                                                 onChange={(e) => {
                                                     // Update the brandName state when the input changes
-                                                    setCampaignsName(e.target.value);
+                                                    setCampaignsTitle(e.target.value);
                                                     formik.handleChange(e); // Invoke Formik's handleChange as well
                                                 }}
                                                 onBlur={formik.handleBlur}
                                                 placeholder={
-                                                    formik.errors.campaignsName && formik.touched.campaignsName
-                                                        ? formik.errors.campaignsName
-                                                        : t("campaignsName")
+                                                    formik.errors.campaignsTitle && formik.touched.campaignsTitle
+                                                        ? formik.errors.campaignsTitle
+                                                        : t("campaignsTitle")
                                                 }
                                                 error={
-                                                    formik.errors.campaignsName && formik.touched.campaignsName
+                                                    formik.errors.campaignsTitle && formik.touched.campaignsTitle
+                                                }
+                                            />
+                                        </FormGroup>
+                                    </div>
+                                    <div>
+                                        <FormLabel>{t("campaignsDescription")}</FormLabel>
+                                        <FormGroup className="">
+                                            <Input
+                                                id="campaignsDescription"
+                                                name="campaignsDescription"
+                                                type="text"
+                                                value={formik.values.campaignsDescription || campaignsDescription}
+                                                className={
+                                                    formik.errors.campaignsDescription &&
+                                                    formik.touched.campaignsDescription &&
+                                                    "error"
+                                                }
+                                                onChange={(e) => {
+                                                    // Update the brandName state when the input changes
+                                                    setCampaignsDescription(e.target.value);
+                                                    formik.handleChange(e); // Invoke Formik's handleChange as well
+                                                }}
+                                                onBlur={formik.handleBlur}
+                                                placeholder={
+                                                    formik.errors.campaignsDescription && formik.touched.campaignsDescription
+                                                        ? formik.errors.campaignsDescription
+                                                        : t("campaignsDescription")
+                                                }
+                                                error={
+                                                    formik.errors.campaignsDescription && formik.touched.campaignsDescription
                                                 }
                                             />
                                         </FormGroup>
@@ -469,7 +508,7 @@ export default function CampaignsTable() {
                 <Modal open={openDelete}
                     onClose={() => {
                         setId(null);
-                        setCampaignsName(null);
+                        setCampaignsDescription(null);
                         setOpenDelete(false);
                     }}
                     sx={{
@@ -483,7 +522,7 @@ export default function CampaignsTable() {
                         </DialogTitle>
                         <Divider />
                         <DialogContent>
-                            <p style={{ fontWeight: "bold" }}>{campaignsName}</p>{t("deleteMessage")}
+                            <p style={{ fontWeight: "bold" }}>{campaignsDescription}</p>{t("deleteMessage")}
                         </DialogContent>
                         <DialogActions>
                             <Button variant="solid" color="danger" onClick={() => {
