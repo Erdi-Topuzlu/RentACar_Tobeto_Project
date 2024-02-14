@@ -16,11 +16,22 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ChangePassword from "./ChangePassword";
 
+
+
+
 export default function Profile() {
   const { details, status, error } = useSelector((state) => state.userDetail);
   const { t } = useTranslation();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(0);
+  const [isEnabled, setIsEnabled] = useState();
+
+
+
+  useEffect(() => {
+    const isEnabled = localStorage.getItem("login_user");
+    setIsEnabled(isEnabled)
+  }, []);
 
   useEffect(() => {
     const tabIndex = location.state?.tabIndex;
@@ -52,9 +63,19 @@ export default function Profile() {
           }}
         >
           <Box sx={{ px: { xs: 2, md: 6 } }}>
-            <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-              {t("welcomeProfile")}
-              {details.name ? details.name : t("user")}
+            <Typography level="h2" component="h1" sx={{ mt: 2, mb: 1 }}>
+              <div className="d-flex justif-content-center align-items-center">
+                <span>
+                  {t("welcomeProfile")}
+                  {details.name ? details.name : t("user")}
+                </span>
+                <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
+                  {isEnabled === "true" ?
+                    <img title="Doğrulanmış hesap" src="/src/assets/icons/verified.svg" /> :
+                    <img title="Hesabınızı doğrulayın" src="/src/assets/icons/not-verified.svg" />
+                  }
+                </span>
+              </div>
             </Typography>
           </Box>
           <Tabs
@@ -95,6 +116,7 @@ export default function Profile() {
                 {t("profileSetting")}
               </Tab>
               <Tab
+                disabled={isEnabled === "false" ? true : false}
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
                 index={1}
@@ -102,19 +124,20 @@ export default function Profile() {
                 {t("myRentals")}
               </Tab>
               <Tab
+                disabled={isEnabled === "false" ? true : false}
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
                 index={2}
               >
                 {t("changePassword")}
               </Tab>
-              
+
             </TabList>
             <TabPanel value={0}>
-                <Settings />
+              <Settings />
             </TabPanel>
             <TabPanel value={1}>
-            <Container>
+              <Container>
                 <Rentals />
               </Container>
             </TabPanel>
@@ -123,7 +146,7 @@ export default function Profile() {
               <ChangePassword />
             </TabPanel>
 
-            
+
           </Tabs>
         </Box>
       </Box>
