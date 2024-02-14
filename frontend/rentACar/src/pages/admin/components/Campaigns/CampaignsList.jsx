@@ -59,10 +59,11 @@ function stableSort(array, comparator) {
 export default function CampaignsList() {
   const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState(false);
-  const [campaignsName, setCampaignsName] = React.useState();
+  const [campaignsDescription, setCampaignsDescription] = React.useState();
+  const [campaignsTitle, setCampaignsTitle] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { campaigns, status, error} = useSelector((state) => state.campaignsAllData);
+  const { campaigns, status, error } = useSelector((state) => state.campaignsAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -91,13 +92,15 @@ export default function CampaignsList() {
   };
 
   const handleUpdate = async (id) => {
-    if (!campaignsName){
+    if (!campaignsDescription) {
       setOpen(false);
-      toastError(t("schemeCampaignsName"));
+      toastError(t("schemeCampaignsDescription"));
     } else {
       const data = {
         id: id,
-        name: campaignsName,
+        title: campaignsTitle,
+        description: campaignsDescription,
+        imgPath: null
       };
 
       try {
@@ -107,21 +110,24 @@ export default function CampaignsList() {
         dispatch(fetchAllCampaignsData());
       } catch (error) {
         setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.validationErrors.name));
           dispatch(fetchAllCampaignsData)
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
           toastError(JSON.stringify(error.response.data.message))
           dispatch(fetchAllCampaignsData)
-        }else{
+        } else {
           toastError(t("unknownError"))
+          dispatch(fetchAllCampaignsData());
         }
-    }}
+      }
+    }
   };
 
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+      campaignsDescription: "",
+      campaignsTitle: "",
     },
   });
 
@@ -169,7 +175,7 @@ export default function CampaignsList() {
             >
               {t("campaignsName")}
             </th>
-           
+
             <th
               style={{
                 width: "auto",
@@ -183,8 +189,8 @@ export default function CampaignsList() {
         </thead>
       </Table>
       {status === "LOADING" ? (
-          <Loading />
-        ) : (stableSort(campaigns, getComparator(order, "id")).map((item) => (
+        <Loading />
+      ) : (stableSort(campaigns, getComparator(order, "id")).map((item) => (
         <List
           key={item.id}
           size="sm"
@@ -211,7 +217,7 @@ export default function CampaignsList() {
                 }}
               >
                 <Typography fontWeight={600} gutterBottom>
-                  {item.name}
+                  {item.title}
                 </Typography>
                 {/* <Typography level="body-xs" gutterBottom>
                   {item.customer.email}
@@ -228,7 +234,7 @@ export default function CampaignsList() {
                 </Box>
               </div>
             </ListItemContent>
-           
+
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton
@@ -244,8 +250,8 @@ export default function CampaignsList() {
                     onClick={() => {
                       formik.resetForm();
                       setId(item.id);
-                      setCampaignsName(item.name);
-                      setOpen(true);
+                      setCampaignsDescription(item.description);
+                      setCampaignsTitle(item.title); setOpen(true);
                       setIsEdit(true);
                     }}
                   >
@@ -255,8 +261,8 @@ export default function CampaignsList() {
                   <MenuItem
                     onClick={() => {
                       setId(item.id);
-                          setCampaignsName(item.name);
-                          setOpenDelete(true);
+                      setCampaignsDescription(item.title);
+                      setOpenDelete(true);
                     }}
                     color="danger"
                   >
@@ -267,7 +273,7 @@ export default function CampaignsList() {
             </Box>
           </ListItem>
           <ListDivider />
-          </List>
+        </List>
       )))}
       <Modal
         aria-labelledby="modal-title"
@@ -305,8 +311,8 @@ export default function CampaignsList() {
             mb={1}
           >
             {
-                isEdit ? t("updateCampaigns"): t("addNewCampaigns")
-              }
+              isEdit ? t("updateCampaigns") : t("addNewCampaigns")
+            }
           </Typography>
           <hr />
           <Grid
@@ -318,31 +324,61 @@ export default function CampaignsList() {
             <Grid xs={12}>
               <Form onSubmit={formik.handleSubmit}>
                 <div>
-                  <FormLabel>{t("campaignsName")}</FormLabel>
+                  <FormLabel>{t("campaignsTitle")}</FormLabel>
                   <FormGroup className="">
                     <Input
-                      id="campaignsName"
-                      name="campaignsName"
+                      id="campaignsTitle"
+                      name="campaignsTitle"
                       type="text"
-                      value={formik.values.campaignsName || campaignsName}
+                      value={formik.values.campaignsTitle || campaignsTitle}
                       className={
-                        formik.errors.campaignsName &&
-                        formik.touched.campaignsName &&
+                        formik.errors.campaignsTitle &&
+                        formik.touched.campaignsTitle &&
                         "error"
                       }
                       onChange={(e) => {
                         // Update the brandName state when the input changes
-                        setCampaignsName(e.target.value);
+                        setCampaignsTitle(e.target.value);
                         formik.handleChange(e); // Invoke Formik's handleChange as well
                       }}
                       onBlur={formik.handleBlur}
                       placeholder={
-                        formik.errors.campaignsName && formik.touched.campaignsName
-                          ? formik.errors.campaignsName
-                          : t("campaignsName")
+                        formik.errors.campaignsTitle && formik.touched.campaignsTitle
+                          ? formik.errors.campaignsTitle
+                          : t("campaignsTitle")
                       }
                       error={
-                        formik.errors.campaignsName && formik.touched.campaignsName
+                        formik.errors.campaignsTitle && formik.touched.campaignsTitle
+                      }
+                    />
+                  </FormGroup>
+                </div>
+                <div>
+                  <FormLabel>{t("campaignsDescription")}</FormLabel>
+                  <FormGroup className="">
+                    <Input
+                      id="campaignsDescription"
+                      name="campaignsDescription"
+                      type="text"
+                      value={formik.values.campaignsDescription || campaignsDescription}
+                      className={
+                        formik.errors.campaignsDescription &&
+                        formik.touched.campaignsDescription &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        // Update the brandName state when the input changes
+                        setCampaignsDescription(e.target.value);
+                        formik.handleChange(e); // Invoke Formik's handleChange as well
+                      }}
+                      onBlur={formik.handleBlur}
+                      placeholder={
+                        formik.errors.campaignsDescription && formik.touched.campaignsDescription
+                          ? formik.errors.campaignsDescription
+                          : t("campaignsDescription")
+                      }
+                      error={
+                        formik.errors.campaignsDescription && formik.touched.campaignsDescription
                       }
                     />
                   </FormGroup>
@@ -374,14 +410,14 @@ export default function CampaignsList() {
       </Modal>
       <Modal open={openDelete}
         onClose={() => {
-            setId(null);
-            setCampaignsName(null);
-            setOpenDelete(false);
-          }}
-        sx={{
-          zIndex:11000,
+          setId(null);
+          setCampaignsName(null);
+          setOpenDelete(false);
         }}
-        >
+        sx={{
+          zIndex: 11000,
+        }}
+      >
         <ModalDialog variant="outlined" role="alertdialog">
           <DialogTitle>
             <WarningRoundedIcon />
@@ -389,7 +425,7 @@ export default function CampaignsList() {
           </DialogTitle>
           <Divider />
           <DialogContent>
-            <p style={{fontWeight:"bold"}}>{campaignsName}</p>{t("deleteMessage")}
+            <p style={{ fontWeight: "bold" }}>{campaignsTitle}</p>{t("deleteMessage")}
           </DialogContent>
           <DialogActions>
             <Button variant="solid" color="danger" onClick={() => {
@@ -399,7 +435,7 @@ export default function CampaignsList() {
               {t("delete")}
             </Button>
             <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
-            {t("cancel")}
+              {t("cancel")}
             </Button>
           </DialogActions>
         </ModalDialog>
