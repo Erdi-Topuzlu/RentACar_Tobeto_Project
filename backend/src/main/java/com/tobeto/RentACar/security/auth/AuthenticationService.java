@@ -65,11 +65,16 @@ public class AuthenticationService {
         confirmationService.save(confirmation);
 
         // Send Email to User with Confirmation Token
-        emailService.sendSimpleMailMessage(
+        emailService.sendHtmlEmail(
                 user.getName(),
                 user.getEmail(),
                 confirmation.getConfirmationToken()
         );
+//        emailService.sendSimpleMailMessage(
+//                user.getName(),
+//                user.getEmail(),
+//                confirmation.getConfirmationToken()
+//        );
 
         return AuthenticationResponse.builder()
                 .id(savedUser.getId())

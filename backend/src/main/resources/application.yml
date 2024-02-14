@@ -19,9 +19,9 @@ spring:
           starttls:
             enable: true
             required: true
-#          ssl:
-#            trust: smtp.gmail.com
-#            port: 587
+          ssl:
+            trust: smtp.gmail.com
+            port: 587
     verify:
       host: http://localhost:8080
   datasource:
