@@ -29,12 +29,10 @@ import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
 import fetchAllSliderData from "../../../../redux/actions/admin/fetchAllSliderData";
-
 import Loading from "../../../../components/ui/Loading";
 import SvgIcon from "@mui/joy/SvgIcon";
 import getSliderValidationSchema from "../../../../schemes/sliderScheme";
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -150,8 +148,6 @@ export default function SliderTable() {
         const reader = new FileReader();
 
         reader.onload = async (e) => {
-         
-
           try {
             const response = await axiosInstance.post(
               "/api/v1/admin/slider",
@@ -169,7 +165,7 @@ export default function SliderTable() {
               dispatch(fetchAllBrandData());
             }
           } catch (error) {
-            toastError("Bilinmeyen hata",error.response.data);
+            toastError("Bilinmeyen hata", error.response.data);
           }
         };
 
@@ -542,90 +538,6 @@ export default function SliderTable() {
                         />
                       </Button>
                     </FormGroup>
-                    {/* <FormGroup className="">
-                    <FormLabel>{t("sliderTitle")}</FormLabel>
-                      <Input
-                        id="sliderTitle"
-                        name="sliderTitle"
-                        type="text"
-                        value={formik.values.sliderTitle || ""}
-                        className={
-                          formik.errors.sliderTitle &&
-                          formik.touched.sliderTitle &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.sliderTitle && formik.touched.sliderTitle
-                            ? formik.errors.sliderTitle
-                            : t("sliderTitle")
-                        }
-                        error={
-                          formik.errors.sliderTitle && formik.touched.sliderTitle
-                        }
-                      />
-                    </FormGroup>
-                    <FormGroup className="">
-                    <FormLabel>{t("sliderDesc")}</FormLabel>
-                      <Input
-                        id="sliderDesc"
-                        name="sliderDesc"
-                        type="text"
-                        value={formik.values.sliderDesc || ""}
-                        className={
-                          formik.errors.sliderDesc &&
-                          formik.touched.sliderDesc &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.sliderDesc && formik.touched.sliderDesc
-                            ? formik.errors.sliderDesc
-                            : t("sliderDesc")
-                        }
-                        error={
-                          formik.errors.sliderDesc && formik.touched.sliderDesc
-                        }
-                      />
-                    </FormGroup>
-                    <FormGroup className="">
-                    <FormLabel>{t("sliderBtnLabel")}</FormLabel>
-                      <Input
-                        id="sliderBtnLabel"
-                        name="sliderBtnLabel"
-                        type="text"
-                        value={formik.values.sliderBtnLabel || ""}
-                        className={
-                          formik.errors.sliderBtnLabel &&
-                          formik.touched.sliderBtnLabel &&
-                          "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.sliderBtnLabel && formik.touched.sliderBtnLabel
-                            ? formik.errors.sliderBtnLabel
-                            : t("sliderBtnLabel")
-                        }
-                        error={
-                          formik.errors.sliderBtnLabel && formik.touched.sliderBtnLabel
-                        }
-                      />
-                    </FormGroup> */}
                   </div>
                   {id ? (
                     <Button
@@ -692,7 +604,7 @@ export default function SliderTable() {
                 {t("cancel")}
               </Button>
             </DialogActions>
-            </ModalDialog>
+          </ModalDialog>
         </Modal>
       </Sheet>
       <SliderList />

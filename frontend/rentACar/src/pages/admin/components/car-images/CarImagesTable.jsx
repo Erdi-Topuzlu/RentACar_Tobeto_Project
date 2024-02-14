@@ -24,6 +24,8 @@ import {
   DialogTitle,
   Grid,
   ModalDialog,
+  SvgIcon,
+  styled,
 } from "@mui/joy";
 import { Form, FormGroup } from "reactstrap";
 import { useTranslation } from "react-i18next";
@@ -39,6 +41,7 @@ import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import Loading from "../../../../components/ui/Loading";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -91,6 +94,9 @@ export default function CarImagesTable() {
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [eventFile, setEventFile] = React.useState([]);
+  const [fileName, setFileName] = React.useState([]);
+  const [carId, setCarId] = React.useState();
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -102,114 +108,80 @@ export default function CarImagesTable() {
     dispatch(fetchAllBrandData());
   }, [dispatch]);
 
+  const VisuallyHiddenInput = styled("input")`
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    width: 1px;
+  `;
+
   const carValidationSchema = getCarValidationSchema();
-
-  const handleDelete = async (id) => {
-    if (!id) {
-      toastError("Car ID bulunamadı!");
-    } else {
-      try {
-        await axiosInstance.delete(`api/v1/admin/cars/${id}`);
-        toastSuccess(t("carSuccessDelete"));
-        dispatch(fetchAllCarData());
-      } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
-        dispatch(fetchAllCarData())
-
-      }
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    if (!kilometer) {
-      setOpen(false);
-      toastError(t("schemeCarKilometer"));
-    } else {
-      const updatedData = {
-        id: id,
-        kilometer: kilometer,
-        plate: plate,
-        year: year,
-        dailyPrice: dailyPrice,
-        fuelType: fuelType,
-        gearType: gearType,
-        vehicleType: vehicleType,
-        seatType: seatType,
-        isAvailable: "true",
-        modelId: modelId,
-        colorId: colorId,
-      };
-
-      try {
-        await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
-        toastSuccess(t("carSuccessUpdate"));
-        setOpen(false);
-        dispatch(fetchAllCarData());
-      } catch (error) {
-        setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-          dispatch(fetchAllCarData())
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
-          toastError(JSON.stringify(error.response.data.message))
-          dispatch(fetchAllCarData())
-        }else{
-          toastError(t("unknownError"))
-        }
-    }
-    }
-  };
 
   const formik = useFormik({
     initialValues: {
-      kilometer: kilometer || "",
-      plate: plate || "",
-      year: year || "",
-      dailyPrice: dailyPrice || "",
-      fuelType: fuelType || "",
-      gearType: gearType || "",
-      vehicleType: vehicleType || "",
-      seatType: seatType || "",
-      colorId: colorId || "",
-      modelId: modelId || "",
-      isAvailable: "",
+      carId: "",
     },
 
-    validationSchema: carValidationSchema,
+    //validationSchema: carValidationSchema,
     onSubmit: async (values, actions) => {
-      const data = {
-        kilometer: values.kilometer,
-        plate: values.plate,
-        year: values.year,
-        dailyPrice: values.dailyPrice,
-        fuelType: values.fuelType,
-        gearType: values.gearType,
-        vehicleType: values.vehicleType,
-        seatType: values.seatType,
-        isAvailable: "True",
-        modelId: modelId,
-        colorId: colorId,
+      setOpen(false);
+      console.log(eventFile);
+      const files = eventFile;
+      const selectedCarId = {
+        carId: values.carId,
+      };
+      alert(carId);
+      
+      const formData = new FormData();
+      
+      files.forEach((file, index) => {
+        formData.append(`file${index + 1}`, file, file.name);
+      });
+
+      formData.append(
+        "carId",
+        new Blob([JSON.stringify(selectedCarId)], {
+          type: "application/json",
+        })
+      );
+
+     
+
+      const { access_token } = localStorage.getItem("access_token");
+
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${access_token}`,
       };
 
-      try {
-        await axiosInstance.post("api/v1/admin/cars", data);
-        toastSuccess(t("carSuccessAdded"));
-        setOpen(false);
-        dispatch(fetchAllCarData());
-        actions.resetForm();
-      } catch (error) {
-        setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-          dispatch(fetchAllCarData())
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
-          toastError(JSON.stringify(error.response.data.message))
-          dispatch(fetchAllCarData())
-        }else{
-          toastError(t("unknownError"))
+      if (files.length > 0) {
+        try {
+          alert(JSON.stringify(formData));
+          const response = await axiosInstance.post(
+            "/api/v1/admin/car-images",
+            formData,
+            {
+              headers: headers,
+            }
+          );
+    
+          if (response.status === 200) {
+            toastSuccess("Uploaded Photos");
+            dispatch(fetchAllCarData());
+          } else {
+            toastError("Bilinmeyen hata", response.error);
+            dispatch(fetchAllCarData());
+          }
+        } catch (error) {
+          toastError("Bilinmeyen hata", error.response ? error.response.data : "");
         }
-    }
+      }
     },
   });
 
@@ -235,17 +207,8 @@ export default function CarImagesTable() {
           onClick={() => {
             formik.resetForm();
             setId(null);
-            setKilometer(null);
-            setPlate(null);
-            setYear(null);
-            setDailyPrice(null);
-            setBrandId(null);
-            setModelId(null);
-            setColorId(null);
-            setFuelType(null);
-            setGearType(null);
-            setVehicleType(null);
-            setSeatType(null);
+            setCarId(null);
+            setFileName([]);
             setOpen(true);
             setIsEdit(false);
           }}
@@ -321,7 +284,7 @@ export default function CarImagesTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("year")} | {t("color")}
+                  {t("image")} 1
                 </th>
 
                 <th
@@ -331,7 +294,7 @@ export default function CarImagesTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("plate")}
+                  {t("image")} 2
                 </th>
 
                 <th
@@ -341,7 +304,7 @@ export default function CarImagesTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("dailyPriceCar")}
+                  {t("image")} 3
                 </th>
 
                 <th
@@ -369,76 +332,47 @@ export default function CarImagesTable() {
                     </Typography>
                   </td>
 
-                  <td style={{ textAlign: "center" }}>
-                    <Typography level="body-xs">
-                      {row?.year} | {row?.colorId?.name}
-                    </Typography>
-                  </td>
-
-                  <td style={{ textAlign: "center" }}>
-                    <Chip color="primary" variant="solid">
-                      {row?.plate}
-                    </Chip>
-                  </td>
-
-                  <td style={{ textAlign: "center" }}>
-                    <Chip color="success" variant="solid">
-                      {row?.dailyPrice} ₺
-                    </Chip>
-                  </td>
-
-                  <td style={{ textAlign: "center" }}>
-                    <Dropdown>
-                      <MenuButton
-                        slots={{ root: IconButton }}
-                        slotProps={{
-                          root: {
-                            variant: "plain",
-                            color: "neutral",
-                            size: "sm",
-                          },
-                        }}
-                      >
-                        <MoreHorizRoundedIcon />
-                      </MenuButton>
-                      <Menu size="sm" sx={{ minWidth: 140 }}>
-                        <MenuItem
-                          onClick={() => {
-                            setId(row?.id);
-                            setKilometer(row?.kilometer);
-                            setPlate(row?.plate);
-                            setYear(row?.year);
-                            setDailyPrice(row?.dailyPrice);
-                            setBrandId(row?.modelId?.brandId?.id);
-                            setModelId(row?.modelId?.id);
-                            setColorId(row?.colorId?.id);
-                            setFuelType(row?.fuelType);
-                            setGearType(row?.gearType);
-                            setVehicleType(row?.vehicleType);
-                            setSeatType(row?.seatType);
-                            setOpen(true);
-                            setIsEdit(true);
+                  {!row || !row.carImages || row.carImages.length === 0 ? (
+                    <>
+                      {[...Array(3)].map((_, index) => (
+                        <td key={index} style={{ textAlign: "center" }}>
+                          <img
+                            style={{
+                              height: "100px",
+                              width: "100%",
+                              objectFit: "cover",
+                            }}
+                            src="https://placehold.co/600x400"
+                          />
+                        </td>
+                      ))}
+                    </>
+                  ) : (
+                    row.carImages.map((img, index) => (
+                      <td key={index} style={{ textAlign: "center" }}>
+                        <img
+                          style={{
+                            height: "100px",
+                            width: "100%",
+                            objectFit: "cover",
                           }}
-                        >
-                          {t("edit")}
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem
-                          onClick={() => {
-                            setId(row?.id);
-                            setCarName(
-                              row?.modelId?.brandId?.name +
-                                " | " +
-                                row?.modelId?.name
-                            );
-                            setOpenDelete(true);
-                          }}
-                          color="danger"
-                        >
-                          {t("delete")}
-                        </MenuItem>
-                      </Menu>
-                    </Dropdown>
+                          src={img.imgPath}
+                          alt={`Car Image ${index + 1}`}
+                        />
+                      </td>
+                    ))
+                  )}
+
+                  <td style={{ textAlign: "center" }}>
+                    <IconButton
+                      onClick={() => {
+                        setId(row.id);
+                        setOpenDelete(true);
+                      }}
+                      variant="plain"
+                    >
+                      <DeleteOutlineRoundedIcon />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
@@ -452,18 +386,6 @@ export default function CarImagesTable() {
           open={open}
           onClose={() => {
             formik.resetForm();
-            setId(null);
-            setKilometer(null);
-            setPlate(null);
-            setYear(null);
-            setDailyPrice(null);
-            setBrandId(null);
-            setModelId(null);
-            setColorId(null);
-            setFuelType(null);
-            setGearType(null);
-            setVehicleType(null);
-            setSeatType(null);
             setOpen(false);
           }}
           sx={{
@@ -502,7 +424,108 @@ export default function CarImagesTable() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid xs={12}>
-                {/* Form is here */}
+                <Form onSubmit={formik.handleSubmit}>
+                  <FormGroup className="">
+                    <select
+                      id="car"
+                      name="carId"
+                      value={formik.values.carId || carId}
+                      onChange={(e) => {
+                        const selectedCarId = e.target.value;
+                        setCarId(selectedCarId);
+                      }}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
+                    >
+                      <option value="">{t("selectCar")}</option>
+                      {items.map((car, index) => (
+                        <option key={car.id} value={car.id}>
+                          {car.modelId?.brandId?.name} - {car.modelId?.name}
+                        </option>
+                      ))}
+                    </select>
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Button
+                      component="label"
+                      role={undefined}
+                      tabIndex={-1}
+                      variant="outlined"
+                      color="neutral"
+                      startDecorator={
+                        <SvgIcon>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                            />
+                          </svg>
+                        </SvgIcon>
+                      }
+                    >
+                      Upload a Image
+                      <VisuallyHiddenInput
+                        onChange={(e) => {
+                          const selectedFiles = Array.from(e.target.files);
+                          setEventFile(selectedFiles);
+
+                          if (selectedFiles.length <= 3) {
+                            const fileNames = selectedFiles.map(
+                              (file) => file.name
+                            );
+                            setFileName(fileNames);
+                          } else {
+                            setOpen(false);
+                            toastError(`You can select up to 3 files.`);
+                            e.target.value = null;
+                          }
+                        }}
+                        type="file"
+                        accept="image/*"
+                        id="image-upload"
+                        multiple
+                      />
+                    </Button>
+                  </FormGroup>
+                  <FormGroup>
+                    {fileName.length === 0 ? (
+                      ""
+                    ) : (
+                      <>
+                        <FormLabel>Yüklenecek Resimler</FormLabel>
+                        {fileName.map((name, index) => (
+                          <p key={index}>{name}</p>
+                        ))}
+                      </>
+                    )}
+                  </FormGroup>
+
+                  <Button
+                    className=" form__btn"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                    style={{ backgroundColor: "#673ab7", color: "white" }}
+                  >
+                    {t("add")}
+                  </Button>
+                </Form>
               </Grid>
             </Grid>
           </Sheet>
@@ -511,7 +534,6 @@ export default function CarImagesTable() {
           open={openDelete}
           onClose={() => {
             setId(null);
-            setCarName(null);
             setOpenDelete(false);
           }}
           sx={{
@@ -533,7 +555,7 @@ export default function CarImagesTable() {
                 variant="solid"
                 color="danger"
                 onClick={() => {
-                  handleDelete(id);
+                  //handleDelete(id);
                   setOpenDelete(false);
                 }}
               >
