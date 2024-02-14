@@ -14,6 +14,8 @@ import modelByIdDataSlice from "./slices/admin/modelByIdDataSlice";
 import modelDataSlice from "./slices/admin/modelDataSlice";
 import userAllDataSlice from "./slices/admin/userAllDataSlice";
 import sliderDataSlice from "./slices/admin/sliderDataSlice";
+import campaignsByIdDataSlice from "./slices/admin/campaignsByIdDataSlice";
+import campaignsDataSlice from "./slices/admin/campaignsDataSlice";
 
 
 
@@ -35,5 +37,7 @@ export const store = configureStore({
         colorById: colorByIdDataSlice,
         modelAllData: modelDataSlice,
         modelById: modelByIdDataSlice,
+        campaignsAllData: campaignsDataSlice,
+        campaignsById: campaignsByIdDataSlice,
     }
 })
