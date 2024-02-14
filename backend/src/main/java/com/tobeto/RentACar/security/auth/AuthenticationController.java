@@ -1,5 +1,6 @@
 package com.tobeto.RentACar.security.auth;
 
+import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.security.services.LogoutService;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
@@ -10,11 +11,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static com.tobeto.RentACar.core.utilities.EmailUtils.getVerificationUrl;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -42,8 +50,7 @@ public class AuthenticationController {
 
     @GetMapping("/confirm-account")
     public ResponseEntity<String> confirmAccount(@RequestParam("token") String token) {
-        Boolean isSuccess = authenticationService.verifyConfirmationToken(token);
-        return ResponseEntity.ok("Account confirmed successfully!" + " Success:" + isSuccess);
+        return authenticationService.verifyConfirmationToken(token);
     }
 
 }

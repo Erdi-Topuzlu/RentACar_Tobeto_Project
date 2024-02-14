@@ -25,8 +25,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,9 @@ public class AuthenticationService {
     private final UserBusinessRulesService userBusinessRulesService;
     private final ConfirmationService confirmationService;
     private final EmailService emailService;
+    public static final String EMAIL_TEMPLATE = "account_confirmed";
+    private final TemplateEngine templateEngine;
+
 
     @Value("${jwt.bearer}")
     private String bearer;
@@ -70,11 +76,6 @@ public class AuthenticationService {
                 user.getEmail(),
                 confirmation.getConfirmationToken()
         );
-//        emailService.sendSimpleMailMessage(
-//                user.getName(),
-//                user.getEmail(),
-//                confirmation.getConfirmationToken()
-//        );
 
         return AuthenticationResponse.builder()
                 .id(savedUser.getId())
@@ -86,12 +87,19 @@ public class AuthenticationService {
                 .build();
     }
 
-    public Boolean verifyConfirmationToken(String confirmationToken) {
+    public ResponseEntity<String> verifyConfirmationToken(String confirmationToken) {
+
         var confirmation = confirmationService.findByConfirmationToken(confirmationToken);
         var user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
         user.setIsEnabled(true);
         userRepository.save(user);
-        return Boolean.TRUE;
+
+        Context context = new Context();
+        Map<String, Object> variables = new java.util.HashMap<>();
+        variables.put("name", user.getName());
+        context.setVariables(variables);
+        String accountConfirmed = templateEngine.process(EMAIL_TEMPLATE, context);
+        return ResponseEntity.ok(accountConfirmed);
     }
 
     public AuthenticationResponse login(LoginUserRequest request) {

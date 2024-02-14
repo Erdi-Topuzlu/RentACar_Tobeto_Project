@@ -162,27 +162,6 @@ public class UserManager implements UserService {
         userRepository.save(user);
 
     }
-
-//    // Send Email Confirmation
-//    @Override
-//    public void saveUser(RegisterUserRequest userRequest) {
-//        userRequest.setIsEnabled(false);
-//        var user = modelMapperService.dtoToEntity().map(userRequest, User.class);
-//        userRepository.save(user);
-//
-//        var confirmation = new Confirmation(user);
-//        confirmationService.save(confirmation);
-//
-//    }
-//
-//    @Override
-//    public Boolean verifyConfirmationToken(String confirmationToken) {
-//        var confirmation = confirmationService.findByConfirmationToken(confirmationToken);
-//        var user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
-//        user.setIsEnabled(true);
-//        userRepository.save(user);
-//        return Boolean.TRUE;
-//    }
 }
 
 
