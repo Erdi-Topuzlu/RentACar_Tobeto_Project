@@ -43,8 +43,9 @@ const Login = () => {
           "api/v1/auth/authenticate",
           values
         );
-        
-        console.log(response.data)
+
+        //console.log(response.data)
+        localStorage.setItem("login_user", JSON.parse(response.data.is_enabled));
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
         <Navigate to={"/home"}/>

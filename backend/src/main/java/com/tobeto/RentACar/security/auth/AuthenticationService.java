@@ -120,6 +120,7 @@ public class AuthenticationService {
                 .id(user.getId())
                 .email(user.getEmail())
                 .role(user.getRole().toString())
+                .isEnabled(user.getIsEnabled())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();

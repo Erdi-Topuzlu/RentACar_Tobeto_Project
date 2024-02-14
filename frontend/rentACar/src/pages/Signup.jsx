@@ -62,16 +62,9 @@ const signUp = () => {
         navigate("/login");
         // window.location.reload();
         toastSuccess(t("successRegistration"));
-      } catch (error) {
-        setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
-          toastError(JSON.stringify(error.response.data.message))
-        }else{
-          toastError(t("unknownError"))
-        }
-    } finally {
+      } catch (error) {      
+          toastError("E-mail Already Exists!");
+      }finally {
         actions.setSubmitting(false);
       }
     },

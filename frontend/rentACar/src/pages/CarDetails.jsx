@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet";
 import { useParams } from "react-router-dom";
@@ -27,9 +27,15 @@ const CarDetails = () => {
   const dispatch = useDispatch();
   const { details, status, error } = useSelector((state) => state.carDetail);
   const { t } = useTranslation();
+  const [isEnabled,setIsEnabled] = useState();
+  const [tokenn,setTokenn] = useState();
+
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
+    const isEnabled = localStorage.getItem("login_user");
+    setIsEnabled(isEnabled)
+    setTokenn(token)
     dispatch(fetchCarDetailData(id));
   }, [dispatch]);
 
@@ -171,17 +177,19 @@ const CarDetails = () => {
                 </div>
               </div>
             </Col>
-            {token ? (
-              <Col lg="12" className="mt-5">
-                <div className="booking-info mt-5">
-                  <h5 className="mb-4 fw-bold text-center ">
-                    {t("bookingInfo")}
-                  </h5>
-                  <BookingForm />
-                </div>
-              </Col>
+
+            {token && isEnabled === "true" ? (
+            <Col lg="12" className="mt-5">
+              <div className="booking-info mt-5">
+                <h5 className="mb-4 fw-bold text-center ">
+                  {t("bookingInfo")}
+                </h5>
+                <BookingForm />
+              </div>
+            </Col>
             ) : (
-              <RedirectLogin />
+              
+              <RedirectLogin token={tokenn} isEnabled={isEnabled} />
             )}
           </Row>
         </Container>
