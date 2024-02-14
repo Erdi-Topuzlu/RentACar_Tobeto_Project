@@ -108,7 +108,7 @@ export default function CarImagesTable() {
     dispatch(fetchAllBrandData());
   }, [dispatch]);
 
-  console.log(carId)
+  console.log(carId);
   const VisuallyHiddenInput = styled("input")`
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -136,10 +136,10 @@ export default function CarImagesTable() {
       console.log(files);
 
       const car = {
-        carId: carId
-      }
+        carId: carId,
+      };
 
-      console.log(car.carId)
+      console.log(car.carId);
       const formData = new FormData();
       formData.append("carId", car.carId);
       formData.append("file", files, files.name);
@@ -167,17 +167,13 @@ export default function CarImagesTable() {
               }
             );
 
-            if (response.status === 200) { 
-              console.log("şuan buradasın")
+            if (response.status === 200) {
               toastSuccess("Uploaded Photo");
             } else {
               toastError("Bilinmeyen hata");
-              console.log("Şuan buradasın1")
-
             }
           } catch (error) {
             toastError("Bilinmeyen hata", error.response.data);
-            console.log("Şuan buradasın2")
           }
         };
 
