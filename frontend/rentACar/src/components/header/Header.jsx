@@ -110,7 +110,6 @@ function Header() {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("login_user");
-        toastSuccess(t("logoutSuccess"));
         setShowUi(true);
         navigate("/login");
       } else {
