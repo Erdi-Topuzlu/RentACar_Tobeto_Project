@@ -67,7 +67,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user, user);
         saveUserToken(savedUser, jwtToken);
 
-        var confirmation = new Confirmation(savedUser);
+        var confirmation = new Confirmation(user);
         confirmationService.save(confirmation);
 
         // Send Email to User with Confirmation Token

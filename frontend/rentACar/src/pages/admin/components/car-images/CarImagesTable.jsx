@@ -94,7 +94,7 @@ export default function CarImagesTable() {
   const { models } = useSelector((state) => state.modelAllData);
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [eventFile, setEventFile] = React.useState([]);
+  const [eventFile, setEventFile] = React.useState(null);
   const [fileName, setFileName] = React.useState([]);
   const [carId, setCarId] = React.useState();
 
@@ -108,6 +108,7 @@ export default function CarImagesTable() {
     dispatch(fetchAllBrandData());
   }, [dispatch]);
 
+  console.log(carId)
   const VisuallyHiddenInput = styled("input")`
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -132,55 +133,55 @@ export default function CarImagesTable() {
       setOpen(false);
       console.log(eventFile);
       const files = eventFile;
-      const selectedCarId = {
-        carId: values.carId,
-      };
-      alert(carId);
-      
+      console.log(files);
+
+      const car = {
+        carId: carId
+      }
+
+      console.log(car.carId)
       const formData = new FormData();
-      
-      files.forEach((file, index) => {
-        formData.append(`file${index + 1}`, file, file.name);
-      });
-
-      formData.append(
-        "carId",
-        new Blob([JSON.stringify(selectedCarId)], {
-          type: "application/json",
-        })
-      );
-
-     
-
-      const { access_token } = localStorage.getItem("access_token");
+      formData.append("carId", car.carId);
+      formData.append("file", files, files.name);
+      // files.forEach((file, index) => {
+      //   console.log(file)
+      //   formData.append(`file${index + 1}`, file, file.name);
+      // });
 
       const headers = {
-        Accept: "application/json",
+        // Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${access_token}`,
+        // Authorization: `Bearer ${access_token}`,
       };
 
-      if (files.length > 0) {
-        try {
-          alert(JSON.stringify(formData));
-          const response = await axiosInstance.post(
-            "/api/v1/admin/car-images",
-            formData,
-            {
-              headers: headers,
+      if (files) {
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+          try {
+            const response = await axiosInstance.post(
+              "api/v1/admin/car-images",
+              formData,
+              {
+                headers: headers,
+              }
+            );
+
+            if (response.status === 200) { 
+              console.log("şuan buradasın")
+              toastSuccess("Uploaded Photo");
+            } else {
+              toastError("Bilinmeyen hata");
+              console.log("Şuan buradasın1")
+
             }
-          );
-    
-          if (response.status === 200) {
-            toastSuccess("Uploaded Photos");
-            dispatch(fetchAllCarData());
-          } else {
-            toastError("Bilinmeyen hata", response.error);
-            dispatch(fetchAllCarData());
+          } catch (error) {
+            toastError("Bilinmeyen hata", error.response.data);
+            console.log("Şuan buradasın2")
           }
-        } catch (error) {
-          toastError("Bilinmeyen hata", error.response ? error.response.data : "");
-        }
+        };
+
+        reader.readAsDataURL(files);
       }
     },
   });
@@ -483,19 +484,19 @@ export default function CarImagesTable() {
                       Upload a Image
                       <VisuallyHiddenInput
                         onChange={(e) => {
-                          const selectedFiles = Array.from(e.target.files);
+                          const selectedFiles = e.target.files[0];
                           setEventFile(selectedFiles);
 
-                          if (selectedFiles.length <= 3) {
-                            const fileNames = selectedFiles.map(
-                              (file) => file.name
-                            );
-                            setFileName(fileNames);
-                          } else {
-                            setOpen(false);
-                            toastError(`You can select up to 3 files.`);
-                            e.target.value = null;
-                          }
+                          // if (selectedFiles.length <= 3) {
+                          //   const fileNames = selectedFiles.map(
+                          //     (file) => file.name
+                          //   );
+                          //   setFileName(fileNames);
+                          // } else {
+                          //   setOpen(false);
+                          //   toastError(`You can select up to 3 files.`);
+                          //   e.target.value = null;
+                          // }
                         }}
                         type="file"
                         accept="image/*"
