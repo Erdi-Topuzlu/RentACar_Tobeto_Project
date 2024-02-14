@@ -2,14 +2,17 @@ package com.tobeto.RentACar.services.concretes;
 
 import com.tobeto.RentACar.core.mapper.ModelMapperService;
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
+import com.tobeto.RentACar.entities.concretes.confirmation.Confirmation;
 import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
+import com.tobeto.RentACar.services.abstracts.ConfirmationService;
 import com.tobeto.RentACar.services.abstracts.UserService;
 import com.tobeto.RentACar.services.dtos.requests.user.AddUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.ChangePasswordUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.DeleteUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import com.tobeto.RentACar.services.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.RentACar.services.dtos.responses.user.GetByIdUserResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +44,7 @@ public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final ModelMapperService modelMapperService;
     private final UserBusinessRulesService userBusinessRulesService;
+    private final ConfirmationService confirmationService;
 
     @Override
     public void add(AddUserRequest request) {
@@ -131,6 +135,7 @@ public class UserManager implements UserService {
     };
 
 
+    // Change Password
     @Override
     public void changePasswordUser(ChangePasswordUserRequest changePasswordRequest, Principal connectedUser) {
 

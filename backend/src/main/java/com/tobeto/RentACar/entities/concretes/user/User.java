@@ -39,14 +39,19 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
     @Column(name = "tc_no")
     private Double tcNo;
+
+    @Column(name = "is_enabled")
+    private Boolean isEnabled;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "surname")
-    private String surname;
+
 
     @Column(name = "birth_date")
     private LocalDate birthDate;

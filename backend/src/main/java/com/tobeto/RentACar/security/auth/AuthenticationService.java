@@ -2,12 +2,16 @@ package com.tobeto.RentACar.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
+import com.tobeto.RentACar.entities.concretes.confirmation.Confirmation;
+import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.security.config.jwt.JwtService;
 import com.tobeto.RentACar.security.repository.TokenRepository;
 import com.tobeto.RentACar.security.services.token.Token;
 import com.tobeto.RentACar.security.services.token.TokenType;
 import com.tobeto.RentACar.entities.concretes.user.User;
 import com.tobeto.RentACar.repositories.UserRepository;
+import com.tobeto.RentACar.services.abstracts.ConfirmationService;
+import com.tobeto.RentACar.services.abstracts.EmailService;
 import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
@@ -21,8 +25,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,15 +41,24 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    private final UserBusinessRulesService userBusinessRulesService;
+    private final ConfirmationService confirmationService;
+    private final EmailService emailService;
+    public static final String EMAIL_TEMPLATE = "account_confirmed";
+    private final TemplateEngine templateEngine;
+
+
     @Value("${jwt.bearer}")
     private String bearer;
 
     public AuthenticationResponse register(RegisterUserRequest request) {
+        userBusinessRulesService.checkIfByEmailExists(request.getEmail());
         var user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .isEnabled(false)
                 .role(request.getRole())
                 .build();
 
@@ -51,13 +67,39 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user, user);
         saveUserToken(savedUser, jwtToken);
 
+        var confirmation = new Confirmation(savedUser);
+        confirmationService.save(confirmation);
+
+        // Send Email to User with Confirmation Token
+        emailService.sendHtmlEmail(
+                user.getName(),
+                user.getEmail(),
+                confirmation.getConfirmationToken()
+        );
+
         return AuthenticationResponse.builder()
                 .id(savedUser.getId())
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole().toString())
+                .isEnabled(savedUser.getIsEnabled())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public ResponseEntity<String> verifyConfirmationToken(String confirmationToken) {
+
+        var confirmation = confirmationService.findByConfirmationToken(confirmationToken);
+        var user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
+        user.setIsEnabled(true);
+        userRepository.save(user);
+
+        Context context = new Context();
+        Map<String, Object> variables = new java.util.HashMap<>();
+        variables.put("name", user.getName());
+        context.setVariables(variables);
+        String accountConfirmed = templateEngine.process(EMAIL_TEMPLATE, context);
+        return ResponseEntity.ok(accountConfirmed);
     }
 
     public AuthenticationResponse login(LoginUserRequest request) {
@@ -70,7 +112,7 @@ public class AuthenticationService {
 
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user, user);
-        var refreshToken = jwtService.generateRefreshToken(user,user);
+        var refreshToken = jwtService.generateRefreshToken(user, user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
 
@@ -94,7 +136,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    private void revokeAllUserTokens(User  user) {
+    private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUserId(user.getId());
 
         if (validUserTokens.isEmpty()) {

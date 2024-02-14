@@ -20,6 +20,7 @@ public class RegisterUserRequest {
     private LocalDate birthDate;
     private String email;
     private String password;
+    private Boolean isEnabled;
     private Role role;
 
     public Role getRole() {
