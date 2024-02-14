@@ -12,10 +12,7 @@ export const getUserProfileValidationSchema = () => {
       .min(11, t("schemeMin11Char"))
       .max(11, t("schemeMax11Char"))
       .required(t("schemeIdentifyNumber")),
-    usernames: yup
-      .string()
-      .required(t("schemeUserName"))
-      .min(5, t("schemeMin5Char")),
+    
   });
 };
 
