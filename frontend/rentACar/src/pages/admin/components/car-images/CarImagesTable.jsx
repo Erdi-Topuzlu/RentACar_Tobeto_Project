@@ -97,6 +97,8 @@ export default function CarImagesTable() {
   const [eventFile, setEventFile] = React.useState(null);
   const [fileName, setFileName] = React.useState([]);
   const [carId, setCarId] = React.useState();
+  const [deletedFiles, setDeletedFiles] = React.useState([]);
+  const [selectedFile, setSelectedFile] = React.useState();
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -120,6 +122,27 @@ export default function CarImagesTable() {
     white-space: nowrap;
     width: 1px;
   `;
+
+  const handleDelete = async () => {
+    if (!deletedFiles || deletedFiles.length === 0) {
+      setOpen(false);
+      toastError("Images ID'ler bulunamadı!");
+    } else {
+      try {
+        for (const fileId of deletedFiles) {
+          await axiosInstance.delete(`api/v1/admin/car-images/${fileId}`);
+        }
+
+        toastSuccess("Car Images Başarıyla Silindi.");
+        dispatch(fetchAllCarData());
+        setId(null);
+      } catch (error) {
+        setOpen(false);
+        alert(JSON.stringify(error.response.data));
+        toastError("Bilinmeyen Hata", error.response.data);
+      }
+    }
+  };
 
   const carValidationSchema = getCarValidationSchema();
 
@@ -169,6 +192,7 @@ export default function CarImagesTable() {
 
             if (response.status === 200) {
               toastSuccess("Uploaded Photo");
+              dispatch(fetchAllCarData());
             } else {
               toastError("Bilinmeyen hata");
             }
@@ -205,6 +229,7 @@ export default function CarImagesTable() {
             formik.resetForm();
             setId(null);
             setCarId(null);
+            setSelectedFile();
             setFileName([]);
             setOpen(true);
             setIsEdit(false);
@@ -339,33 +364,63 @@ export default function CarImagesTable() {
                               width: "100%",
                               objectFit: "cover",
                             }}
-                            src="https://placehold.co/600x400"
+                            src="https://placehold.co/600x400?text=Empty"
+                            alt={`Placeholder ${index + 1}`}
                           />
                         </td>
                       ))}
                     </>
                   ) : (
-                    row.carImages.map((img, index) => (
-                      <td key={index} style={{ textAlign: "center" }}>
-                        <img
-                          style={{
-                            height: "100px",
-                            width: "100%",
-                            objectFit: "cover",
-                          }}
-                          src={img.imgPath}
-                          alt={`Car Image ${index + 1}`}
-                        />
-                      </td>
-                    ))
+                    row.carImages
+                      .map((img, index) => (
+                        <td key={index} style={{ textAlign: "center" }}>
+                          <img
+                            style={{
+                              height: "100px",
+                              width: "100%",
+                              objectFit: "cover",
+                            }}
+                            src={img.imgPath}
+                            alt={`Car Image ${index + 1}`}
+                          />
+                        </td>
+                      ))
+                      .concat(
+                        [...Array(Math.max(0, 3 - row.carImages.length))].map(
+                          (_, index) => (
+                            <td
+                              key={index + row.carImages.length}
+                              style={{ textAlign: "center" }}
+                            >
+                              <img
+                                style={{
+                                  height: "100px",
+                                  width: "100%",
+                                  objectFit: "cover",
+                                }}
+                                src="https://placehold.co/600x400?text=Empty"
+                                alt={`Placeholder ${
+                                  row.carImages.length + index + 1
+                                }`}
+                              />
+                            </td>
+                          )
+                        )
+                      )
                   )}
 
                   <td style={{ textAlign: "center" }}>
                     <IconButton
                       onClick={() => {
-                        setId(row.id);
+                        if (row.carImages && row.carImages.length > 0) {
+                          const imagesToDelete = row.carImages.map(
+                            (img) => img.id
+                          );
+                          setDeletedFiles(imagesToDelete);
+                        }
                         setOpenDelete(true);
                       }}
+                      disabled={row.carImages && row.carImages.length === 0}
                       variant="plain"
                     >
                       <DeleteOutlineRoundedIcon />
@@ -411,7 +466,7 @@ export default function CarImagesTable() {
               fontWeight="lg"
               mb={1}
             >
-              {!isEdit ? t("addNewCar") : t("updateCar")}
+              {t("addNewCar")}
             </Typography>
             <hr />
             <Grid
@@ -426,10 +481,11 @@ export default function CarImagesTable() {
                     <select
                       id="car"
                       name="carId"
-                      value={formik.values.carId || carId}
+                      value={formik.values.carId}
                       onChange={(e) => {
                         const selectedCarId = e.target.value;
                         setCarId(selectedCarId);
+                        formik.handleChange(e);
                       }}
                       style={{
                         textAlign: "center",
@@ -482,7 +538,7 @@ export default function CarImagesTable() {
                         onChange={(e) => {
                           const selectedFiles = e.target.files[0];
                           setEventFile(selectedFiles);
-
+                          setSelectedFile(selectedFiles.name);
                           // if (selectedFiles.length <= 3) {
                           //   const fileNames = selectedFiles.map(
                           //     (file) => file.name
@@ -500,6 +556,17 @@ export default function CarImagesTable() {
                         multiple
                       />
                     </Button>
+                  </FormGroup>
+                  <FormGroup>
+                    {!selectedFile ? (
+                      ""
+                    ) : (
+                      
+                      <>
+                          Yüklenecek Resimler : <span style={{color:"green", fontWeight:"bold"}}>{selectedFile}</span>
+                       
+                      </>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     {fileName.length === 0 ? (
@@ -544,7 +611,6 @@ export default function CarImagesTable() {
             </DialogTitle>
             <Divider />
             <DialogContent>
-              <p style={{ fontWeight: "bold" }}>{carName}</p>
               {t("deleteMessage")}
             </DialogContent>
             <DialogActions>
@@ -552,7 +618,7 @@ export default function CarImagesTable() {
                 variant="solid"
                 color="danger"
                 onClick={() => {
-                  //handleDelete(id);
+                  handleDelete();
                   setOpenDelete(false);
                 }}
               >

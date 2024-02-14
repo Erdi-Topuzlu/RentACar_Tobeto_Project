@@ -196,6 +196,7 @@ export default function SliderTable() {
           onClick={() => {
             formik.resetForm();
             setId(null);
+            setEventFile();
             setOpen(true);
             setIsEdit(false);
           }}
@@ -543,10 +544,9 @@ export default function SliderTable() {
                         ""
                       ) : (
                         <>
-                          <FormLabel>Yüklenecek Resimler</FormLabel>
-
-                          <p>{eventFile.name}</p>
-                        </>
+                          Yüklenecek Resimler : <span style={{color:"green", fontWeight:"bold"}}>{eventFile.name}</span>
+                       
+                      </>
                       )}
                     </FormGroup>
                   </div>
