@@ -43,6 +43,7 @@ import RentalTable from "./pages/admin/components/rental/RentalTable.jsx";
 import ModelTable from "./pages/admin/components/model/ModelTable.jsx";
 import SliderTable from "./pages/admin/components/slider/SliderTable.jsx";
 import CarImagesTable from "./pages/admin/components/car-images/CarImagesTable.jsx";
+import CampaignsTable from "./pages/admin/components/Campaigns/CampaignsTable.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -81,6 +82,7 @@ const router = createBrowserRouter(
           <Route path="carImages" element={<CarImagesTable/>} />
           <Route path="rentals" element={<RentalTable/>} />
           <Route path="models" element={<ModelTable/>} />
+          <Route path="campaigns" element={<CampaignsTable/>} />
         </Route>
       </Route>
     </>

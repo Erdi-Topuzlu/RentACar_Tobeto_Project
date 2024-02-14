@@ -98,6 +98,7 @@ export default function Sidebar() {
     { label: t("colors"), route: "colors" },
     { label: t("cars"), route: "cars" },
     { label: t("rentals"), route: "rentals" },
+    { label: t("campaigns"), route: "campaigns" },
   ];
 
   const isMenuItemSelected = (route) => {
@@ -229,7 +230,7 @@ export default function Sidebar() {
             <ListItem key={index}>
               <ListItemButton selected={isMenuItemSelected(menuItem.route)}>
                 <ReactSVG
-                  src={`/src/assets/icons/${menuItem.route}-mini.svg`}
+                  src={`/src/assets/icons/${menuItem.route}-mini.svg`} 
                 />
                 <Link
                   component={RouterLink}
