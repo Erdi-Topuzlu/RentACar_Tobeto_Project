@@ -19,6 +19,7 @@ public class GetByIdUserResponse {
     private Double tcNo;
     private String email;
     private String password;
+    private Boolean isEnabled;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private String userPhotoUrl;

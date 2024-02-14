@@ -17,6 +17,7 @@ public class GetAllUserResponse {
     private String name;
     private String surname;
     private String email;
+    private Boolean isEnabled;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private String userPhotoUrl;
