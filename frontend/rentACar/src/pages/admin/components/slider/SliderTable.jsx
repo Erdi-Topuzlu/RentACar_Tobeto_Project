@@ -502,7 +502,7 @@ export default function SliderTable() {
                     </FormGroup>
 
                     <FormGroup>
-                      <p style={{ fontWeight: "600" }}>{t("sliderFile")}</p>
+                      
                       <Button
                         component="label"
                         role={undefined}
@@ -537,6 +537,17 @@ export default function SliderTable() {
                           id="image-upload"
                         />
                       </Button>
+                    </FormGroup>
+                    <FormGroup>
+                      {!eventFile ? (
+                        ""
+                      ) : (
+                        <>
+                          <FormLabel>Yüklenecek Resimler</FormLabel>
+
+                          <p>{eventFile.name}</p>
+                        </>
+                      )}
                     </FormGroup>
                   </div>
                   {id ? (
