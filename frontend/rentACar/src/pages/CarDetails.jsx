@@ -33,14 +33,15 @@ const CarDetails = () => {
     dispatch(fetchCarDetailData(id));
   }, [dispatch]);
 
-  localStorage.setItem("carData", JSON.stringify(details))
+  localStorage.setItem("carData", JSON.stringify(details));
 
   if (status === "LOADING") {
     return <Loading />;
-  }else if (status === "FAIL"){
-    return <ErrorPage errorMessage={error} />
+  } else if (status === "FAIL") {
+    return <ErrorPage errorMessage={error} />;
   }
 
+  console.log(details);
   return (
     <Helmet
       title={`${details.modelId?.brandId?.name} - ${details.modelId?.name} `}
@@ -65,15 +66,39 @@ const CarDetails = () => {
                 modules={[EffectCoverflow, Pagination]}
                 className="mySwiper"
               >
-                <SwiperSlide>
-                  <img src="https://placehold.co/600x400" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src="https://placehold.co/600x400" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src="https://placehold.co/600x400" />
-                </SwiperSlide>
+                {!details || !details.carImages || details.carImages.length === 0 ? (
+                  <>
+                    {[...Array(3)].map((_, index) => (
+                      
+                        <SwiperSlide key={index}>
+                        <img
+                          style={{
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          src="https://placehold.co/600x400?text=Empty"
+                          alt={`Placeholder ${index + 1}`}
+                        />
+                        </SwiperSlide>
+                  
+                    ))}
+                  </>
+                ) : (
+                  details.carImages.map((img, index) => (
+                    <SwiperSlide key={index +1}>
+                      <img
+                        style={{
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                        src={img.imgPath}
+                        alt={`Car Image ${index + 1}`}
+                      />
+                    </SwiperSlide>
+                  ))
+                )}
+
+                
               </Swiper>
             </Col>
 
@@ -147,16 +172,15 @@ const CarDetails = () => {
               </div>
             </Col>
             {token ? (
-            <Col lg="12" className="mt-5">
-              <div className="booking-info mt-5">
-                <h5 className="mb-4 fw-bold text-center ">
-                  {t("bookingInfo")}
-                </h5>
-                <BookingForm />
-              </div>
-            </Col>
+              <Col lg="12" className="mt-5">
+                <div className="booking-info mt-5">
+                  <h5 className="mb-4 fw-bold text-center ">
+                    {t("bookingInfo")}
+                  </h5>
+                  <BookingForm />
+                </div>
+              </Col>
             ) : (
-              
               <RedirectLogin />
             )}
           </Row>

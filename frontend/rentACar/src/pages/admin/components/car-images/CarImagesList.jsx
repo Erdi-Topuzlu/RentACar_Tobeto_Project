@@ -43,6 +43,7 @@ import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData
 import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import Loading from "../../../../components/ui/Loading";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -96,74 +97,38 @@ export default function CarImagesList() {
   const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
+  const [deletedFiles, setDeletedFiles] = React.useState([]);
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   React.useEffect(() => {
     dispatch(fetchAllCarData());
-    dispatch(fetchAllColorData());
-    dispatch(fetchAllModelData());
-    dispatch(fetchAllBrandData());
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    if (!id) {
-      toastError(t("carIdNotFound"));
-    } else {
-      try {
-        await axiosInstance.delete(`api/v1/admin/cars/${id}`);
-        toastSuccess(t("carSuccessDelete"));
-        dispatch(fetchAllCarData());
-      } catch (error) {
-        console.error(t("registrationError"), error);
-      }
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    if (!kilometer) {
+  const handleDelete = async () => {
+    if (!deletedFiles || deletedFiles.length === 0) {
       setOpen(false);
-      toastError(t("schemeCarKilometer"));
+      toastError("Images ID'ler bulunamadı!");
     } else {
-      const updatedData = {
-        id: id,
-        kilometer: kilometer,
-        plate: plate,
-        year: year,
-        dailyPrice: dailyPrice,
-        fuelType: fuelType,
-        gearType: gearType,
-        vehicleType: vehicleType,
-        seatType: seatType,
-        isAvailable: "true",
-        modelId: modelId,
-        colorId: colorId,
-      };
-
       try {
-        await axiosInstance.put(`api/v1/admin/cars/${id}`, updatedData);
-        toastSuccess(t("carSuccessUpdate"));
-        setOpen(false);
+        for (const fileId of deletedFiles) {
+          await axiosInstance.delete(`api/v1/admin/car-images/${fileId}`);
+        }
+        toastSuccess("Car Images Başarıyla Silindi.");
         dispatch(fetchAllCarData());
+        setId(null);
       } catch (error) {
-        console.error(t("registrationError"), error);
+        setOpen(false);
+        alert(JSON.stringify(error.response.data));
+        toastError("Bilinmeyen Hata", error.response.data);
       }
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      kilometer: "",
-      plate: "",
-      year: "",
-      dailyPrice: "",
-      fuelType: "",
-      gearType: "",
-      vehicleType: "",
-      seatType: "",
-      colorId: "",
-      modelId: "",
-      isAvailable: "",
+      carId: "",
     },
   });
 
@@ -209,11 +174,11 @@ export default function CarImagesList() {
                 textAlign: "center",
               }}
             >
-              {t("cars")}
+              {t("cars")} & {t("images")}
             </th>
             <th
               style={{
-                width: "auto",
+                width: "80px",
                 padding: "12px 6px",
                 textAlign: "right",
               }}
@@ -224,583 +189,129 @@ export default function CarImagesList() {
         </thead>
       </Table>
       {status === "LOADING" ? (
-          <Loading />
-        ) : (stableSort(items, getComparator(order, "id")).map((item) => (
-        <List
-          key={item.id}
-          size="sm"
-          sx={{
-            "--ListItem-paddingX": 0,
-          }}
-        >
-          <ListItem
+        <Loading />
+      ) : (
+        stableSort(items, getComparator(order, "id")).map((item) => (
+          <List
+            key={item.id}
+            size="sm"
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "start",
+              "--ListItem-paddingX": 0,
             }}
           >
-            <ListItemContent
-              sx={{ display: "flex", gap: 2, alignItems: "start" }}
+            <ListItem
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "start",
+              }}
             >
-              <ListItemDecorator>
-                <Avatar size="sm">{item.id}</Avatar>
-              </ListItemDecorator>
-              <div
-                style={{
-                  padding: "6px 60px",
-                }}
+              <ListItemContent
+                sx={{ display: "flex", gap: 2, alignItems: "start" }}
               >
-                <Typography fontWeight={600} gutterBottom>
-                  {item.modelId?.brandId?.name} | {item.modelId?.name}
-                </Typography>
-                <Typography level="body-xs" gutterBottom>
-                  {item.year} &bull; {item.colorId.name}
-                </Typography>
-                <Typography level="body-xs">
-                  <Chip color="primary" variant="solid">
-                    {item.plate}
-                  </Chip>
-                </Typography>
-                <Typography level="body-xs">{item.dailyPrice} ₺</Typography>
-              </div>
-            </ListItemContent>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: {
-                      variant: "plain",
-                      color: "neutral",
-                      size: "sm",
-                    },
+                <ListItemDecorator>
+                  <Avatar size="sm">{item.id}</Avatar>
+                </ListItemDecorator>
+                <div>
+                  {!item || !item.carImages || item.carImages.length === 0 ? (
+                    <>
+                      {[...Array(3)].map((_, index) => (
+                        <img
+                          key={index + 2}
+                          style={{
+                            height: "100px",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          src="https://placehold.co/600x400?text=Empty"
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    item.carImages
+                      .map((img, index) => (
+                        <img
+                          key={index}
+                          style={{
+                            height: "100px",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          src={img.imgPath}
+                          alt={`Car Image ${index + 1}`}
+                        />
+                      ))
+                      .concat(
+                        [...Array(Math.max(0, 3 - item.carImages.length))].map(
+                          (_, index) => (
+                            <img
+                              key={index + 1}
+                              style={{
+                                height: "100px",
+                                width: "100%",
+                                objectFit: "cover",
+                              }}
+                              src="https://placehold.co/600x400?text=Empty"
+                              alt={`Placeholder ${
+                                item.carImages.length + index + 1
+                              }`}
+                            />
+                          )
+                        )
+                      )
+                  )}
+                </div>
+                <List
+                  style={{
+                    padding: "6px 60px",
                   }}
                 >
-                  <MoreHorizRoundedIcon />
-                </MenuButton>
-                <Menu size="sm" sx={{ minWidth: 140 }}>
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      setKilometer(item?.kilometer);
-                      setPlate(item?.plate);
-                      setYear(item?.year);
-                      setDailyPrice(item?.dailyPrice);
-                      setBrandId(item?.modelId?.brandId?.id);
-                      setModelId(item?.modelId?.id);
-                      setColorId(item?.colorId?.id);
-                      setFuelType(item?.fuelType);
-                      setGearType(item?.gearType);
-                      setVehicleType(item?.vehicleType);
-                      setSeatType(item?.seatType);
-                      setOpen(true);
-                      setIsEdit(true);
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    {t("edit")}
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      setCarName(
-                        item.modelId.brandId?.name + " | " + item.modelId?.name
+                    <Typography fontWeight={600} gutterBottom>
+                      {item?.modelId?.brandId?.name}
+                    </Typography>
+                    <Typography fontWeight={600} gutterBottom>
+                      {item?.modelId?.name}
+                    </Typography>
+                  </div>
+                </List>
+              </ListItemContent>
+
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <IconButton
+                  onClick={() => {
+                    if (item.carImages && item.carImages.length > 0) {
+                      const imagesToDelete = item.carImages.map(
+                        (img) => img.id
                       );
-                      setOpenDelete(true);
-                    }}
-                    color="danger"
-                  >
-                    {t("delete")}
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
-            </Box>
-          </ListItem>
-          <ListDivider />
-        </List>
-      )))}
-      <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          formik.resetForm();
-          setId(null);
-          setKilometer(null);
-          setPlate(null);
-          setYear(null);
-          setDailyPrice(null);
-          setBrandId(null);
-          setModelId(null);
-          setColorId(null);
-          setFuelType(null);
-          setGearType(null);
-          setVehicleType(null);
-          setSeatType(null);
-          setOpen(false);
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 10001,
-        }}
-      >
-        <Sheet
-          variant="outlined"
-          sx={{
-            width: 500,
-            borderRadius: "md",
-            p: 3,
-            boxShadow: "lg",
-          }}
-        >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography
-            textAlign={"center"}
-            component="h2"
-            id="modal-title"
-            level="h4"
-            textColor="inherit"
-            fontWeight="lg"
-            mb={1}
-          >
-            {!isEdit ? t("addNewCar") : t("updateCar")}
-          </Typography>
-          <hr />
-          <Grid
-            textAlign={"center"}
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid xs={12}>
-              <Form onSubmit={formik.handleSubmit}>
-                <div>
-                  <FormLabel>{t("kilometer")}</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="kilometer"
-                      name="kilometer"
-                      type="text"
-                      value={formik.values.kilometer || kilometer}
-                      className={
-                        formik.errors.kilometer &&
-                        formik.touched.kilometer &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        setKilometer(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.kilometer && formik.touched.kilometer
-                          ? formik.errors.kilometer
-                          : t("kilometer")
-                      }
-                      error={
-                        formik.errors.kilometer && formik.touched.kilometer
-                      }
-                    />
-                  </FormGroup>
-                </div>
-
-                <div>
-                  <FormLabel>{t("plate")}</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="plate"
-                      name="plate"
-                      type="text"
-                      value={formik.values.plate || plate}
-                      className={
-                        formik.errors.plate && formik.touched.plate && "error"
-                      }
-                      onChange={(e) => {
-                        setPlate(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.plate && formik.touched.plate
-                          ? formik.errors.plate
-                          : t("plate")
-                      }
-                      error={formik.errors.plate && formik.touched.plate}
-                    />
-                  </FormGroup>
-                </div>
-
-                <div>
-                  <FormLabel>{t("year")}</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="year"
-                      name="year"
-                      type="text"
-                      value={formik.values.year || year}
-                      className={
-                        formik.errors.year && formik.touched.year && "error"
-                      }
-                      onChange={(e) => {
-                        setYear(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.year && formik.touched.year
-                          ? formik.errors.year
-                          : t("year")
-                      }
-                      error={formik.errors.year && formik.touched.year}
-                    />
-                  </FormGroup>
-                </div>
-
-                <div>
-                  <FormLabel>{t("dailyPriceCar")}</FormLabel>
-                  <FormGroup className="">
-                    <Input
-                      id="dailyPrice"
-                      name="dailyPrice"
-                      type="text"
-                      value={formik.values.dailyPrice || dailyPrice}
-                      className={
-                        formik.errors.dailyPrice &&
-                        formik.touched.dailyPrice &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        setDailyPrice(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      onBlur={formik.handleBlur}
-                      placeholder={
-                        formik.errors.dailyPrice && formik.touched.dailyPrice
-                          ? formik.errors.dailyPrice
-                          : t("dailyPriceCar")
-                      }
-                      error={
-                        formik.errors.dailyPrice && formik.touched.dailyPrice
-                      }
-                    />
-                  </FormGroup>
-                </div>
-
-                <div>
-                  <FormGroup className="d-flex gap-2">
-                    <select
-                      id="brand"
-                      name="brandId"
-                      value={formik.values.brandId || brandId}
-                      onChange={(e) => {
-                        const selectedBrandId = e.target.value;
-                        setBrandId(selectedBrandId);
-
-                        const selectedBrandModels = models.filter(
-                          (model) =>
-                            model.brandId.id === parseInt(selectedBrandId)
-                        );
-
-                        if (selectedBrandModels.length > 0) {
-                          setModelId(selectedBrandModels[0].id);
-                        } else {
-                          setModelId("");
-                        }
-                      }}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                    >
-                      <option value="">{t("selectBrand")}</option>
-                      {brands.map((brand) => (
-                        <option key={brand.id} value={brand.id}>
-                          {brand.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      id="model"
-                      name="modelId"
-                      value={formik.values.modelId || modelId}
-                      onChange={(e) => setModelId(e.target.value)}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                      disabled={!brandId}
-                    >
-                      <option value="">{t("selectModel")}</option>
-                      {models
-                        .filter(
-                          (model) => model.brandId.id === parseInt(brandId)
-                        )
-                        .map((model) => (
-                          <option key={model.id} value={model.id}>
-                            {model.name}
-                          </option>
-                        ))}
-                    </select>
-                  </FormGroup>
-                </div>
-
-                <div>
-                  <FormGroup className="">
-                    <select
-                      id="color"
-                      name="color"
-                      type="text"
-                      value={formik.values.colorId || colorId}
-                      className={
-                        formik.errors.colorId &&
-                        formik.touched.colorId &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        setColorId(e.target.value);
-                        formik.setFieldValue("colorId", e.target.value);
-                      }}
-                      onBlur={formik.handleBlur}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                    >
-                      <option value="">{t("selectColor")}</option>
-                      {colors.map((color) => {
-                        const colorId = color.id;
-                        return (
-                          <option key={colorId} value={colorId}>
-                            {color.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </FormGroup>
-                </div>
-
-                <div>
-                  {/* <FormLabel htmlFor="fuelType">
-                      {t("selectFuelAndGear")}
-                    </FormLabel> */}
-                  <FormGroup className="d-flex gap-2">
-                    <select
-                      id="fuelType"
-                      name="fuelType"
-                      value={formik.values.fuelType || fuelType}
-                      onChange={(e) => {
-                        setFuelType(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                      onBlur={formik.handleBlur}
-                      className={
-                        formik.errors.fuelType &&
-                        formik.touched.fuelType &&
-                        "error"
-                      }
-                    >
-                      <option value="">{t("selectFuelType")}</option>
-                      <option value="GASOLINE" key="1">
-                        {t("gasoline")}
-                      </option>
-                      <option value="DIESEL" key="2">
-                      {t("diesel")}
-                      </option>
-                      <option value="HYBRID" key="3">
-                      {t("hybrid")}
-                      </option>
-                    </select>
-
-                    <select
-                      id="gearType"
-                      name="gearType"
-                      type="text"
-                      value={formik.values.gearType || gearType}
-                      className={
-                        formik.errors.gearType &&
-                        formik.touched.gearType &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        setGearType(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">{t("selectGearType")}</option>
-                      <option value="AUTOMATIC" key="1">
-                      {t("automatic")}
-                      </option>
-                      <option value="MANUAL" key="2">
-                      {t("manual")}
-                      </option>
-                    </select>
-                  </FormGroup>
-                </div>
-
-                <div>
-                  {/* <FormLabel>{t("selectVehicleAndSeat")}</FormLabel> */}
-                  <FormGroup className="d-flex gap-2">
-                    <select
-                      id="vehicleType"
-                      name="vehicleType"
-                      type="text"
-                      value={formik.values.vehicleType || vehicleType}
-                      className={
-                        formik.errors.vehicleType &&
-                        formik.touched.vehicleType &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        // Update the brandName state when the input changes
-                        setVehicleType(e.target.value);
-                        formik.handleChange(e); // Invoke Formik's handleChange as well
-                      }}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">{t("selectVehicleType")}</option>
-                      <option value="SUV" key="1">
-                      {t("suv")}
-                      </option>
-                      <option value="SEDAN" key="2">
-                      {t("sedan")}
-                      </option>
-                      <option value="HB" key="3">
-                      {t("hatchback")}
-                      </option>
-                    </select>
-
-                    <select
-                      id="seatType"
-                      name="seatType"
-                      type="text"
-                      value={formik.values.seatType || seatType}
-                      className={
-                        formik.errors.seatType &&
-                        formik.touched.seatType &&
-                        "error"
-                      }
-                      onChange={(e) => {
-                        setSeatType(e.target.value);
-                        formik.handleChange(e);
-                      }}
-                      style={{
-                        textAlign: "center",
-                        appearance: "none",
-                        WebkitAppearance: "none",
-                        MozAppearance: "none",
-                        padding: "7px",
-                        fontSize: "16px",
-                        border: "1px solid #ccc",
-                        borderRadius: "10px",
-                        width: "50%",
-                      }}
-                      onBlur={formik.handleBlur}
-                    >
-                      <option value="">{t("selectSeatType")}</option>
-                      <option value="TWO" key="1">
-                        2
-                      </option>
-                      <option value="FIVE" key="2">
-                        5
-                      </option>
-                      <option value="SEVEN" key="3">
-                        7
-                      </option>
-                    </select>
-                  </FormGroup>
-                </div>
-
-                {id ? (
-                  <Button
-                    onClick={() => {
-                      setIsEdit(true);
-                      handleUpdate(id);
-                    }}
-                    className=" form__btn"
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("update")}
-                  </Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >
-                    {t("add")}
-                  </Button>
-                )}
-              </Form>
-            </Grid>
-          </Grid>
-        </Sheet>
-      </Modal>
+                      setDeletedFiles(imagesToDelete);
+                    }
+                    setOpenDelete(true);
+                  }}
+                  disabled={item.carImages && item.carImages.length === 0}
+                  variant="plain"
+                >
+                  <DeleteOutlineRoundedIcon />
+                </IconButton>
+              </Box>
+            </ListItem>
+            <ListDivider />
+          </List>
+        ))
+      )}
 
       <Modal
         open={openDelete}
         onClose={() => {
           setId(null);
-          setCarName(null);
           setOpenDelete(false);
         }}
         sx={{
@@ -813,16 +324,13 @@ export default function CarImagesList() {
             {t("confirmation")}
           </DialogTitle>
           <Divider />
-          <DialogContent>
-            <p style={{ fontWeight: "bold" }}>{carName}</p>
-            {t("deleteMessage")}
-          </DialogContent>
+          <DialogContent>{t("deleteMessage")}</DialogContent>
           <DialogActions>
             <Button
               variant="solid"
               color="danger"
               onClick={() => {
-                handleDelete(id);
+                handleDelete();
                 setOpenDelete(false);
               }}
             >
