@@ -8,11 +8,12 @@ import lombok.Data;
 @Entity
 @Table(name = "car_images")
 @Data
-public class CarImage extends BaseEntity {
+public class CarImage {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_sequence")
+    @SequenceGenerator(name = "my_sequence", sequenceName = "my_sequence", allocationSize = 1, initialValue = 10000)
     private int id;
 
     @Column(name = "img_path")
