@@ -7,9 +7,10 @@ import com.tobeto.RentACar.services.dtos.requests.campaigns.UpdateCampaignsReque
 import com.tobeto.RentACar.services.dtos.responses.campaigns.GetAllCampaignsResponse;
 import com.tobeto.RentACar.services.dtos.responses.campaigns.GetByIdCampaignsResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,14 +37,14 @@ public class CampaignsController {
         return campaignsService.delete(id);
     }
 
-    @PostMapping
-    public void add(@RequestBody @Valid AddCampaignsRequest request) {
-        campaignsService.add(request);
+    @PostMapping( consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public String add(@RequestPart MultipartFile file, @RequestPart AddCampaignsRequest request) {
+       return campaignsService.addCampaigns(file, request);
     }
 
     @PutMapping("/{id}")
-    public void update(@RequestBody @Valid UpdateCampaignsRequest request) {
-        campaignsService.update(request);
+    public String update(@RequestPart MultipartFile file, @RequestPart UpdateCampaignsRequest request) {
+       return campaignsService.updateCampaigns(request, file);
     }
 }
 

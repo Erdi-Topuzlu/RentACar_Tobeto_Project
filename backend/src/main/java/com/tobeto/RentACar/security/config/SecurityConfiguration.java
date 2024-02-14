@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                                                 "/api/v1/admin/slider/getAll",
                                                 "/api/v1/sliderImage/**",
                                                 "/api/v1/carImage/**",
+                                                "api/v1/campaigns/**",
                                                 "/v2/api-docs",
                                                 "/v3/api-docs",
                                                 "/v3/api-docs/**",

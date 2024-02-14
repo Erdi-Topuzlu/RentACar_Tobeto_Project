@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 public class AddCampaignsRequest {
     private String title;
     private String description;
-    @Nullable
-    private String imgPath;
 }
