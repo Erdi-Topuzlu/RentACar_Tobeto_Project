@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
 import {
   Container,
   Row,
@@ -26,7 +28,6 @@ const Login = () => {
 
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
   
   const loginValidationSchema = getLoginValidationSchema();  
 
@@ -46,7 +47,7 @@ const Login = () => {
         console.log(response.data)
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
-        navigate("/home");
+        <Navigate to={"/home"}/>
         window.location.reload();
       } catch (error) {
         toastError(error.response.data.message);
@@ -55,6 +56,10 @@ const Login = () => {
       }
     },
   });
+
+  if(token){
+    return <Navigate to="/home" />;
+  }
 
   return (
     <Helmet title={t("login")}>

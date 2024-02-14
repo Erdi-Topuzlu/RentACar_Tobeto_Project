@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Form, Link, Navigate, useNavigate } from "react-router-dom";
 import {
   Container,
   Row,
@@ -24,10 +24,10 @@ const signUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [dateInputType, setDateInputType] = useState("text");
+  const token = localStorage.getItem("access_token");
+
 
   const signUpValidationSchema = getSignUpValidationSchema();
-
-  const token = localStorage.getItem("access_token");
 
   const activateDateInput = () => {
     setDateInputType("date");
@@ -59,22 +59,29 @@ const signUp = () => {
       };
       try {
         const response = await axiosInstance.post("api/v1/auth/register", data);
-
-        console.log(response.data);
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("refresh_token", response.data.refresh_token);
-
         navigate("/login");
         // window.location.reload();
         toastSuccess(t("successRegistration"));
       } catch (error) {
-        console.error(t("registrationError"), response.error.data);
-      } finally {
+        setOpen(false);
+        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
+          toastError(JSON.stringify(error.response.data.validationErrors.name));
+        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
+          toastError(JSON.stringify(error.response.data.message))
+        }else{
+          toastError(t("unknownError"))
+        }
+    } finally {
         actions.setSubmitting(false);
       }
     },
   });
 
+  if(token){
+    return <Navigate to="/home" />;
+  }
+
+  
   return (
     <Helmet title={t("signup")}>
       <section>
