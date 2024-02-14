@@ -12,6 +12,4 @@ public class GetAllCampaignsResponse {
     private String title;
     private String description;
     private String imgPath;
-
-
 }

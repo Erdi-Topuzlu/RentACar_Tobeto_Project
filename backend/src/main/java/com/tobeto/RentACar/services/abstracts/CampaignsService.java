@@ -5,13 +5,15 @@ import com.tobeto.RentACar.services.dtos.requests.campaigns.DeleteCampaignsReque
 import com.tobeto.RentACar.services.dtos.requests.campaigns.UpdateCampaignsRequest;
 import com.tobeto.RentACar.services.dtos.responses.campaigns.GetAllCampaignsResponse;
 import com.tobeto.RentACar.services.dtos.responses.campaigns.GetByIdCampaignsResponse;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface CampaignsService {
 
-    void add(AddCampaignsRequest request);
+    String addCampaigns(MultipartFile file, AddCampaignsRequest request);
 
-    void update(UpdateCampaignsRequest request);
+    String updateCampaigns(UpdateCampaignsRequest sliderRequest, MultipartFile file);
 
     DeleteCampaignsRequest delete(int id);
 
