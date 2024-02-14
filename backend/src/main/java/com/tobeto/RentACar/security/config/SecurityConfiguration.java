@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                                 authorizeHttpRequests
                                         .requestMatchers(
                                                 "/api/v1/auth/**",
+                                                "/api/v1/auth/confirm-account",
                                                 "/api/v1/admin/campaigns/**",
                                                 "/api/v1/admin/cars/getAll",
                                                 "/api/v1/admin/cars/getById/**",
