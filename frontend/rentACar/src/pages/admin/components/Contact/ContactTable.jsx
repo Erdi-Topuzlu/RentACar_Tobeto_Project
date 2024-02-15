@@ -16,9 +16,15 @@ import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import { DialogActions, DialogContent, DialogTitle, Grid, ModalDialog } from "@mui/joy";
+import {
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalDialog,
+} from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,7 +68,9 @@ export default function ContactTable() {
   const [contactMessage, setContactMessage] = React.useState();
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
-  const { contacts, status, error } = useSelector((state) => state.contactAllData);
+  const { contacts, status, error } = useSelector(
+    (state) => state.contactAllData
+  );
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -70,14 +78,14 @@ export default function ContactTable() {
 
   React.useEffect(() => {
     dispatch(fetchAllContactData());
-    console.log(contacts)
+    console.log(contacts);
   }, [dispatch]);
 
   // const brandValidationSchema = getBrandValidationSchema();
 
   const handleDelete = async (id) => {
     if (!id) {
-      setOpen(false)
+      setOpen(false);
       toastError(t("notFoundContactId"));
     } else {
       try {
@@ -85,22 +93,16 @@ export default function ContactTable() {
         toastSuccess(t("contactSuccessDelete"));
         dispatch(fetchAllContactData());
       } catch (error) {
-        setOpen(false)
+        setOpen(false);
 
-
-        toastError(t("connectedDataDelete"))
-        dispatch(fetchAllContactData())
-
+        toastError(t("connectedDataDelete"));
+        dispatch(fetchAllContactData());
       }
     }
   };
 
-
   return (
     <React.Fragment>
-      {
-        contacts
-      }
       <Box
         sx={{
           display: "flex",
@@ -115,7 +117,6 @@ export default function ContactTable() {
         <Typography level="h2" component="h1">
           {t("contacts").toUpperCase()}
         </Typography>
-
       </Box>
       <hr />
       <Sheet
@@ -187,7 +188,7 @@ export default function ContactTable() {
                 >
                   {t("Message")}
                 </th>
-               
+
                 <th
                   style={{
                     width: "auto",
@@ -207,16 +208,22 @@ export default function ContactTable() {
                   </td>
 
                   <td style={{ textAlign: "center" }}>
-                    <Typography level="body-xs"><span style={{ fontWeight: "bold", fontSize: "16px" }}>{row.email}</span></Typography>
+                    <Typography level="body-xs">
+                      <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                        {row.email}
+                      </span>
+                    </Typography>
                   </td>
                   <td style={{ textAlign: "center" }}>
                     <Typography level="body-xs">
                       <span style={{ fontWeight: "bold", fontSize: "16px" }}>
-                        {row.messages.length > 10 ? `${row.messages.slice(0, 10)}...` : row.messages}
+                        {row.messages.length > 10
+                          ? `${row.messages.slice(0, 10)}...`
+                          : row.messages}
                       </span>
                     </Typography>
                   </td>
-                
+
                   <td style={{ textAlign: "center" }}>
                     <Dropdown>
                       <MenuButton
@@ -298,9 +305,7 @@ export default function ContactTable() {
               fontWeight="lg"
               mb={1}
             >
-              {
-                isEdit ? t("Details") : t("addNewContact")
-              }
+              {isEdit ? t("Details") : t("addNewContact")}
             </Typography>
             <hr />
             <Grid
@@ -310,7 +315,6 @@ export default function ContactTable() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid xs={12}>
-
                 <div className="d-flex flex-column gap-4">
                   <div className="d-flex flex-column justify-content-center align-items-center text-center">
                     <FormLabel>Contact Owner</FormLabel>
@@ -321,17 +325,22 @@ export default function ContactTable() {
                     <FormLabel>Sender</FormLabel>
                     {contactMail}
                   </div>
-                  <div className="d-flex flex-column justify-content-center align-items-center text-center" style={{ overflow: 'auto', maxHeight: '200px' }}>
+                  <div
+                    className="d-flex flex-column justify-content-center align-items-center text-center"
+                    style={{ flexWrap: "nowrap" }}
+                  >
                     <FormLabel>Message</FormLabel>
-                    {contactMessage}
+                    <div style={{ whiteSpace: "pre-line", wordWrap: "break-word", overflow:"auto", maxWidth:"300px" }}>
+                      {contactMessage}
+                    </div>
                   </div>
                 </div>
-
               </Grid>
             </Grid>
           </Sheet>
         </Modal>
-        <Modal open={openDelete}
+        <Modal
+          open={openDelete}
           onClose={() => {
             setId(null);
             setContactName(null);
@@ -350,16 +359,25 @@ export default function ContactTable() {
             </DialogTitle>
             <Divider />
             <DialogContent>
-              <p style={{ fontWeight: "bold" }}>{contactName}</p>{t("deleteMessage")}
+              <p style={{ fontWeight: "bold" }}>{contactName}</p>
+              {t("deleteMessage")}
             </DialogContent>
             <DialogActions>
-              <Button variant="solid" color="danger" onClick={() => {
-                handleDelete(id);
-                setOpenDelete(false)
-              }}>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete(id);
+                  setOpenDelete(false);
+                }}
+              >
                 {t("delete")}
               </Button>
-              <Button variant="plain" color="neutral" onClick={() => setOpenDelete(false)}>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setOpenDelete(false)}
+              >
                 {t("cancel")}
               </Button>
             </DialogActions>
