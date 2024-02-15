@@ -10,24 +10,42 @@ import { ReactSVG } from "react-svg";
 
 const CarItem = ({ item }) => {
   const { t } = useTranslation();
+  console.log("car ITEMMMM" ,item.carImages);
   return (
     <Col lg="4" md="4" sm="6" className="mb-5">
       <div className="car__item">
         <div className="car__img">
           <motion.div whileHover={{ scale: 1.05 }}>
-            <img
-              src={"https://placehold.co/600x400"}
-              alt=""
-              className="w-100 h-100 "
-            />
+            {!item.carImages || item.carImages.length === 0 ? (
+              <img
+                style={{
+                  height:"250px",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+                src={"https://placehold.co/600x400?text=Empty"}
+                alt=""
+              />
+            ) : (
+             
+                <img
+                  style={{
+                    height:"250px",
+                    width: "100%",
+                    objectFit: "cover",
+                  }}
+                  src={item.carImages[0].imgPath}
+                />
+              )
+            }
+
+            
           </motion.div>
         </div>
 
         <div className="car__item-content mt-4 text-center">
           <h5 className="campaign__title">
-            {item.modelId?.brandId?.name}
-            {" "}
-            {item.modelId?.name}
+            {item.modelId?.brandId?.name} {item.modelId?.name}
           </h5>
           <h6 className="rent__price mt-2">
             <span className="text-dark">{item.dailyPrice}.00 ₺</span>{" "}

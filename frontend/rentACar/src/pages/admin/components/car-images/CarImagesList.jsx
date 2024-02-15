@@ -11,36 +11,22 @@ import ListItem from "@mui/joy/ListItem";
 import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListDivider from "@mui/joy/ListDivider";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  Chip,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormLabel,
-  Grid,
   Modal,
-  ModalClose,
   ModalDialog,
-  Sheet,
   Table,
 } from "@mui/joy";
 import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterceptors";
 import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
-import { Form, FormGroup, Input } from "reactstrap";
-import fetchAllColorData from "../../../../redux/actions/admin/fetchAllColorData";
 import fetchAllCarData from "../../../../redux/actions/fetchAllCarData";
-import fetchAllModelData from "../../../../redux/actions/admin/fetchAllModelData";
-import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import Loading from "../../../../components/ui/Loading";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
@@ -74,27 +60,9 @@ function stableSort(array, comparator) {
 }
 
 export default function CarImagesList() {
-  const [id, setId] = React.useState();
-  const [isChecked, setIsChecked] = React.useState(false);
-  const [isEdit, setIsEdit] = React.useState(false);
-  const [kilometer, setKilometer] = React.useState();
-  const [plate, setPlate] = React.useState();
-  const [year, setYear] = React.useState();
-  const [dailyPrice, setDailyPrice] = React.useState();
-  const [fuelType, setFuelType] = React.useState();
-  const [gearType, setGearType] = React.useState();
-  const [vehicleType, setVehicleType] = React.useState("");
-  const [seatType, setSeatType] = React.useState("");
-  const [colorId, setColorId] = React.useState("");
-  const [modelId, setModelId] = React.useState("");
-  const [brandId, setBrandId] = React.useState("");
-  const [carName, setCarName] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [order, setOrder] = React.useState("");
   const { items, status, error } = useSelector((state) => state.carAllData);
-  const { colors } = useSelector((state) => state.colorAllData);
-  const { models } = useSelector((state) => state.modelAllData);
-  const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const [deletedFiles, setDeletedFiles] = React.useState([]);
@@ -117,7 +85,6 @@ export default function CarImagesList() {
         }
         toastSuccess(t("carImgSuccessDelete"));
         dispatch(fetchAllCarData());
-        setId(null);
       } catch (error) {
         setOpen(false);
         alert(JSON.stringify(error.response.data));
@@ -217,7 +184,7 @@ export default function CarImagesList() {
                     <>
                       {[...Array(3)].map((_, index) => (
                         <img
-                          key={index + 2}
+                          key={index}
                           style={{
                             height: "100px",
                             width: "100%",
@@ -231,7 +198,7 @@ export default function CarImagesList() {
                     item.carImages
                       .map((img, index) => (
                         <img
-                          key={index}
+                          key={index + 10}
                           style={{
                             height: "100px",
                             width: "100%",
@@ -245,7 +212,7 @@ export default function CarImagesList() {
                         [...Array(Math.max(0, 3 - item.carImages.length))].map(
                           (_, index) => (
                             <img
-                              key={index + 1}
+                              key={index + 20}
                               style={{
                                 height: "100px",
                                 width: "100%",
@@ -311,7 +278,6 @@ export default function CarImagesList() {
       <Modal
         open={openDelete}
         onClose={() => {
-          setId(null);
           setOpenDelete(false);
         }}
         sx={{

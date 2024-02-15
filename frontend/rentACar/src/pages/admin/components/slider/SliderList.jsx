@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import Box from "@mui/joy/Box";
 import Avatar from "@mui/joy/Avatar";
@@ -34,7 +33,6 @@ import axiosInstance from "../../../../redux/utilities/interceptors/axiosInterce
 import { useFormik } from "formik";
 import { toastError, toastSuccess } from "../../../../service/ToastifyService";
 import { Form, FormGroup, Input } from "reactstrap";
-import getSliderValidationSchema from "../../../../schemes/sliderScheme";
 import fetchAllSliderData from "../../../../redux/actions/admin/fetchAllSliderData";
 import Loading from "../../../../components/ui/Loading";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
@@ -69,7 +67,6 @@ function stableSort(array, comparator) {
 
 export default function SliderList() {
   const [id, setId] = React.useState();
-  const [isEdit, setIsEdit] = React.useState(false);
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const { sliders, status, error } = useSelector(
@@ -80,8 +77,6 @@ export default function SliderList() {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const sliderValidationSchema = getSliderValidationSchema();
 
   const VisuallyHiddenInput = styled("input")`
     clip: rect(0 0 0 0);
@@ -286,7 +281,7 @@ export default function SliderList() {
             fontWeight="lg"
             mb={1}
           >
-            {isEdit ? t("updateSlider") : t("addNewSlider")}
+            {t("addNewSlider")}
           </Typography>
           <hr />
           <Grid
@@ -447,7 +442,6 @@ export default function SliderList() {
         open={openDelete}
         onClose={() => {
           setId(null);
-          //setBrandName(null);
           setOpenDelete(false);
         }}
         sx={{

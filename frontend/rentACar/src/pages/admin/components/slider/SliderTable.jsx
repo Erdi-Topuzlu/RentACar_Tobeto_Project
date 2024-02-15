@@ -291,16 +291,7 @@ export default function SliderTable() {
                 >
                   {t("btnLbl")}
                 </th>
-                {/*
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
+               
                 <th
                   style={{
                     width: "auto",
@@ -341,14 +332,7 @@ export default function SliderTable() {
                       {row.buttonLabelName}
                     </Typography>
                   </td>
-                  {/* <td style={{ textAlign: "center" }}>
-                  <div>
-                    <Typography level="body-xs">{}</Typography>
-                    <Typography level="body-xs">
-                      {}
-                    </Typography>
-                  </div>
-                </td> */}
+                  
                   <td style={{ textAlign: "center" }}>
                     <IconButton
                       onClick={() => {
@@ -426,9 +410,7 @@ export default function SliderTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          //setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -457,9 +439,7 @@ export default function SliderTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          //setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -486,9 +466,7 @@ export default function SliderTable() {
                           "error"
                         }
                         onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          //setBrandName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
+                          formik.handleChange(e);
                         }}
                         onBlur={formik.handleBlur}
                         placeholder={
@@ -528,7 +506,7 @@ export default function SliderTable() {
                           </SvgIcon>
                         }
                       >
-                        Upload a Slide
+                        {t("uploadSlider")}
                         <VisuallyHiddenInput
                           onChange={(e) => {
                             setEventFile(e.target.files[0]);
@@ -544,7 +522,7 @@ export default function SliderTable() {
                         ""
                       ) : (
                         <>
-                          Yüklenecek Resimler : <span style={{color:"green", fontWeight:"bold"}}>{eventFile.name}</span>
+                           {t("toBeUploadImg")} <span style={{color:"green", fontWeight:"bold"}}>{eventFile.name}</span>
                        
                       </>
                       )}
@@ -579,7 +557,6 @@ export default function SliderTable() {
           open={openDelete}
           onClose={() => {
             setId(null);
-            //setBrandName(null);
             setOpenDelete(false);
           }}
           sx={{
