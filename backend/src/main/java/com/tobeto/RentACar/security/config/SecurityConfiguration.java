@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                                                 "/api/v1/admin/cars/getAll",
                                                 "/api/v1/admin/cars/getById/**",
                                                 "/api/v1/userImage/**",
+                                                "/api/v1/users/getAll",
                                                 "/api/v1/admin/slider/getAll",
                                                 "/api/v1/sliderImage/**",
                                                 "/api/v1/carImage/**",

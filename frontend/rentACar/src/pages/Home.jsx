@@ -30,7 +30,7 @@ const Home = () => {
   if (status === "LOADING") {
     return <Loading />;
   }else if (status === "FAIL"){
-    return <ErrorPage errorMessage={error} />
+    return <ErrorPage />
   }
 
 

@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/admin/users")
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 //@CrossOrigin
 @Tag(name = "Users Controller", description = "Users Endpoints")
@@ -48,6 +48,7 @@ public class UsersController {
     public void add(@RequestBody @Valid AddUserRequest request) {
         userService.add(request);
     }
+
 
     @PatchMapping("/{id}")
     public void update(@RequestBody @Valid UpdateUserRequest request, @PathVariable int id) {
