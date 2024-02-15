@@ -89,7 +89,7 @@ export default function UserTable() {
       toastError("User ID bulunamadı!");
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/users/${id}`);
+        await axiosInstance.delete(`api/v1/users/${id}`);
         toastSuccess(t("userIdNotFound"));
         dispatch(fetchAllUserData());
       } catch (error) {
@@ -113,7 +113,7 @@ export default function UserTable() {
       };
 
       try {
-        await axiosInstance.put(`api/v1/admin/users/${id}`, updatedData);
+        await axiosInstance.put(`api/v1/users/${id}`, updatedData);
         toastSuccess(t("usersSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllUserData());
@@ -147,7 +147,7 @@ export default function UserTable() {
       };
 
       try {
-        await axiosInstance.post("api/v1/admin/users", data);
+        await axiosInstance.post("api/v1/users", data);
         toastSuccess(t("userSuccessAdded"));
         setOpen(false);
         dispatch(fetchAllUserData());

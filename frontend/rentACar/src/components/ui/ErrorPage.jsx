@@ -3,18 +3,18 @@ import { Container } from "reactstrap";
 import Helmet from "../Helmet";
 import { useTranslation } from "react-i18next";
 
-const ErrorPage = ({ errorMessage }) => {
+import error from "../../assets/all-images/error.jpg";
+
+const ErrorPage = () => {
 
   const { t } = useTranslation();
 
-  console.log(errorMessage);
+  
   return (
     <Helmet title={t("error")}>
       <section>
-        <Container className="d-flex justify-content-center">
-          <div className="d-block flex-column align-items-center">
-            <h2 className="section__title text-center">{errorMessage}</h2>
-          </div>
+      <Container className="d-flex justify-content-center">
+          <img width={350} src={error} />
         </Container>
       </section>
     </Helmet>
