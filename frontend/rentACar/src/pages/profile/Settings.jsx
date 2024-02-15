@@ -62,7 +62,7 @@ const Settings = () => {
         usernames: values.firstName || details.name || "",
         birthDate: details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
-        isEnabled : "true",
+        isEnabled : details.isEnabled,
 
       };
 

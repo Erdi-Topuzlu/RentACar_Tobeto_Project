@@ -79,6 +79,7 @@ const CarDetails = () => {
                         <SwiperSlide key={index}>
                         <img
                           style={{
+                            height:"350px",
                             width: "100%",
                             objectFit: "cover",
                           }}
@@ -94,6 +95,7 @@ const CarDetails = () => {
                     <SwiperSlide key={index +1}>
                       <img
                         style={{
+                          height:"350px",
                           width: "100%",
                           objectFit: "cover",
                         }}

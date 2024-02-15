@@ -4,21 +4,14 @@ import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
 import FormLabel from "@mui/joy/FormLabel";
 import Link from "@mui/joy/Link";
-import Input from "@mui/joy/Input";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Table from "@mui/joy/Table";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import {
-  Chip,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -42,6 +35,7 @@ import fetchAllBrandData from "../../../../redux/actions/admin/fetchAllBrandData
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import Loading from "../../../../components/ui/Loading";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,27 +66,9 @@ function stableSort(array, comparator) {
 }
 
 export default function CarImagesTable() {
-  const [id, setId] = React.useState();
-  const [isChecked, setIsChecked] = React.useState(false);
-  const [isEdit, setIsEdit] = React.useState(false);
-  const [kilometer, setKilometer] = React.useState();
-  const [plate, setPlate] = React.useState();
-  const [year, setYear] = React.useState();
-  const [dailyPrice, setDailyPrice] = React.useState();
-  const [fuelType, setFuelType] = React.useState();
-  const [gearType, setGearType] = React.useState();
-  const [vehicleType, setVehicleType] = React.useState("");
-  const [seatType, setSeatType] = React.useState("");
-  const [colorId, setColorId] = React.useState("");
-  const [modelId, setModelId] = React.useState("");
-  const [brandId, setBrandId] = React.useState("");
-  const [carName, setCarName] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [order, setOrder] = React.useState("");
   const { items, status, error } = useSelector((state) => state.carAllData);
-  const { colors } = useSelector((state) => state.colorAllData);
-  const { models } = useSelector((state) => state.modelAllData);
-  const { brands } = useSelector((state) => state.brandAllData);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [eventFile, setEventFile] = React.useState(null);
   const [fileName, setFileName] = React.useState([]);
@@ -110,7 +86,7 @@ export default function CarImagesTable() {
     dispatch(fetchAllBrandData());
   }, [dispatch]);
 
-  console.log(carId);
+
   const VisuallyHiddenInput = styled("input")`
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -135,7 +111,6 @@ export default function CarImagesTable() {
 
         toastSuccess(t("carImgSuccessDelete"));
         dispatch(fetchAllCarData());
-        setId(null);
       } catch (error) {
         setOpen(false);
         alert(JSON.stringify(error.response.data));
@@ -166,15 +141,9 @@ export default function CarImagesTable() {
       const formData = new FormData();
       formData.append("carId", car.carId);
       formData.append("file", files, files.name);
-      // files.forEach((file, index) => {
-      //   console.log(file)
-      //   formData.append(`file${index + 1}`, file, file.name);
-      // });
 
       const headers = {
-        // Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        // Authorization: `Bearer ${access_token}`,
       };
 
       if (files) {
@@ -220,19 +189,17 @@ export default function CarImagesTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("cars").toUpperCase()}
+          {t("carImg").toUpperCase()}
         </Typography>
         <Button
           color="success"
           size="md"
           onClick={() => {
             formik.resetForm();
-            setId(null);
             setCarId(null);
             setSelectedFile();
             setFileName([]);
             setOpen(true);
-            setIsEdit(false);
           }}
         >
           {t("addNew")}
@@ -466,7 +433,7 @@ export default function CarImagesTable() {
               fontWeight="lg"
               mb={1}
             >
-              {t("addNewCar")}
+              {t("addNew") + " " + t("image")}
             </Typography>
             <hr />
             <Grid
@@ -539,16 +506,6 @@ export default function CarImagesTable() {
                           const selectedFiles = e.target.files[0];
                           setEventFile(selectedFiles);
                           setSelectedFile(selectedFiles.name);
-                          // if (selectedFiles.length <= 3) {
-                          //   const fileNames = selectedFiles.map(
-                          //     (file) => file.name
-                          //   );
-                          //   setFileName(fileNames);
-                          // } else {
-                          //   setOpen(false);
-                          //   toastError(`You can select up to 3 files.`);
-                          //   e.target.value = null;
-                          // }
                         }}
                         type="file"
                         accept="image/*"
@@ -561,10 +518,11 @@ export default function CarImagesTable() {
                     {!selectedFile ? (
                       ""
                     ) : (
-                      
                       <>
-                          {t("toBeUploadImg")} <span style={{color:"green", fontWeight:"bold"}}>{selectedFile}</span>
-                       
+                        {t("toBeUploadImg")}{" "}
+                        <span style={{ color: "green", fontWeight: "bold" }}>
+                          {selectedFile}
+                        </span>
                       </>
                     )}
                   </FormGroup>
@@ -597,7 +555,6 @@ export default function CarImagesTable() {
         <Modal
           open={openDelete}
           onClose={() => {
-            setId(null);
             setOpenDelete(false);
           }}
           sx={{
@@ -610,9 +567,7 @@ export default function CarImagesTable() {
               {t("confirmation")}
             </DialogTitle>
             <Divider />
-            <DialogContent>
-              {t("deleteMessage")}
-            </DialogContent>
+            <DialogContent>{t("deleteMessage")}</DialogContent>
             <DialogActions>
               <Button
                 variant="solid"
