@@ -43,13 +43,15 @@ const ChangePassword = () => {
           updatedData
         );
         if (response.status === 200) {
-          toastSuccess(t(passwordUpdated));
+          toastSuccess(t("passwordUpdated"));
+          formik.resetForm();
         }
         if(response.status === 403) {
-          toastWarning(t(correctPassword));
+          toastWarning(t("correctPassword"));
+          formik.resetForm();
         }
       } catch (error) {
-        console.error(t(updateError), error.response.data);
+        console.error(t("updateError"), error.response.data);
       } finally {
         actions.setSubmitting(false);
       }

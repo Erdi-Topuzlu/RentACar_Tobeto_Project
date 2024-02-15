@@ -62,6 +62,8 @@ const Settings = () => {
         usernames: values.firstName || details.name || "",
         birthDate: details.birthDate,
         userPhotoUrl: selectedImage || details.userPhotoUrl,
+        isEnabled : "true",
+
       };
 
       try {
@@ -108,7 +110,6 @@ const Settings = () => {
           if (response.status === 200) {
             const updatedImageUrl = response.data;
             setSelectedImage(updatedImageUrl);
-            console.log(updatedImageUrl);
           } else {
 
           }

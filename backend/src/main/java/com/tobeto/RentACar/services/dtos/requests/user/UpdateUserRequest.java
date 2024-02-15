@@ -31,6 +31,9 @@ public class UpdateUserRequest {
 
     private Role role;
 
+    private Boolean isEnabled;
+
+
     //@NotNull(message = Messages.userBirthDateNotEmpty)
     private LocalDate birthDate;
 
