@@ -5,6 +5,7 @@
   "en-US": "İngilizce",
 
   "_header": "HEADER-TR",
+
   "login": "Giriş Yap",
   "email":"E-Posta",
   "signup": "Üye Ol",
@@ -63,9 +64,13 @@
   "forgot": "Şifremi Unuttum",
   "dontAccount": "Hesabınız yok mu? Üye Ol",
 
+  "logoutFailed":"Çıkış Başarısız!",
+  "locationInfoFail":"Konum bilgisine bu tarayıcı tarafından izin verilmiyor.",
+
   "_signup": "SIGN-UP PAGE-TR",
   "confirm": "Şifre Tekrarı",
   "account": "Zaten bir hesabınız var mı? Giriş Yap",
+  "logout":"Çıkış",
 
   "_ourServices": "OUR SERVICE-TR",
   "seeOur": "Göz Atın",
@@ -147,15 +152,14 @@
   "previous":"Geri",
   "fName":"İsim",
   "lName":"Soyisim",
-  "firstName": "Ad",
-  "lastName":"Soyad",
-  "Username":"Kullanıcı Adı",
+  "userName":"Kullanıcı Adı",
   "birthDate":"Doğum Tarihi",
   "phoneNumber":"Telefon Numarası",
   "pickupAddress":"Teslim Alma Adresi",
   "dropoffAddress":"Teslimat Adresi",
   "startDate":"Başlangıç Tarihi",
   "endDate":"Bitiş Tarihi",
+
   "detailandinvoice":"Detaylar & Fatura",
 
   "_Schemes":"Schemes-TR",
@@ -218,7 +222,7 @@
   "schemeMin5Char":"Kullanıcı Adı en az 5 karakter olmalıdır",
   "identifyNumber":"Kimlik Numarası",
   "identifyNumberMust":"Kimlik Numarası (11 Karakter)",
-  "userName":"Kullanıcı Adı",
+ 
   "customerName":"Müşterinin Adı Soyadı",
 
   "schemeColorName":"Renk İsmi gereklidir",
@@ -278,6 +282,7 @@
   "colors":"Renkler",
   "rentals":"Kiralamalar",
   "images":"Fotoğraflar",
+  "image":"Fotoğraf",
   "carImg":"Araç Fotoğrafları",
   "pair-1":"Pair-1 Kiralama",
   "rentalOwner":"Kiralayan Kişi",
@@ -370,5 +375,44 @@
   "selectSeatType":"Koltuk Sayısı Seçiniz",
 
   "confirmation":"Onay",
-  "deleteMessage":"Silmek istediğinizden emin misiniz?"  
+  "deleteMessage":"Silmek istediğinizden emin misiniz?",
+
+  "userProfile":"Kullanıcı Profili",
+  "adminProfile":"Admin Profile",
+
+  "paymentDirect":"Havaleyle Ödeme",
+  "paymentCheque":"Çekle Ödeme",
+  "reserveNow":"Hemen Kirlayın!",
+
+  "notFoundCampaignsId":"Kampanya idsi bulunamadı",
+  "campaignsSuccessDelete":"Kampanya başarıyla silindi",
+  "campaignsSuccessAdded":"Kampanya başarıyla eklendi",
+  "schemeCampaignsDescription":"Kampanya ismi gerekli",
+  "campaignsSuccessUpdate":"Kampanya başarıyla güncellendi",
+  "campaignsName":"Kampanya İsmi",
+  "updateCampaigns":"Kampanyayı Güncelle",
+  "addNewCampaigns":"Yeni Kampanya Ekle",
+  "campaignsTitle":"Kampanya Başlığı",
+  "campaignsDescription":"Kampanya Açıklaması",
+
+  "notFoundCarImgId":"Araç fotoğrafının idsi bulunamadı",
+  "carImgSuccessAdded":"Araç fotoğrafı başarıyla eklendi",
+  "carImgSuccessDelete":"Araç fotoğrafı başarıyla silindi",
+  "carImgSuccessUpdate":"Araç fotoğrafı başarıyla güncellendi",
+
+  "uploadImg":"Fotoğrafları Güncelle",
+  "toBeUploadImg":"Yüklenecek Fotoğraflar",
+
+  "profile":"Profil",
+
+  "verifiedAccount":"Doğrulanmış Hesap",
+  "verifyAccound":"Hesabınızı Doğrulayın!",
+
+  "endedRent":"Kiralama işlemi sonlandırıldı",
+  "canceledRent":"Tarihinde kiralamadan vazgeçildi, faturaya yansıyacak tutar: 0₺",
+  "notFoundPreRent":"Geçmiş kiralama bilgisi bulunamadı!",
+
+  "emailExists":"E-posta zaten mevcut",
+  "successRegistration":"Kayıt Başarılı!"
+  
 }

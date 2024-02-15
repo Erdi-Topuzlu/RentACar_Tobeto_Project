@@ -123,7 +123,7 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
             placeholder={
               formik.errors.email && formik.touched.email
                 ? formik.errors.email
-                : t("Email")
+                : t("email")
             }
           />
         </FormGroup>

@@ -171,7 +171,7 @@ function Header() {
         }
       );
     } else {
-      alert("Location info is not allowed by this browser.");
+      alert(t("locationInfoFail"));
     }
   };
 
@@ -416,21 +416,21 @@ function Header() {
                         <div className="ml-auto d-lg-none d-md-none d-md-flex d-sm-flex d-flex flex-column gap-2">
                           <Link to="/profile" className="border text-center p-2 d-flex-inline align-items-center gap-2">
                             <i className="ri-user-line"></i>
-                            {t("User Profile")}
+                            {t("userProfile")}
                           </Link>
 
                           {/* Admin panel link only for ADMIN role */}
                           {details.role === 'ADMIN' && (
                             <Link to="/admin" className="border text-center p-2 d-flex-inline align-items-center gap-2">
                               <i className="ri-user-line"></i>
-                              {t("Admin Profile")}
+                              {t("adminProfile")}
                             </Link>
                           )}
 
                           <Link className="border p-2 text-center d-flex-inline align-items-center gap-2"
                           onClick={handleLogout}>
                             <i className="ri-user-line"></i>
-                            {t("Logout")}
+                            {t("logout")}
                           </Link>
                         </div>
                       )}

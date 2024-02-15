@@ -210,7 +210,7 @@ const Settings = () => {
               </Stack>
               <Stack spacing={2} sx={{ flexGrow: 1 }}>
                 <Stack spacing={1}>
-                  <FormLabel>{t("First Name")}</FormLabel>
+                  <FormLabel>{t("fName")}</FormLabel>
                   <FormControl
                     sx={{
                       display: { sm: "flex-column", md: "flex-row" },

@@ -92,7 +92,7 @@ const Rentals = () => {
 
     try {
       await axiosInstance.put(`api/v1/users/rentals/${selectedRental.id}`, updatedDataRental);
-      toastSuccess("Kiralama işlemi sonlandırıldı");
+      toastSuccess(t("endedRent"));
 
       await axiosInstance.put(`api/v1/admin/cars/${selectedRental.carId}`, updatedDataCar);
     } catch (error) {
@@ -101,7 +101,7 @@ const Rentals = () => {
       } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
         toastError(JSON.stringify(error.response.data.message));
       } else {
-        toastError("Bilinmeyen hata");
+        toastError(t("unknownError"));
       }
     } finally {
       dispatch(fetchByUserIdRental(details.id));
@@ -161,16 +161,16 @@ const Rentals = () => {
               <h5><span style={{ fontWeight: "bold" }}>{rental.carId.modelId.brandId.name} {rental.carId.modelId.name}</span></h5>
             </Accordion.Header>
             <Accordion.Body>
-              <h3>Details & Invoice</h3>
+              <h3>{t("detailandinvoice")}</h3>
               <hr />
               <Table striped bordered hover>
                 <thead>
                   <tr>
                     <th>{rental.returnDate ? t("StartDateReturnDate") : t("StartDateEndDate")}</th>
-                    <th>Customer Full Name</th>
-                    <th>Extras</th>
-                    <th>Total Amount</th>
-                    <th style={{ fontWeight: "bold", textAlign: "center" }}>Action</th>
+                    <th>{t("customerName")}</th>
+                    <th>{t("extras")}</th>
+                    <th>{t("totalAmount")}</th>
+                    <th style={{ fontWeight: "bold", textAlign: "center" }}>{t("actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -181,7 +181,7 @@ const Rentals = () => {
                     <td style={{ fontWeight: "bold" }}>
                       {rental?.returnDate && rental?.startDate && formatDate(rental.returnDate) < formatDate(rental.startDate) ? (
                         <span style={{ fontWeight: "normal", color: "red" }}>
-                          {rental.returnDate} Tarihinde kiralamadan vazgeçildi, faturaya yansıyacak tutar: 0₺
+                          {rental.returnDate} {t("canceledRent")}
                         </span>
                       ) : (
                         `${rental.totalPrice}₺`
@@ -199,7 +199,7 @@ const Rentals = () => {
                           className='bg-primary'
                           disabled={rental?.isFinished}
                         >
-                          {!rental.returnDate ? "Kiralamayı İptal Et" : "Kiralama iptal edildi"}
+                          {!rental.returnDate ? t("endedRental2") : t("endedRent")}
 
                         </Button> :
 
@@ -214,7 +214,7 @@ const Rentals = () => {
                           disabled={rental?.isFinished}
                         >
                          
-                          {!rental.returnDate ? "Kiralamayı sonlandır" : "Kiralama sonlandırıldı" }
+                          {!rental.returnDate ? t("endedRental2") : t("endedRent") }
                         </Button>
 
 
@@ -227,7 +227,7 @@ const Rentals = () => {
             </Accordion.Body>
           </Accordion.Item>
         )) : <Paper>
-          <h2 className='p-4 font-bold mt-4'>Geçmiş kiralama bilgisi bulunamadı!</h2>
+          <h2 className='p-4 font-bold mt-4'>{t("notFoundPreRent")}</h2>
         </Paper>
       }
 

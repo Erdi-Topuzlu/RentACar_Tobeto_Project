@@ -109,19 +109,19 @@ export default function CarImagesList() {
   const handleDelete = async () => {
     if (!deletedFiles || deletedFiles.length === 0) {
       setOpen(false);
-      toastError("Images ID'ler bulunamadı!");
+      toastError(t("notFoundCarImgId"));
     } else {
       try {
         for (const fileId of deletedFiles) {
           await axiosInstance.delete(`api/v1/admin/car-images/${fileId}`);
         }
-        toastSuccess("Car Images Başarıyla Silindi.");
+        toastSuccess(t("carImgSuccessDelete"));
         dispatch(fetchAllCarData());
         setId(null);
       } catch (error) {
         setOpen(false);
         alert(JSON.stringify(error.response.data));
-        toastError("Bilinmeyen Hata", error.response.data);
+        toastError(t("unknownError"), error.response.data);
       }
     }
   };
