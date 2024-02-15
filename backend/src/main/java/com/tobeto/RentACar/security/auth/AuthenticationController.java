@@ -34,7 +34,6 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterUserRequest request) {
-        //userBusinessRulesService.checkIfByEmailExists(request.getEmail());
         return ResponseEntity.ok(authenticationService.register(request));
     }
 

@@ -57,6 +57,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .surname(request.getSurname())
                 .email(request.getEmail())
+                .birthDate(request.getBirthDate())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .isEnabled(false)
                 .role(request.getRole())

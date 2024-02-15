@@ -60,7 +60,6 @@ const signUp = () => {
       try {
         const response = await axiosInstance.post("api/v1/auth/register", data);
         navigate("/login");
-        // window.location.reload();
         toastSuccess(t("successRegistration"));
       } catch (error) {      
           toastError(t("emailExists"));
