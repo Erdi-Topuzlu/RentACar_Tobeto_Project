@@ -20,7 +20,7 @@ public class Contact extends BaseEntity {
     private String name;
     @Column(name = "email")
     private String email;
-    @Column(name = "messages")
+    @Column(name = "messages" ,columnDefinition = "TEXT")
     private String messages;
 
 }
