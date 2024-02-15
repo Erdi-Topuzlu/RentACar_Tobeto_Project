@@ -1,17 +1,18 @@
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 
+export const getContactValidationSchema = () => {
+  const { t } = useTranslation();
 
-
-export const contactValidationScheme = yup.object().shape({
-
-  name: yup.string().required("schemeName"),
-  email: yup
-    .string()
-    .email("schemeInvalidEmail")
-    .required("schemeEmail"),
+  return yup.object().shape({
+    name: yup.string().required(t("schemeName")),
+    email: yup.string().email(t("schemeInvalidEmail")).required(t("schemeEmail")),
     message: yup
-    .string()
-    .required("schemeMessage")
-    .min(50, "schemeMessageMin")
-    .max(450, "schemeMessageMax"),
-});
+      .string()
+      .required(t("schemeMessage"))
+      .min(50, t("schemeMessageMin"))
+      .max(450, t("schemeMessageMax")),
+  });
+};
+
+export default getContactValidationSchema;

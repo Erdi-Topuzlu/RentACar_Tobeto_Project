@@ -12,7 +12,7 @@ import {
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import "../styles/contact.css";
-import { contactValidationScheme } from "../schemes/contactScheme";
+import getContactValidationSchema from "../schemes/contactScheme";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import {
@@ -41,6 +41,7 @@ const socialLinks = [
 
 const Contact = () => {
   const { t } = useTranslation();
+  const contactValidationScheme = getContactValidationSchema();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -78,14 +79,14 @@ const Contact = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         type="text"
-                        placeholder={t("name")}
                         invalid={formik.errors.name && formik.touched.name}
+                        placeholder={
+                          formik.errors.name && formik.touched.name
+                            ? formik.errors.name
+                            : t("name")
+                        }
                       />
-                      {formik.errors.name && formik.touched.name && (
-                        <FormFeedback>
-                          <p className="text-danger"> {formik.errors.name}</p>
-                        </FormFeedback>
-                      )}
+                      
                     </FormGroup>
                   </div>
 
@@ -101,14 +102,14 @@ const Contact = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         type="text"
-                        placeholder={t("email")}
                         invalid={formik.errors.email && formik.touched.email}
+                        placeholder={
+                          formik.errors.email && formik.touched.email
+                            ? formik.errors.email
+                            : t("email")
+                        }
                       />
-                      {formik.errors.email && formik.touched.email && (
-                        <FormFeedback>
-                          <p className="text-danger"> {formik.errors.email}</p>
-                        </FormFeedback>
-                      )}
+                      
                     </FormGroup>
                   </div>
 
@@ -126,19 +127,16 @@ const Contact = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         type="textarea"
-                        placeholder={t("message")}
                         invalid={
                           formik.errors.message && formik.touched.message
                         }
+                        placeholder={
+                          formik.errors.message && formik.touched.message
+                            ? formik.errors.message
+                            : t("message")
+                        }
                       />
-                      {formik.errors.message && formik.touched.message && (
-                        <FormFeedback>
-                          <p className="text-danger">
-                            {" "}
-                            {formik.errors.message}
-                          </p>
-                        </FormFeedback>
-                      )}
+                     
                     </FormGroup>
                   </div>
 
