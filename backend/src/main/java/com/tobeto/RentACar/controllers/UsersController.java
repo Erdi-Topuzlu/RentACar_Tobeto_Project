@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/admin/users")
 @AllArgsConstructor
 //@CrossOrigin
 @Tag(name = "Users Controller", description = "Users Endpoints")

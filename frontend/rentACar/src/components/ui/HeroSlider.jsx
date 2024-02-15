@@ -17,7 +17,6 @@ const HeroSlider = () => {
     dispatch(fetchAllSliderData());
   }, [dispatch]);
 
-  console.log(sliders);
 
   const { t } = useTranslation();
 

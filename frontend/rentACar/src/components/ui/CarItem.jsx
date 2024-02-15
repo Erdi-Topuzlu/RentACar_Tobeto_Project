@@ -10,7 +10,6 @@ import { ReactSVG } from "react-svg";
 
 const CarItem = ({ item }) => {
   const { t } = useTranslation();
-  console.log("car ITEMMMM" ,item.carImages);
   return (
     <Col lg="4" md="4" sm="6" className="mb-5">
       <div className="car__item">
