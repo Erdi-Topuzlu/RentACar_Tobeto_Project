@@ -52,7 +52,7 @@ export default function Profile() {
   }
 
   return (
-    <Helmet title={t("Profile")}>
+    <Helmet title={t("profile")}>
       <Box sx={{ flex: 1, width: "100%" }}>
         <Box
           sx={{
@@ -71,8 +71,8 @@ export default function Profile() {
                 </span>
                 <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
                   {isEnabled === "true" ?
-                    <img title="Doğrulanmış hesap" src="/src/assets/icons/verified.svg" /> :
-                    <img title="Hesabınızı doğrulayın" src="/src/assets/icons/not-verified.svg" />
+                    <img title={t("verifiedAccount")} src="/src/assets/icons/verified.svg" /> :
+                    <img title={t("verifyAccound")} src="/src/assets/icons/not-verified.svg" />
                   }
                 </span>
               </div>

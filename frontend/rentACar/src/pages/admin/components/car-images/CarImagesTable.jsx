@@ -126,20 +126,20 @@ export default function CarImagesTable() {
   const handleDelete = async () => {
     if (!deletedFiles || deletedFiles.length === 0) {
       setOpen(false);
-      toastError("Images ID'ler bulunamadı!");
+      toastError(t("notFoundCarImgId"));
     } else {
       try {
         for (const fileId of deletedFiles) {
           await axiosInstance.delete(`api/v1/admin/car-images/${fileId}`);
         }
 
-        toastSuccess("Car Images Başarıyla Silindi.");
+        toastSuccess(t("carImgSuccessDelete"));
         dispatch(fetchAllCarData());
         setId(null);
       } catch (error) {
         setOpen(false);
         alert(JSON.stringify(error.response.data));
-        toastError("Bilinmeyen Hata", error.response.data);
+        toastError(t("unknownError"), error.response.data);
       }
     }
   };
@@ -191,13 +191,13 @@ export default function CarImagesTable() {
             );
 
             if (response.status === 200) {
-              toastSuccess("Uploaded Photo");
+              toastSuccess(t("uploadedPhoto"));
               dispatch(fetchAllCarData());
             } else {
-              toastError("Bilinmeyen hata");
+              toastError(t("unknownError"));
             }
           } catch (error) {
-            toastError("Bilinmeyen hata", error.response.data);
+            toastError(t("unknownError"), error.response.data);
           }
         };
 
@@ -533,7 +533,7 @@ export default function CarImagesTable() {
                         </SvgIcon>
                       }
                     >
-                      Upload a Image
+                      {t("uploadImg")}
                       <VisuallyHiddenInput
                         onChange={(e) => {
                           const selectedFiles = e.target.files[0];
@@ -563,7 +563,7 @@ export default function CarImagesTable() {
                     ) : (
                       
                       <>
-                          Yüklenecek Resimler : <span style={{color:"green", fontWeight:"bold"}}>{selectedFile}</span>
+                          {t("toBeUploadImg")} <span style={{color:"green", fontWeight:"bold"}}>{selectedFile}</span>
                        
                       </>
                     )}
@@ -573,7 +573,7 @@ export default function CarImagesTable() {
                       ""
                     ) : (
                       <>
-                        <FormLabel>Yüklenecek Resimler</FormLabel>
+                        <FormLabel>{t("toBeUploadImg")}</FormLabel>
                         {fileName.map((name, index) => (
                           <p key={index}>{name}</p>
                         ))}

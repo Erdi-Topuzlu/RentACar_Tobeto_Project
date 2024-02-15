@@ -64,9 +64,13 @@
   "forgot": "Forgot Password?",
   "dontAccount": "Don't have an Account? Sign up",
 
+  "logoutFailed":"Logout Failed!",
+  "locationInfoFail":"Location info is not allowed by this browser.",
+
   "_signup": "SIGN-UP PAGE-EN",
   "confirm": "Confirm Password",
   "account": "Already have an account? Sign in",
+  "logout":"Logout",
 
   "_ourServices": "OUR SERVICE-EN",
   "seeOur": "See Our",
@@ -148,6 +152,7 @@
   "previous":"Previous",
   "fName":"First Name",
   "lName":"Last Name",
+  "userName":"Username",
   "birthDate":"Birthdate",
   "phoneNumber":"Phone Number",
   "pickupAddress":"Pick-up Address",
@@ -211,16 +216,13 @@
   "schemeCarVehicleType":"Select vehicle type",
   "schemeCarSeatType":"Select seat type",
 
-
-
-
   "schemeIdentifyNumber":"Identify Number is required",
   "schemeMin11Char":"Identify Number must have 11 digits",
   "schemeUserName":"Username is required",
   "schemeMin5Char":"Username must have at least 5 characters",
   "identifyNumber":"Identify Number",
   "identifyNumberMust":"Identify Number (11 Character)",
-  "userName":"Username",
+  
   "customerName":"Customer Full Name",
   
   "schemeColorName":"Color Name is required",
@@ -245,13 +247,15 @@
   "totalAmount":"Total Amount : ",
   "totalAmount2":"Total Amount",
 
-  
   "completedRental":"Your rental process has been completed successfully",
+  "myRentals":"My Rentals",
+  "month":"Mo",
+
+  
   "previousRentalNotFound":"No previous rental information found!",
   "terminateRental":"Are you sure you want to terminate the rental?",
   "endedRental":"Rental terminated",
-  "myRentals":"My Rentals",
-  "month":"Mo",
+
 
   "_profilePage":"Profile Page-EN",
   "welcomeProfile":"Welcome, ",
@@ -260,6 +264,11 @@
   "personalInfoDesc":"Customize your profile information",
   "save":"Save",
   "cancel":"Cancel",
+  "error":"Error",
+  "unknownError":"Unknown Error",
+  "registrationError":"Registration Error",
+  "loading":"Loading",
+  "confirm2":"Confirm",
 
   "_changePassword":"Change Password - EN",
   "changePassword":"Change Password",
@@ -279,6 +288,7 @@
   "colors":"Colors",
   "rentals":"Rentals",
   "images":"Images",
+  "image":"Image",
   "carImg":"Car Images",
   "pair-1":"Pair-1 Rental",
   "rentalOwner":"Rental Owner",
@@ -376,6 +386,51 @@
   "selectSeatType":"Select a Seat Type",
   
   "confirmation":"Confirmation",
-  "deleteMessage":"Are you sure you want to delete?"  
+  "deleteMessage":"Are you sure you want to delete?",
+
+  "userProfile":"User Profile",
+  "adminProfile":"Admin Profile",
+
+  "paymentDirect":"Payment Direct",
+  "paymentCheque":"Paymen Cheque",
+  "reserveNow":"Reserve Now!",
+
+  "notFoundCampaignsId":"Campaigns Id not found",
+  "campaignsSuccessAdded":"Campaigns successfully added",
+  "campaignsSuccessDelete":"Campaigns successfully deleted",
+  "campaignsSuccessUpdate":"Campaigns successfully updated",
+  "schemeCampaignsDescription":"Campaigns is required",
+  "campaignsName":"Campaigns Name",
+  "updateCampaigns":"Update to Campaigns",
+  "addNewCampaigns":"Add New Campaigns",
+  "campaignsTitle":"Campaigns Title",
+  "campaignsDescription":"Campaigns Description",
+
+  "notFoundCarImgId":"Car images Id not found",
+  "carImgSuccessAdded":"Car images successfully added",
+  "carImgSuccessDelete":"Car images successfully deleted",
+  "carImgSuccessUpdate":"Car images successfully updated",
+
+  "uploadImg":"Upload to Images",
+  "toBeUploadImg":"Images to be Uploaded",
+
+  "profile":"Profile",
+
+  "verifiedAccount":"Verified Account",
+  "verifyAccound":"Verify your account!",
+
+  "endedRent":"Rental terminated",
+  "canceledRent":"Cancelled the rental on the date, amount to be reflected on the invoice: 0₺",
+  "notFoundPreRent":"No previous rental information found!",
+
+  "emailExists":"E-mail already exists",
+  "successRegistration":"Registration Successful!"
+
+
+
+  
+
+  
+
 
 }

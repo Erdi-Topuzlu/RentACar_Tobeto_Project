@@ -45,7 +45,7 @@ const FindCarForm = () => {
             value={selectedBrand}
             onChange={handleBrandChange}
           >
-            <option value="">{t("brands")}</option>
+            <option value="">{t("selectBrand")}</option>
             {items.map((car, i) => {
               const brandName = car.modelId?.brandId?.name;
               if (!selectBrands.includes(brandName)) {
@@ -70,7 +70,7 @@ const FindCarForm = () => {
             onChange={handleModelChange}
             disabled={!selectedBrand}
           >
-            <option value="">{t("models")}</option>
+            <option value="">{t("selectModel")}</option>
             {items
               .filter((car) => car.modelId.brandId.name === selectedBrand)
               .map((car, index) => {

@@ -154,7 +154,7 @@ export default function RentalTable() {
           toastError(JSON.stringify(error.response.data.message));
           dispatch(fetchAllRental());
         } else {
-          toastError("Bilinmeyen hata");
+          toastError(t("unknownError"));
           dispatch(fetchAllRental());
         }
       }
@@ -201,7 +201,7 @@ export default function RentalTable() {
           toastError(JSON.stringify(error.response.data.message));
           dispatch(fetchAllRental());
         } else {
-          toastError("Bilinmeyen hata");
+          toastError(t("unknownError"));
           dispatch(fetchAllRental());
         }
       }
@@ -702,7 +702,7 @@ export default function RentalTable() {
                         width: "50%",
                       }}
                       size="sm"
-                      placeholder="Filter by status"
+                      placeholder={t("filterStatus")}
                       slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
                       onBlur={formik.handleBlur}
                       className={
@@ -713,13 +713,13 @@ export default function RentalTable() {
                     >
                       <option value="">{t("selectExtra")}</option>
                       <option value="1" key="1">
-                        Mini Package - 200.00₺
+                        {t("miniPackage")} - 200.00₺
                       </option>
                       <option value="2" key="2">
-                        Medium Package - 350.00₺
+                      {t("mediumPackage")} - 350.00₺
                       </option>
                       <option value="3" key="3">
-                        Free Package - 0₺
+                      {t("freePackage")} - 0₺
                       </option>
                     </select>
                   </FormGroup>

@@ -63,7 +63,7 @@ const signUp = () => {
         // window.location.reload();
         toastSuccess(t("successRegistration"));
       } catch (error) {      
-          toastError("E-mail Already Exists!");
+          toastError(t("emailExists"));
       }finally {
         actions.setSubmitting(false);
       }
