@@ -424,7 +424,12 @@
   "notFoundPreRent":"No previous rental information found!",
 
   "emailExists":"E-mail already exists",
-  "successRegistration":"Registration Successful!"
+  "successRegistration":"Registration Successful!",
+
+  "cancelMessageTitle":"Your rental will be canceled",
+  "finishMessageTitle":"Your rental will be terminated",
+  "infoMessageCancel":"The invoice amount will be updated as 0₺",
+  "infoMessageFinish":"Your invoice amount will be updated depending on your usage period"
 
 
 
