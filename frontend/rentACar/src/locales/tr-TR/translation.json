@@ -413,6 +413,10 @@
   "notFoundPreRent":"Geçmiş kiralama bilgisi bulunamadı!",
 
   "emailExists":"E-posta zaten mevcut",
-  "successRegistration":"Kayıt Başarılı!"
-  
+  "successRegistration":"Kayıt Başarılı!",
+
+  "cancelMessageTitle":"Kiralamanız iptal edilecektir",
+  "finishMessageTitle":"Kiralamanız sonlandırılacaktır",
+  "infoMessageCancel":"Fatura tutarı 0₺ olarak güncellenecektir",
+  "infoMessageFinish":"Fatura tutarınız kullanım sürenize bağlı olarak güncellenecektir"
 }
