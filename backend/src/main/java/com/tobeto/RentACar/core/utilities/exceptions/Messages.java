@@ -93,6 +93,12 @@ public record Messages() {
     //Auth Messages
     public static final String unAuth = "Unauthorized";
 
+    //Contact Messages
+    public static final String contactNotEmpty = "Contact name can not be empty";
+    public static final String contactEmailNotEmpty = "Contact email can not be empty";
+    public static final String contactMessagesNotEmpty = "Contact messages can not be empty";
+    public static final String contactMessagesMustBe = "Contact messages must have a minimum of 10 and a maximum of 400 characters.";
+
 
 
 
