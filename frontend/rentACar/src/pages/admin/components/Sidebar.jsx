@@ -99,6 +99,7 @@ export default function Sidebar() {
     { label: t("cars"), route: "cars" },
     { label: t("rentals"), route: "rentals" },
     { label: t("campaigns"), route: "campaigns" },
+    { label: t("users"), route: "users" },
   ];
 
   const isMenuItemSelected = (route) => {
@@ -180,7 +181,7 @@ export default function Sidebar() {
             ) : i18n.language === "tr" ? (
               <img width={24} src={turkey} />
             ) : // Handle other languages if needed
-            null
+              null
           }
           id="nav-dropdown"
           onSelect={langSelect}
@@ -194,7 +195,7 @@ export default function Sidebar() {
               <img width={16} src={england} /> {t("en-US")}
             </NavDropdown.Item>
           ) : // Handle other languages if needed
-          null}
+            null}
         </NavDropdown>
       </Box>
       <Divider />
@@ -230,7 +231,7 @@ export default function Sidebar() {
             <ListItem key={index}>
               <ListItemButton selected={isMenuItemSelected(menuItem.route)}>
                 <ReactSVG
-                  src={`/src/assets/icons/${menuItem.route}-mini.svg`} 
+                  src={`/src/assets/icons/${menuItem.route}-mini.svg`}
                 />
                 <Link
                   component={RouterLink}
@@ -249,8 +250,8 @@ export default function Sidebar() {
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <ReactSVG
-                      src={`/src/assets/icons/images-mini.svg`}
-                    />
+                    src={`/src/assets/icons/images-mini.svg`}
+                  />
                   <ListItemContent>
                     <Typography level="title-sm">{t("images")}</Typography>
                   </ListItemContent>
@@ -262,7 +263,7 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                <ListItemButton selected={isMenuItemSelected("car-images")}>
+                  <ListItemButton selected={isMenuItemSelected("car-images")}>
                     <ReactSVG
                       src={`/src/assets/icons/car-images-mini.svg`}
                     />
@@ -299,8 +300,30 @@ export default function Sidebar() {
                 </ListItem>
               </List>
             </Toggler>
+
+            <ListItemButton sx={{marginTop:"4px"}} selected={isMenuItemSelected("slider")}>
+              <ReactSVG
+                src={`/src/assets/icons/contact-mini.svg`}
+              />
+              <Link
+                component={RouterLink}
+                to={"contact"}
+                underline="none"
+              >
+                <ListItemContent>
+                  <Typography level="title-sm">
+                    {t("contact")}
+                  </Typography>
+                </ListItemContent>
+              </Link>
+            </ListItemButton>
+
           </ListItem>
+
+
         </List>
+
+
 
         {/* <ListItem>
             <ListItemButton>

@@ -3,7 +3,7 @@ import axiosInstance from '../../utilities/interceptors/axiosInterceptors';
 
 
 const fetchAllUserData = createAsyncThunk("data/fetchAllUserData", async () => {
-    const response = await axiosInstance.get(`api/v1/users/getAll`);
+    const response = await axiosInstance.get(`api/v1/admin/users/getAll`);
     return response.data;
   });
 
