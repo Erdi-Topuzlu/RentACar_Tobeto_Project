@@ -19,6 +19,6 @@ public class AddContactRequest {
     @Email(message = Messages.invalidEmail)
     private String email;
     @NotBlank(message = Messages.contactMessagesNotEmpty)
-    @Size(min = 10, max = 400, message = Messages.contactMessagesMustBe)
+    @Size(min = 10, max = 450, message = Messages.contactMessagesMustBe)
     private String messages;
 }

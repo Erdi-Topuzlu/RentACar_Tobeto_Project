@@ -22,7 +22,7 @@ public class CampaignsController {
 
     private final CampaignsService campaignsService;
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<GetAllCampaignsResponse> getAll() {
         return campaignsService.getAll();
     }

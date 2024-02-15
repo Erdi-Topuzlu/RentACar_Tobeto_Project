@@ -404,8 +404,10 @@
   "campaignsName":"Campaigns Name",
   "updateCampaigns":"Update to Campaigns",
   "addNewCampaigns":"Add New Campaigns",
-  "campaignsTitle":"Campaigns Title",
-  "campaignsDescription":"Campaigns Description",
+  "campaignsTitle":"Campaign Title",
+  "campaignsDescription":"Campaign Description",
+  "campaignPhoto":"Campaing Photo",
+  "uploadCampaignPhoto":"Upload Campaign Photo",
 
   "notFoundCarImgId":"Car images Id not found",
   "carImgSuccessAdded":"Car images successfully added",

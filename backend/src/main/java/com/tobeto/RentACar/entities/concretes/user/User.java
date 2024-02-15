@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.entities.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tobeto.RentACar.entities.concretes.campaigns.Campaigns;
 import com.tobeto.RentACar.security.entities.Role;
 import com.tobeto.RentACar.entities.concretes.rental.Rental;
 import com.tobeto.RentACar.security.services.token.Token;
@@ -60,6 +61,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Rental> rentals;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Campaigns> campaigns;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore

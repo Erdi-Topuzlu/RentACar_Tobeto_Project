@@ -395,6 +395,7 @@
   "addNewCampaigns":"Yeni Kampanya Ekle",
   "campaignsTitle":"Kampanya Başlığı",
   "campaignsDescription":"Kampanya Açıklaması",
+  "uploadCampaignPhoto":"Kampanya Fotoğrafı Yükle",
 
   "notFoundCarImgId":"Araç fotoğrafının idsi bulunamadı",
   "carImgSuccessAdded":"Araç fotoğrafı başarıyla eklendi",
