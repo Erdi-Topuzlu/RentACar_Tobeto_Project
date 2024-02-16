@@ -17,7 +17,18 @@ const RedirectLogin = ({ isEnabled, tokenn }) => {
             <Paper>
             <div className="contact__info text-center mt-4 p-4">
               <h4 className="fw-bold mb-4">{t("For rent the car")}</h4>
+              <hr/>
               <h3>{t("Please check your mail and verify your account ")}</h3>
+            </div>
+            <div className="text-center p-2">
+            <Link to={`/sign-up`}>
+                <button
+                  style={{ color: "white" }}
+                  className="w-25 car__item-btn car__btn-details"
+                >
+                  {t("verifyMailSendAgain")}
+                </button>
+              </Link>
             </div>
             </Paper>
           </AnimatedUTD>
@@ -26,7 +37,7 @@ const RedirectLogin = ({ isEnabled, tokenn }) => {
     );
   }
 
-  if (!tokenn && !isEnabled) {
+  if (!tokenn) {
     return (
       <Row>
         <Col lg="12" md="12">
