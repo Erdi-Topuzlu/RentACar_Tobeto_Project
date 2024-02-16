@@ -86,7 +86,7 @@ export default function UserTable() {
   const handleDelete = async (id) => {
     if (!id) {
       setOpen(false)
-      toastError("User ID bulunamadı!");
+      toastError(t("userIdNotFound"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/users/${id}`);
@@ -148,7 +148,7 @@ export default function UserTable() {
 
       try {
         await axiosInstance.post("api/v1/users", data);
-        toastSuccess(t("userSuccessAdded"));
+        toastSuccess(t("usersSuccessAdded"));
         setOpen(false);
         dispatch(fetchAllUserData());
         formik.resetForm();
@@ -258,7 +258,7 @@ export default function UserTable() {
                   textAlign: "center",
                 }}
               >
-                {t("name-surname")}
+                {t("userName")}
               </th>
               <th
                 style={{
@@ -276,7 +276,7 @@ export default function UserTable() {
                   textAlign: "center",
                 }}
               >
-                {t("Verify")}
+                {t("status")}
               </th>
               {/* <th
                 style={{
@@ -321,7 +321,7 @@ export default function UserTable() {
                   <Typography level="body-xs">{row.email}</Typography>
                 </td>
                 <td style={{ textAlign: "center" }}>
-                  <Typography level="body-xs">{row.isEnabled ? "Verified User" : "Unverified User"}</Typography>
+                  <Typography level="body-xs">{row.isEnabled ? t("verifiedAccount") : t("unverifiedAccount")}</Typography>
                 </td>
                 {/* <td style={{ textAlign: "center" }}>
                   <div>
@@ -447,7 +447,7 @@ export default function UserTable() {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("name")
+                            : t("fName")
                         }
                         error={formik.errors.name && formik.touched.name}
                       />
@@ -471,7 +471,7 @@ export default function UserTable() {
                         placeholder={
                           formik.errors.surname && formik.touched.surname
                             ? formik.errors.surname
-                            : t("surname")
+                            : t("lName")
                         }
                         error={formik.errors.surname && formik.touched.surname}
                       />
@@ -495,7 +495,7 @@ export default function UserTable() {
                         placeholder={
                           formik.errors.email && formik.touched.email
                             ? formik.errors.email
-                            : t("E-mail")
+                            : t("email")
                         }
                         error={formik.errors.email && formik.touched.email}
                       />

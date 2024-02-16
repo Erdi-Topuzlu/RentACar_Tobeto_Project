@@ -58,6 +58,7 @@
   "htol": "Pahalıdan Ucuza",
   "rating":"Derecelendirme",
 
+
   "_Login": "LOGIN PAGE-TR",
   "password": "Şifre",
   "remember": "Beni Hatırla",
@@ -309,6 +310,7 @@
   "delete":"Sil",
   "actions":"Eylemler",
   "addNew":"Yeni Ekle",
+  "submit":"Gönder",
 
   "addNewBrand":"Yeni Marka Ekle",
   "updateBrand":"Markayı Güncelle",
@@ -336,22 +338,35 @@
   "colorSuccessUpdate":"Renk başarıyla güncellendi",
   "colorSuccessAdded":"Renk başarıyla eklendi",
 
+  "sliderIdNotFound":"Slider Id bulunamadı!",
+  "sliderSuccessAdded":"Slider başarıyla eklendi",
+  "sliderSuccessDelete":"Slider başarıyla silindi",
+  "sliderSuccessUpdated":"Slider başarıyla güncellendi",
   "updatedPhoto":"Fotoğraf Güncellendi",
   "uploadedPhoto":"Fotoğraf Yüklendi",
   "updatedSlider":"Slider güncellendi",
-  "addNewSlider":"Yeni slider ekle",
+  "updateSlider":"Slider Güncelle",
+  "addNewSlider":"Yeni Slider Ekle",
   "uploadSlider":"Slider Yükle",
+  "sliderTitle":"Slider Başlığı",
+  "sliderDesc":"Slider Açıklaması",
+  "sliderBtnLbl":"Slider Buton Etiketi",
+  "sliderImg":"Slider Fotoğrafı",
   "title":"Başlık",
   "desc":"Açıklama",
+  "butonLbl":"Buton Etiketi",
+  "schemeSliderTitle":"Slider başlığı gerekli",
+  "schemeSliderDesc":"Slider açıklaması gerekli",
 
   "carIdNotFound":"Araç id'si bulunaması",
   "carSuccessDelete":"Araç başarıyla silindi",
   "carSuccessUpdate":"Araç başarıyla güncellendi",
   "carSuccessAdded":"Araç başarıyla eklendi",
 
+
   "rentalIdNotFound":"Kiralama id'si bulunamadı",
   "rentalSuccessDelete":"Kiralama başarıyla silindi",
-  "rentalSeuccessUpdate":"Kiralama başarıyla güncellendi",
+  "rentalSuccessUpdate":"Kiralama başarıyla güncellendi",
   "rentalSuccessAdded":"Kiralama başarıyla eklendi",
 
   "addNewCar":"Yeni Araba Ekle",
@@ -395,6 +410,7 @@
   "addNewCampaigns":"Yeni Kampanya Ekle",
   "campaignsTitle":"Kampanya Başlığı",
   "campaignsDescription":"Kampanya Açıklaması",
+  "campaignPhoto":"Kampanya Fotoğrafı",
   "uploadCampaignPhoto":"Kampanya Fotoğrafı Yükle",
 
   "notFoundCarImgId":"Araç fotoğrafının idsi bulunamadı",
@@ -402,13 +418,31 @@
   "carImgSuccessDelete":"Araç fotoğrafı başarıyla silindi",
   "carImgSuccessUpdate":"Araç fotoğrafı başarıyla güncellendi",
 
+  "userIdNotFound":"User Id bulunamadı!",
+  "usersSuccessAdded": "Kullanıcı başarıyla eklendi",
+  "usersSuccessDeleted": "Kullanıcı başarıyla silindi",
+  "usersSuccessUpdate":"Kullanıcı başarıyla güncellendi",
+  "updateUser":"Kullanıcıyı Güncelle",
+  "addNewUser":"Yeni Kullanıcı Ekle",
+
+  "addNewContact":"Yeni İletişim",
+  "notFoundContactId":"İletişim idsi bulunamadı!",
+  "contactSuccessDeleted":"İletişim başarıyla silindi",
+  "seeMore":"Daha Fazla",
+  "sender":"Gönderen",
+  "messages":"Mesajlar",
+  "contactOwner":"İletişim Sahibi",
+
   "uploadImg":"Fotoğraf Yükle",
   "toBeUploadImg":"Yüklenecek Fotoğraflar",
 
   "profile":"Profil",
 
   "verifiedAccount":"Doğrulanmış Hesap",
+  "unverifiedAccount":"Doğrulanmamış Hesap",
   "verifyAccound":"Hesabınızı Doğrulayın!",
+
+
 
   "endedRent":"Kiralama işlemi sonlandırıldı",
   "canceledRent":"Tarihinde kiralamadan vazgeçildi, faturaya yansıyacak tutar: 0₺",
@@ -420,5 +454,26 @@
   "cancelMessageTitle":"Kiralamanız iptal edilecektir",
   "finishMessageTitle":"Kiralamanız sonlandırılacaktır",
   "infoMessageCancel":"Fatura tutarı 0₺ olarak güncellenecektir",
-  "infoMessageFinish":"Fatura tutarınız kullanım sürenize bağlı olarak güncellenecektir"
+  "infoMessageFinish":"Fatura tutarınız kullanım sürenize bağlı olarak güncellenecektir",
+
+  "noSuitableCar":"Uygun bir araç bulunamadı",
+  "successSend":"Mesajınız başarıyla gönderildi",
+  "status":"Durum",
+  "author":"Yazar",
+
+  "driverLA":"A - Motorlu Bisiklet",
+  "driverLB":"B - Otomobil ve Kamyonet",
+  "driverLC":"C - Kamyon ve Çekici",
+  "driverLD":"D - Minibüs ve Otobüs",
+  "driverLF":"F - Lastik Tekerlekli Traktör",
+  "driverLG":"G - İş Makinesi",
+
+  "cancelled":"İptal Edildi",
+  "terminated":"Sonlandırıldı",
+  "continues":"Devam ediyor",
+  "suitable":"Uygun",
+  "rented":"Kiralık"
+
+  
 }
+

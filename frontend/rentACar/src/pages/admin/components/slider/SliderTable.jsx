@@ -97,16 +97,16 @@ export default function SliderTable() {
   const handleDelete = async (id) => {
     if (!id) {
       setOpen(false);
-      toastError("Slider ID bulunamadı!");
+      toastError(t("sliderIdNotFound"));
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/slider/${id}`);
-        toastSuccess("Slider Başarıyla Silindi.");
+        toastSuccess(t("sliderSuccessDelete"));
         dispatch(fetchAllSliderData());
         setId(null);
       } catch (error) {
         setOpen(false);
-        toastError("Bilinmeyen Hata");
+        toastError(t("unknkownError"));
         dispatch(fetchAllSliderData());
       }
     }
@@ -116,7 +116,7 @@ export default function SliderTable() {
     initialValues: {
       sliderTitle: "",
       sliderDesc: "",
-      sliderBtn: t("details"),
+      sliderBtn: "",
     },
     validationSchema: sliderValidationSchema,
     onSubmit: async (values, actions) => {
@@ -158,14 +158,14 @@ export default function SliderTable() {
             );
 
             if (response.status === 200) {
-              toastSuccess("Uploaded Photo");
+              toastSuccess(t("uploadedPhoto"));
               dispatch(fetchAllSliderData());
             } else {
-              toastError("Bilinmeyen hata");
+              toastError(t("unknownError"));
               dispatch(fetchAllBrandData());
             }
           } catch (error) {
-            toastError("Bilinmeyen hata", error.response.data);
+            toastError(t("unknownError"), error.response.data);
           }
         };
 
@@ -262,7 +262,7 @@ export default function SliderTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("Slider")}
+                  {t("sliderImg")}
                 </th>
                 <th
                   style={{
@@ -289,7 +289,7 @@ export default function SliderTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("btnLbl")}
+                  {t("butonLbl")}
                 </th>
                
                 <th
@@ -472,7 +472,7 @@ export default function SliderTable() {
                         placeholder={
                           formik.errors.sliderBtn && formik.touched.sliderBtn
                             ? formik.errors.sliderBtn
-                            : t("sliderBtn")
+                            : t("sliderBtnLbl")
                         }
                         error={
                           formik.errors.sliderBtn && formik.touched.sliderBtn

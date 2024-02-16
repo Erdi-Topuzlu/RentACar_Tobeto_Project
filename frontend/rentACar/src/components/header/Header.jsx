@@ -241,7 +241,7 @@ function Header() {
                           setShowProfileDropdown(false);
                         }}
                       >
-                        User Profile
+                        {t("userProfile")}
                       </NavDropdown.Item>
                       {details.role === "ADMIN" ? (
                         <NavDropdown.Item
@@ -250,7 +250,7 @@ function Header() {
                             setShowProfileDropdown(false);
                           }}
                         >
-                          Admin Panel
+                          {t("adminProfile")}
                         </NavDropdown.Item>
                       ) : (
                         null
@@ -258,7 +258,7 @@ function Header() {
                       <NavDropdown.Item
                         onClick={handleLogout}
                       >
-                        Logout
+                        {t("logout")}
                       </NavDropdown.Item>
                     </div>
                   </NavDropdown>

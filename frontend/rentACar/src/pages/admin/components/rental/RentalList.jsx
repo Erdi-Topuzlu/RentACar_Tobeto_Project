@@ -139,7 +139,7 @@ export default function RentalList() {
 
       try {
         await axiosInstance.put(`api/v1/users/rentals/${id}`, updatedData);
-        toastSuccess(t("rentalSeuccessUpdate"));
+        toastSuccess(t("rentalSuccessUpdate"));
         setOpen(false);
         dispatch(fetchAllRentals());
       } catch (error) {
@@ -370,7 +370,7 @@ export default function RentalList() {
             fontWeight="lg"
             mb={1}
           >
-            {isEdit ? "Update Rental" : "Add New Rental"}
+            {isEdit ? t("updateRental") : t("addRental")}
           </Typography>
           <hr />
           <Grid
@@ -411,7 +411,7 @@ export default function RentalList() {
                   />
                 </FormGroup>
 
-                <FormLabel>End Date</FormLabel>
+                <FormLabel>{t("endDate")}</FormLabel>
                 <FormGroup className="">
                   <Input
                     id="endDate"
@@ -443,7 +443,7 @@ export default function RentalList() {
 
                 {isEdit && (
                   <>
-                    <FormLabel>Return Date</FormLabel>
+                    <FormLabel>{t("returnDate")}</FormLabel>
                     <FormGroup className="">
                       <Input
                         id="returnDate"

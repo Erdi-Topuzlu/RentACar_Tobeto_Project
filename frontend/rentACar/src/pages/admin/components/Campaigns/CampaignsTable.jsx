@@ -173,11 +173,11 @@ export default function CampaignsTable() {
               toastSuccess("Uploaded Photo");
               dispatch(fetchAllCampaignsData());
             } else {
-              toastError("Bilinmeyen hata");
+              toastError(t("unknownError"));
               dispatch(fetchAllCampaignsData());
             }
           } catch (error) {
-            toastError("Bilinmeyen hata", error.response.data);
+            toastError(t("unknkownError"), error.response.data);
           }
         };
 

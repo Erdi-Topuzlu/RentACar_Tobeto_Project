@@ -387,7 +387,7 @@ export default function CarTable() {
 
                   <td style={{ textAlign: "center" }}>
                     <Chip color="warning" variant="solid">
-                      {row?.isAvailable ? "Uygun" : "Kiralık" }
+                      {row?.isAvailable ? t("suitable") : t("rented") }
                     </Chip>
                   </td>
 

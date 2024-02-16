@@ -177,6 +177,7 @@
   "schemeConfirmPasswordMatch":"Passwords do not match",
   "schemePasswordMin":"Your password must be at least 5 characters",
 
+
   "expiry":"Expiry",
   "cardNumber":"Card Number",
   "cardFullName":"Full Name",
@@ -317,6 +318,7 @@
   "delete":"Delete",
   "actions":"Actions",
   "addNew":"Add New",
+  "submit":"Submit",
 
   "addNewBrand":"Add New Brand",
   "updateBrand":"Update to Brand",
@@ -344,13 +346,25 @@
   "colorSuccessUpdate":"Color successfully updated",
   "colorSuccessAdded":"Color successfully added",
 
+  "sliderIdNotFound":"Slider Id not found!",
+  "sliderSuccessAdded":"Slider succesfully added",
+  "sliderSuccessDelete":"Slider succesfully deleted",
+  "sliderSuccessUpdated":"Slider succesfully updated",
   "updatedPhoto":"Updated Photo",
   "uploadedPhoto":"Uploaded Photo",
   "updatedSlider":"Slider updated",
-  "addNewSlider":"Add new slider",
+  "updateSlider":"Update Slider",
+  "addNewSlider":"Add New Slider",
   "uploadSlider":"Upload Slider",
+  "sliderTitle":"Slider Title",
+  "sliderDesc":"Slider Description",
+  "sliderBtnLbl":"Slider Buton Label",
+  "sliderImg":"Slider Image",
   "title":"Title",
   "desc":"Description",
+  "butonLbl":"Buton Label",
+  "schemeSliderTitle":"Slider title is required",
+  "schemeSliderDesc":"Slider description is required",
 
 
   "carIdNotFound":"CarId not found",
@@ -358,9 +372,10 @@
   "carSuccessUpdate":"Car successfully updated",
   "carSuccessAdded":"Car successfully added",
 
+
   "rentalIdNotFound":"RentalId not found",
   "rentalSuccessDelete":"Rental successfully deleted",
-  "rentalSeuccessUpdate":"Rental successfully updated",
+  "rentalSuccessUpdate":"Rental successfully updated",
   "rentalSuccessAdded":"Rental successfully added",
 
 
@@ -414,13 +429,31 @@
   "carImgSuccessDelete":"Car images successfully deleted",
   "carImgSuccessUpdate":"Car images successfully updated",
 
+  "userIdNotFound":"User Id not found!",
+  "usersSuccessAdded": "User successfully added",
+  "usersSuccessDeleted": "User successfully deleted",
+  "usersSuccessUpdate":"User succesfully updated",
+  "updateUser":"Update User",
+  "addNewUser":"Add New User",
+
+  "addNewContact":"Add New Contact",
+  "notFoundContactId":"Contact Id not found!",
+  "contactSuccessDeleted":"Contact successfully deleted",
+  "seeMore":"See More",
+  "sender":"Sender",
+  "messages":"Messages",
+  "contactOwner":"Contact Owner",
+
+
   "uploadImg":"Upload to Images",
   "toBeUploadImg":"Images to be Uploaded",
 
   "profile":"Profile",
 
   "verifiedAccount":"Verified Account",
+  "unverifiedAccount":"Unverified Account",
   "verifyAccound":"Verify your account!",
+
 
   "endedRent":"Rental terminated",
   "canceledRent":"Cancelled the rental on the date, amount to be reflected on the invoice: 0₺",
@@ -432,10 +465,29 @@
   "cancelMessageTitle":"Your rental will be canceled",
   "finishMessageTitle":"Your rental will be terminated",
   "infoMessageCancel":"The invoice amount will be updated as 0₺",
-  "infoMessageFinish":"Your invoice amount will be updated depending on your usage period"
+  "infoMessageFinish":"Your invoice amount will be updated depending on your usage period",
+
+  "noSuitableCar":"No suitable car found",
+  "successSend":"Messages successfully sended",
+  "status":"Statu",
+  "author":"Author",
+
+  "driverLA":"A - Motorcycle License",
+  "driverLB":"B - Car License",
+  "driverLC":"C - Truck License",
+  "driverLD":"D - Bus License",
+  "driverLF":"F - Tractor License",
+  "driverLG":"G - Temporary Driver's License",
+
+  "cancelled":"Cancelled",
+  "terminated":"Terminated",
+  "continues":"Continues",
+  "suitable":"Suitable",
+  "rented":"Rented"
 
 
 
+  
   
 
   
