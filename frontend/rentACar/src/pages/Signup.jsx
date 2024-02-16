@@ -59,7 +59,7 @@ const signUp = () => {
       };
       try {
         const response = await axiosInstance.post("api/v1/auth/register", data);
-        console.log(response.data)
+        localStorage.setItem("confirmation_token",response.data.confirmation_token)
         navigate("/login");
         toastSuccess(t("successRegistration"));
       } catch (error) {      
