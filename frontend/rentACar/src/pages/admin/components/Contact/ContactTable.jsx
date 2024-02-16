@@ -86,6 +86,7 @@ export default function ContactTable() {
   const handleDelete = async (id) => {
     if (!id) {
       setOpen(false);
+      setContactName("");
       toastError(t("notFoundContactId"));
     } else {
       try {

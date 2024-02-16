@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Form } from "react-router-dom";
 import {
   Container,
@@ -12,13 +12,16 @@ import {
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import "../styles/contact.css";
-import getContactValidationSchema from "../schemes/contactScheme";
-import { useFormik } from "formik";
+// import getContactValidationSchema from "../schemes/contactScheme";
 import { useTranslation } from "react-i18next";
 import {
   AnimatedLTR,
   AnimatedUTD,
 } from "../components/ui/animation/animateDiv";
+import { m } from "framer-motion";
+import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
+import { toastError, toastSuccess } from "../service/ToastifyService";
+import { useFormik } from "formik";
 
 const socialLinks = [
   {
@@ -41,19 +44,46 @@ const socialLinks = [
 
 const Contact = () => {
   const { t } = useTranslation();
-  const contactValidationScheme = getContactValidationSchema();
+
+  const [name, setName] = useState();
+  const [mail, setMail] = useState();
+  const [message, setMessage] = useState();
+
+
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      message: "",
+      messages: "",
     },
-    validationSchema: contactValidationScheme,
-    onSubmit: (values, actions) => {
-      alert(JSON.stringify(values, null, 2));
-      actions.resetForm();
+    onSubmit: async (values, actions) => {
+
+      const data = {
+        name: values.name,
+        email: values.email,
+        messages: values.messages,
+      };
+
+      try {
+        alert(JSON.stringify(data));
+        await axiosInstance.post("api/v1/admin/contacts", data);
+        toastSuccess(t("successSend"));
+      } catch (error) {
+        if (error.response.data.message === "VALIDATION.EXCEPTION") {
+          toastError(
+            JSON.stringify(error.response.data.validationErrors.startDate)
+          );
+        } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+          toastError(JSON.stringify(error.response.data.message));
+        } else {
+          toastError(t("unknownError"));
+        }
+      }
     },
   });
+
+
+
 
   return (
     <Helmet title={t("contact")}>
@@ -72,21 +102,25 @@ const Contact = () => {
                       <Input
                         id="name"
                         name="name"
-                        value={formik.values.name}
+                        value={formik.values.name || name}
+
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          setName(e.target.value);
+
+                        }}
                         className={
                           formik.errors.name && formik.touched.name && "error"
                         }
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
                         type="text"
-                        invalid={formik.errors.name && formik.touched.name}
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("name")
+                            : t("modelName")
                         }
+                        error={formik.errors.name && formik.touched.name}
                       />
-                      
+
                     </FormGroup>
                   </div>
 
@@ -95,55 +129,60 @@ const Contact = () => {
                       <Input
                         id="email"
                         name="email"
-                        value={formik.values.email}
+                        value={formik.values.email || mail}
+
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          setMail(e.target.value);
+
+                        }}
                         className={
                           formik.errors.email && formik.touched.email && "error"
                         }
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
                         type="text"
-                        invalid={formik.errors.email && formik.touched.email}
                         placeholder={
                           formik.errors.email && formik.touched.email
                             ? formik.errors.email
                             : t("email")
                         }
+                        error={formik.errors.email && formik.touched.email}
                       />
-                      
+
                     </FormGroup>
                   </div>
 
                   <div>
                     <FormGroup>
                       <Input
-                        id="message"
-                        name="message"
-                        value={formik.values.message}
+                        id="messages"
+                        name="messages"
+                        value={formik.values.messages}
+
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          setMessage(e.target.value);
+                          
+
+                        }}
                         className={
-                          formik.errors.message &&
-                          formik.touched.message &&
-                          "error"
+                          formik.errors.messages && formik.touched.messages && "error"
                         }
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        type="textarea"
-                        invalid={
-                          formik.errors.message && formik.touched.message
-                        }
+                        type="text"
                         placeholder={
-                          formik.errors.message && formik.touched.message
-                            ? formik.errors.message
-                            : t("message")
+                          formik.errors.messages && formik.touched.messages
+                            ? formik.errors.messages
+                            : t("messages")
                         }
+                        error={formik.errors.messages && formik.touched.messages}
                       />
-                     
+
                     </FormGroup>
                   </div>
 
                   <Button
-                    disabled={formik.isSubmitting}
                     className="contact__btn"
                     type="submit"
+                    disabled={formik.isSubmitting}
                   >
                     {t("send")}
                   </Button>
