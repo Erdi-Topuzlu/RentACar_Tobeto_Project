@@ -147,7 +147,7 @@ export default function ContactList() {
                 textAlign: "center",
               }}
             >
-              {t("Sender")}
+              {t("sender")}
             </th>
 
             <th
@@ -232,7 +232,7 @@ export default function ContactList() {
                         setIsEdit(true);
                       }}
                     >
-                      {t("See More")}
+                      {t("seeMore")}
                     </MenuItem>
                     <Divider />
                     <MenuItem
@@ -287,7 +287,7 @@ export default function ContactList() {
             fontWeight="lg"
             mb={1}
           >
-            {isEdit ? t("Details") : t("addNewBrand")}
+            {isEdit ? t("details") : t("addNewBrand")}
           </Typography>
           <hr />
           <Grid
@@ -299,19 +299,19 @@ export default function ContactList() {
             <Grid xs={12}>
               <div className="d-flex flex-column gap-4">
                 <div className="d-flex flex-column justify-content-center align-items-center text-center">
-                  <FormLabel>Contact Owner</FormLabel>
+                  <FormLabel>{t("contactOwner")}</FormLabel>
                   {contactName}
                 </div>
 
                 <div className="d-flex flex-column justify-content-center align-items-center text-center">
-                  <FormLabel>Sender</FormLabel>
+                  <FormLabel>{t("sender")}</FormLabel>
                   {contactMail}
                 </div>
                 <div
                   className="d-flex flex-column justify-content-center align-items-center text-center"
                   style={{ flexWrap: "nowrap" }}
                 >
-                  <FormLabel>Message</FormLabel>
+                  <FormLabel>{t("messages")}</FormLabel>
                   <div
                     style={{
                       whiteSpace: "pre-line",

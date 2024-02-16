@@ -188,7 +188,7 @@ export default function UserList() {
                 textAlign: "center",
               }}
             >
-                {t("user")}
+                {t("userName")}
             </th>
             {/* <th
               style={{
@@ -256,7 +256,7 @@ export default function UserList() {
                   {item.email}
                 </Typography>
                 <Typography level="body-xs" gutterBottom>
-                {item.isEnabled ? "Verified User" : "Unverified User"}
+                {item.isEnabled ? t("verifiedAccount") : t("unverifiedAccount")}
                 </Typography>
                 <Box
                   sx={{
@@ -407,7 +407,7 @@ export default function UserList() {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("name")
+                            : t("fName")
                         }
                         error={formik.errors.name && formik.touched.name}
                       />
@@ -431,7 +431,7 @@ export default function UserList() {
                         placeholder={
                           formik.errors.surname && formik.touched.surname
                             ? formik.errors.surname
-                            : t("surname")
+                            : t("lName")
                         }
                         error={formik.errors.surname && formik.touched.surname}
                       />
@@ -455,7 +455,7 @@ export default function UserList() {
                         placeholder={
                           formik.errors.email && formik.touched.email
                             ? formik.errors.email
-                            : t("E-mail")
+                            : t("email")
                         }
                         error={formik.errors.email && formik.touched.email}
                       />

@@ -91,7 +91,7 @@ export default function ContactTable() {
     } else {
       try {
         await axiosInstance.delete(`api/v1/admin/contacts/${id}`);
-        toastSuccess(t("contactSuccessDelete"));
+        toastSuccess(t("contactSuccessDeleted"));
         dispatch(fetchAllContactData());
       } catch (error) {
         setOpen(false);
@@ -116,7 +116,7 @@ export default function ContactTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("contacts").toUpperCase()}
+          {t("contact").toUpperCase()}
         </Typography>
       </Box>
       <hr />
@@ -178,7 +178,7 @@ export default function ContactTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("Sender")}
+                  {t("sender")}
                 </th>
                 <th
                   style={{
@@ -187,7 +187,7 @@ export default function ContactTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("Message")}
+                  {t("messages")}
                 </th>
 
                 <th
@@ -197,7 +197,7 @@ export default function ContactTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("Actions")}
+                  {t("actions")}
                 </th>
               </tr>
             </thead>
@@ -250,7 +250,7 @@ export default function ContactTable() {
                             setIsEdit(true);
                           }}
                         >
-                          {t("See More")}
+                          {t("seeMore")}
                         </MenuItem>
                         <Divider />
                         <MenuItem
@@ -306,7 +306,7 @@ export default function ContactTable() {
               fontWeight="lg"
               mb={1}
             >
-              {isEdit ? t("Details") : t("addNewContact")}
+              {isEdit ? t("details") : t("addNewContact")}
             </Typography>
             <hr />
             <Grid
@@ -318,19 +318,19 @@ export default function ContactTable() {
               <Grid xs={12}>
                 <div className="d-flex flex-column gap-4">
                   <div className="d-flex flex-column justify-content-center align-items-center text-center">
-                    <FormLabel>Contact Owner</FormLabel>
+                    <FormLabel>{t("contactOwner")}</FormLabel>
                     {contactName}
                   </div>
 
                   <div className="d-flex flex-column justify-content-center align-items-center text-center">
-                    <FormLabel>Sender</FormLabel>
+                    <FormLabel>{t("sender")}</FormLabel>
                     {contactMail}
                   </div>
                   <div
                     className="d-flex flex-column justify-content-center align-items-center text-center"
                     style={{ flexWrap: "nowrap" }}
                   >
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel>{t("messages")}</FormLabel>
                     <div style={{ whiteSpace: "pre-line", wordWrap: "break-word", overflow:"auto", maxWidth:"300px" }}>
                       {contactMessage}
                     </div>

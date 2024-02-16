@@ -222,7 +222,7 @@ export default function RentalTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("rentals")}
+          {t("rentals").toUpperCase()}
         </Typography>
         <Button
           color="success"
@@ -325,7 +325,7 @@ export default function RentalTable() {
                     textAlign: "center",
                   }}
                 >
-                  {t("Status")}
+                  {t("status")}
                 </th>
 
                 <th
@@ -387,13 +387,13 @@ export default function RentalTable() {
                         {row?.returnDate &&
                         row?.isFinished &&
                         row?.totalPrice === 0
-                          ? "İptal Edildi"
+                          ? t("cancelled")
                           : row?.returnDate &&
                             row?.isFinished &&
                             row?.totalPrice !== 0
-                          ? "Sonlandırıldı"
+                          ? t("terminated")
                           : !row?.returnDate
-                          ? "Devam Ediyor"
+                          ? t("continues")
                           : ""}
                       </Chip>
                     </Typography>

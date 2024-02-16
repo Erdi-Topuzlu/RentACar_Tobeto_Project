@@ -116,7 +116,7 @@ const Contact = () => {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("modelName")
+                            : t("fName")
                         }
                         error={formik.errors.name && formik.touched.name}
                       />
@@ -171,7 +171,7 @@ const Contact = () => {
                         placeholder={
                           formik.errors.messages && formik.touched.messages
                             ? formik.errors.messages
-                            : t("messages")
+                            : t("message")
                         }
                         error={formik.errors.messages && formik.touched.messages}
                       />

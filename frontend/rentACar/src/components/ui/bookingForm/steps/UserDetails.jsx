@@ -23,13 +23,12 @@ export function UserDetails({ steps, activeStep, setActiveStep }) {
   };
 
   const licenseTypes = [
-    "A - Motorcycle License",
-    "B - Car License",
-    "C - Truck License",
-    "D - Bus License",
-    "E - Trailer License",
-    "F - Tractor License",
-    "G - Temporary Driver's License",
+    t("driverLA"),
+    t("driverLB"),
+    t("driverLC"),
+    t("driverLD"),
+    t("driverLF"),
+    t("driverLG"),
   ];
 
   useEffect(() => {
