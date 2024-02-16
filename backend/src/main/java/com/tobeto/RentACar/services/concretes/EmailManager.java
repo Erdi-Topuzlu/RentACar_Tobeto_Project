@@ -14,6 +14,7 @@ import org.thymeleaf.context.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tobeto.RentACar.core.utilities.EmailUtils.getResetPasswordUrl;
 import static com.tobeto.RentACar.core.utilities.EmailUtils.getVerificationUrl;
 
 @Service
@@ -22,6 +23,9 @@ public class EmailManager implements EmailService {
     public static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account Verification";
     public static final String UTF_8_ENCODING = "UTF-8";
     public static final String EMAIL_TEMPLATE = "emailverificationtemplate";
+    public static final String PASSWORD_RESET_TEMPLATE = "forgot_password_template";
+    public static final String FORGOT_PASSWORD = "Forgot Password";
+
     public static final String EMAIL_ACCOUNT_CONFIRMED_TEMPLATE = "account_confirmed";
 
     private final TemplateEngine templateEngine;
@@ -54,6 +58,30 @@ public class EmailManager implements EmailService {
     @Override
     public void againSendEmailVerification(String name, String to, String confirmationToken) {
         sendEmailVerificationHtml(name, to, confirmationToken);
+    }
+
+    @Override
+    public void sendForgotPasswordResetEmail(String name, String to, String confirmationToken) {
+        try {
+            Context context = new Context();
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("name", name);
+            variables.put("url", getResetPasswordUrl(confirmationToken));
+            variables.put("host", getResetPasswordUrl(confirmationToken));
+            context.setVariables(variables);
+            String text = templateEngine.process(PASSWORD_RESET_TEMPLATE, context);
+            MimeMessage message = getMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+            helper.setPriority(1);
+            helper.setSubject(FORGOT_PASSWORD);
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setText(text, true);
+            emailSender.send(message);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            throw new RuntimeException(exception.getMessage());
+        }
     }
 
     private void sendEmailVerificationHtml(String name, String to, String confirmationToken) {

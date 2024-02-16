@@ -9,7 +9,7 @@ import { toastError, toastSuccess } from "../../service/ToastifyService";
 import axiosInstance from "../../redux/utilities/interceptors/axiosInterceptors";
 
 
-const RedirectLogin = ({ isEnabled, tokenn, confTokenn }) => {
+const RedirectLogin = ({ isEnabled, tokenn}) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { details } = useSelector((state) => state.userDetail);
   const { t } = useTranslation();
@@ -18,10 +18,6 @@ const RedirectLogin = ({ isEnabled, tokenn, confTokenn }) => {
   const sendMail = async () => {
     setIsLoading(true); // Butonu devre dışı bırak
 
-    const params = {
-      confirmationToken: confTokenn,
-    };
-
     const data = {
       email: details.email,
     };
@@ -29,10 +25,7 @@ const RedirectLogin = ({ isEnabled, tokenn, confTokenn }) => {
     try {
       const response = await axiosInstance.post(
         "api/v1/auth/again-send-email-verification",
-        data,
-        {
-          params: params,
-        }
+        data
       );
       toastSuccess(t("successSendEmailVerification"));
     } catch (error) {

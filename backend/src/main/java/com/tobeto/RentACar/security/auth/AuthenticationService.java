@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.entities.concretes.confirmation.Confirmation;
 import com.tobeto.RentACar.entities.concretes.user.User;
+import com.tobeto.RentACar.repositories.ConfirmationRepository;
 import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.security.config.jwt.JwtService;
@@ -12,7 +13,8 @@ import com.tobeto.RentACar.security.services.token.Token;
 import com.tobeto.RentACar.security.services.token.TokenType;
 import com.tobeto.RentACar.services.abstracts.ConfirmationService;
 import com.tobeto.RentACar.services.abstracts.EmailService;
-import com.tobeto.RentACar.services.dtos.requests.user.AgainSendEmailUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.SendEmailUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.ResetPasswordUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +27,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +48,7 @@ public class AuthenticationService {
 
     @Value("${jwt.bearer}")
     private String bearer;
+    private final ConfirmationRepository confirmationRepository;
 
     public AuthenticationResponse register(RegisterUserRequest request) {
         userBusinessRulesService.checkIfByEmailExists(request.getEmail());
@@ -63,7 +67,10 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user, user);
         saveUserToken(savedUser, jwtToken);
 
-        var confirmation = new Confirmation(user);
+        String token = UUID.randomUUID().toString();
+        var createdDate = LocalDateTime.now().plusHours(24);
+
+        var confirmation = new Confirmation(user, token, createdDate);
         confirmationService.save(confirmation);
 
         // Send Email to User with Confirmation Token
@@ -96,14 +103,53 @@ public class AuthenticationService {
         return ResponseEntity.ok(accountConfirmed);
     }
 
-
-    public void againSendEmailVerification(AgainSendEmailUserRequest request, @RequestParam("token") String token) {
+    public void sendForgotPassword(SendEmailUserRequest request) {
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var confirmation = confirmationService.findByConfirmationToken(token);
+        var confirmation = confirmationRepository.findByUser(user);
+        String token = UUID.randomUUID().toString();
+        var createdDate = LocalDateTime.now().plusHours(24);
 
-        System.out.println(confirmation.getConfirmationToken());
-        System.out.println(user.getEmail());
+        if (confirmation != null) {
+            confirmation.setConfirmationToken(token);
+            confirmation.setCreatedDate(createdDate);
+            confirmationRepository.save(confirmation);
 
+        } else {
+            var existingConfirmation = new Confirmation(user, token, createdDate);
+            confirmationRepository.save(existingConfirmation);
+        }
+
+        assert confirmation != null;
+        emailService.sendForgotPasswordResetEmail(
+                user.getName(),
+                user.getEmail(),
+                confirmation.getConfirmationToken()
+        );
+    }
+
+    public void resetPassword(ResetPasswordUserRequest request) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    public void againSendEmailVerification(SendEmailUserRequest request) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var confirmation = confirmationRepository.findByUser(user);
+        String token = UUID.randomUUID().toString();
+        var createdDate = LocalDateTime.now().plusHours(24);
+
+        if (confirmation != null) {
+            confirmation.setConfirmationToken(token);
+            confirmation.setCreatedDate(createdDate);
+            confirmationRepository.save(confirmation);
+
+        } else {
+            var existingConfirmation = new Confirmation(user, token, createdDate);
+            confirmationRepository.save(existingConfirmation);
+        }
+
+        assert confirmation != null;
         emailService.againSendEmailVerification(
                 user.getName(),
                 user.getEmail(),

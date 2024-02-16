@@ -11,16 +11,18 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 import { useFormik } from "formik";
 import { Form } from "reactstrap";
-import { toastSuccess, toastWarning } from "../../../rentACar/src/service/ToastifyService";
+import {
+  toastSuccess,
+  toastWarning,
+} from "../../../rentACar/src/service/ToastifyService";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 
-
 const ResetPassword = () => {
   const { t } = useTranslation();
-    
 
   const initialValues = {
+    email:"",
     newPassword: "",
     newConfirmPassword: "",
   };
@@ -30,21 +32,21 @@ const ResetPassword = () => {
     initialValues,
     onSubmit: async (values, actions) => {
       const updatedData = {
-        currentPassword: formik.values.oldPassword,
+        email: formik.values.email,
         newPassword: formik.values.newPassword,
-        confirmPassword: formik.values.newConfirmPassword,
+        newConfirmPassword: formik.values.newConfirmPassword,
       };
 
       try {
         const response = await axiosInstance.patch(
-          `api/v1/users/changePassword`,
+          `api/v1/auth/reset-password`,
           updatedData
         );
         if (response.status === 200) {
           toastSuccess(t("passwordUpdated"));
           formik.resetForm();
         }
-        if(response.status === 403) {
+        if (response.status === 403) {
           toastWarning(t("correctPassword"));
           formik.resetForm();
         }
@@ -55,7 +57,6 @@ const ResetPassword = () => {
       }
     },
   });
-
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -72,7 +73,9 @@ const ResetPassword = () => {
         {/* WEB FORM */}
         <Card>
           <Box sx={{ mb: 1 }}>
-            <Typography sx={{textAlign:"center"}} level="title-lg">{t("resetPassword")}</Typography>
+            <Typography sx={{ textAlign: "center" }} level="title-lg">
+              {t("resetPassword")}
+            </Typography>
             <Typography level="body-sm">{t("changePasswordDesc")}</Typography>
           </Box>
           <Divider />
@@ -89,7 +92,31 @@ const ResetPassword = () => {
                     gap: 2,
                   }}
                 >
-                 
+                  <FormLabel>{t("email")}</FormLabel>
+                  <FormControl sx={{ display: "flex-column", gap: 1 }}>
+                    <Input
+                      name="email"
+                      className={
+                        formik.errors.email &&
+                        formik.touched.email &&
+                        "error"
+                      }
+                      type="text"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.errors.newPassword && formik.touched.newPassword
+                      }
+                      size="sm"
+                      placeholder={
+                        formik.errors.email && formik.touched.email
+                          ? formik.errors.email
+                          : t("email")
+                      }
+                    />
+                  </FormControl>
+
                   <FormLabel>{t("newPassword")}</FormLabel>
                   <FormControl sx={{ display: "flex-column", gap: 1 }}>
                     <Input
@@ -100,7 +127,6 @@ const ResetPassword = () => {
                         "error"
                       }
                       type="password"
-
                       value={formik.values.newPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -125,16 +151,17 @@ const ResetPassword = () => {
                         "error"
                       }
                       type="password"
-
                       value={formik.values.newConfirmPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={
-                        formik.errors.newConfirmPassword && formik.touched.newConfirmPassword
+                        formik.errors.newConfirmPassword &&
+                        formik.touched.newConfirmPassword
                       }
                       size="sm"
                       placeholder={
-                        formik.errors.newConfirmPassword && formik.touched.newConfirmPassword
+                        formik.errors.newConfirmPassword &&
+                        formik.touched.newConfirmPassword
                           ? formik.errors.newConfirmPassword
                           : t("newConfirmPassword")
                       }

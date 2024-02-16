@@ -33,9 +33,15 @@ public class Confirmation {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    public Confirmation(User user) {
+//    public Confirmation(User user) {
+//        this.user = user;
+//        this.confirmationToken = UUID.randomUUID().toString();
+//        this.createdDate = LocalDateTime.now();
+//    }
+
+    public Confirmation(User user, String confirmationToken, LocalDateTime createdDate) {
         this.user = user;
-        this.confirmationToken = UUID.randomUUID().toString();
-        this.createdDate = LocalDateTime.now();
+        this.confirmationToken = confirmationToken;
+        this.createdDate = createdDate;
     }
 }

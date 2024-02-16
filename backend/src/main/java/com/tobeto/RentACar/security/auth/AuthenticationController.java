@@ -1,6 +1,7 @@
 package com.tobeto.RentACar.security.auth;
 
-import com.tobeto.RentACar.services.dtos.requests.user.AgainSendEmailUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.SendEmailUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.ResetPasswordUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,8 +36,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/again-send-email-verification")
-    public void againSendEmailVerification(@RequestBody AgainSendEmailUserRequest request, @RequestParam("confirmationToken") String confirmationToken) {
-        authenticationService.againSendEmailVerification(request, confirmationToken);
+    public void againSendEmailVerification(@RequestBody SendEmailUserRequest request) {
+        authenticationService.againSendEmailVerification(request);
+    }
+
+    @PostMapping("/forgot-password")
+    public void forgotPassword(@RequestBody SendEmailUserRequest request) {
+        authenticationService.sendForgotPassword(request);
+    }
+
+    @PatchMapping("/reset-password")
+    public void resetPassword(@RequestBody ResetPasswordUserRequest request) {
+        authenticationService.resetPassword(request);
     }
 
     @GetMapping("/confirm-account")
