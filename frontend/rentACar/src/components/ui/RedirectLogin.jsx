@@ -35,7 +35,6 @@ const RedirectLogin = ({ isEnabled, tokenn, confTokenn }) => {
         }
       );
       toastSuccess(t("successSendEmailVerification"));
-      window.location.reload();
     } catch (error) {
       console.error(error)
 

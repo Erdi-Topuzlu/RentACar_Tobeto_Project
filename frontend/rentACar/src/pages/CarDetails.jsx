@@ -121,7 +121,7 @@ const CarDetails = () => {
                     {details.dailyPrice}.00 ₺/ {t("day")}
                   </h6>
 
-                  <span className=" d-flex align-items-center gap-2">
+                  {/* <span className=" d-flex align-items-center gap-2">
                     <span style={{ color: "#f9a826" }}>
                       <i className="ri-star-s-fill"></i>
                       <i className="ri-star-s-fill"></i>
@@ -130,7 +130,7 @@ const CarDetails = () => {
                       <i className="ri-star-s-fill"></i>
                     </span>
                     ({} {t("rating")})
-                  </span>
+                  </span> */}
                 </div>
                 <div className="row">
                   {/* Left */}

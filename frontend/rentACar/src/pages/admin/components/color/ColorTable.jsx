@@ -253,24 +253,7 @@ export default function ColorTable() {
               >
                 {t("colorName")}
               </th>
-              {/* <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Status
-              </th>
-              <th
-                style={{
-                  width: "auto",
-                  padding: "12px 6px",
-                  textAlign: "center",
-                }}
-              >
-                Customer
-              </th> */}
+             
               <th
                 style={{
                   width: "auto",
@@ -291,36 +274,7 @@ export default function ColorTable() {
                 <td style={{ textAlign: "center" }}>
                   <Typography level="body-xs"><span style={{fontWeight:"bold", fontSize:"16px"}}>{row.name}</span></Typography>
                 </td>
-                {/* <td style={{ textAlign: "center" }}>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.id]
-                    }
-                    color={
-                      {
-                        Paid: "success",
-                        Refunded: "neutral",
-                        Cancelled: "danger",
-                      }[row.id]
-                    }
-                  >
-                    {row.id}
-                  </Chip>
-                </td> */}
-                {/* <td style={{ textAlign: "center" }}>
-                  <div>
-                    <Typography level="body-xs">{}</Typography>
-                    <Typography level="body-xs">
-                      {}
-                    </Typography>
-                  </div>
-                </td> */}
+                
                 <td style={{ textAlign: "center" }}>
                   <Dropdown>
                     <MenuButton

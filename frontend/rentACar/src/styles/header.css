@@ -27,7 +27,8 @@
 
 .header__top {
   padding: 10px 0px;
-  background: #673ab7;
+  background: rgb(104,11,156);
+background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
   color: #fff;
 }
 
@@ -106,7 +107,8 @@
 }
 
 .header__btn {
-  background: #673ab7 !important;
+  background: rgb(237,153,15)!important;
+background: linear-gradient(90deg, rgba(237,153,15,1) 0%, rgba(226,142,6,1) 100%);
   padding: 10px 20px;
   border: none;
   outline: none;
@@ -125,13 +127,15 @@
 
 .header__btn a:hover {
   color: #fff;
+  
 }
 
 /* ================ main navbar styles =========== */
 
 .main__navbar {
   padding: 10px 10px 10px 0px;
-  background: #673ab7;
+  background: rgb(104,11,156);
+  background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
 }
 
 .mobile__menu i {

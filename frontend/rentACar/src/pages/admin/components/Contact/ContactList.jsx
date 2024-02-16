@@ -83,7 +83,6 @@ export default function ContactList() {
 
   React.useEffect(() => {
     dispatch(fetchAllContactData());
-    console.log(contacts);
   }, [dispatch]);
 
   const handleDelete = async (id) => {

@@ -483,7 +483,12 @@
   "terminated":"Terminated",
   "continues":"Continues",
   "suitable":"Suitable",
-  "rented":"Rented"
+  "rented":"Rented",
+  "seeDetails|rent":" See Details | Rent",
+  "editRole":"Edit Role",
+  "verifyMailSendAgain":"Resend Verification Email"
+
+
 
 
 

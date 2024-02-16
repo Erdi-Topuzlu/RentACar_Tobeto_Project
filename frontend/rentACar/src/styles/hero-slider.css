@@ -19,7 +19,8 @@
 }
 
 .reserve__btn {
-  background: #fff !important;
+  background: rgb(237,153,15)!important;
+  background: linear-gradient(90deg, rgba(237,153,15,1) 0%, rgba(226,142,6,1) 100%);
   color: #673ab7 !important;
   border: none;
   outline: none;
@@ -28,7 +29,7 @@
 .reserve__btn a {
   text-decoration: none;
   font-weight: 600;
-  color: #673ab7;
+  color: #ffffff;
 }
 
 .reserve__btn:hover {
