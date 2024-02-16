@@ -3,16 +3,16 @@ package com.tobeto.RentACar.security.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
 import com.tobeto.RentACar.entities.concretes.confirmation.Confirmation;
+import com.tobeto.RentACar.entities.concretes.user.User;
+import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.rules.user.UserBusinessRulesService;
 import com.tobeto.RentACar.security.config.jwt.JwtService;
 import com.tobeto.RentACar.security.repository.TokenRepository;
 import com.tobeto.RentACar.security.services.token.Token;
 import com.tobeto.RentACar.security.services.token.TokenType;
-import com.tobeto.RentACar.entities.concretes.user.User;
-import com.tobeto.RentACar.repositories.UserRepository;
 import com.tobeto.RentACar.services.abstracts.ConfirmationService;
 import com.tobeto.RentACar.services.abstracts.EmailService;
-import com.tobeto.RentACar.services.dtos.requests.user.UpdateUserRequest;
+import com.tobeto.RentACar.services.dtos.requests.user.AgainSendEmailUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.login.LoginUserRequest;
 import com.tobeto.RentACar.services.dtos.requests.user.register.RegisterUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,11 +25,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +42,6 @@ public class AuthenticationService {
     private final UserBusinessRulesService userBusinessRulesService;
     private final ConfirmationService confirmationService;
     private final EmailService emailService;
-    public static final String EMAIL_TEMPLATE = "account_confirmed";
-    private final TemplateEngine templateEngine;
-
 
     @Value("${jwt.bearer}")
     private String bearer;
@@ -72,7 +67,7 @@ public class AuthenticationService {
         confirmationService.save(confirmation);
 
         // Send Email to User with Confirmation Token
-        emailService.sendHtmlEmail(
+        emailService.sendEmailVerification(
                 user.getName(),
                 user.getEmail(),
                 confirmation.getConfirmationToken()
@@ -83,6 +78,7 @@ public class AuthenticationService {
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole().toString())
                 .isEnabled(savedUser.getIsEnabled())
+                .confirmationToken(confirmation.getConfirmationToken())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -95,12 +91,24 @@ public class AuthenticationService {
         user.setIsEnabled(true);
         userRepository.save(user);
 
-        Context context = new Context();
-        Map<String, Object> variables = new java.util.HashMap<>();
-        variables.put("name", user.getName());
-        context.setVariables(variables);
-        String accountConfirmed = templateEngine.process(EMAIL_TEMPLATE, context);
+        var accountConfirmed = emailService.sendAccountConfirmedEmail(user.getName());
+
         return ResponseEntity.ok(accountConfirmed);
+    }
+
+
+    public void againSendEmailVerification(AgainSendEmailUserRequest request, @RequestParam("token") String token) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var confirmation = confirmationService.findByConfirmationToken(token);
+
+        System.out.println(confirmation.getConfirmationToken());
+        System.out.println(user.getEmail());
+
+        emailService.againSendEmailVerification(
+                user.getName(),
+                user.getEmail(),
+                confirmation.getConfirmationToken()
+        );
     }
 
     public AuthenticationResponse login(LoginUserRequest request) {

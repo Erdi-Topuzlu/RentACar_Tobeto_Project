@@ -1,5 +1,9 @@
 package com.tobeto.RentACar.services.abstracts;
 
 public interface EmailService {
-    void sendHtmlEmail(String name, String to, String confirmationToken);
+    void sendEmailVerification(String name, String to, String confirmationToken);
+    String sendAccountConfirmedEmail(String name);
+
+    void againSendEmailVerification(String name, String to, String confirmationToken);
+
 }

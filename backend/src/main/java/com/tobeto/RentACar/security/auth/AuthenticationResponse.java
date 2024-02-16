@@ -30,4 +30,7 @@ public class AuthenticationResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
 
+    @JsonProperty("confirmation_token")
+    String confirmationToken;
+
 }
