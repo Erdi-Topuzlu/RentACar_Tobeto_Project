@@ -68,11 +68,18 @@ function stableSort(array, comparator) {
 }
 
 export default function UserList() {
-  const [id, setId] = React.useState();
   const [isEdit, setIsEdit] = React.useState();
-  const [name, setName] = React.useState();
-  const [surname, setSurname] = React.useState();
-  const [email, setEmail] = React.useState();
+  const [userId, setUserId] = React.useState("");
+  const [userName, setUserName] = React.useState("");
+  const [userSurname, setUserSurname] = React.useState("");
+  const [userTcNo, setUserTcNo] = React.useState("");
+  const [userEmail, setUserEmail] = React.useState("");
+  const [userPassword, setUserPassword] = React.useState("");
+  const [userIsEnabled, setUserIsEnabled] = React.useState("");
+  const [userBirthDate, setUserBirthDate] = React.useState("");
+  const [userPhotoUrl, setUserPhotoUrl] = React.useState("");
+  const [userRole, setUserRole] = React.useState("");
+  const [curentRole, setCurentRole] = React.useState("");
   const [order, setOrder] = React.useState("desc");
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -88,62 +95,65 @@ export default function UserList() {
 
   const handleDelete = async (id) => {
     if (!id) {
-      setOpen(false)
-      toastError("User ID bulunamadı!");
+      toastError(t("userIdNotFound"));
     } else {
       try {
-        await axiosInstance.delete(`api/v1/admin/users/${id}`);
+        await axiosInstance.delete(`api/v1/users/${userId}`);
         toastSuccess(t("userIdNotFound"));
         dispatch(fetchAllUserData());
       } catch (error) {
         setOpen(false)
         toastError(t("connectedDataDelete"))
         dispatch(fetchAllUserData());
-
       }
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!id) {
+
+    const updatedData = {
+      id: userId,
+      name: userName,
+      surname: userSurname,
+      email: userEmail,
+      password: userPassword,
+      role: userRole,
+      tcNo: userTcNo,
+      birthDate: userBirthDate,
+      userPhotoUrl: userPhotoUrl,
+      isEnabled: userIsEnabled,
+    };
+
+    try {
+      await axiosInstance.patch(
+        `api/v1/users/${id}`,
+        updatedData
+      );
+      toastSuccess(t("usersSuccessUpdate"));
       setOpen(false);
-      toastError(t("schemeUserName"));
-    } else {
-      const updatedData = {
-        id: id,
-        name: name,
-        brandId: brandId,
-      };
-
-      try {
-        await axiosInstance.put(`api/v1/admin/users/${id}`, updatedData);
-        toastSuccess(t("usersSuccessUpdate"));
-        setOpen(false);
+      dispatch(fetchAllUserData());
+    } catch (error) {
+      setOpen(false);
+      if (error.response.data.message === "VALIDATION.EXCEPTION") {
+        toastError(JSON.stringify(error.response.data.validationErrors.name));
         dispatch(fetchAllUserData());
-      }catch (error) {
-        setOpen(false);
-        if(error.response.data.message === "VALIDATION.EXCEPTION" ){
-          toastError(JSON.stringify(error.response.data.validationErrors.name));
-          dispatch(fetchAllUserData());
-        }else if(error.response.data.type === "BUSINESS.EXCEPTION"){
-          toastError(JSON.stringify(error.response.data.message))
-          dispatch(fetchAllUserData());
-        }else{
-          toastError(t("unknownError"))
-          dispatch(fetchAllUserData());
-        }
+      } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
+        toastError(JSON.stringify(error.response.data.message))
+        dispatch(fetchAllUserData());
+      } else {
+        toastError(t("unknownError"))
+        dispatch(fetchAllUserData());
+      }
     }
-    }
-  };
-
+  }
 
 
   const formik = useFormik({
     initialValues: {
-     name: "",
-     surname: "",
-     email: "",
+      role: "",
+
     },
+
   });
 
   return (
@@ -188,9 +198,9 @@ export default function UserList() {
                 textAlign: "center",
               }}
             >
-                {t("userName")}
+              {t("userName")}
             </th>
-            {/* <th
+            <th
               style={{
                 width: "auto",
                 padding: "12px 6px",
@@ -206,14 +216,14 @@ export default function UserList() {
                 textAlign: "center",
               }}
             >
-              {t("Verify")}
+              {t("status")}
+            </th>
 
-            </th> */}
             <th
               style={{
                 width: "auto",
                 padding: "12px 6px",
-                textAlign: "right",
+                textAlign: "center",
               }}
             >
               {t("actions")}
@@ -255,8 +265,22 @@ export default function UserList() {
                 <Typography level="body-xs" gutterBottom>
                   {item.email}
                 </Typography>
-                <Typography level="body-xs" gutterBottom>
-                {item.isEnabled ? t("verifiedAccount") : t("unverifiedAccount")}
+                <Typography level="body-xs">
+                  {item.isEnabled ? (
+                    <React.Fragment>
+                      <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
+                        <img title={t("verifiedAccount")} src="/src/assets/icons/verified.svg" />
+                      </span>
+                      {t("verifiedAccount")}
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
+                        <img title={t("verifyAccound")} src="/src/assets/icons/not-verified.svg" />
+                      </span>
+                      {t("unverifiedAccount")}
+                    </React.Fragment>
+                  )}
                 </Typography>
                 <Box
                   sx={{
@@ -267,32 +291,11 @@ export default function UserList() {
                     mb: 1,
                   }}
                 >
-                  {/* <Typography level="body-xs">{item.date}</Typography>
-                  <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{item.id}</Typography> */}
+
                 </Box>
               </div>
             </ListItemContent>
-            {/* <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Paid: <CheckRoundedIcon />,
-                  Refunded: <AutorenewRoundedIcon />,
-                  Cancelled: <BlockIcon />
-                }[item.status]
-              }
-              color={
-                {
-                  Paid: "success",
-                  Refunded: "neutral",
-                  Cancelled: "danger"
-                }[item.status]
-              }
-            >
-              {item.status}
-            </Chip> */}
+
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <Dropdown>
                 <MenuButton
@@ -310,27 +313,23 @@ export default function UserList() {
                 <Menu size="sm" sx={{ minWidth: 140 }}>
                   <MenuItem
                     onClick={() => {
-                      setId(item.id);
-                      setName(item?.name);
-                      setSurname(item?.surname);
-                      setEmail(item?.email);
+                      setUserId(item?.id);
+                      setUserName(item.name);
+                      setUserSurname(item.surname);
+                      setUserTcNo(item.tcNo);
+                      setUserEmail(item.email);
+                      setUserPassword(item.password);
+                      setUserIsEnabled(item.isEnabled);
+                      setUserBirthDate(item.birthDate);
+                      setUserPhotoUrl(item.userPhotoUrl);
+                      setCurentRole(item.role);
                       setOpen(true);
                       setIsEdit(true);
                     }}
                   >
-                    {t("edit")}
+                    {t("editRole")}
                   </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    onClick={() => {
-                      setId(item.id);
-                      setName(item.name);
-                      setOpenDelete(true);
-                    }}
-                    color="danger"
-                  >
-                    {t("delete")}
-                  </MenuItem>
+
                 </Menu>
               </Dropdown>
             </Box>
@@ -344,7 +343,7 @@ export default function UserList() {
         open={open}
         onClose={() => {
           formik.resetForm();
-          setId(null);
+          setUserId(null);
           setOpen(false);
         }}
         sx={{
@@ -373,9 +372,9 @@ export default function UserList() {
             fontWeight="lg"
             mb={1}
           >
-            {
-              isEdit ? t("updateUser") : t("addNewUser")
-            }
+
+            {isEdit && t("updateUserRole")}
+
           </Typography>
           <hr />
           <Grid
@@ -385,101 +384,58 @@ export default function UserList() {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid xs={12}>
+            <FormLabel className={"align-items-center d-flex justify-content-center mb-4"}>{curentRole === "ADMIN" ? "Current Role : ADMIN" : "Current Role : USER"}</FormLabel>
               <Form onSubmit={formik.handleSubmit}>
-                <FormLabel>{t("modelName")}</FormLabel>
                 <div>
-                <FormGroup className="">
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        autoFocus
-                        value={formik.values.name || name}
-                        className={
-                          formik.errors.name && formik.touched.name && "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setName(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.name && formik.touched.name
-                            ? formik.errors.name
-                            : t("fName")
-                        }
-                        error={formik.errors.name && formik.touched.name}
-                      />
-                    </FormGroup>
-                    <FormGroup className="">
-                      <Input
-                        id="surname"
-                        name="surname"
-                        type="text"
-                        autoFocus
-                        value={formik.values.surname || surname}
-                        className={
-                          formik.errors.surname && formik.touched.surname && "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setSurname(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.surname && formik.touched.surname
-                            ? formik.errors.surname
-                            : t("lName")
-                        }
-                        error={formik.errors.surname && formik.touched.surname}
-                      />
-                    </FormGroup>
-                    <FormGroup className="">
-                      <Input
-                        id="email"
-                        name="email"
-                        type="text"
-                        autoFocus
-                        value={formik.values.email || email}
-                        className={
-                          formik.errors.email && formik.touched.email && "error"
-                        }
-                        onChange={(e) => {
-                          // Update the brandName state when the input changes
-                          setEmail(e.target.value);
-                          formik.handleChange(e); // Invoke Formik's handleChange as well
-                        }}
-                        onBlur={formik.handleBlur}
-                        placeholder={
-                          formik.errors.email && formik.touched.email
-                            ? formik.errors.email
-                            : t("email")
-                        }
-                        error={formik.errors.email && formik.touched.email}
-                      />
-                    </FormGroup>
+                  <FormGroup>
+                    <select
+                      id="role"
+                      name="role"
+                      type="text"
+                      value={formik.values.role || userRole}
+                      className={
+                        formik.errors.role &&
+                        formik.touched.role &&
+                        "error"
+                      }
+                      onChange={(e) => {
+                        setUserRole(e.target.value);
+                        formik.handleChange(e);
+                      }}
+                      style={{
+                        textAlign: "center",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        padding: "7px",
+                        fontSize: "16px",
+                        border: "1px solid #ccc",
+                        borderRadius: "10px",
+                        width: "50%",
+                      }}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option disabled={true} value="">{t("selectRole")}</option>
+                      <option value="USER" key="1">
+                        USER
+                      </option>
+                      <option value="ADMIN" key="2">
+                        ADMIN
+                      </option>
+
+                    </select>
+                  </FormGroup>
+
                 </div>
-
-                {id ? (
-                  <Button onClick={() => {
-                    handleUpdate(id);
-                  }} className=" form__btn"
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-                  >{t("update")}</Button>
-                ) : (
-                  <Button
-                    className=" form__btn"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    style={{ backgroundColor: "#673ab7", color: "white" }}
-
-                  >
-                    {t("add")}
-                  </Button>
-
-                )}
+                <Button
+                  onClick={() => {
+                    handleUpdate(userId)
+                  }}
+                  className=" form__btn"
+                  style={{ backgroundColor: "#673ab7", color: "white" }}
+                >
+                  {t("update")}
+                </Button>
 
               </Form>
             </Grid>
@@ -488,8 +444,7 @@ export default function UserList() {
       </Modal>
       <Modal open={openDelete}
         onClose={() => {
-          setId(null);
-          setName(null);
+          setUserId(null);
           setOpenDelete(false);
         }}
         sx={{
@@ -503,11 +458,11 @@ export default function UserList() {
           </DialogTitle>
           <Divider />
           <DialogContent>
-            <p style={{ fontWeight: "bold" }}>{}</p>{t("deleteMessage")}
+            <p style={{ fontWeight: "bold" }}>{ }</p>{t("deleteMessage")}
           </DialogContent>
           <DialogActions>
             <Button variant="solid" color="danger" onClick={() => {
-              handleDelete(id);
+              handleDelete(userId);
               setOpenDelete(false)
             }}>
               {t("delete")}

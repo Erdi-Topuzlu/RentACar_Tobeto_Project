@@ -11,9 +11,8 @@ import {
   seatType,
 } from "../components/helper/conversionType";
 import { useTranslation } from "react-i18next";
-
+import BookingForm from "../components/ui/bookingForm/BookingForm";
 import { ReactSVG } from "react-svg";
-import BookingForm from "../components/ui/BookingForm/BookingForm";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import "swiper/css";

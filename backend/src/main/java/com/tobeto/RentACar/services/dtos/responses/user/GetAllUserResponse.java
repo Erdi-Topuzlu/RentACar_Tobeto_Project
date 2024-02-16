@@ -2,6 +2,7 @@ package com.tobeto.RentACar.services.dtos.responses.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tobeto.RentACar.entities.concretes.rental.Rental;
+import com.tobeto.RentACar.security.entities.Role;
 import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,11 @@ public class GetAllUserResponse {
     private String surname;
     private String email;
     private Boolean isEnabled;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    private String password;
+    private Double tcNo;
+    private Role role;
+
+    //@JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private String userPhotoUrl;
 
