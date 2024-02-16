@@ -46,6 +46,7 @@ import CarImagesTable from "./pages/admin/components/car-images/CarImagesTable.j
 import UserTable from "./pages/admin/components/User/UserTable.jsx";
 import ContactTable from "./pages/admin/components/Contact/ContactTable.jsx";
 import CampaignsTable from "./pages/admin/components/campaigns/CampaignsTable.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/cars">
           <Route index element={<CarListing />} />

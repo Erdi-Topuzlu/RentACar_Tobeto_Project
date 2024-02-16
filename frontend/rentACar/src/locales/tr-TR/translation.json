@@ -472,7 +472,10 @@
   "terminated":"Sonlandırıldı",
   "continues":"Devam ediyor",
   "suitable":"Uygun",
-  "rented":"Kiralık"
+  "rented":"Kiralık",
+  "seeDetails|rent":" Detay Gör | Kirala",
+  "editRole":"Rolü Düzenle",
+  "verifyMailSendAgain":"Doğrulama Mailini Tekrar Gönder"
 
   
 }

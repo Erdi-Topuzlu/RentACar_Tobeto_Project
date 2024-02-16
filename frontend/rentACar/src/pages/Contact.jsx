@@ -65,9 +65,9 @@ const Contact = () => {
       };
 
       try {
-        alert(JSON.stringify(data));
         await axiosInstance.post("api/v1/admin/contacts", data);
         toastSuccess(t("successSend"));
+        
       } catch (error) {
         if (error.response.data.message === "VALIDATION.EXCEPTION") {
           toastError(
@@ -78,6 +78,8 @@ const Contact = () => {
         } else {
           toastError(t("unknownError"));
         }
+      }finally{
+        window.location.reload();
       }
     },
   });

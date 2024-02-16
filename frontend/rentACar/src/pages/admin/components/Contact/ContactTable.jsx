@@ -78,7 +78,6 @@ export default function ContactTable() {
 
   React.useEffect(() => {
     dispatch(fetchAllContactData());
-    console.log(contacts);
   }, [dispatch]);
 
   // const brandValidationSchema = getBrandValidationSchema();
@@ -116,7 +115,7 @@ export default function ContactTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("contact").toUpperCase()}
+          {t("contact")}
         </Typography>
       </Box>
       <hr />

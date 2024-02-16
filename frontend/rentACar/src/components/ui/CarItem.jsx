@@ -68,20 +68,20 @@ const CarItem = ({ item }) => {
             <Col lg="2"></Col>
           </Row>
 
-          <Link to={`/cars/sad}`}>
+          {/* <Link to={`/cars/sad}`}>
             <button
               style={{ color: "white" }}
               className=" w-50 car__item-btn car__btn-rent link"
             >
               {t("rent")}
             </button>
-          </Link>
+          </Link> */}
           <Link to={`/cars/${item.id}`}>
             <button
               style={{ color: "white" }}
-              className=" w-50 car__item-btn car__btn-details"
+              className=" w-100 car__item-btn car__btn-details"
             >
-              {t("details")}
+              {t("seeDetails|rent")}
             </button>
           </Link>
         </div>

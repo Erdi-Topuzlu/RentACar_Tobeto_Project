@@ -8,7 +8,8 @@
 
 .contact__btn {
   padding: 7px 15px;
-  background: #673ab7;
+  background: rgb(104,11,156);
+  background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
   color: #fff;
   border: none;
   outline: none;

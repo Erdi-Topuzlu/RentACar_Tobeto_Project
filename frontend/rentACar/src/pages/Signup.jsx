@@ -48,9 +48,8 @@ const signUp = () => {
     },
     validationSchema: signUpValidationSchema,
     onSubmit: async (values, actions) => {
-      // alert(JSON.stringify(values, null, 2));
-      // actions.resetForm();
-      const data = {
+      
+        const data = {
         email: values.email,
         name: values.name,
         surname: values.surname,

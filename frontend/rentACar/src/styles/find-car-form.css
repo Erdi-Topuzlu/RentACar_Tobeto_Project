@@ -72,7 +72,8 @@
 }
 
 .find__car-btn {
-  background: #673ab7 !important;
+  background: rgb(104,11,156)!important;
+background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
   color: #fff !important;
   padding: 8px 15px;
   width: 100%;
