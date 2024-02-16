@@ -28,10 +28,13 @@ const CarDetails = () => {
   const { t } = useTranslation();
   const [isEnabled,setIsEnabled] = useState();
   const [tokenn,setTokenn] = useState();
+  const [confTokenn,setConfTokenn] = useState();
 
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
+    const confirmationToken = localStorage.getItem("confirmation_token")
+    setConfTokenn(confirmationToken)
     const isEnabled = localStorage.getItem("login_user");
     setIsEnabled(isEnabled)
     setTokenn(token)
@@ -190,7 +193,7 @@ const CarDetails = () => {
             </Col>
             ) : (
               
-              <RedirectLogin token={tokenn} isEnabled={isEnabled} />
+              <RedirectLogin confTokenn={confTokenn} token={tokenn} isEnabled={isEnabled} />
             )}
           </Row>
         </Container>

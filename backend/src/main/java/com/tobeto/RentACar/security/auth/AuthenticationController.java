@@ -35,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/again-send-email-verification")
-    public void againSendEmailVerification(@RequestBody AgainSendEmailUserRequest request, String confirmationToken) {
+    public void againSendEmailVerification(@RequestBody AgainSendEmailUserRequest request, @RequestParam("confirmationToken") String confirmationToken) {
         authenticationService.againSendEmailVerification(request, confirmationToken);
     }
 
