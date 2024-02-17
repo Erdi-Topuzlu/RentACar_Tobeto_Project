@@ -29,8 +29,7 @@ const ForgotPassword = () => {
           "api/v1/auth/forgot-password",
           data
         );
-        toastSuccess(
-          "Şifre Sıfırlama Maili Gönderildi. Lütfen Mailinizi Kontrol Ediniz."
+        toastSuccess(t("resetAndCheckMail")
         );
       } catch (error) {
         console.error(error);
@@ -41,7 +40,7 @@ const ForgotPassword = () => {
   });
 
   return (
-    <Helmet title={"Şifre Sıfırlama"}>
+    <Helmet title={t("reset")}>
       <section>
         <Container>
           <Row>
@@ -102,7 +101,7 @@ c-908 0 -1293 3 -1331 11 -149 32 -264 143 -304 294 -20 73 -20 1757 0 1830
                   />
                 </g>
               </svg>
-              <h2 className="section__title mt-2 ">{"Şifre Sıfırlama"}</h2>
+              <h2 className="section__title mt-2 ">{t("reset")}</h2>
               <div className="d-flex justify-content-center align-items-center mt-4">
                 <Col lg="4" className="mb-5 text-center">
                   <Form onSubmit={formik.handleSubmit}>
@@ -125,7 +124,7 @@ c-908 0 -1293 3 -1331 11 -149 32 -264 143 -304 294 -20 73 -20 1757 0 1830
                           placeholder={
                             formik.errors.email && formik.touched.email
                               ? formik.errors.email
-                              : "email"
+                              : t("email")
                           }
                           invalid={formik.errors.email && formik.touched.email}
                         />
@@ -136,7 +135,7 @@ c-908 0 -1293 3 -1331 11 -149 32 -264 143 -304 294 -20 73 -20 1757 0 1830
                       className=" form__btn mt-2"
                       type="submit"
                     >
-                      {"Gönder"}
+                      {t("submit")}
                     </Button>
                   </Form>
                 </Col>
