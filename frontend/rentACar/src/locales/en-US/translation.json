@@ -492,7 +492,16 @@
   "successSendEmailVerify":"E-mail verification succeeded",
   "emailCheck":"Please check your e-mail and verify your account",
   "sending":"Sending..",
-  "resetAndCheckMail":"Password reset mail has been sent. Please check your e-mail address."
+  "resetAndCheckMail":"Password reset mail has been sent. Please check your e-mail address.",
+
+  "updateUserRole":"Update User Role",
+  "selectRole":"Select Role",
+  "user":"User",
+  "admin":"Admin",
+  "currentRole":"Current Role",
+  "currentRoleAdmin":"Current Role : Admin",
+  "currentRoleUser":"Current Role : User"
+
 
 
 
