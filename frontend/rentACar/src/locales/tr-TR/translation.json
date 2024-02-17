@@ -239,6 +239,7 @@
   "packageDetails":"Paket Detayları",
   "anyPackage":"Herhangi bir paket seçmediniz!",
   "packageAmount":"Paket Tutarı : ",
+  "addPackage":"Paket Ekle",
 
   "carDetails":"Araç Detayları",
   "selectedCar":"Aracınız : ",
@@ -451,6 +452,7 @@
   "emailExists":"E-posta zaten mevcut",
   "successRegistration":"Kayıt Başarılı!",
 
+
   "cancelMessageTitle":"Kiralamanız iptal edilecektir",
   "finishMessageTitle":"Kiralamanız sonlandırılacaktır",
   "infoMessageCancel":"Fatura tutarı 0₺ olarak güncellenecektir",
@@ -475,7 +477,11 @@
   "rented":"Kiralık",
   "seeDetails|rent":" Detay Gör | Kirala",
   "editRole":"Rolü Düzenle",
-  "verifyMailSendAgain":"Doğrulama Mailini Tekrar Gönder"
+  "verifyMailSendAgain":"Doğrulama Mailini Tekrar Gönder",
+  "successSendEmailVerify":"E-mail doğrulama başarılı",
+  "emailCheck":"Lütfen mail adresinizi kontrol edin ve hesabınızı doğrulayın",
+  "sending":"Gönderiliyor..",
+  "resetAndCheckMail":"Şifre sıfırlama maili gönderildi. Lütfen e-mail adresinizi kontrol ediniz."
 
   
 }

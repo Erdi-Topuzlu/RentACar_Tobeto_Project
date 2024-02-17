@@ -27,7 +27,7 @@ const RedirectLogin = ({ isEnabled, tokenn}) => {
         "api/v1/auth/again-send-email-verification",
         data
       );
-      toastSuccess(t("successSendEmailVerification"));
+      toastSuccess(t("successSendEmailVerify"));
     } catch (error) {
       console.error(error)
 
@@ -47,7 +47,7 @@ const RedirectLogin = ({ isEnabled, tokenn}) => {
               <div className="contact__info text-center mt-4 p-4">
                 <h4 className="fw-bold mb-4">{t("For rent the car")}</h4>
                 <hr />
-                <h3>{t("Please check your mail and verify your account ")}</h3>
+                <h3>{t("emailCheck")}</h3>
               </div>
               <div className="text-center p-2">
                 <Link >
@@ -57,7 +57,7 @@ const RedirectLogin = ({ isEnabled, tokenn}) => {
                     style={{ color: "white" }}
                     className="w-25 car__item-btn car__btn-details"
                   >
-                    {isLoading ? t("Sending...") : t("verifyMailSendAgain")}
+                    {isLoading ? t("sending") : t("verifyMailSendAgain")}
                   </button>
                 </Link>
               </div>
