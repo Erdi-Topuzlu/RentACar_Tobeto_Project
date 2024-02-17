@@ -386,7 +386,7 @@ export default function UserTable() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid xs={12}>
-                <FormLabel className={"align-items-center d-flex justify-content-center mb-4"}>{curentRole === "ADMIN" ? "Current Role : ADMIN" : "Current Role : USER"}</FormLabel>
+                <FormLabel className={"align-items-center d-flex justify-content-center mb-4"}>{curentRole === "ADMIN" ? t("currentRoleAdmin") : t("currentRoleUser")}</FormLabel>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
                     <FormGroup>
@@ -419,10 +419,10 @@ export default function UserTable() {
                       > 
                        <option disabled={true} value="">{t("selectRole")}</option>
                           <option value="USER" key="1">
-                            USER
+                            {t("user")}
                           </option>
                           <option value="ADMIN" key="2">
-                            ADMIN
+                            {t("admin")}
                           </option>
                           
                       </select>
