@@ -34,7 +34,6 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response.status === 403 || error.response.status === 401) {
-      //Sadece 403 hatası alındığında çıkış yap
       localStorage.clear();
       window.location.href = "/login";
       return Promise.reject(error);
@@ -57,7 +56,7 @@ axiosInstance.interceptors.response.use(
             }
           );
 
-          const refreshData = await refreshResponse.json(); // Yanıtı JSON formatına dönüştür
+          const refreshData = await refreshResponse.json();
 
           const newAccessToken = refreshData.access_token;
           localStorage.removeItem("access_token");
@@ -77,7 +76,6 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    //window.location.href = "/login";
     return Promise.reject(error);
   }
 );

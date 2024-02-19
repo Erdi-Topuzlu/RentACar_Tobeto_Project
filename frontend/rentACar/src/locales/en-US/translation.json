@@ -484,7 +484,8 @@
   "driverLG":"G - Temporary Driver's License",
 
   "cancelled":"Cancelled",
-  "terminated":"Terminated",
+  "terminated":"Terminated",  
+  "cancelledRent":"Cancel Rental",
   "continues":"Continues",
   "suitable":"Suitable",
   "rented":"Rented",
