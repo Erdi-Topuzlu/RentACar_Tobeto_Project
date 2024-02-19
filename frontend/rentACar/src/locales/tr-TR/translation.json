@@ -474,6 +474,7 @@
 
   "cancelled":"İptal Edildi",
   "terminated":"Sonlandırıldı",
+  "cancelledRent":"Kiralamayı İptal Et",
   "continues":"Devam ediyor",
   "suitable":"Uygun",
   "rented":"Kiralık",
