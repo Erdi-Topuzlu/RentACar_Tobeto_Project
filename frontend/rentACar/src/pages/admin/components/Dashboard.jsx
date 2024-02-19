@@ -49,12 +49,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/brand-dashboard.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("brands")}
@@ -81,12 +76,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/model-dashboard.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("models")}
@@ -113,12 +103,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/color-dashboard.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("colors")}
@@ -145,12 +130,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/car-dashboard.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("cars")}
@@ -177,12 +157,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/key.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("rentals")}
@@ -209,12 +184,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/campaign.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("campaigns")}
@@ -241,12 +211,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/user-dashboard.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("users")}
@@ -273,12 +238,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/car-images.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("carImg")}
@@ -307,12 +267,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/slider.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("slider")}
@@ -339,12 +294,7 @@ export default function Dashboard() {
                 <ReactSVG src="/src/assets/icons/contact.svg" />
               </CardActions>
               <Button
-                style={{
-                  background: "rgb(104,11,156)",
-                  background:
-                    "linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%)",
-                  color: "white",
-                }}
+                className="admin-btn"
                 size="md"
               >
                 {t("contact")}
