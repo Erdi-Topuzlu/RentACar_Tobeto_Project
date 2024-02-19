@@ -787,6 +787,10 @@ export default function CarTable() {
                         <option value="HYBRID" key="3">
                         {t("hybrid")}
                         </option>
+                        <option value="ELECTRIC" key="4">
+                        {t("electric")}
+                        </option>
+                        
                       </select>
 
                       <select
