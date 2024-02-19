@@ -35,8 +35,6 @@ import Loading from "../../../../components/ui/Loading";
 import UserList from "./UserList";
 import fetchAllUserData from "../../../../redux/actions/admin/fetchAllUserData";
 
-
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -99,17 +97,14 @@ export default function UserTable() {
         toastSuccess(t("userIdNotFound"));
         dispatch(fetchAllUserData());
       } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
+        setOpen(false);
+        toastError(t("connectedDataDelete"));
         dispatch(fetchAllUserData());
       }
     }
   };
 
- 
-
   const handleUpdate = async (id) => {
-
     const updatedData = {
       id: userId,
       name: userName,
@@ -124,10 +119,7 @@ export default function UserTable() {
     };
 
     try {
-      await axiosInstance.patch(
-        `api/v1/users/${id}`,
-        updatedData
-      );
+      await axiosInstance.patch(`api/v1/users/${id}`, updatedData);
       toastSuccess(t("usersSuccessUpdate"));
       setOpen(false);
       dispatch(fetchAllUserData());
@@ -137,24 +129,20 @@ export default function UserTable() {
         toastError(JSON.stringify(error.response.data.validationErrors.name));
         dispatch(fetchAllUserData());
       } else if (error.response.data.type === "BUSINESS.EXCEPTION") {
-        toastError(JSON.stringify(error.response.data.message))
+        toastError(JSON.stringify(error.response.data.message));
         dispatch(fetchAllUserData());
       } else {
-        toastError(t("unknownError"))
+        toastError(t("unknownError"));
         dispatch(fetchAllUserData());
       }
     }
-  }
-
+  };
 
   const formik = useFormik({
     initialValues: {
       role: "",
-
     },
-
   });
-
 
   return (
     <React.Fragment>
@@ -172,7 +160,6 @@ export default function UserTable() {
         <Typography level="h2" component="h1">
           {t("users").toUpperCase()}
         </Typography>
-
       </Box>
       <hr />
       <Sheet
@@ -271,7 +258,13 @@ export default function UserTable() {
                     <Typography level="body-xs">{row.id}</Typography>
                   </td>
                   <td style={{ textAlign: "center" }}>
-                    <Typography level="body-xs"><span style={{ fontWeight: "bold", fontSize: "16px" }}>{row.name}{row.surname}</span></Typography>
+                    <Typography level="body-xs">
+                      <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                        {row.name}
+                        {" "}
+                        {row.surname}
+                      </span>
+                    </Typography>
                   </td>
                   <td style={{ textAlign: "center" }}>
                     <Typography level="body-xs">{row.email}</Typography>
@@ -280,25 +273,31 @@ export default function UserTable() {
                     <Typography level="body-xs">
                       {row.isEnabled ? (
                         <React.Fragment>
-                          <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
-                            <img title={t("verifiedAccount")} src="/src/assets/icons/verified.svg" />
+                          <span
+                            style={{ marginLeft: "8px", marginBottom: "4px" }}
+                          >
+                            <img
+                              title={t("verifiedAccount")}
+                              src="/src/assets/icons/verified.svg"
+                            />
                           </span>
                           {t("verifiedAccount")}
                         </React.Fragment>
                       ) : (
                         <React.Fragment>
-                          <span style={{ marginLeft: "8px", marginBottom: "4px" }}>
-                            <img title={t("verifyAccound")} src="/src/assets/icons/not-verified.svg" />
+                          <span
+                            style={{ marginLeft: "8px", marginBottom: "4px" }}
+                          >
+                            <img
+                              title={t("verifyAccound")}
+                              src="/src/assets/icons/not-verified.svg"
+                            />
                           </span>
                           {t("unverifiedAccount")}
                         </React.Fragment>
                       )}
                     </Typography>
                   </td>
-
-
-
-
                   <td style={{ textAlign: "center" }}>
                     <Dropdown>
                       <MenuButton
@@ -386,7 +385,15 @@ export default function UserTable() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid xs={12}>
-                <FormLabel className={"align-items-center d-flex justify-content-center mb-4"}>{curentRole === "ADMIN" ? t("currentRoleAdmin") : t("currentRoleUser")}</FormLabel>
+                <FormLabel
+                  className={
+                    "align-items-center d-flex justify-content-center mb-4"
+                  }
+                >
+                  {curentRole === "ADMIN"
+                    ? t("currentRoleAdmin")
+                    : t("currentRoleUser")}
+                </FormLabel>
                 <Form onSubmit={formik.handleSubmit}>
                   <div>
                     <FormGroup>
@@ -396,9 +403,7 @@ export default function UserTable() {
                         type="text"
                         value={formik.values.role || userRole}
                         className={
-                          formik.errors.role &&
-                          formik.touched.role &&
-                          "error"
+                          formik.errors.role && formik.touched.role && "error"
                         }
                         onChange={(e) => {
                           setUserRole(e.target.value);
@@ -416,29 +421,28 @@ export default function UserTable() {
                           width: "50%",
                         }}
                         onBlur={formik.handleBlur}
-                      > 
-                       <option disabled={true} value="">{t("selectRole")}</option>
-                          <option value="USER" key="1">
-                            {t("user")}
-                          </option>
-                          <option value="ADMIN" key="2">
-                            {t("admin")}
-                          </option>
-                          
+                      >
+                        <option disabled={true} value="">
+                          {t("selectRole")}
+                        </option>
+                        <option value="USER" key="1">
+                          {t("user")}
+                        </option>
+                        <option value="ADMIN" key="2">
+                          {t("admin")}
+                        </option>
                       </select>
                     </FormGroup>
-
                   </div>
                   <Button
                     onClick={() => {
-                      handleUpdate(userId)
+                      handleUpdate(userId);
                     }}
                     className=" form__btn"
                     style={{ backgroundColor: "#673ab7", color: "white" }}
                   >
                     {t("update")}
                   </Button>
-
                 </Form>
               </Grid>
             </Grid>
@@ -490,4 +494,3 @@ export default function UserTable() {
     </React.Fragment>
   );
 }
-

@@ -2,9 +2,9 @@ package com.tobeto.RentACar.entities.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tobeto.RentACar.entities.concretes.campaigns.Campaigns;
-import com.tobeto.RentACar.security.entities.Role;
+import com.tobeto.RentACar.enums.auth.Role;
 import com.tobeto.RentACar.entities.concretes.rental.Rental;
-import com.tobeto.RentACar.security.services.token.Token;
+import com.tobeto.RentACar.entities.concretes.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

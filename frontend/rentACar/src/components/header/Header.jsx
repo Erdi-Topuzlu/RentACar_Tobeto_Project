@@ -112,6 +112,7 @@ function Header() {
         localStorage.removeItem("login_user");
         setShowUi(true);
         navigate("/login");
+        toastSuccess(t("logoutSuccess"));
       } else {
 
         toastError(t("logoutFailed"))

@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 403 || error.response.status === 401) {
       //Sadece 403 hatası alındığında çıkış yap
       localStorage.clear();
-      //window.location.href = "/login";
+      window.location.href = "/login";
       return Promise.reject(error);
     }
 
@@ -72,8 +72,6 @@ axiosInstance.interceptors.response.use(
           throw new Error("noRefreshToken");
         }
       } catch (refreshError) {
-        // Refresh token hatası
-        //console.error("Response interceptor Refresh token error:", refreshError);
         localStorage.clear();
         window.location.href = "/login";
         return Promise.reject(refreshError);

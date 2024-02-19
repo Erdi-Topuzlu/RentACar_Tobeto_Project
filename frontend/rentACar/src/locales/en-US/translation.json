@@ -22,6 +22,7 @@
   "contact": "Contact",
   "search": "Search",
   "reset":"Reset Password",
+  "logoutSuccess": "Logout Successful",
 
   "_footer": "FOOTER-EN",
   "privacy": "Privacy Policy",
@@ -66,6 +67,7 @@
 
   "logoutFailed":"Logout Failed!",
   "locationInfoFail":"Location info is not allowed by this browser.",
+  "resetPassword": "Reset Password",
 
   "_signup": "SIGN-UP PAGE-EN",
   "confirm": "Confirm Password",

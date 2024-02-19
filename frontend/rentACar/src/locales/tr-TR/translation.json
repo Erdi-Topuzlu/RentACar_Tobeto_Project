@@ -22,6 +22,8 @@
   "contact": "İletişim",
   "search": "Ara",
   "reset": "Şifreyi Sıfırla",
+  "logoutSuccess": "Çıkış Başarılı!",
+  "resetPassword": "Şifre Sıfırlama",
 
   "_footer": "FOOTER-TR",
   "privacy": "Gizlilik Politikası",

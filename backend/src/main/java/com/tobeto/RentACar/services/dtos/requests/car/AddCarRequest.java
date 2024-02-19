@@ -1,10 +1,6 @@
 package com.tobeto.RentACar.services.dtos.requests.car;
 
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
-import com.tobeto.RentACar.entities.concretes.FuelType;
-import com.tobeto.RentACar.entities.concretes.GearType;
-import com.tobeto.RentACar.entities.concretes.SeatType;
-import com.tobeto.RentACar.entities.concretes.VehicleType;
 import jakarta.validation.constraints.*;
 import lombok.*;
 

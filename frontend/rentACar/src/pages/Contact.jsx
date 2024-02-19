@@ -12,7 +12,6 @@ import {
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/ui/CommonSection";
 import "../styles/contact.css";
-// import getContactValidationSchema from "../schemes/contactScheme";
 import { useTranslation } from "react-i18next";
 import {
   AnimatedLTR,

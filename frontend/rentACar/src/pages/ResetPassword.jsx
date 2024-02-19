@@ -17,9 +17,12 @@ import {
 } from "../../../rentACar/src/service/ToastifyService";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
+import { useNavigate } from "react-router-dom";
+
 
 const ResetPassword = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const initialValues = {
     email:"",
@@ -44,6 +47,7 @@ const ResetPassword = () => {
         );
         if (response.status === 200) {
           toastSuccess(t("passwordUpdated"));
+          navigate("/login");
           formik.resetForm();
         }
         if (response.status === 403) {

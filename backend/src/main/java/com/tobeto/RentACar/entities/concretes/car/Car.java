@@ -2,11 +2,14 @@ package com.tobeto.RentACar.entities.concretes.car;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tobeto.RentACar.entities.abstracts.BaseEntity;
-import com.tobeto.RentACar.entities.concretes.*;
 import com.tobeto.RentACar.entities.concretes.carImage.CarImage;
 import com.tobeto.RentACar.entities.concretes.color.Color;
 import com.tobeto.RentACar.entities.concretes.model.Model;
 import com.tobeto.RentACar.entities.concretes.rental.Rental;
+import com.tobeto.RentACar.enums.car.FuelType;
+import com.tobeto.RentACar.enums.car.GearType;
+import com.tobeto.RentACar.enums.car.SeatType;
+import com.tobeto.RentACar.enums.car.VehicleType;
 import jakarta.persistence.*;
 import lombok.Data;
 

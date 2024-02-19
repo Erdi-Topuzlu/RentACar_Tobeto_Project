@@ -1,6 +1,5 @@
 package com.tobeto.RentACar;
 
-import com.tobeto.RentACar.entities.concretes.GearType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
