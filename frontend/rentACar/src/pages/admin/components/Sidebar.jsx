@@ -262,7 +262,7 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton selected={isMenuItemSelected("car-images")}>
+                  <ListItemButton selected={isMenuItemSelected("carImages")}>
                     <ReactSVG src={`/src/assets/icons/car-images-mini.svg`} />
                     <Link
                       component={RouterLink}
@@ -290,7 +290,7 @@ export default function Sidebar() {
 
             <ListItemButton
               sx={{ marginTop: "4px" }}
-              selected={isMenuItemSelected("slider")}
+              selected={isMenuItemSelected("contact")}
             >
               <ReactSVG src={`/src/assets/icons/contact-mini.svg`} />
               <Link component={RouterLink} to={"contact"} underline="none">

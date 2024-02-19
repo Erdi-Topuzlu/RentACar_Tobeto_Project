@@ -115,7 +115,7 @@ export default function ContactTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("contact")}
+          {t("contact").toUpperCase()}
         </Typography>
       </Box>
       <hr />
