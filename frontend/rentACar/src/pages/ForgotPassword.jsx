@@ -17,10 +17,10 @@ import { toastSuccess } from "../service/ToastifyService";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
-
 const ForgotPassword = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -28,6 +28,7 @@ const ForgotPassword = () => {
     },
 
     onSubmit: async (values, actions) => {
+      setIsLoading(true); // Butonu devre dışı bırak
       const data = {
         email: values.email,
       };
@@ -37,12 +38,12 @@ const ForgotPassword = () => {
           data
         );
         navigate("/home");
-        toastSuccess(t("resetAndCheckMail")
-        );
+        toastSuccess(t("resetAndCheckMail"));
       } catch (error) {
         console.error(error);
       } finally {
         actions.setSubmitting(false);
+        setIsLoading(false);
       }
     },
   });
@@ -53,7 +54,7 @@ const ForgotPassword = () => {
         <Container>
           <Row>
             <Col lg="12" className="mb-5 text-center p-4">
-            <ReactSVG src="/src/assets/icons/forgot_password.svg" />
+              <ReactSVG src="/src/assets/icons/forgot_password.svg" />
               <h2 className="section__title mt-2 ">{t("reset")}</h2>
               <div className="d-flex justify-content-center align-items-center mt-4">
                 <Col lg="4" className="mb-5 text-center">
@@ -88,7 +89,7 @@ const ForgotPassword = () => {
                       className=" form__btn mt-2"
                       type="submit"
                     >
-                      {t("submit")}
+                      {isLoading ? t("sending") : t("submit")}
                     </Button>
                   </Form>
                 </Col>
