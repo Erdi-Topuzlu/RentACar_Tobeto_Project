@@ -21,6 +21,7 @@ import { m } from "framer-motion";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
 import { toastError, toastSuccess } from "../service/ToastifyService";
 import { useFormik } from "formik";
+import getContactValidationSchema from "../schemes/contactScheme";
 
 const socialLinks = [
   {
@@ -48,6 +49,7 @@ const Contact = () => {
   const [mail, setMail] = useState();
   const [message, setMessage] = useState();
 
+  const contactValidationSchema = getContactValidationSchema();
 
   const formik = useFormik({
     initialValues: {
@@ -55,6 +57,7 @@ const Contact = () => {
       email: "",
       messages: "",
     },
+    validationSchema:contactValidationSchema,
     onSubmit: async (values, actions) => {
 
       const data = {
@@ -110,6 +113,7 @@ const Contact = () => {
                           setName(e.target.value);
 
                         }}
+                        onBlur={formik.handleBlur}
                         className={
                           formik.errors.name && formik.touched.name && "error"
                         }
@@ -117,9 +121,9 @@ const Contact = () => {
                         placeholder={
                           formik.errors.name && formik.touched.name
                             ? formik.errors.name
-                            : t("fName")
+                            : t("name")
                         }
-                        error={formik.errors.name && formik.touched.name}
+                        invalid={formik.errors.name && formik.touched.name}
                       />
 
                     </FormGroup>
@@ -137,6 +141,7 @@ const Contact = () => {
                           setMail(e.target.value);
 
                         }}
+                        onBlur={formik.handleBlur}
                         className={
                           formik.errors.email && formik.touched.email && "error"
                         }
@@ -146,7 +151,7 @@ const Contact = () => {
                             ? formik.errors.email
                             : t("email")
                         }
-                        error={formik.errors.email && formik.touched.email}
+                        invalid={formik.errors.email && formik.touched.email}
                       />
 
                     </FormGroup>
@@ -165,6 +170,7 @@ const Contact = () => {
                           
 
                         }}
+                        onBlur={formik.handleBlur}
                         className={
                           formik.errors.messages && formik.touched.messages && "error"
                         }
@@ -174,7 +180,7 @@ const Contact = () => {
                             ? formik.errors.messages
                             : t("message")
                         }
-                        error={formik.errors.messages && formik.touched.messages}
+                        invalid={formik.errors.messages && formik.touched.messages}
                       />
 
                     </FormGroup>
