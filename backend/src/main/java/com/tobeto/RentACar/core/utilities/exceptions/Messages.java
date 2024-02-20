@@ -100,7 +100,10 @@ public record Messages() {
     public static final String contactMessagesMustBe = "Contact messages must have a minimum of 10 and a maximum of 400 characters.";
 
 
+    public static final String connectedDataDelete = "Connected data must be deleted first!";
 
+    public static final String emailAndPasswordMatch = "E-Mail and password do not match!";
 
+    public static final String idNotFound = "ID Not Found!";
 
 }

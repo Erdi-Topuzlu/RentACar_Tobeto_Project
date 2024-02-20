@@ -87,7 +87,6 @@ export default function CarImagesList() {
         dispatch(fetchAllCarData());
       } catch (error) {
         setOpen(false);
-        alert(JSON.stringify(error.response.data));
         toastError(t("unknownError"), error.response.data);
       }
     }

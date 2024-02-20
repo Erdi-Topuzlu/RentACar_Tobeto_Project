@@ -94,9 +94,7 @@ export default function ContactTable() {
         dispatch(fetchAllContactData());
       } catch (error) {
         setOpen(false);
-
-        toastError(t("connectedDataDelete"));
-        dispatch(fetchAllContactData());
+        toastError(t("unknownError"));
       }
     }
   };

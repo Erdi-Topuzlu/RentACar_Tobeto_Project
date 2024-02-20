@@ -106,8 +106,7 @@ export default function SliderList() {
         setId(null);
       } catch (error) {
         setOpen(false);
-        toastError("Bilinmeyen Hata");
-        dispatch(fetchAllSliderData());
+        toastError("unknownError");
       }
     }
   };

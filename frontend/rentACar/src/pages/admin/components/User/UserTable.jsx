@@ -96,11 +96,14 @@ export default function UserTable() {
         await axiosInstance.delete(`api/v1/users/${userId}`);
         toastSuccess(t("userIdNotFound"));
         dispatch(fetchAllUserData());
-      } catch (error) {
+      }catch (error) {
         setOpen(false);
-        toastError(t("connectedDataDelete"));
-        dispatch(fetchAllUserData());
-      }
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 

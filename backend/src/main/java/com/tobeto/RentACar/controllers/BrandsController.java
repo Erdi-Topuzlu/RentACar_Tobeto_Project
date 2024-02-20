@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/admin/brands")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:5173/")
 @Tag(name = "Brand Controller", description = "Brands Endpoints")
 public class BrandsController {
 

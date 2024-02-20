@@ -116,12 +116,14 @@ export default function CampaignsTable() {
         await axiosInstance.delete(`api/v1/admin/campaigns/${id}`);
         toastSuccess(t("campaignsSuccessDelete"));
         dispatch(fetchAllCampaignsData());
-      } catch (error) {
+      }catch (error) {
         setOpen(false);
-
-        toastError(t("connectedDataDelete"));
-        dispatch(fetchAllCampaignsData());
-      }
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 

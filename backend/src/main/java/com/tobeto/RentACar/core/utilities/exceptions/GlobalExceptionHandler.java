@@ -30,12 +30,12 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ExceptionHandler(SQLException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+    public Map<String, Object> handleSQLException(SQLException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("error", "SQL Integrity Constraint Violation");
-        response.put("message", ex.getMessage());
+        response.put("type", "SQL");
+        response.put("message", Messages.connectedDataDelete);
         return response;
     }
 
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ProblemDetails handleNoSuchElementException(NoSuchElementException noSuchElementException){
         ProblemDetails problemDetails = new ProblemDetails();
-        problemDetails.setMessage("Id Not Found !");
+        problemDetails.setMessage(Messages.idNotFound);
         return problemDetails;
     }
 
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
     public ProblemDetails handleBadCredentialsException(BadCredentialsException badCredentialsException){
         ProblemDetails problemDetails = new ProblemDetails();
-        problemDetails.setMessage("E-Mail and password do not match!");
+        problemDetails.setMessage(Messages.emailAndPasswordMatch);
         return problemDetails;
     }
 

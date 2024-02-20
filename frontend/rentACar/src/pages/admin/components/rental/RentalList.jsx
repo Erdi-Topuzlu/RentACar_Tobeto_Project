@@ -113,11 +113,14 @@ export default function RentalList() {
         await axiosInstance.delete(`api/v1/users/rentals/${id}`);
         toastSuccess(t("rentalSuccessDelete"));
         dispatch(fetchAllRentals());
-      } catch (error) {
+      }catch (error) {
         setOpen(false);
-        toastError(t("connectedDataDelete"));
-        dispatch(fetchAllRentals());
-      }
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 

@@ -107,7 +107,6 @@ export default function SliderTable() {
       } catch (error) {
         setOpen(false);
         toastError(t("unknkownError"));
-        dispatch(fetchAllSliderData());
       }
     }
   };

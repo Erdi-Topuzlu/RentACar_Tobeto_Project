@@ -96,12 +96,14 @@ export default function ModelTable() {
         await axiosInstance.delete(`api/v1/admin/models/${id}`);
         toastSuccess(t("modelIdNotFound"));
         dispatch(fetchAllModelData());
-      } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
-        dispatch(fetchAllModelData());
-
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 
