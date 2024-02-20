@@ -82,12 +82,14 @@ export default function BrandList() {
         await axiosInstance.delete(`api/v1/admin/brands/${id}`);
         toastSuccess(t("brandSuccessDelete"));
         dispatch(fetchAllBrandData());
-      } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
-        dispatch(fetchAllBrandData)
-
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 

@@ -181,8 +181,7 @@ export default function Sidebar() {
               <img width={24} src={england} />
             ) : i18n.language === "tr" ? (
               <img width={24} src={turkey} />
-            ) : // Handle other languages if needed
-              null
+            ) : null
           }
           id="nav-dropdown"
           onSelect={langSelect}
@@ -195,8 +194,7 @@ export default function Sidebar() {
             <NavDropdown.Item eventKey="en">
               <img width={16} src={england} /> {t("en-US")}
             </NavDropdown.Item>
-          ) : // Handle other languages if needed
-            null}
+          ) : null}
         </NavDropdown>
       </Box>
       <Divider />
@@ -204,7 +202,9 @@ export default function Sidebar() {
         <IconButton variant="soft" color="neutral" size="lg">
           <CarRentalIcon />
         </IconButton>
-        <Typography level="title-lg">{t("pair-1")}</Typography>
+        <Typography sx={{ marginLeft: 2 }} level="title-lg">
+          {t("pair-1")}
+        </Typography>
       </Link>
 
       <Divider />
@@ -250,9 +250,7 @@ export default function Sidebar() {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <ReactSVG
-                    src={`/src/assets/icons/images-mini.svg`}
-                  />
+                  <ReactSVG src={`/src/assets/icons/images-mini.svg`} />
                   <ListItemContent>
                     <Typography level="title-sm">{t("images")}</Typography>
                   </ListItemContent>
@@ -264,37 +262,25 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton selected={isMenuItemSelected("car-images")}>
-                    <ReactSVG
-                      src={`/src/assets/icons/car-images-mini.svg`}
-                    />
+                  <ListItemButton selected={isMenuItemSelected("carImages")}>
+                    <ReactSVG src={`/src/assets/icons/car-images-mini.svg`} />
                     <Link
                       component={RouterLink}
                       to={"carImages"}
                       underline="none"
                     >
                       <ListItemContent>
-                        <Typography level="title-sm">
-                          {t("carImg")}
-                        </Typography>
+                        <Typography level="title-sm">{t("carImg")}</Typography>
                       </ListItemContent>
                     </Link>
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton selected={isMenuItemSelected("slider")}>
-                    <ReactSVG
-                      src={`/src/assets/icons/slider-mini.svg`}
-                    />
-                    <Link
-                      component={RouterLink}
-                      to={"slider"}
-                      underline="none"
-                    >
+                    <ReactSVG src={`/src/assets/icons/slider-mini.svg`} />
+                    <Link component={RouterLink} to={"slider"} underline="none">
                       <ListItemContent>
-                        <Typography level="title-sm">
-                          {t("slider")}
-                        </Typography>
+                        <Typography level="title-sm">{t("slider")}</Typography>
                       </ListItemContent>
                     </Link>
                   </ListItemButton>
@@ -302,48 +288,19 @@ export default function Sidebar() {
               </List>
             </Toggler>
 
-            <ListItemButton sx={{marginTop:"4px"}} selected={isMenuItemSelected("slider")}>
-              <ReactSVG
-                src={`/src/assets/icons/contact-mini.svg`}
-              />
-              <Link
-                component={RouterLink}
-                to={"contact"}
-                underline="none"
-              >
+            <ListItemButton
+              sx={{ marginTop: "4px" }}
+              selected={isMenuItemSelected("contact")}
+            >
+              <ReactSVG src={`/src/assets/icons/contact-mini.svg`} />
+              <Link component={RouterLink} to={"contact"} underline="none">
                 <ListItemContent>
-                  <Typography level="title-sm">
-                    {t("contact")}
-                  </Typography>
+                  <Typography level="title-sm">{t("contact")}</Typography>
                 </ListItemContent>
               </Link>
             </ListItemButton>
-
           </ListItem>
-
-
         </List>
-
-
-
-        {/* <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/bill-mini.svg" />
-              <ListItemContent>
-                <Typography level="title-sm">Invoices</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem> */}
-
-        {/* <ListItem>
-            <ListItemButton>
-            <ReactSVG src="/src/assets/icons/user-mini.svg" />
-              <ListItemContent>
-                <Typography level="title-sm">Users</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem> */}
-
         <List
           size="sm"
           sx={{
@@ -353,16 +310,7 @@ export default function Sidebar() {
             "--List-gap": "8px",
             mb: 2,
           }}
-        >
-          {/* <ListItem>
-            <ListItemButton>
-              <IconButton size="md" variant="plain" color="neutral">
-                <SettingsRoundedIcon />
-              </IconButton>
-              Settings
-            </ListItemButton>
-          </ListItem> */}
-        </List>
+        ></List>
       </Box>
       <Divider />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
@@ -381,7 +329,10 @@ export default function Sidebar() {
 
         <IconButton
           onClick={handleLogout}
-          size="md"
+          sx={{
+            marginBottom: 3,
+          }}
+          size="s"
           variant="plain"
           color="neutral"
         >

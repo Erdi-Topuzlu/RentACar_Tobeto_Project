@@ -22,6 +22,8 @@
   "contact": "İletişim",
   "search": "Ara",
   "reset": "Şifreyi Sıfırla",
+  "logoutSuccess": "Çıkış Başarılı!",
+  "resetPassword": "Şifre Sıfırlama",
 
   "_footer": "FOOTER-TR",
   "privacy": "Gizlilik Politikası",
@@ -472,6 +474,7 @@
 
   "cancelled":"İptal Edildi",
   "terminated":"Sonlandırıldı",
+  "cancelledRent":"Kiralamayı İptal Et",
   "continues":"Devam ediyor",
   "suitable":"Uygun",
   "rented":"Kiralık",

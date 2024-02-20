@@ -112,12 +112,14 @@ export default function CarTable() {
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
         toastSuccess(t("carSuccessDelete"));
         dispatch(fetchAllCarData());
-      } catch (error) {
-        setOpen(false)
-        toastError(t("connectedDataDelete"))
-        dispatch(fetchAllCarData())
-
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 
@@ -787,6 +789,10 @@ export default function CarTable() {
                         <option value="HYBRID" key="3">
                         {t("hybrid")}
                         </option>
+                        <option value="ELECTRIC" key="4">
+                        {t("electric")}
+                        </option>
+                        
                       </select>
 
                       <select

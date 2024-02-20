@@ -53,7 +53,7 @@ background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
   padding: 8px 12px;
   border: 1px solid #7c8a972f;
   border-radius: 50px;
-  background: #2b0868;
+  background: rgba(56,0,83,1);
 }
 
 .newsletter input {

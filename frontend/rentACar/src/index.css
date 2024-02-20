@@ -77,6 +77,12 @@ section {
   transition: 0.3s;
 }
 
+.admin-btn {
+  background: rgb(104,11,156);
+  background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
+  color: "white";
+}
+
 .btn:hover {
   color: #fff !important;
   background: #000c6bd0;

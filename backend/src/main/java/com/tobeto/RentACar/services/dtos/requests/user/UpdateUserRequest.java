@@ -1,7 +1,7 @@
 package com.tobeto.RentACar.services.dtos.requests.user;
 
 import com.tobeto.RentACar.core.utilities.exceptions.Messages;
-import com.tobeto.RentACar.security.entities.Role;
+import com.tobeto.RentACar.enums.auth.Role;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

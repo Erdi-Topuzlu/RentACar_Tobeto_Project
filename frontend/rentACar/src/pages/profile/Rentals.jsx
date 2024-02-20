@@ -14,13 +14,6 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { useTranslation } from 'react-i18next';
 
 
-
-
-
-
-
-
-
 const Rentals = () => {
   const { rentalDetails, status, error } = useSelector(state => state.rentalDetail);
   const { details } = useSelector((state) => state.userDetail);
@@ -166,7 +159,7 @@ const Rentals = () => {
               <Table striped bordered hover>
                 <thead>
                   <tr>
-                    <th>{rental.returnDate ? t("StartDateReturnDate") : t("StartDateEndDate")}</th>
+                    <th>{rental.returnDate ? t("startDate") + " / "+ t("returnDate") : t("startDate") + " / "+ t("endDate")}</th>
                     <th>{t("customerName")}</th>
                     <th>{t("extras")}</th>
                     <th>{t("totalAmount")}</th>
@@ -196,10 +189,10 @@ const Rentals = () => {
                             handleClick(rental)
                           }
                           }
-                          className='bg-primary'
+                          className='bg-danger'
                           disabled={rental?.isFinished}
                         >
-                          {!rental.returnDate ? t("endedRental2") : t("endedRent")}
+                          {!rental.returnDate ? t("cancelledRent") : t("cancelled")}
 
                         </Button> :
 
@@ -214,7 +207,7 @@ const Rentals = () => {
                           disabled={rental?.isFinished}
                         >
                          
-                          {!rental.returnDate ? t("endedRental2") : t("endedRent") }
+                          {!rental.returnDate ? t("endedRental2") : t("terminated") }
                         </Button>
 
 
@@ -278,7 +271,7 @@ const Rentals = () => {
             </Button>
             <Button
               variant="plain"
-              color="neutral"
+              color="secondary"
               onClick={() =>
                 setOpenDelete(false)}
             >

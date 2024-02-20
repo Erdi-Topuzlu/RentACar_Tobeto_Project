@@ -17,9 +17,28 @@ import {
 } from "../../../rentACar/src/service/ToastifyService";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../redux/utilities/interceptors/axiosInterceptors";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 const ResetPassword = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check if the component was accessed via the email link
+    const token = new URLSearchParams(location.search).get('token');
+
+    if (!token) {
+      // Redirect to the login page or another route if token is not present
+      navigate('/login');
+    } else {
+      // Handle the case when accessed via the email link with the token
+      // You can perform additional logic such as updating state, etc.
+      console.log('Component accessed via email link with token:', token);
+    }
+  }, [navigate, location]);
 
   const initialValues = {
     email:"",
@@ -44,6 +63,7 @@ const ResetPassword = () => {
         );
         if (response.status === 200) {
           toastSuccess(t("passwordUpdated"));
+          navigate("/login");
           formik.resetForm();
         }
         if (response.status === 403) {

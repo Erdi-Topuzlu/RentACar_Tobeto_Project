@@ -25,7 +25,7 @@ const signUp = () => {
   const navigate = useNavigate();
   const [dateInputType, setDateInputType] = useState("text");
   const token = localStorage.getItem("access_token");
-
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const signUpValidationSchema = getSignUpValidationSchema();
 
@@ -48,8 +48,8 @@ const signUp = () => {
     },
     validationSchema: signUpValidationSchema,
     onSubmit: async (values, actions) => {
-      
-        const data = {
+      setIsLoading(true); // Butonu devre dışı bırak
+      const data = {
         email: values.email,
         name: values.name,
         surname: values.surname,
@@ -58,22 +58,25 @@ const signUp = () => {
       };
       try {
         const response = await axiosInstance.post("api/v1/auth/register", data);
-        localStorage.setItem("confirmation_token",response.data.confirmation_token)
+        localStorage.setItem(
+          "confirmation_token",
+          response.data.confirmation_token
+        );
         navigate("/login");
         toastSuccess(t("successRegistration"));
-      } catch (error) {      
-          toastError(t("emailExists"));
-      }finally {
+      } catch (error) {
+        toastError(t("emailExists"));
+      } finally {
         actions.setSubmitting(false);
+        setIsLoading(false);
       }
     },
   });
 
-  if(token){
+  if (token) {
     return <Navigate to="/home" />;
   }
 
-  
   return (
     <Helmet title={t("signup")}>
       <section>
@@ -257,7 +260,8 @@ const signUp = () => {
                         className=" form__btn"
                         type="submit"
                       >
-                        {t("signup")}
+                        {isLoading ? t("sending") : t("signup")}
+                       
                       </Button>
                     </Form>
                   </Col>

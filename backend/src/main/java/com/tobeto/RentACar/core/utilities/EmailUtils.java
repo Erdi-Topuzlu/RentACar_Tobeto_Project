@@ -1,5 +1,7 @@
 package com.tobeto.RentACar.core.utilities;
 
+import java.util.UUID;
+
 public class EmailUtils {
     public static String getEmailMessage(String name, String host, String token) {
         return "Hello " + name + ",\n\nYour new account has been created. Please click the link below to verify your account. \n\n" +
@@ -10,7 +12,8 @@ public class EmailUtils {
         return host + "/api/v1/auth/confirm-account?token=" + token;
     }
 
-    public static String getResetPasswordUrl(String token) {
-        return "http://localhost:5173/reset-password";
+    String uniqueToken = UUID.randomUUID().toString();
+    public static String getResetPasswordUrl(String uniqueToken) {
+        return "http://localhost:5173/reset-password?token="+uniqueToken;
     }
 }

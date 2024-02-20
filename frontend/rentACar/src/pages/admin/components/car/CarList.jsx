@@ -114,9 +114,14 @@ export default function CarList() {
         await axiosInstance.delete(`api/v1/admin/cars/${id}`);
         toastSuccess(t("carSuccessDelete"));
         dispatch(fetchAllCarData());
-      } catch (error) {
-        console.error(t("registrationError"), error);
-      }
+      }catch (error) {
+        setOpen(false);
+        if(error.response.data.type === "SQL" ){
+          toastError(JSON.stringify(error.response.data.message));
+        }else{
+        toastError(t("unknownError"));
+        }
+    }
     }
   };
 

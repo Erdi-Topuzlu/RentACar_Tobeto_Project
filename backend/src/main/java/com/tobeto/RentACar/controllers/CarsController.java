@@ -1,6 +1,5 @@
 package com.tobeto.RentACar.controllers;
 
-import com.tobeto.RentACar.entities.concretes.GearType;
 import com.tobeto.RentACar.services.abstracts.CarService;
 import com.tobeto.RentACar.services.dtos.requests.car.AddCarRequest;
 import com.tobeto.RentACar.services.dtos.requests.car.DeleteCarRequest;
@@ -9,7 +8,6 @@ import com.tobeto.RentACar.services.dtos.responses.car.GetAllCarResponse;
 import com.tobeto.RentACar.services.dtos.responses.car.GetByIdCarResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +46,5 @@ public class CarsController {
     public void update(@PathVariable int id,@RequestBody @Valid UpdateCarRequest request) {
         carService.update(id,request);
     }
-
 
 }

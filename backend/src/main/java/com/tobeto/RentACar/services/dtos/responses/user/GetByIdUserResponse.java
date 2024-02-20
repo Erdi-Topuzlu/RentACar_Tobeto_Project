@@ -1,8 +1,6 @@
 package com.tobeto.RentACar.services.dtos.responses.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tobeto.RentACar.security.entities.Role;
-import com.tobeto.RentACar.services.dtos.responses.rental.GetByIdRentalResponse;
+import com.tobeto.RentACar.enums.auth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

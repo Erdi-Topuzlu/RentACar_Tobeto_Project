@@ -94,9 +94,7 @@ export default function ContactTable() {
         dispatch(fetchAllContactData());
       } catch (error) {
         setOpen(false);
-
-        toastError(t("connectedDataDelete"));
-        dispatch(fetchAllContactData());
+        toastError(t("unknownError"));
       }
     }
   };
@@ -115,7 +113,7 @@ export default function ContactTable() {
         }}
       >
         <Typography level="h2" component="h1">
-          {t("contact")}
+          {t("contact").toUpperCase()}
         </Typography>
       </Box>
       <hr />
