@@ -1,0 +1,8 @@
+.common__section {
+  background: linear-gradient(rgb(103, 58, 183, 0.1), rgb(103, 58, 183, 0.3)),
+    url("../assets/all-images/drive.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 80px 0px;
+}

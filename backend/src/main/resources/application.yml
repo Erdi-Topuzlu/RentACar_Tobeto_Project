@@ -1,0 +1,61 @@
+#DATABASE Connection spring.main.allow-circular-references
+spring:
+  ###### Email Properties ######
+  #smtp mail properties
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rentacartobeto@gmail.com
+    password: "tupu oavl qdgi mpbf"
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          write-timeout: 10000
+          connection-timeout: 10000
+          timeout: 10000
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+            port: 587
+    verify:
+      host: http://localhost:8080
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rentacar
+    username: postgres
+    password: test
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+#Jwt Connection
+jwt:
+  secret-key: A9pPomvZ5vkCC8OWRCkqrBn4k8EftWAxRG2enCUi0Xfzze7xEwrqmayQUF2btuo3mhOlMJR+Bo4OqMoZUOPuYg==
+  bearer: "Bearer "
+  expiration: 14400000
+  refresh-token:
+    expiration: 604800000
+
+#Swagger Connection
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+
+

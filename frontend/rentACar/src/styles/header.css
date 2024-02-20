@@ -1,0 +1,243 @@
+.header__user-image {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.header__username {
+  font-family: Arial, sans-serif; /* Use a legible font */
+  font-size: 16px; /* Adjust font size for readability */
+  font-weight: bold; /* Emphasize the username */
+  color: #333; /* Set a dark color for contrast */
+  margin-left: 10px; /* Create space between image and username */
+}
+
+.header__logout-btn {
+  font-family: Arial, sans-serif; /* Use a legible font */
+  font-size: 14px; /* Adjust font size for readability */
+  font-weight: bold; /* Emphasize the text */
+  color: #fff; /* Set a light color for contrast */
+  background-color: #333; /* Set a dark color for contrast */
+  border: none; /* Remove the default border */
+  padding: 10px 15px; /* Add some padding for visual appeal */
+  border-radius: 3px; /* Add some rounded corners for a more polished look */
+  cursor: pointer; /* Set the cursor to a pointer for interactivity */
+}
+
+.header__top {
+  padding: 10px 0px;
+  background: rgb(104,11,156);
+background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
+  color: #fff;
+}
+
+.header__top__left {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+  text-align: center;
+}
+
+.header__top__left span {
+  font-size: 0.9rem;
+}
+
+.header__top__help {
+  display: flex;
+  align-items: center;
+  column-gap: 0.4rem;
+}
+
+.header__top__help i {
+  background: #fff;
+  color: #673ab7;
+  padding: 2px 4px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+}
+
+.header__top__right a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.header__top__right a:hover {
+  color: #fff;
+}
+
+/* ============ header middle style =========== */
+
+.header__middle {
+  padding: 20px 0px;
+}
+
+.logo h1 a span {
+  font-size: 1.5rem;
+}
+
+.logo h1 a i {
+  font-size: 2.2rem;
+}
+
+.logo h1 a {
+  text-decoration: none;
+  color: #673ab7;
+  font-weight: 700;
+}
+
+.logo h1 {
+  line-height: 1.5rem;
+}
+
+.header__location span i {
+  font-size: 2.2rem;
+  color: #673ab7;
+}
+
+.header__location-content h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #673ab7;
+}
+
+.header__location-content h6 {
+  font-weight: 600;
+}
+
+.header__btn {
+  background: rgb(237,153,15)!important;
+background: linear-gradient(90deg, rgba(237,153,15,1) 0%, rgba(226,142,6,1) 100%);
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+.header__btn a {
+  display: flex;
+  align-items: center;
+  column-gap: 0.4rem;
+  text-decoration: none;
+  color: #fff;
+  justify-content: end;
+  font-size: 0.9rem;
+}
+
+.header__btn a:hover {
+  color: #fff;
+  
+}
+
+/* ================ main navbar styles =========== */
+
+.main__navbar {
+  padding: 10px 10px 10px 0px;
+  background: rgb(104,11,156);
+  background: linear-gradient(90deg, rgba(104,11,156,1) 0%, rgba(56,0,83,1) 100%);
+}
+
+.mobile__menu i {
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+
+.mobile__menu {
+  display: none;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  column-gap: 2.7rem;
+}
+
+.nav__item {
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav__item:hover {
+  color: #f9a826;
+}
+
+.search__box {
+  border: 1px solid #7c8a972f;
+  padding: 7px 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  background: #2b0868;
+}
+
+.search__box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.search__box input::placeholder {
+  font-size: 0.8rem;
+}
+.search__box span i {
+  color: rgba(255, 255, 255, 0.555);
+  cursor: pointer;
+}
+
+.nav__active {
+  color: #f9a826;
+}
+
+@media only screen and (max-width: 768px) {
+  .header__top,
+  .header__middle,
+  .nav__right {
+    display: none;
+  }
+
+  .mobile__menu {
+    display: block;
+  }
+
+  .navigation {
+    background: rgb(103, 58, 183, 0.6);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  .menu {
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 2rem;
+    justify-content: center;
+  }
+
+  .menu a {
+    color: #673ab7;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .menu__active {
+    display: block;
+  }
+
+ 
+
+  
+}
